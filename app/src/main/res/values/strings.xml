@@ -13,4 +13,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!--底部导航栏-->
+    <string name="main_btn_one">首页</string>
+    <string name="main_btn_two">学园</string>
+    <string name="main_btn_three">选课</string>
+    <string name="main_btn_four">我的</string>
+
 </resources>

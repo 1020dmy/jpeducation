@@ -29,6 +29,7 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                L.e("onChanged:" + s);
                 textView.setText(s);
             }
         });

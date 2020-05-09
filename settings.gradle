@@ -1,2 +1,3 @@
 rootProject.name='jpeducation'
 include ':app'
+include ':alyplayer'

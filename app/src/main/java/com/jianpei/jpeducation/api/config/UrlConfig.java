@@ -11,4 +11,7 @@ package com.jianpei.jpeducation.api.config;
 public class UrlConfig {
 
 
+    public static final String LOGIN="";
+
+
 }

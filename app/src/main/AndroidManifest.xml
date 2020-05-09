@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-
+        <activity android:name=".activitys.GuideActivity"></activity>
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/title_activity_main" />
