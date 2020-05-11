@@ -12,6 +12,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.GuideAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.DisplayUtil;
+import com.jianpei.jpeducation.utils.SpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,7 @@ public class GuideActivity extends BaseActivity {
 
     @OnClick({R.id.btn_up, R.id.button})
     public void onViewClicked() {
+        SpUtils.put(SpUtils.ISFirst, 1);
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

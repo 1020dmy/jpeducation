@@ -12,10 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.GuideActivity"></activity>
+        <activity android:name=".activitys.ClassInfoActivity"></activity>
+        <activity android:name=".activitys.LoginActivity" />
+        <activity android:name=".activitys.GuideActivity" />
         <activity
             android:name=".activitys.MainActivity"
-            android:label="@string/title_activity_main" />
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.LauncherActivity"
             android:launchMode="singleTask">
@@ -25,6 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="net.sourceforge.simcpux"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <meta-data
             android:name="design_width_in_px"

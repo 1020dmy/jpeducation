@@ -1,10 +1,16 @@
 package com.jianpei.jpeducation.activitys;
 
+import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jianpei.jpeducation.R;
@@ -13,8 +19,11 @@ import com.jianpei.jpeducation.fragment.dashboard.DashboardFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
 import com.jianpei.jpeducation.fragment.notifications.NotificationsFragment;
+import com.jianpei.jpeducation.presenter.MainPresenter;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -26,9 +35,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     DashboardFragment dashboardFragment;
     NotificationsFragment notificationsFragment;
     MineFragment mineFragment;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.imageButton)
+    ImageButton imageButton;
 
     private Fragment[] fragments;
     private int lastfragment = 0;
+
+    private MainPresenter mainPresenter;
 
 
     @Override
@@ -51,6 +66,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @Override
     protected void initData() {
+        mainPresenter = ViewModelProviders.of(this).get(MainPresenter.class);
 
     }
 
@@ -103,4 +119,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }
 
+
+    @OnClick(R.id.imageButton)
+    public void onViewClicked() {
+        mainPresenter.upData(tvTitle.getText().toString());
+    }
 }

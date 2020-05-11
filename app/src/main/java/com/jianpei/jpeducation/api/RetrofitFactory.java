@@ -20,8 +20,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  */
 public class RetrofitFactory {
 
-    public static RetrofitFactory retrofitFactory;
-    public static APIFunction apiFunction;
+    protected static RetrofitFactory retrofitFactory;
+    protected static APIFunction apiFunction;
 
 
     private RetrofitFactory() {

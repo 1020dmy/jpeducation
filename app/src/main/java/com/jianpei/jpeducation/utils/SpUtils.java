@@ -21,6 +21,14 @@ public class SpUtils {
 
     public static final String SP_userModel = "SP_userModel";
 
+    public  static final String ISFirst="IS_first";
+
+    public  static final String USERNAME="userName";
+
+    public  static final String TOKEN="token";
+
+
+
     /**
      * Put string value to SharedPreferences
      *

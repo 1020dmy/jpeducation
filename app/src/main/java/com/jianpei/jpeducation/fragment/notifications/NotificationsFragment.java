@@ -13,23 +13,24 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.presenter.MainPresenter;
 import com.jianpei.jpeducation.utils.L;
 
 
 public class NotificationsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private MainPresenter mainPresenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         L.e("NotificationsFragment:onCreateView");
 
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        mainPresenter =
+                ViewModelProviders.of(getActivity()).get(MainPresenter.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

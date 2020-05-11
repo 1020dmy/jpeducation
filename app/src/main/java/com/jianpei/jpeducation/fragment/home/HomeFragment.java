@@ -12,16 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.alyplayer.PlayerActivity;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.presenter.MainPresenter;
 import com.jianpei.jpeducation.utils.L;
 
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private MainPresenter mainPresenter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -29,8 +31,8 @@ public class HomeFragment extends Fragment {
 
         L.e("HomeFragment:onCreateView");
 
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        mainPresenter = new ViewModelProvider(getActivity()).get(MainPresenter.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         Button button = root.findViewById(R.id.btn_player);
@@ -40,7 +42,13 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PlayerActivity.class));
             }
         });
-
+        mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                L.e("onChanged:" + s);
+                button.setText(s);
+            }
+        });
         return root;
     }
 }

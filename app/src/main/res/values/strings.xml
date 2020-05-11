@@ -20,4 +20,7 @@
     <string name="main_btn_three">选课</string>
     <string name="main_btn_four">我的</string>
 
+    <string name="back">返回</string>
+
+
 </resources>
