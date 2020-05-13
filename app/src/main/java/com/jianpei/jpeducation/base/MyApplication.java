@@ -25,6 +25,8 @@ public class MyApplication extends Application {
     }
 
 
+
+
     /**
      * 注册应用到微信
      */

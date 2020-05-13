@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys;
+package com.jianpei.jpeducation.activitys.login;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.presenter.LoginPresenter;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;

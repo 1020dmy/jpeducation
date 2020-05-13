@@ -1,10 +1,7 @@
 package com.jianpei.jpeducation.activitys;
 
-import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +19,6 @@ import com.jianpei.jpeducation.fragment.notifications.NotificationsFragment;
 import com.jianpei.jpeducation.presenter.MainPresenter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 

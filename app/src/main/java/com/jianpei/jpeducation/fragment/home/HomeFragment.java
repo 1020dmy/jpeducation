@@ -6,19 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.alyplayer.PlayerActivity;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.presenter.MainPresenter;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.umeng.ShareActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -42,6 +41,14 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PlayerActivity.class));
             }
         });
+        Button button1 = root.findViewById(R.id.btn_share);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ShareActivity.class));
+            }
+        });
+
         mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

@@ -2,17 +2,12 @@ package com.jianpei.jpeducation.presenter;
 
 import android.os.Handler;
 
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.api.base.BaseObserver;
+
 import com.jianpei.jpeducation.base.BaseViewModel;
-import com.jianpei.jpeducation.bean.LoginBean;
 import com.jianpei.jpeducation.contract.LoginContract;
 import com.jianpei.jpeducation.model.LoginModel;
-import com.jianpei.jpeducation.utils.SpUtils;
 
 /**
  * jpeducation
@@ -83,4 +78,5 @@ public class LoginPresenter extends BaseViewModel<String> implements LoginContra
 
 
     }
+
 }

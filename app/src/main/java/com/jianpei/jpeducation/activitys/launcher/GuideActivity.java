@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys;
+package com.jianpei.jpeducation.activitys.launcher;
 
 import android.content.Intent;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.adapter.GuideAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.DisplayUtil;

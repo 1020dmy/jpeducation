@@ -24,7 +24,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            // 开启混淆
+            minifyEnabled true
+            // Zipalign压缩优化
+            zipAlignEnabled true
+            // 移除无用的资源文件
+            shrinkResources true
+            //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -67,6 +73,9 @@ dependencies {
     implementation project(path: ':alyplayer')
     //微信
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    //recycleview
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
+    implementation project(path: ':umeng')
 
 
 }

@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys;
+package com.jianpei.jpeducation.activitys.launcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.utils.SpUtils;
 
 public class LauncherActivity extends AppCompatActivity {
