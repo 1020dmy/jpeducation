@@ -2,11 +2,12 @@ package com.jianpei.jpeducation.base;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.AnimRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
 
 import com.jianpei.jpeducation.utils.LoadingDialog;
 
@@ -27,10 +28,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     private Dialog dialog;
-
-//    protected P mPresenter;
-
-//    protected P mViewModel;
 
 
     @Override
@@ -83,7 +80,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void showDialog(String message) {
+    public void inActivity() {
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    public void outActivity() {
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    /**
+     * 显示加载框
+     *
+     * @param message
+     */
+    public void showLoading(String message) {
         //加载弹窗
         if (dialog == null) {
             LoadingDialog.Builder loadBuilder = new LoadingDialog.Builder(this)
@@ -96,9 +106,32 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void dismissDialog() {
+    /**
+     * 取消加载框
+     */
+    public void dismissLoading() {
         if (dialog != null) {
             dialog.dismiss();
+        }
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (getCurrentFocus() != null && null != imm) {
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 显示软键盘
+     */
+    public void showSoftInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (getCurrentFocus() != null && null != imm) {
+            imm.showSoftInputFromInputMethod(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
@@ -116,8 +149,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             dialog.dismiss();
             dialog = null;
         }
-//        if (mPresenter != null)
-//            mPresenter.detachView();
     }
 
 

@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.presenter;
+package com.jianpei.jpeducation.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -6,16 +6,18 @@ import androidx.lifecycle.ViewModel;
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/5/11
+ * Created by sjl on 2020/5/13
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public class MainPresenter extends ViewModel {
+public class MainModel extends ViewModel {
+
+
     private MutableLiveData<String> liveData;
 
 
-    public MainPresenter() {
+    public MainModel() {
         liveData = new MutableLiveData<>();
     }
 

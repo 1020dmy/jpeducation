@@ -13,22 +13,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.presenter.MainPresenter;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.viewmodel.MainModel;
 
 public class DashboardFragment extends Fragment {
 
 
-    private MainPresenter mainPresenter;
+    private MainModel mainModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         L.e("DashboardFragment:onCreateView");
-        mainPresenter = ViewModelProviders.of(getActivity()).get(MainPresenter.class);
+        mainModel = ViewModelProviders.of(getActivity()).get(MainModel.class);
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mainModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 L.e("onChanged:" + s);

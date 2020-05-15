@@ -15,14 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.alyplayer.PlayerActivity;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.presenter.MainPresenter;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.umeng.ShareActivity;
 
 
 public class HomeFragment extends Fragment {
 
-    private MainPresenter mainPresenter;
+    private MainModel mainModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
 
         L.e("HomeFragment:onCreateView");
 
-        mainPresenter = new ViewModelProvider(getActivity()).get(MainPresenter.class);
+        mainModel = new ViewModelProvider(getActivity()).get(MainModel.class);
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mainModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 L.e("onChanged:" + s);

@@ -1,8 +1,12 @@
 package com.jianpei.jpeducation.activitys;
 
+import android.Manifest;
+import android.content.Intent;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,17 +16,18 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.fragment.dashboard.DashboardFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
 import com.jianpei.jpeducation.fragment.notifications.NotificationsFragment;
-import com.jianpei.jpeducation.presenter.MainPresenter;
+import com.jianpei.jpeducation.viewmodel.MainModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends PermissionBaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.nav_view)
     BottomNavigationView navView;
@@ -31,15 +36,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     DashboardFragment dashboardFragment;
     NotificationsFragment notificationsFragment;
     MineFragment mineFragment;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    @BindView(R.id.btn_title)
+    Button btnTitle;
     @BindView(R.id.imageButton)
     ImageButton imageButton;
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
 
     private Fragment[] fragments;
     private int lastfragment = 0;
 
-    private MainPresenter mainPresenter;
+    private MainModel mainModel;
+    private String[] mPermissions = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+    };
 
 
     @Override
@@ -57,12 +68,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).show(homeFragment).commit();
         navView.setOnNavigationItemSelectedListener(this);
+
+        setPermissions(mPermissions, new InterfacePermission() {
+            @Override
+            public void onAllow() {
+                shortToast("已经获取全部权限");
+            }
+        });
+
     }
 
 
     @Override
     protected void initData() {
-        mainPresenter = ViewModelProviders.of(this).get(MainPresenter.class);
+        mainModel = ViewModelProviders.of(this).get(MainModel.class);
 
     }
 
@@ -113,11 +132,29 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             transaction.add(R.id.frameLayout, fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
+
+        if (index == 3) {
+            rlTitle.setVisibility(View.GONE);
+        } else {
+            rlTitle.setVisibility(View.VISIBLE);
+
+        }
     }
 
 
-    @OnClick(R.id.imageButton)
-    public void onViewClicked() {
-        mainPresenter.upData(tvTitle.getText().toString());
+    @OnClick({R.id.imageButton, R.id.btn_title})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.imageButton:
+                mainModel.upData(btnTitle.getText().toString());
+                break;
+            case R.id.btn_title:
+                startActivity(new Intent(this, SelectDisciplineActivity.class));
+                overridePendingTransition(R.anim.activity_close_in, R.anim.activity_close_out);
+//                inActivity();
+                break;
+
+        }
+
     }
 }

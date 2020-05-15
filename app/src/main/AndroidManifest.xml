@@ -3,6 +3,10 @@
     package="com.jianpei.jpeducation">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
         android:name=".base.MyApplication"
@@ -12,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.SelectDisciplineActivity"></activity>
+        <activity android:name=".activitys.mine.UserInfoActivity"></activity>
+        <activity android:name=".activitys.SelectDisciplineActivity" />
         <activity android:name=".activitys.ClassInfoActivity" />
         <activity android:name=".activitys.login.LoginActivity" />
         <activity android:name=".activitys.launcher.GuideActivity" />
@@ -43,6 +48,16 @@
         <meta-data
             android:name="design_height_in_px"
             android:value="1920" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jianpei.jpeducation.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

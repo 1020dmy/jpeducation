@@ -1,45 +1,42 @@
 package com.jianpei.jpeducation.fragment.mine;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.presenter.MainPresenter;
+import com.jianpei.jpeducation.activitys.mine.UserInfoActivity;
+import com.jianpei.jpeducation.base.BaseFragment;
 
-public class MineFragment extends Fragment {
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class MineFragment extends BaseFragment {
 
 
-    private MainPresenter mainPresenter;
+    @BindView(R.id.btn_info)
+    Button btnInfo;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-
-        mainPresenter =
-                ViewModelProviders.of(getActivity()).get(MainPresenter.class);
-        View root = inflater.inflate(R.layout.mine_fragment, container, false);
-        final TextView textView = root.findViewById(R.id.textView);
-
-        mainPresenter.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-        return root;
+    protected int initLayout() {
+        return R.layout.mine_fragment;
     }
 
+    @Override
+    protected void initView(View view) {
+
+    }
+
+    @Override
+    protected void initData(Context mContext) {
+
+    }
+
+
+    @OnClick(R.id.btn_info)
+    public void onViewClicked() {
+        startActivity(new Intent(getActivity(), UserInfoActivity.class));
+    }
 }

@@ -13,7 +13,7 @@ import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.presenter.LoginPresenter;
+import com.jianpei.jpeducation.viewmodel.LoginModel;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -30,7 +30,7 @@ public class LoginActivity extends BaseActivity {
     EditText etPwd;
     @BindView(R.id.btn_login)
     Button btnLogin;
-    private LoginPresenter loginPresenter;
+    private LoginModel loginModel;
     private IWXAPI api;
 
     @Override
@@ -47,21 +47,21 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        loginPresenter = ViewModelProviders.of(this).get(LoginPresenter.class);
+        loginModel = ViewModelProviders.of(this).get(LoginModel.class);
 
-        loginPresenter.getScuucessData().observe(this, new Observer<String>() {
+        loginModel.getScuucessData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                dismissDialog();
+                dismissLoading();
                 shortToast(s);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
         });
-        loginPresenter.getErrData().observe(this, new Observer<String>() {
+        loginModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                dismissDialog();
+                dismissLoading();
                 shortToast(s);
             }
         });
@@ -72,8 +72,8 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                showDialog("登陆中...");
-                loginPresenter.login(etName.getText().toString(), etPwd.getText().toString());
+                showLoading("登陆中...");
+                loginModel.login(etName.getText().toString(), etPwd.getText().toString());
                 break;
             case R.id.imageButton:
                 weixinLogin();

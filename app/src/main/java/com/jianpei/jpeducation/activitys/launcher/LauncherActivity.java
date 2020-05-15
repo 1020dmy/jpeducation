@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.utils.SpUtils;
 
@@ -23,7 +24,7 @@ public class LauncherActivity extends AppCompatActivity {
                 if (isfirst == 0) {
                     startActivity(new Intent(LauncherActivity.this, GuideActivity.class));
                 } else {
-                    startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
 
                 }
                 finish();

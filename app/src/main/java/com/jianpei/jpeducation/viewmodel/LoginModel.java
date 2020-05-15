@@ -1,31 +1,29 @@
-package com.jianpei.jpeducation.presenter;
+package com.jianpei.jpeducation.viewmodel;
 
 import android.os.Handler;
 
 import androidx.lifecycle.MutableLiveData;
 
-
-import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.contract.LoginContract;
-import com.jianpei.jpeducation.model.LoginModel;
+import com.jianpei.jpeducation.repository.LoginRepository;
 
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/5/11
+ * Created by sjl on 2020/5/13
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public class LoginPresenter extends BaseViewModel<String> implements LoginContract.Presenter {
+public class LoginModel extends BaseViewModel implements LoginContract.Model {
 
+    private LoginRepository loginRepository;
 
-    private LoginContract.Model model;
+    public LoginModel() {
 
-    public LoginPresenter() {
-        model = new LoginModel();
+        loginRepository=new LoginRepository();
+
     }
-
     public MutableLiveData<String> getScuucessData() {
         if (successData == null) {
             successData = new MutableLiveData<>();
@@ -42,6 +40,7 @@ public class LoginPresenter extends BaseViewModel<String> implements LoginContra
 
     @Override
     public void login(String mobile, String password) {
+
         if (mobile.isEmpty()) {
             errData.setValue("请输入手机号！");
             return;
@@ -75,8 +74,5 @@ public class LoginPresenter extends BaseViewModel<String> implements LoginContra
 //                errData.setValue(e.getMessage());
 //            }
 //        });
-
-
     }
-
 }

@@ -15,12 +15,12 @@ import io.reactivex.rxjava3.core.Observable;
  * Describe:
  */
 public interface LoginContract {
-    interface Model {
-        Observable<BaseEntity<LoginBean>> login(String mobile,String password);
+    interface Repository {
+        Observable<BaseEntity<LoginBean>> login(String mobile, String password);
     }
 
 
-    interface Presenter {
+    interface Model {
         void login(String mobile, String password);
 
     }
