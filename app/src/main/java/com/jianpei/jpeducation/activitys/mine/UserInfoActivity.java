@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
@@ -55,7 +56,7 @@ public class UserInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_back, R.id.btn_photo, R.id.btn_camera})
+    @OnClick({R.id.tv_back, R.id.btn_photo, R.id.btn_camera,R.id.btn_pdf})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_back:
@@ -67,6 +68,9 @@ public class UserInfoActivity extends BaseActivity {
                     viewInit();
                 }
                 dialog.show();//显示对话框
+                break;
+            case R.id.btn_pdf:
+                startActivity(new Intent(this, PdfReaderActivity.class));
                 break;
         }
     }

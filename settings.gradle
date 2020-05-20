@@ -1,4 +1,4 @@
 rootProject.name='jpeducation'
-include ':app'
+include ':app', ':AliyunVideoCommon'
 include ':alyplayer'
 include ':umeng'

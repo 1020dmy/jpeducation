@@ -26,5 +26,11 @@
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
+    <Button
+        android:id="@+id/btn_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PDF" />
+
 
 </LinearLayout>

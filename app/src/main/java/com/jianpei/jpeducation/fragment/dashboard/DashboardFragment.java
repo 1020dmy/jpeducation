@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.fragment.dashboard;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,33 +9,40 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
-public class DashboardFragment extends Fragment {
+import butterknife.BindView;
+
+public class DashboardFragment extends BaseFragment {
 
 
     private MainModel mainModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        L.e("DashboardFragment:onCreateView");
-        mainModel = ViewModelProviders.of(getActivity()).get(MainModel.class);
+    @Override
+    protected int initLayout() {
+        return R.layout.fragment_dashboard;
+    }
 
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
+    @Override
+    protected void initView(View view) {
+        mainModel = ViewModelProviders.of(getActivity()).get(MainModel.class);
         mainModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 L.e("onChanged:" + s);
-                textView.setText(s);
             }
         });
-        return root;
     }
+
+    @Override
+    protected void initData(Context mContext) {
+
+    }
+
 }

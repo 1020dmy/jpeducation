@@ -1,61 +1,74 @@
 package com.jianpei.jpeducation.fragment.home;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.alyplayer.PlayerActivity;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.viewmodel.MainModel;
-import com.jianpei.umeng.ShareActivity;
+import com.jianpei.jpeducation.adapter.BannerMainAdapter;
+import com.jianpei.jpeducation.base.BaseFragment;
+import com.youth.banner.Banner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 
-public class HomeFragment extends Fragment {
-
-    private MainModel mainModel;
+public class HomeFragment extends BaseFragment {
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    @BindView(R.id.banner)
+    Banner banner;
+    @BindView(R.id.button)
+    Button button;
 
-        L.e("HomeFragment:onCreateView");
+    @Override
+    protected int initLayout() {
+        return R.layout.fragment_home;
+    }
 
-        mainModel = new ViewModelProvider(getActivity()).get(MainModel.class);
+    @Override
+    protected void initView(View view) {
 
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button button = root.findViewById(R.id.btn_player);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), PlayerActivity.class));
-            }
-        });
-        Button button1 = root.findViewById(R.id.btn_share);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ShareActivity.class));
-            }
-        });
+    }
 
-        mainModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                L.e("onChanged:" + s);
-                button.setText(s);
-            }
-        });
-        return root;
+    @Override
+    protected void initData(Context mContext) {
+        List<Integer> list = new ArrayList<>();
+        list.add(R.drawable.guide_one);
+        list.add(R.drawable.guide_two);
+        list.add(R.drawable.guide_three);
+        banner.setBannerGalleryMZ(20, 0.8f);
+
+        BannerMainAdapter bannerMainAdapter = new BannerMainAdapter(list);
+        banner.setAdapter(bannerMainAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        banner.start();
+    }
+
+    @Override
+    public void onStop() {
+        banner.stop();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        banner.destroy();
+        super.onDestroy();
+    }
+
+    @OnClick(R.id.button)
+    public void onViewClicked() {
+        startActivity(new Intent(getActivity(), PlayerActivity.class));
     }
 }

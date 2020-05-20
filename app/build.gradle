@@ -77,6 +77,19 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
     //圆图控件
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    //pdf
+    //banner
+    implementation 'com.youth.banner:banner:2.0.8'
+    //数据库
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+
+
+
+
+
 
     implementation project(path: ':umeng')
 
