@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.fragment.notifications;
+package com.jianpei.jpeducation.fragment.elective;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
 
-public class NotificationsFragment extends Fragment {
+public class ElectiveFragment extends Fragment {
 
     private MainModel mainModel;
 

@@ -1,13 +1,8 @@
-package com.jianpei.jpeducation.fragment.dashboard;
+package com.jianpei.jpeducation.fragment.school;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,9 +12,7 @@ import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
-import butterknife.BindView;
-
-public class DashboardFragment extends BaseFragment {
+public class SchoolFragment extends BaseFragment {
 
 
     private MainModel mainModel;

@@ -39,7 +39,6 @@ public class ShareActivity extends AppCompatActivity implements ShareBoardlisten
         mShareAction = new ShareAction(this).setDisplayList(
                 SHARE_MEDIA.WEIXIN,
                 SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.SINA,
                 SHARE_MEDIA.QQ,
                 SHARE_MEDIA.QZONE
         ).setShareboardclickCallback(this);

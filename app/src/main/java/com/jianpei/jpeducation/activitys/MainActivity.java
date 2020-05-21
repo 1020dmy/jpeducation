@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
-import com.jianpei.jpeducation.fragment.dashboard.DashboardFragment;
+import com.jianpei.jpeducation.fragment.school.SchoolFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
-import com.jianpei.jpeducation.fragment.notifications.NotificationsFragment;
+import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
+import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
 import butterknife.BindView;
@@ -33,8 +33,9 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
     BottomNavigationView navView;
 
     HomeFragment homeFragment;
-    DashboardFragment dashboardFragment;
-    NotificationsFragment notificationsFragment;
+    SchoolFragment schoolFragment;
+    ElectiveFragment electiveFragment;
+    TikuFragment tikuFragment;
     MineFragment mineFragment;
     @BindView(R.id.btn_title)
     Button btnTitle;
@@ -61,10 +62,11 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
     @Override
     protected void initView() {
         homeFragment = new HomeFragment();
-        dashboardFragment = new DashboardFragment();
-        notificationsFragment = new NotificationsFragment();
+        schoolFragment = new SchoolFragment();
+        electiveFragment = new ElectiveFragment();
         mineFragment = new MineFragment();
-        fragments = new Fragment[]{homeFragment, dashboardFragment, notificationsFragment, mineFragment};
+        tikuFragment = new TikuFragment();
+        fragments = new Fragment[]{homeFragment, schoolFragment, electiveFragment, tikuFragment, mineFragment};
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).show(homeFragment).commit();
         navView.setOnNavigationItemSelectedListener(this);
@@ -94,22 +96,28 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
                     lastfragment = 0;
                 }
                 return true;
-            case R.id.navigation_dashboard:
+            case R.id.navigation_school:
                 if (lastfragment != 1) {
                     switchFragment(lastfragment, 1);
                     lastfragment = 1;
                 }
                 return true;
-            case R.id.navigation_notifications:
+            case R.id.navigation_elective:
                 if (lastfragment != 2) {
                     switchFragment(lastfragment, 2);
                     lastfragment = 2;
                 }
                 return true;
-            case R.id.navigation_mine:
+            case R.id.navigation_tiku:
                 if (lastfragment != 3) {
                     switchFragment(lastfragment, 3);
                     lastfragment = 3;
+                }
+                return true;
+            case R.id.navigation_mine:
+                if (lastfragment != 4) {
+                    switchFragment(lastfragment, 4);
+                    lastfragment = 4;
                 }
                 return true;
             default:

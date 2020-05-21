@@ -12,10 +12,10 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
+import com.jianpei.umeng.ShareActivity;
 
 
 import butterknife.BindView;
@@ -40,6 +40,7 @@ public class UserInfoActivity extends BaseActivity {
 
     private SelectphotoUtils selectphotoUtils;
 
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_user_info;
@@ -54,9 +55,10 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+
     }
 
-    @OnClick({R.id.tv_back, R.id.btn_photo, R.id.btn_camera,R.id.btn_pdf})
+    @OnClick({R.id.tv_back, R.id.btn_photo, R.id.btn_camera, R.id.btn_pdf})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_back:
@@ -70,7 +72,9 @@ public class UserInfoActivity extends BaseActivity {
                 dialog.show();//显示对话框
                 break;
             case R.id.btn_pdf:
-                startActivity(new Intent(this, PdfReaderActivity.class));
+//                startActivity(new Intent(this, PdfReaderActivity.class));
+                startActivity(new Intent(this, ShareActivity.class));
+
                 break;
         }
     }
@@ -147,4 +151,5 @@ public class UserInfoActivity extends BaseActivity {
         super.onDestroy();
 
     }
+
 }

@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.jianpei.alyplayer.PlayerActivity;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.youth.banner.Banner;
@@ -67,8 +68,16 @@ public class HomeFragment extends BaseFragment {
         super.onDestroy();
     }
 
-    @OnClick(R.id.button)
-    public void onViewClicked() {
-        startActivity(new Intent(getActivity(), PlayerActivity.class));
+    @OnClick({R.id.button, R.id.login})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.button:
+                startActivity(new Intent(getActivity(), PlayerActivity.class));
+                break;
+            case R.id.login:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+
+        }
     }
 }

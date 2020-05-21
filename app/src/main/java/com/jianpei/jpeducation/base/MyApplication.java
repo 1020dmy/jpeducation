@@ -2,10 +2,9 @@ package com.jianpei.jpeducation.base;
 
 import android.app.Application;
 
-import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.utils.L;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 
 public class MyApplication extends Application {
 
@@ -17,7 +16,7 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         L.isDebug = true;//日志开关
-//        regToWx();
+        initUmeng();
     }
 
     public static MyApplication getInstance() {
@@ -25,27 +24,13 @@ public class MyApplication extends Application {
     }
 
 
+    protected void initUmeng() {
+        UMConfigure.init(this, "5eb4bf4d978eea078b7e9364"
+                , "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 
-
-    /**
-     * 注册应用到微信
-     */
-    protected void regToWx() {
-        // IWXAPI 是第三方app和微信通信的openApi接口
-        IWXAPI api;
-        // 通过WXAPIFactory工厂，获取IWXAPI的实例
-        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, true);
-        // 将应用的appId注册到微信
-        api.registerApp(Constants.APP_ID);
-        //建议动态监听微信启动广播进行注册到微信
-//        registerReceiver(new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//
-//                // 将该app注册到微信
-//                api.registerApp(APP_ID);
-//            }
-//        }, new IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP));
+        PlatformConfig.setWeixin("wx760dbdd41ef089a5", "f48c09b4fd43c74e6df9c1e1aec76fc9");
+        PlatformConfig.setQQZone("101875487", "79bbca3fb14f19baa9b6b8f182534870");
+        PlatformConfig.setQQFileProvider("com.jianpei.jpeducation.fileprovider");
 
     }
 
