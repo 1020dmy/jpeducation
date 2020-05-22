@@ -1,28 +1,70 @@
 package com.jianpei.jpeducation.activitys.launcher;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
-import com.jianpei.jpeducation.activitys.login.LoginActivity;
+import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.utils.SpUtils;
+import com.jianpei.jpeducation.viewmodel.LauncherModel;
 
-public class LauncherActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+import butterknife.BindView;
+
+public class LauncherActivity extends BaseActivity {
+
+    private LauncherModel launcherModel;
+    private int isfirst;
+    @BindView(R.id.imageView)
+    ImageView imageView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launcher);
-        int isfirst = (int) SpUtils.get(SpUtils.ISFirst, 0);
+    protected int setLayoutView() {
+        return R.layout.activity_launcher;
+    }
+
+    @Override
+    protected void initView() {
+        isfirst = (int) SpUtils.get(SpUtils.ISFirst, 0);
+        launcherModel = ViewModelProviders.of(this).get(LauncherModel.class);
+        launcherModel.getScuucessData().observe(this, new Observer<LauncherBean>() {
+            @Override
+            public void onChanged(LauncherBean launcherBean) {
+                Glide.with(LauncherActivity.this).load(launcherBean.getStartingInfo()).into(imageView);
+                start(launcherBean.getGuideList());
+            }
+        });
+        launcherModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+                shortToast(s);
+                start(null);
+            }
+        });
+
+    }
+
+    @Override
+    protected void initData() {
+        launcherModel.appSet();
+
+    }
+
+    public void start(ArrayList<String> images) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (isfirst == 0) {
-                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class));
+                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images",images));
                 } else {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
 
@@ -30,6 +72,5 @@ public class LauncherActivity extends AppCompatActivity {
                 finish();
             }
         }, 2000);
-
     }
 }

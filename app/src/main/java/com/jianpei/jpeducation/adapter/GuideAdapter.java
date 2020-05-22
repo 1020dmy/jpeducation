@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 
 import java.util.List;
@@ -22,12 +24,13 @@ import java.util.List;
  * Describe:
  */
 public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.MyHolder> {
-    private List<Integer> imageUrls;
+    private List<String> imageUrls;
+    private Context context;
 
-    public GuideAdapter(List<Integer> imageUrls) {
+    public GuideAdapter(List<String> imageUrls, Context context) {
         this.imageUrls = imageUrls;
+        this.context=context;
     }
-
 
 
     @NonNull
@@ -40,7 +43,9 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        holder.imageView.setImageResource(imageUrls.get(position));
+//        holder.imageView.setImageResource(imageUrls.get(position));
+
+        Glide.with(context).load(imageUrls.get(position)).into(holder.imageView);
 
     }
 

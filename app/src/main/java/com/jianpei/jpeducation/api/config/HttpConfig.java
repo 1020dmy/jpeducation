@@ -9,9 +9,11 @@ package com.jianpei.jpeducation.api.config;
  * Describe:
  */
 public class HttpConfig {
+    public static final String request_head = "application/json; charset=utf-8";
+
     //网络请求时间配置
     public static long HTTP_TIME = 3000l;
     //网络请求url
-    public static  String BASE_URL="";
+    public static String BASE_URL = "http://dev_api.jianpei.com.cn/api/";
 
 }

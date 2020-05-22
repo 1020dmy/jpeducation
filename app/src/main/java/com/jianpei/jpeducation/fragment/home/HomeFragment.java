@@ -64,7 +64,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
-        banner.destroy();
         super.onDestroy();
     }
 

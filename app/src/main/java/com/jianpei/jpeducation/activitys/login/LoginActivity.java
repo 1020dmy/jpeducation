@@ -8,20 +8,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;
-import com.jianpei.jpeducation.viewmodel.LoginModel;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import java.util.Collection;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -39,13 +34,14 @@ public class LoginActivity extends BaseActivity {
     Button btnPwdLogin;
     @BindView(R.id.btn_codeLogin)
     Button btnCodeLogin;
-    private LoginModel loginModel;
     @BindView(R.id.tv_values)
     TextView tvValues;
 
 
     private PassLoginFragment passLoginFragment;
     private CodeLoginFragment codeLoginFragment;
+
+
 
 
     @Override
@@ -63,24 +59,27 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        loginModel = ViewModelProviders.of(this).get(LoginModel.class);
 
-        loginModel.getScuucessData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                dismissLoading();
-                shortToast(s);
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        loginModel.getErrData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                dismissLoading();
-                shortToast(s);
-            }
-        });
+
+
+//        loginModel = ViewModelProviders.of(this).get(LoginModel.class);
+//
+//        loginModel.getScuucessData().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                dismissLoading();
+//                shortToast(s);
+//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                finish();
+//            }
+//        });
+//        loginModel.getErrData().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                dismissLoading();
+//                shortToast(s);
+//            }
+//        });
     }
 
 
@@ -164,14 +163,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             shortToast("成功了");
-          Collection<String> valus= map.values();
-          StringBuilder stringBuilder=new StringBuilder();
-          for(String value : valus){
-              stringBuilder.append(value);
-              stringBuilder.append(",");
-          }
-          tvValues.setText(stringBuilder.toString());
-          stringBuilder.reverse();
+//            tvValues.setText("openId:" + map.get("op"));
 
         }
 

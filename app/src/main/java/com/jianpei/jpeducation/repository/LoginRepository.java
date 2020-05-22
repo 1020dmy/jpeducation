@@ -6,7 +6,8 @@ import com.jianpei.jpeducation.bean.LoginBean;
 import com.jianpei.jpeducation.bean.LoginJson;
 import com.jianpei.jpeducation.contract.LoginContract;
 
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * jpeducation

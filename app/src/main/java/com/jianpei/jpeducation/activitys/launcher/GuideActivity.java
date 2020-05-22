@@ -32,7 +32,7 @@ public class GuideActivity extends BaseActivity {
     @BindView(R.id.button)
     Button button;
     private GuideAdapter guideAdapter;
-    private List<Integer> imageUrls;
+    private List<String> imageUrls;
     List<ImageView> points;
 
     @Override
@@ -43,13 +43,11 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        imageUrls = new ArrayList<>();
-        imageUrls.add(R.drawable.guide_one);
-        imageUrls.add(R.drawable.guide_two);
-        imageUrls.add(R.drawable.guide_three);
+
+        imageUrls = getIntent().getStringArrayListExtra("images");
 
         points = new ArrayList<>();
-        guideAdapter = new GuideAdapter(imageUrls);
+        guideAdapter = new GuideAdapter(imageUrls, this);
         viewPage.setAdapter(guideAdapter);
         viewPage.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -101,7 +99,7 @@ public class GuideActivity extends BaseActivity {
 
     protected void addView() {
 
-        for (Integer integer : imageUrls) {
+        for (String url : imageUrls) {
             ImageView point = new ImageView(this);
             point.setImageResource(R.drawable.yuandian_gray);
             point.setLayoutParams(new LinearLayout.LayoutParams(DisplayUtil.dp2px(25), DisplayUtil.dp2px(25)));

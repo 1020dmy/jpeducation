@@ -9,22 +9,33 @@ package com.jianpei.jpeducation.api.base;
  * Describe:
  */
 public class BaseEntity<T> {
-    private static int SUCCESS_CODE = 0;//成功的code
-    private int code;
+    private static String SUCCESS_CODE = "success";//成功的code
     private String msg;
+    private long time;
     private T data;
+    private String status;
+
 
     public boolean isSuccess() {
-        return getCode() == SUCCESS_CODE;
+
+        return getStatus().equals(SUCCESS_CODE);
     }
 
 
-    public int getCode() {
-        return code;
+    public long getTime() {
+        return time;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMsg() {
