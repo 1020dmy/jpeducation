@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.pdf;
 
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
@@ -11,8 +12,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PdfReaderActivity extends BaseActivity {
-    @BindView(R.id.tv_back)
-    TextView tvBack;
+    @BindView(R.id.iv_back)
+    ImageView tvBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
@@ -33,7 +34,7 @@ public class PdfReaderActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.tv_back)
+    @OnClick(R.id.iv_back)
     public void onViewClicked() {
         finish();
     }

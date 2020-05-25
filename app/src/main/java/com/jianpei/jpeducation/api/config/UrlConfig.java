@@ -21,6 +21,10 @@ public class UrlConfig {
 
 
     public static final String appset = "appSet";
+    //获取验证码
+    public static final String sendCode = "send/sendCode";
+    //1-用户验证码注册/登录
+    public static final String  codeLogin="user/userLogin";
 
 
 }

@@ -21,25 +21,25 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
 
     protected LauncherRepository launcherRepository;
 
-    public MutableLiveData<LauncherBean> getScuucessData() {
-        if (successData == null) {
-            successData = new MutableLiveData<>();
-        }
-        return successData;
-    }
-
-    public MutableLiveData<String> getErrData() {
-        if (errData == null) {
-            errData = new MutableLiveData<>();
-        }
-        return errData;
-    }
+//    public MutableLiveData<LauncherBean> getScuucessData() {
+//        if (successData == null) {
+//            successData = new MutableLiveData<>();
+//        }
+//        return successData;
+//    }
+//
+//    public MutableLiveData<String> getErrData() {
+//        if (errData == null) {
+//            errData = new MutableLiveData<>();
+//        }
+//        return errData;
+//    }
 
 
     public LauncherModel() {
         launcherRepository = new LauncherRepository();
-        successData = new MutableLiveData();
-        errData = new MutableLiveData<>();
+//        successData = new MutableLiveData();
+//        errData = new MutableLiveData<>();
 
 
     }

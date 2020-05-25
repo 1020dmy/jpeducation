@@ -35,10 +35,24 @@ public abstract class BaseViewModel<B> extends ViewModel {
         };
     }
 
+    public MutableLiveData<B> getScuucessData() {
+        if (successData == null) {
+            successData = new MutableLiveData<>();
+        }
+        return successData;
+    }
+
+    public MutableLiveData<String> getErrData() {
+        if (errData == null) {
+            errData = new MutableLiveData<>();
+        }
+        return errData;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
-        successData=null;
-        errData=null;
+        successData = null;
+        errData = null;
     }
 }

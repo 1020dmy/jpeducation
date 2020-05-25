@@ -5,19 +5,24 @@
 
 
     <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_back"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_close" />
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/close_icon" />
 
-    <Button
-        android:id="@+id/btn_registered"
+    <TextView
+        android:id="@+id/tv_registered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/registered" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/registered"
+        android:textColor="@color/c161820"
+        android:textSize="@dimen/title_right_size" />
 
 
 </RelativeLayout>

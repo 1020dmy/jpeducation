@@ -3,18 +3,19 @@ package com.jianpei.jpeducation.api;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.config.UrlConfig;
-import com.jianpei.jpeducation.bean.AccessTokenBean;
+import com.jianpei.jpeducation.bean.CodeLoginJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.bean.LoginBean;
 import com.jianpei.jpeducation.bean.LoginJson;
-import com.jianpei.jpeducation.bean.WxUserInfoBean;
+import com.jianpei.jpeducation.bean.SendCodeJson;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.http.QueryName;
 
 /**
  * jpeducation
@@ -47,8 +48,16 @@ public interface APIFunction {
     /**
      * 获取验证码接口
      */
-    Observable<BaseEntity<LoginBean>> getCode(@Body LoginJson loginJson);
+    @POST(UrlConfig.sendCode)
+//    @Headers("Content-Type:application/x-www-form-urlencoded")
+    Observable<BaseEntity<String>> getCode(@Body SendCodeJson sendCodeJson);
 
+
+    /**
+     * 用户验证码登陆
+     */
+    @POST(UrlConfig.codeLogin)
+    Observable<BaseEntity<String>> codeLogin(@Body CodeLoginJson codeLoginJson);
 
     /**
      * 获取微信ACCESS_TOKEN

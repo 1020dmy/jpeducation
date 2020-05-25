@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,8 +25,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInfoActivity extends BaseActivity {
 
-    @BindView(R.id.tv_back)
-    TextView tvBack;
+    @BindView(R.id.iv_back)
+    ImageView tvBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.btn_photo)
@@ -58,10 +59,10 @@ public class UserInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_back, R.id.btn_photo, R.id.btn_camera, R.id.btn_pdf})
+    @OnClick({R.id.iv_back, R.id.btn_photo, R.id.btn_camera, R.id.btn_pdf})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_back:
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_photo:

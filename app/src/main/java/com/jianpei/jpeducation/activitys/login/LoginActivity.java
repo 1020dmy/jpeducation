@@ -3,7 +3,6 @@ package com.jianpei.jpeducation.activitys.login;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -26,22 +25,18 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity {
 
 
-    @BindView(R.id.btn_registered)
-    Button btnRegistered;
+    @BindView(R.id.tv_registered)
+    TextView tvRegistered;
     @BindView(R.id.frameLayout)
     FrameLayout frameLayout;
-    @BindView(R.id.btn_pwdLogin)
-    Button btnPwdLogin;
-    @BindView(R.id.btn_codeLogin)
-    Button btnCodeLogin;
-    @BindView(R.id.tv_values)
-    TextView tvValues;
+    @BindView(R.id.tv_codelogin)
+    TextView tvCodeLogin;
+    @BindView(R.id.tv_pwdLogin)
+    TextView tvPwdLogin;
 
 
     private PassLoginFragment passLoginFragment;
     private CodeLoginFragment codeLoginFragment;
-
-
 
 
     @Override
@@ -53,7 +48,6 @@ public class LoginActivity extends BaseActivity {
     protected void initView() {
         passLoginFragment = new PassLoginFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, passLoginFragment).show(passLoginFragment).commit();
-        btnPwdLogin.setVisibility(View.GONE);
 
     }
 
@@ -61,44 +55,25 @@ public class LoginActivity extends BaseActivity {
     protected void initData() {
 
 
-
-//        loginModel = ViewModelProviders.of(this).get(LoginModel.class);
-//
-//        loginModel.getScuucessData().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String s) {
-//                dismissLoading();
-//                shortToast(s);
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                finish();
-//            }
-//        });
-//        loginModel.getErrData().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String s) {
-//                dismissLoading();
-//                shortToast(s);
-//            }
-//        });
     }
 
 
-    @OnClick({R.id.btn_registered, R.id.btn_pwdLogin, R.id.btn_codeLogin, R.id.btn_back, R.id.btn_wxLogin})
+    @OnClick({R.id.tv_registered, R.id.tv_pwdLogin, R.id.tv_codelogin, R.id.iv_back, R.id.tv_wxlogin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_wxLogin:
+            case R.id.tv_wxlogin:
                 aaa();
                 break;
-            case R.id.btn_back:
+            case R.id.iv_back:
                 finish();
                 break;
-            case R.id.btn_registered:
+            case R.id.tv_registered:
                 startActivity(new Intent(this, RegisteredActivity.class));
                 break;
-            case R.id.btn_pwdLogin:
+            case R.id.tv_pwdLogin:
                 switchFragment(0);
                 break;
-            case R.id.btn_codeLogin:
+            case R.id.tv_codelogin:
                 switchFragment(1);
                 break;
         }
@@ -114,8 +89,8 @@ public class LoginActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //隐藏上个Fragment
         if (index == 0) {
-            btnPwdLogin.setVisibility(View.GONE);
-            btnCodeLogin.setVisibility(View.VISIBLE);
+            tvPwdLogin.setVisibility(View.GONE);
+            tvCodeLogin.setVisibility(View.VISIBLE);
             if (passLoginFragment == null) {
                 passLoginFragment = new PassLoginFragment();
                 transaction.add(R.id.frameLayout, passLoginFragment);
@@ -125,8 +100,8 @@ public class LoginActivity extends BaseActivity {
             }
             transaction.show(passLoginFragment).commitAllowingStateLoss();
         } else {
-            btnPwdLogin.setVisibility(View.VISIBLE);
-            btnCodeLogin.setVisibility(View.GONE);
+            tvPwdLogin.setVisibility(View.VISIBLE);
+            tvCodeLogin.setVisibility(View.GONE);
             if (codeLoginFragment == null) {
                 codeLoginFragment = new CodeLoginFragment();
                 transaction.add(R.id.frameLayout, codeLoginFragment);
@@ -163,13 +138,14 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             shortToast("成功了");
-//            tvValues.setText("openId:" + map.get("op"));
+            startActivity(new Intent(LoginActivity.this,BindPhoneActivity.class));
 
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
             shortToast("失败了");
+            startActivity(new Intent(LoginActivity.this,BindPhoneActivity.class));
 
         }
 

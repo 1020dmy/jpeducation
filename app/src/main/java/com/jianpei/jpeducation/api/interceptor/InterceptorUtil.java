@@ -79,7 +79,8 @@ public class InterceptorUtil {
                         rootMap.put("signature", signature);
 
                         newJsonParams = JSON.toJSONString(rootMap);
-                        System.out.println("加密后的参数：" + oldParamsJson);
+
+                        System.out.println("加密后的参数：" + newJsonParams);
                         request = request.newBuilder().post(RequestBody.create(newJsonParams, MediaType.parse(HttpConfig.request_head))).build();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -91,6 +92,4 @@ public class InterceptorUtil {
             }
         };
     }
-
-
 }

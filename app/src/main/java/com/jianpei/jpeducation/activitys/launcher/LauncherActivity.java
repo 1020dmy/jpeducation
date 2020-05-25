@@ -64,7 +64,7 @@ public class LauncherActivity extends BaseActivity {
             @Override
             public void run() {
                 if (isfirst == 0) {
-                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images",images));
+                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
                 } else {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
 
