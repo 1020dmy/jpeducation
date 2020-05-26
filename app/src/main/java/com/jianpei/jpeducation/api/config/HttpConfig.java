@@ -10,7 +10,6 @@ package com.jianpei.jpeducation.api.config;
  */
 public class HttpConfig {
     public static final String request_head = "application/json; charset=utf-8";
-//    public static final String request_head = "application/x-www-form-urlencoded";
 
 
     //网络请求时间配置

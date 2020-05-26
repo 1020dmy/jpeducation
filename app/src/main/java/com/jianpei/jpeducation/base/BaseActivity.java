@@ -1,15 +1,21 @@
 package com.jianpei.jpeducation.base;
 
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.LoadingDialog;
+import com.jianpei.jpeducation.utils.StatusBarUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,6 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setTransparent(this);
+
         setContentView(setLayoutView());
         unbinder = ButterKnife.bind(this);
         initView();
@@ -151,5 +159,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setTitleViewPadding(View view) {
+        int statusH = getStatusBarHeight();
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) view.getLayoutParams(); //取控件textView当前的布局参数 linearParams.height = 20;// 控件的高强制设成20
+        linearParams.height = statusH;// 控件的宽强制设成30
+        view.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
+
+    }
+
+    private int getStatusBarHeight() {
+        return getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+    }
 
 }

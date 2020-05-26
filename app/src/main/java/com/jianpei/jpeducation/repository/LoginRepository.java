@@ -2,8 +2,8 @@ package com.jianpei.jpeducation.repository;
 
 import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.bean.LoginBean;
 import com.jianpei.jpeducation.bean.LoginJson;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.contract.LoginContract;
 
 import io.reactivex.Observable;
@@ -21,7 +21,7 @@ public class LoginRepository extends BaseRepository implements LoginContract.Rep
 
 
     @Override
-    public Observable<BaseEntity<LoginBean>> login(String mobile, String password) {
-        return RetrofitFactory.getInstance().API().login(new LoginJson(mobile, password));
+    public Observable<BaseEntity<UserInfoBean>> login(String mobile, String password) {
+        return RetrofitFactory.getInstance().API().codeLogin(new LoginJson(mobile, password, "", 1, 0,""));
     }
 }

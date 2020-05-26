@@ -20,8 +20,9 @@
     <color name="cFF0000">#FF0000</color>
 
     <color name="cCFD0D5">#CFD0D5</color>
-
-
+    <!---->
+    <color name="cF46319">#F46319</color>
+    <color name="cDF2525">#DF2525</color>
 
 
 </resources>

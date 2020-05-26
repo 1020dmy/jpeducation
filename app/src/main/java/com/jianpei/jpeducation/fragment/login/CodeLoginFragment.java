@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.viewmodel.CodeLoginModel;
@@ -57,16 +59,23 @@ public class CodeLoginFragment extends BaseFragment {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
-                tvTip.setText(s);
+                if ("sjl".equals(s)) {
+                    shortToast("验证码发送成功");
+                    countDownTimerUtils.start();
+                    tvTip.setText("");
+                } else {
+                    tvTip.setText(s);
+                }
             }
         });
         codeLoginModel.getScuucessData().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
+                tvTip.setText("");
                 shortToast(s);
-                countDownTimerUtils.start();
-
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
 
             }
         });

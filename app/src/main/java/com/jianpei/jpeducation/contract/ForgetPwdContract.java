@@ -8,25 +8,26 @@ import io.reactivex.Observable;
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/5/25
+ * Created by sjl on 2020/5/26
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public interface RegisteredContract {
+public interface ForgetPwdContract {
+
 
     interface Repository {
         Observable<BaseEntity<String>> sendCode(String phone);
 
-        Observable<BaseEntity<UserInfoBean>> register(String phone, String code, String password, String passwordR);
+        Observable<BaseEntity<String>> changePwd(String phone, String code, String pwd, String pwdR);
 
     }
 
 
     interface Model {
-        void sendCode(String phone);
+        void codeLogin(String phone, String code, String pwd, String pwdR);
 
-        void register(String phone, String code, String password,String passwordR);
+        void sendCode(String phone);
 
     }
 }

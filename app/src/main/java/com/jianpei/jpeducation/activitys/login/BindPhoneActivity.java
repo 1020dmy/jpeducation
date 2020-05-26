@@ -32,7 +32,8 @@ public class BindPhoneActivity extends BaseActivity {
     TextView tvTip;
     @BindView(R.id.btn_next)
     Button btnNext;
-
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
     @Override
     protected int setLayoutView() {
         return R.layout.activity_bind_phone;
@@ -40,6 +41,8 @@ public class BindPhoneActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        setTitleViewPadding(tvStatus);
+        tvRegistered.setVisibility(View.GONE);
 
     }
 

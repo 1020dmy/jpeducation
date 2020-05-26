@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.login;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.viewmodel.RegisteredModel;
 
@@ -44,6 +47,8 @@ public class RegisteredActivity extends BaseActivity {
 
     @BindView(R.id.tv_tip)
     TextView tvTip;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
     protected RegisteredModel registeredModel;
 
     protected CountDownTimerUtils countDownTimerUtils;
@@ -55,6 +60,7 @@ public class RegisteredActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        setTitleViewPadding(tvStatus);
         tvTitle.setText(getResources().getString(R.string.reg_title));
 
     }
@@ -68,14 +74,25 @@ public class RegisteredActivity extends BaseActivity {
         registeredModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String error) {
-                tvTip.setText(error);
+                dismissLoading();
+                if ("sjl".equals(error)) {
+                    shortToast("验证码发送成功");
+                    countDownTimerUtils.start();
+                    tvTip.setText("");
+                } else {
+                    tvTip.setText(error);
+                }
             }
         });
         registeredModel.getScuucessData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String error) {
+                dismissLoading();
+                shortToast(error);
                 tvTip.setText("");
-                countDownTimerUtils.start();
+                startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
+                finish();
+
             }
         });
 
@@ -88,9 +105,11 @@ public class RegisteredActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_sendCode:
+                showLoading("");
                 registeredModel.sendCode(etPhone.getText().toString());
                 break;
             case R.id.btn_next:
+                showLoading("");
                 registeredModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
                 break;
             case R.id.tv_bottom_xieyi:

@@ -25,6 +25,8 @@ public class UrlConfig {
     public static final String sendCode = "send/sendCode";
     //1-用户验证码注册/登录
     public static final String  codeLogin="user/userLogin";
+    //忘记密码
+    public static final String  forgetPwd="user/editPwd";
 
 
 }

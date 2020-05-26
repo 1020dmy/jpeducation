@@ -1,7 +1,7 @@
 package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.bean.LoginBean;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 
 import io.reactivex.Observable;
 
@@ -18,7 +18,7 @@ public interface CodeLoginContract {
     interface Repository {
         Observable<BaseEntity<String>> sendCode(String phone);
 
-        Observable<BaseEntity<String>> codeLogin(String phone, String code);
+        Observable<BaseEntity<UserInfoBean>> codeLogin(String phone, String code);
 
     }
 

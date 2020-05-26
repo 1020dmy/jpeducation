@@ -54,6 +54,13 @@
     <!--bind-->
     <string name="bind_btn">绑定</string>
 
+    <!--forget-->
+    <string name="forget_title">重置密码</string>
+    <!--select_zhuanye-->
+
+    <string name="select_zhuanye">请选择专业</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

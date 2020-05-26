@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,12 +25,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class SelectDisciplineActivity extends BaseActivity {
-    @BindView(R.id.imageButton)
-    ImageButton imageButton;
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
 
     private SelectAdapter selectAdapter;
+
 
     @Override
     protected int setLayoutView() {
@@ -38,6 +41,7 @@ public class SelectDisciplineActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        setTitleViewPadding(tvStatus);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 
 
@@ -90,9 +94,4 @@ public class SelectDisciplineActivity extends BaseActivity {
         return list;
     }
 
-    @OnClick(R.id.imageButton)
-    public void onViewClicked() {
-        finish();
-        outActivity();
-    }
 }

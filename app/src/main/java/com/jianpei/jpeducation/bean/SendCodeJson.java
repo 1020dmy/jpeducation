@@ -14,9 +14,21 @@ import android.os.Parcelable;
 public class SendCodeJson implements Parcelable {
 
    private String phone;
+   private String type;
 
-    public SendCodeJson(String phone) {
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    public SendCodeJson(String phone, String type) {
         this.phone = phone;
+        this.type = type;
     }
 
     public String getPhone() {
@@ -27,6 +39,7 @@ public class SendCodeJson implements Parcelable {
         this.phone = phone;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -35,13 +48,15 @@ public class SendCodeJson implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.phone);
+        dest.writeString(this.type);
     }
 
     protected SendCodeJson(Parcel in) {
         this.phone = in.readString();
+        this.type = in.readString();
     }
 
-    public static final Parcelable.Creator<SendCodeJson> CREATOR = new Parcelable.Creator<SendCodeJson>() {
+    public static final Creator<SendCodeJson> CREATOR = new Creator<SendCodeJson>() {
         @Override
         public SendCodeJson createFromParcel(Parcel source) {
             return new SendCodeJson(source);

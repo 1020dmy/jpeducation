@@ -3,18 +3,15 @@ package com.jianpei.jpeducation.api;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.config.UrlConfig;
-import com.jianpei.jpeducation.bean.CodeLoginJson;
+import com.jianpei.jpeducation.bean.ForgetPwdJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
-import com.jianpei.jpeducation.bean.LoginBean;
 import com.jianpei.jpeducation.bean.LoginJson;
 import com.jianpei.jpeducation.bean.SendCodeJson;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 
-import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
@@ -42,14 +39,13 @@ public interface APIFunction {
      * @param loginJson
      * @return
      */
-    @POST(UrlConfig.LOGIN)
-    Observable<BaseEntity<LoginBean>> login(@Body LoginJson loginJson);
+//    @POST(UrlConfig.LOGIN)
+//    Observable<BaseEntity<LoginBean>> login(@Body LoginJson loginJson);
 
     /**
      * 获取验证码接口
      */
     @POST(UrlConfig.sendCode)
-//    @Headers("Content-Type:application/x-www-form-urlencoded")
     Observable<BaseEntity<String>> getCode(@Body SendCodeJson sendCodeJson);
 
 
@@ -57,7 +53,12 @@ public interface APIFunction {
      * 用户验证码登陆
      */
     @POST(UrlConfig.codeLogin)
-    Observable<BaseEntity<String>> codeLogin(@Body CodeLoginJson codeLoginJson);
+    Observable<BaseEntity<UserInfoBean>> codeLogin(@Body LoginJson loginJson);
+    /**
+     * 忘记密码
+     */
+    @POST(UrlConfig.forgetPwd)
+    Observable<BaseEntity<String>> forgetPwd(@Body ForgetPwdJson forgetPwdJson);
 
     /**
      * 获取微信ACCESS_TOKEN

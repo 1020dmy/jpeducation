@@ -27,6 +27,11 @@ public class SpUtils {
 
     public  static final String TOKEN="token";
 
+    public  static final String ID="id";
+    public  static final String USER_NAME="user_name";
+    public  static final String PHONE="phone";
+
+
 
 
     /**

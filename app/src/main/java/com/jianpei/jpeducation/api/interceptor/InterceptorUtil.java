@@ -4,11 +4,10 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.jianpei.jpeducation.api.config.HttpConfig;
+import com.jianpei.jpeducation.bean.AppInfoBean;
 import com.jianpei.jpeducation.utils.safety.Configure;
 import com.jianpei.jpeducation.utils.safety.DesUtil;
 import com.jianpei.jpeducation.utils.safety.SafetyUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -91,5 +90,34 @@ public class InterceptorUtil {
                 return chain.proceed(request);
             }
         };
+    }
+
+    /**
+     * 动态请求头添加
+     */
+    public static Interceptor addHeadInterceptor() {
+        return new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+//                Request.Builder requestBuilder = original.newBuilder()
+//                        .header("product", "JP-A-MP")
+//                        .header("channel", "jianpei")
+//                        .header("version", "1.0.0")
+//                        .header("model", "")
+//                        .header("device", "")
+//                        .header("package", "")
+//                        .header("uid", "")
+//                        .header("imei", "")
+//                        .header("push_token", "")
+//                        .header("os_version", "")
+//                        .header("vendor", "");
+                String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
+                Request.Builder requestBuilder = original.newBuilder().header("info", headValue);
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            }
+        };
+
     }
 }

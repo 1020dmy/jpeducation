@@ -1,7 +1,10 @@
 package com.jianpei.jpeducation.repository;
 
+import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.bean.LoginBean;
+import com.jianpei.jpeducation.bean.LoginJson;
+import com.jianpei.jpeducation.bean.SendCodeJson;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.contract.RegisteredContract;
 
 import io.reactivex.Observable;
@@ -17,12 +20,12 @@ import io.reactivex.Observable;
 public class RegisteredRepository extends BaseRepository implements RegisteredContract.Repository {
 
     @Override
-    public Observable<BaseEntity<LoginBean>> sendCode(String mobile) {
-        return null;
+    public Observable<BaseEntity<String>> sendCode(String phone) {
+        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "regist"));
     }
 
     @Override
-    public Observable<BaseEntity<LoginBean>> register(String mobile, String code, String password) {
-        return null;
+    public Observable<BaseEntity<UserInfoBean>> register(String phone, String code, String password, String passwordR) {
+        return RetrofitFactory.getInstance().API().codeLogin(new LoginJson(phone, password, code, 3, 0,passwordR));
     }
 }

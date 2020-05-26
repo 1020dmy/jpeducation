@@ -4,6 +4,7 @@ package com.jianpei.jpeducation.activitys.login;
 import android.content.Intent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
@@ -33,6 +34,8 @@ public class LoginActivity extends BaseActivity {
     TextView tvCodeLogin;
     @BindView(R.id.tv_pwdLogin)
     TextView tvPwdLogin;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
 
 
     private PassLoginFragment passLoginFragment;
@@ -46,6 +49,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        setTitleViewPadding(tvStatus);
         passLoginFragment = new PassLoginFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, passLoginFragment).show(passLoginFragment).commit();
 
@@ -138,14 +142,14 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             shortToast("成功了");
-            startActivity(new Intent(LoginActivity.this,BindPhoneActivity.class));
+            startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
 
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
             shortToast("失败了");
-            startActivity(new Intent(LoginActivity.this,BindPhoneActivity.class));
+            startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
 
         }
 

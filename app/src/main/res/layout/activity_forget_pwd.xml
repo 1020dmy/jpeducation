@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="311dp"
-        android:layout_height="340dp"
+        android:layout_height="360dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/login_bg"
         android:gravity="center"
@@ -125,7 +125,7 @@
 
         <TextView
             android:id="@+id/tv_tip"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
             android:textColor="@color/cFF0000"
