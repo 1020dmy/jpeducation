@@ -1,6 +1,5 @@
 package com.jianpei.jpeducation.adapter.provider;
 
-import android.view.View;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;

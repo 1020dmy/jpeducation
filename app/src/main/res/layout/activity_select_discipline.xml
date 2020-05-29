@@ -6,16 +6,16 @@
     android:orientation="vertical"
     tools:context=".activitys.SelectDisciplineActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_status"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_title_bg" />
+        android:layout_height="20dp"
+        android:background="@drawable/icon_selectzhuanye_title_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        android:background="@drawable/shape_title_bg"
+        android:background="@drawable/icon_selectzhuanye_title_bg"
         android:gravity="center">
 
         <TextView

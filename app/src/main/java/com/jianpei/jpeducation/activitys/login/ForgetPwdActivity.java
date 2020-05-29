@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.login;
 
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
+import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.ForgetPwdModel;
 
 import butterknife.BindView;
@@ -44,7 +44,14 @@ public class ForgetPwdActivity extends BaseActivity {
     TextView tvStatus;
     private ForgetPwdModel forgetPwdModel;
     protected CountDownTimerUtils countDownTimerUtils;
-
+    @BindView(R.id.iv_phone_cancle)
+    ImageView ivPhoneCancle;
+    @BindView(R.id.iv_code_cancle)
+    ImageView ivCodeCancle;
+    @BindView(R.id.iv_pwd_cancle)
+    ImageView ivPwdCancle;
+    @BindView(R.id.iv_pwdr_cancle)
+    ImageView ivPwdrCancle;
 
     @Override
     protected int setLayoutView() {
@@ -56,6 +63,11 @@ public class ForgetPwdActivity extends BaseActivity {
         setTitleViewPadding(tvStatus);
 
         tvTitle.setText(getResources().getString(R.string.forget_title));
+
+        etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
+        etCode.addTextChangedListener(new MyTextWatcher(ivCodeCancle));
+        etPwdR.addTextChangedListener(new MyTextWatcher(ivPwdrCancle));
+        etPwd.addTextChangedListener(new MyTextWatcher(ivPwdCancle));
 
     }
 
@@ -90,7 +102,7 @@ public class ForgetPwdActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next})
+    @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.iv_phone_cancle, R.id.iv_code_cancle, R.id.iv_pwd_cancle, R.id.iv_pwdr_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -103,6 +115,18 @@ public class ForgetPwdActivity extends BaseActivity {
             case R.id.btn_next:
                 showLoading("");
                 forgetPwdModel.codeLogin(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
+                break;
+            case R.id.iv_phone_cancle:
+                etPhone.setText("");
+                break;
+            case R.id.iv_code_cancle:
+                etCode.setText("");
+                break;
+            case R.id.iv_pwd_cancle:
+                etPwd.setText("");
+                break;
+            case R.id.iv_pwdr_cancle:
+                etPwdR.setText("");
                 break;
         }
     }

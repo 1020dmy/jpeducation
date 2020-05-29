@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<!--    android:paddingTop="?attr/actionBarSize"-->
+    <!--    android:paddingTop="?attr/actionBarSize"-->
 
-
-    <include layout="@layout/title_main" />
+    <!--    <include layout="@layout/title_main" />-->
+    <include layout="@layout/include_basetitle_statusbar" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -16,14 +16,61 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--        android:id="@+id/nav_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:background="?android:attr/windowBackground"-->
+    <!--        app:labelVisibilityMode="labeled"-->
+    <!--        app:menu="@menu/bottom_nav_menu"-->
+    <!--        app:itemTextColor="@color/select_color"-->
+    <!--        />-->
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:background="?android:attr/windowBackground"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_height="@dimen/bottom_height"
+        android:background="@drawable/shadow_main_bottom"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            style="@style/main_bottom_btn"
+            android:drawableTop="@drawable/select_main_home"
+            android:text="@string/main_btn_one" />
+
+        <RadioButton
+            android:id="@+id/rb_xueyuan"
+
+            style="@style/main_bottom_btn"
+            android:drawableTop="@drawable/select_main_xueyuan"
+            android:text="@string/main_btn_two" />
+
+        <RadioButton
+            android:id="@+id/rb_xuanke"
+
+            style="@style/main_bottom_btn"
+            android:drawableTop="@drawable/select_main_xuanke"
+            android:text="@string/main_btn_three" />
+
+        <RadioButton
+            android:id="@+id/rb_tiku"
+
+            style="@style/main_bottom_btn"
+            android:drawableTop="@drawable/select_main_tiku"
+            android:text="@string/main_btn_five" />
+
+        <RadioButton
+            android:id="@+id/rb_mine"
+            style="@style/main_bottom_btn"
+            android:drawableTop="@drawable/select_main_mine"
+            android:text="@string/main_btn_four" />
+
+
+    </RadioGroup>
 
 
 </LinearLayout>

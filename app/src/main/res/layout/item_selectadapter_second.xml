@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_40"
+    android:layout_height="35dp"
     android:layout_gravity="center"
+    android:layout_marginTop="11dp"
+    android:id="@+id/linearLayout"
+    android:background="@drawable/shape_selectzhuanye_item"
     android:gravity="center">
 
-    <Button
+    <TextView
+        android:id="@+id/tv_zyname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="一级建造师" />
+        android:text="一级建造师"
+        android:textColor="@color/cA5A7B0"
+        android:textSize="12dp" />
 
 </LinearLayout>

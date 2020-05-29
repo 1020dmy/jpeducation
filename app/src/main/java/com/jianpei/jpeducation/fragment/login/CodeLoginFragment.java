@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,8 +15,8 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
+import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.CodeLoginModel;
-import com.jianpei.jpeducation.viewmodel.LauncherModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,6 +38,11 @@ public class CodeLoginFragment extends BaseFragment {
 
     protected CodeLoginModel codeLoginModel;
     protected CountDownTimerUtils countDownTimerUtils;
+    @BindView(R.id.iv_phone_cancle)
+    ImageView ivPhoneCancle;
+    @BindView(R.id.iv_code_cancle)
+    ImageView ivCodeCancle;
+
 
     @Override
     protected int initLayout() {
@@ -49,6 +54,9 @@ public class CodeLoginFragment extends BaseFragment {
 
         codeLoginModel = ViewModelProviders.of(this).get(CodeLoginModel.class);
         countDownTimerUtils = new CountDownTimerUtils(tvSendCode, 60 * 1000, 1000);
+
+        etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
+        etCode.addTextChangedListener(new MyTextWatcher(ivCodeCancle));
 
 
     }
@@ -82,7 +90,7 @@ public class CodeLoginFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.tv_sendCode, R.id.btn_next})
+    @OnClick({R.id.tv_sendCode, R.id.btn_next,R.id.iv_phone_cancle, R.id.iv_code_cancle})
     public void onViewClicked(View view) {
         tvTip.setText("");
         switch (view.getId()) {
@@ -94,6 +102,14 @@ public class CodeLoginFragment extends BaseFragment {
                 showLoading("");
                 codeLoginModel.codeLogin(etPhone.getText().toString(), etCode.getText().toString());
                 break;
+            case R.id.iv_phone_cancle:
+                etPhone.setText("");
+                break;
+            case R.id.iv_code_cancle:
+                etCode.setText("");
+                break;
         }
     }
+
+
 }

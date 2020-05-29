@@ -53,17 +53,18 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14dp</item>
-        <!--        <item name="android:background">@drawable/loginbt</item>-->
         <item name="android:background">@drawable/shape_login_button</item>
-        <!--        <item name="android:shadowDx">10</item>-->
-        <!--        <item name="android:shadowDy">10</item>-->
-        <!--        <item name="android:shadowColor">@color/transparent</item>-->
+        <!--        <item name="android:elevation">5dp</item>-->
+        <!--        <item name="android:shadowDy">5</item>-->
+        <!--        <item name="android:shadowDx">5</item>-->
         <!--        <item name="android:shadowRadius">10</item>-->
+        <!--        <item name="android:shadowColor">#00ffffff</item>-->
 
     </style>
 
     <style name="login_edit">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/c888B96</item>
         <item name="android:textSize">14dp</item>
@@ -79,7 +80,43 @@
     <style name="reg_img">
         <item name="android:layout_width">17dp</item>
         <item name="android:layout_height">24dp</item>
+    </style>
 
+    <style name="edit_cancle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/login_cancle</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+
+    <style name="home_button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:drawableTop">@mipmap/ic_launcher</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="main_bottom_btn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/select_color</item>
+        <item name="android:textSize">11dp</item>
+    </style>
+
+    <style name="home_btn_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/c0A0C14</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:drawablePadding">9dp</item>
     </style>
 
 </resources>

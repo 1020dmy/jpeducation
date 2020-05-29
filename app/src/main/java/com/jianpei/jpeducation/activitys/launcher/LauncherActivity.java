@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
+import com.jianpei.jpeducation.activitys.SelectDisciplineActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.utils.SpUtils;
@@ -26,6 +28,8 @@ public class LauncherActivity extends BaseActivity {
     @BindView(R.id.imageView)
     ImageView imageView;
 
+    private String catId;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_launcher;
@@ -34,6 +38,7 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void initView() {
         isfirst = (int) SpUtils.get(SpUtils.ISFirst, 0);
+        catId = SpUtils.getValue(SpUtils.catId);
         launcherModel = ViewModelProviders.of(this).get(LauncherModel.class);
         launcherModel.getScuucessData().observe(this, new Observer<LauncherBean>() {
             @Override
@@ -66,8 +71,11 @@ public class LauncherActivity extends BaseActivity {
                 if (isfirst == 0) {
                     startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
                 } else {
-                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
-
+                    if (TextUtils.isEmpty(catId)) {
+                        startActivity(new Intent(LauncherActivity.this, SelectDisciplineActivity.class));
+                    } else {
+                        startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                    }
                 }
                 finish();
             }

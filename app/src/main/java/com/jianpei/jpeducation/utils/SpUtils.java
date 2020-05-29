@@ -21,16 +21,19 @@ public class SpUtils {
 
     public static final String SP_userModel = "SP_userModel";
 
-    public  static final String ISFirst="IS_first";
+    public static final String ISFirst = "IS_first";
 
-    public  static final String USERNAME="userName";
+    public static final String USERNAME = "userName";
 
-    public  static final String TOKEN="token";
+    public static final String TOKEN = "token";
 
-    public  static final String ID="id";
-    public  static final String USER_NAME="user_name";
-    public  static final String PHONE="phone";
+    public static final String ID = "id";
+    public static final String USER_NAME = "user_name";
+    public static final String PHONE = "phone";
 
+
+    public static final String catId = "catid";
+    public static final String catName = "catname";
 
 
 

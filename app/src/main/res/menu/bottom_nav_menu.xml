@@ -3,25 +3,25 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/main_home_un"
         android:title="@string/main_btn_one" />
 
     <item
         android:id="@+id/navigation_school"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/main_xueyuan_un"
         android:title="@string/main_btn_two" />
 
     <item
         android:id="@+id/navigation_elective"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/main_xuenke_un"
         android:title="@string/main_btn_three" />
     <item
         android:id="@+id/navigation_tiku"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/main_tiku_un"
         android:title="@string/main_btn_five" />
     <item
         android:id="@+id/navigation_mine"
-        android:icon="@drawable/mine"
+        android:icon="@drawable/main_mine_un"
         android:title="@string/main_btn_four" />
 
 </menu>

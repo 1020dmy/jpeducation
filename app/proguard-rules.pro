@@ -71,7 +71,7 @@
 
 # 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
 # 因为这些子类都有可能被外部调用
--keep public class * extends android.app.Activity
+-keep public class * extends androidx.appcompat.app.AppCompatActivity
 -keep public class * extends android.app.Appliction
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -286,6 +286,21 @@
 }
 
 -keep class com.umeng.socialize.impl.ImageImpl {*;}
+
+
+#----------- gson ----------------
+-keep class com.google.gson.** {*;}
+-keep class com.google.**{*;}
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep class com.qiancheng.carsmangersystem.**{*;}
+# Application classes that will be serialized/deserialized over Gson 下面替换成自己的实体类
+-keep class com.jianpei.jpeducation.bean.** { *; }
+
+
+-keep class com.jianpei.jpeducation.api.base.** { *; }
+
 
 
 

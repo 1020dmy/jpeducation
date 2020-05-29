@@ -1,19 +1,18 @@
 package com.jianpei.jpeducation.base;
 
 import android.app.Dialog;
-import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.AnimRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.LoadingDialog;
 import com.jianpei.jpeducation.utils.StatusBarUtil;
 
@@ -40,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
+
 
         setContentView(setLayoutView());
         unbinder = ButterKnife.bind(this);
@@ -121,6 +121,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (dialog != null) {
             dialog.dismiss();
         }
+    }
+
+    public void setStatusColor(int color) {
+
+        StatusBarUtil.setColor(this, color);
     }
 
     /**

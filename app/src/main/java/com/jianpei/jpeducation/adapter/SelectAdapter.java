@@ -1,15 +1,23 @@
 package com.jianpei.jpeducation.adapter;
 
-import com.chad.library.adapter.base.BaseNodeAdapter;
-import com.chad.library.adapter.base.entity.node.BaseNode;
-import com.jianpei.jpeducation.adapter.provider.RootNodeProvider;
-import com.jianpei.jpeducation.adapter.provider.SecondNodeProvider;
-import com.jianpei.jpeducation.bean.selectclass.ClassName;
-import com.jianpei.jpeducation.bean.selectclass.ClassType;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+
+import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.DisciplinesBean;
+import com.jianpei.jpeducation.utils.HorizontalItemDecoration;
+import com.jianpei.jpeducation.utils.MyItemOnClickListener;
+
+import java.util.ArrayList;
+
 
 /**
  * jpeducation
@@ -19,23 +27,64 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class SelectAdapter extends BaseNodeAdapter {
+public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.MyHolder> {
 
 
-    public SelectAdapter() {
-        super();
-        addFullSpanNodeProvider(new RootNodeProvider());
-        addNodeProvider(new SecondNodeProvider());
+    private Context context;
+
+    private MyItemOnClickListener myItemOnClickListener;
+
+    private ArrayList<DisciplinesBean> disciplinesBeans;
+    private String selectId;
+
+
+    public SelectAdapter(
+            Context context, MyItemOnClickListener myItemOnClickListener, ArrayList<DisciplinesBean> disciplinesBeans, String selectId) {
+        this.context = context;
+        this.myItemOnClickListener = myItemOnClickListener;
+        this.disciplinesBeans = disciplinesBeans;
+        this.selectId = selectId;
+    }
+
+    @NonNull
+    @Override
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_zhuaye, parent, false);
+        return new MyHolder(view);
     }
 
     @Override
-    protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {
-        BaseNode node = list.get(i);
-        if (node instanceof ClassType) {
-            return 0;
-        } else if (node instanceof ClassName) {
-            return 1;
-        }
-        return -1;
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+
+        holder.tvTitle.setText(disciplinesBeans.get(position).getCatname());
+
+        holder.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+
+        SelectItemAdapter selectItemAdapter = new SelectItemAdapter(disciplinesBeans.get(position).getSublevel(), selectId,context);
+        selectItemAdapter.setMyItemOnClickListener(myItemOnClickListener);
+        holder.recyclerView.setAdapter(selectItemAdapter);
+
+
     }
+
+    @Override
+    public int getItemCount() {
+        return disciplinesBeans == null ? 0 : disciplinesBeans.size();
+    }
+
+    class MyHolder extends RecyclerView.ViewHolder {
+
+        private TextView tvTitle;
+        private RecyclerView recyclerView;
+
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            recyclerView = itemView.findViewById(R.id.recyclerView);
+            recyclerView.setNestedScrollingEnabled(false);
+            recyclerView.addItemDecoration(new HorizontalItemDecoration(9, context));
+
+        }
+    }
+
 }

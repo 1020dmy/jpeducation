@@ -14,11 +14,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
+import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.RegisteredModel;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RegisteredActivity extends BaseActivity {
@@ -52,6 +53,14 @@ public class RegisteredActivity extends BaseActivity {
     protected RegisteredModel registeredModel;
 
     protected CountDownTimerUtils countDownTimerUtils;
+    @BindView(R.id.iv_phone_cancle)
+    ImageView ivPhoneCancle;
+    @BindView(R.id.iv_code_cancle)
+    ImageView ivCodeCancle;
+    @BindView(R.id.iv_pwd_cancle)
+    ImageView ivPwdCancle;
+    @BindView(R.id.iv_pwdr_cancle)
+    ImageView ivPwdrCancle;
 
     @Override
     protected int setLayoutView() {
@@ -96,9 +105,16 @@ public class RegisteredActivity extends BaseActivity {
             }
         });
 
+
+        etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
+        etCode.addTextChangedListener(new MyTextWatcher(ivCodeCancle));
+        etPwdR.addTextChangedListener(new MyTextWatcher(ivPwdrCancle));
+        etPwd.addTextChangedListener(new MyTextWatcher(ivPwdCancle));
+
+
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.tv_bottom_xieyi})
+    @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.tv_bottom_xieyi, R.id.iv_phone_cancle, R.id.iv_code_cancle, R.id.iv_pwd_cancle, R.id.iv_pwdr_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -114,6 +130,18 @@ public class RegisteredActivity extends BaseActivity {
                 break;
             case R.id.tv_bottom_xieyi:
                 break;
+            case R.id.iv_phone_cancle:
+                etPhone.setText("");
+                break;
+            case R.id.iv_code_cancle:
+                etCode.setText("");
+                break;
+            case R.id.iv_pwd_cancle:
+                etPwd.setText("");
+                break;
+            case R.id.iv_pwdr_cancle:
+                etPwdR.setText("");
+                break;
         }
     }
 
@@ -123,4 +151,6 @@ public class RegisteredActivity extends BaseActivity {
         countDownTimerUtils.onDestroy();
         countDownTimerUtils = null;
     }
+
+
 }

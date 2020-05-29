@@ -45,6 +45,10 @@
                 android:maxLength="11" />
 
 
+            <ImageView
+                android:id="@+id/iv_phone_cancle"
+                style="@style/edit_cancle" />
+
         </LinearLayout>
 
         <TextView
@@ -70,6 +74,11 @@
                 android:hint="@string/code"
                 android:inputType="number"
                 android:maxLength="6" />
+
+            <ImageView
+                android:id="@+id/iv_code_cancle"
+                style="@style/edit_cancle"
+                android:layout_marginRight="8dp" />
 
             <TextView
                 android:id="@+id/tv_sendCode"
@@ -100,6 +109,11 @@
                 android:layout_marginLeft="13dp"
                 android:hint="@string/login_pwd"
                 android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/iv_pwd_cancle"
+                style="@style/edit_cancle" />
+
         </LinearLayout>
 
         <TextView
@@ -122,6 +136,10 @@
                 android:layout_marginLeft="13dp"
                 android:hint="@string/reg_pwd_re"
                 android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/iv_pwdr_cancle"
+                style="@style/edit_cancle" />
         </LinearLayout>
 
         <TextView

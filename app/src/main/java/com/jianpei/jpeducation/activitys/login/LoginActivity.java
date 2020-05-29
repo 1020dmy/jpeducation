@@ -2,17 +2,21 @@ package com.jianpei.jpeducation.activitys.login;
 
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;
+import com.jianpei.jpeducation.viewmodel.WxLoginModel;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -36,6 +40,10 @@ public class LoginActivity extends BaseActivity {
     TextView tvPwdLogin;
     @BindView(R.id.tv_status)
     TextView tvStatus;
+//    @BindView(R.id.tv_accessToken)
+//    TextView textView;
+
+    private WxLoginModel wxLoginModel;
 
 
     private PassLoginFragment passLoginFragment;
@@ -57,6 +65,31 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
+        wxLoginModel = new ViewModelProvider(this).get(WxLoginModel.class);
+
+        wxLoginModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+
+            }
+        });
+
+        wxLoginModel.getScuucessData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                if (TextUtils.isEmpty(s)) {
+                    startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+                } else {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                }
+                finish();
+            }
+        });
 
 
     }
@@ -117,15 +150,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-//    @OnClick({R.id.btn_login})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_login:
-//                showLoading("登陆中...");
-//                loginModel.login(etName.getText().toString(), etPwd.getText().toString());
-//                break;
-//        }
-//    }
 
     public void aaa() {
         UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
@@ -141,21 +165,38 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-            shortToast("成功了");
-            startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+            if (map != null) {
+                showLoading("");
+//                Set<String> keys = map.keySet();
+//                for (String key : keys) {
+//                    System.out.println("=====key===" +key+",value:"+map.get(key));
+//                }
+
+//                String access_token = map.get("access_token");
+//                System.out.println("=====access_token===" + access_token);
+                wxLoginModel.wxLogin(
+                        map.get("refreshToken"),
+                        map.get("expiration"),
+                        map.get("screen_name"),
+                        map.get("access_token"),
+                        map.get("city"),
+                        map.get("gender"),
+                        map.get("openid"),
+                        map.get("province"),
+                        map.get("iconurl"));
+            }
 
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-            shortToast("失败了");
-            startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+            shortToast("授权失败");
 
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media, int i) {
-            shortToast("取消了");
+            shortToast("取消授权");
 
         }
     };

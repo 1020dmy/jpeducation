@@ -1,7 +1,5 @@
 package com.jianpei.jpeducation.viewmodel;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -21,25 +19,10 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
 
     protected LauncherRepository launcherRepository;
 
-//    public MutableLiveData<LauncherBean> getScuucessData() {
-//        if (successData == null) {
-//            successData = new MutableLiveData<>();
-//        }
-//        return successData;
-//    }
-//
-//    public MutableLiveData<String> getErrData() {
-//        if (errData == null) {
-//            errData = new MutableLiveData<>();
-//        }
-//        return errData;
-//    }
 
 
     public LauncherModel() {
         launcherRepository = new LauncherRepository();
-//        successData = new MutableLiveData();
-//        errData = new MutableLiveData<>();
 
 
     }

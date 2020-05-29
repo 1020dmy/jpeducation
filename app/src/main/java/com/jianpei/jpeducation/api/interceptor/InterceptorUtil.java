@@ -5,6 +5,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.jianpei.jpeducation.api.config.HttpConfig;
 import com.jianpei.jpeducation.bean.AppInfoBean;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.safety.Configure;
 import com.jianpei.jpeducation.utils.safety.DesUtil;
 import com.jianpei.jpeducation.utils.safety.SafetyUtil;
@@ -112,6 +113,7 @@ public class InterceptorUtil {
 //                        .header("push_token", "")
 //                        .header("os_version", "")
 //                        .header("vendor", "");
+                AppInfoBean.appInfoBean.setUid(SpUtils.getValue(SpUtils.ID));
                 String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
                 Request.Builder requestBuilder = original.newBuilder().header("info", headValue);
                 Request request = requestBuilder.build();

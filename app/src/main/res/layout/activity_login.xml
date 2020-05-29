@@ -19,11 +19,12 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="300dp"
-        android:layout_height="253dp"
-        android:layout_weight="1" />
+        android:layout_marginTop="34dp"
+        android:layout_height="253dp" />
 
 
     <RelativeLayout
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="21dp"
         android:gravity="center_vertical">
@@ -64,6 +65,11 @@
             android:text="@string/login_wx" />
 
     </RelativeLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_accessToken"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
 
 
     <include layout="@layout/include_login_bottom" />

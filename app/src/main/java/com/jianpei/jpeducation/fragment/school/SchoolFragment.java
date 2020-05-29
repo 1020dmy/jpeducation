@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
@@ -24,11 +25,12 @@ public class SchoolFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+        new ViewModelProvider(this).get(MainModel.class);
         mainModel = ViewModelProviders.of(getActivity()).get(MainModel.class);
-        mainModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mainModel.getCatId().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                L.e("onChanged:" + s);
+                L.e("=======SchoolFragment切换了====" + s);
             }
         });
     }

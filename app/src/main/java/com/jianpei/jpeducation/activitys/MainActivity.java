@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -21,16 +22,17 @@ import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
 import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends PermissionBaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends PermissionBaseActivity implements RadioGroup.OnCheckedChangeListener {
 
-    @BindView(R.id.nav_view)
-    BottomNavigationView navView;
+//    @BindView(R.id.nav_view)
+//    BottomNavigationView navView;
 
     HomeFragment homeFragment;
     SchoolFragment schoolFragment;
@@ -41,8 +43,11 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
     Button btnTitle;
     @BindView(R.id.imageButton)
     ImageButton imageButton;
-    @BindView(R.id.rl_title)
-    RelativeLayout rlTitle;
+
+    @BindView(R.id.radioGroup)
+    RadioGroup radioGroup;
+
+
 
     private Fragment[] fragments;
     private int lastfragment = 0;
@@ -53,6 +58,8 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
             Manifest.permission.CAMERA,
     };
 
+    private String catId, catName;
+    private String ncatId;
 
     @Override
     protected int setLayoutView() {
@@ -69,7 +76,10 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
         fragments = new Fragment[]{homeFragment, schoolFragment, electiveFragment, tikuFragment, mineFragment};
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).show(homeFragment).commit();
-        navView.setOnNavigationItemSelectedListener(this);
+        radioGroup.check(R.id.rb_home);
+        radioGroup.setOnCheckedChangeListener(this);
+
+//        navView.setOnNavigationItemSelectedListener(this);
 
         setPermissions(mPermissions, new InterfacePermission() {
             @Override
@@ -78,53 +88,104 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
             }
         });
 
+
+
     }
 
 
     @Override
     protected void initData() {
         mainModel = ViewModelProviders.of(this).get(MainModel.class);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ncatId = SpUtils.getValue(SpUtils.catId);
+        if (!ncatId.equals(catId)) {
+            catId = ncatId;
+            catName = SpUtils.getValue(SpUtils.catName);
+            mainModel.upData(catId);
+            btnTitle.setText(catName);
+        }
 
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_home:
                 if (lastfragment != 0) {
                     switchFragment(lastfragment, 0);
                     lastfragment = 0;
                 }
-                return true;
-            case R.id.navigation_school:
+                break;
+            case R.id.rb_xueyuan:
                 if (lastfragment != 1) {
                     switchFragment(lastfragment, 1);
                     lastfragment = 1;
                 }
-                return true;
-            case R.id.navigation_elective:
+                break;
+            case R.id.rb_xuanke:
                 if (lastfragment != 2) {
                     switchFragment(lastfragment, 2);
                     lastfragment = 2;
                 }
-                return true;
-            case R.id.navigation_tiku:
+                break;
+            case R.id.rb_tiku:
                 if (lastfragment != 3) {
                     switchFragment(lastfragment, 3);
                     lastfragment = 3;
                 }
-                return true;
-            case R.id.navigation_mine:
+                break;
+            case R.id.rb_mine:
                 if (lastfragment != 4) {
                     switchFragment(lastfragment, 4);
                     lastfragment = 4;
                 }
-                return true;
-            default:
                 break;
         }
-        return false;
+
     }
+
+    //    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.navigation_home:
+//                if (lastfragment != 0) {
+//                    switchFragment(lastfragment, 0);
+//                    lastfragment = 0;
+//                }
+//                return true;
+//            case R.id.navigation_school:
+//                if (lastfragment != 1) {
+//                    switchFragment(lastfragment, 1);
+//                    lastfragment = 1;
+//                }
+//                return true;
+//            case R.id.navigation_elective:
+//                if (lastfragment != 2) {
+//                    switchFragment(lastfragment, 2);
+//                    lastfragment = 2;
+//                }
+//                return true;
+//            case R.id.navigation_tiku:
+//                if (lastfragment != 3) {
+//                    switchFragment(lastfragment, 3);
+//                    lastfragment = 3;
+//                }
+//                return true;
+//            case R.id.navigation_mine:
+//                if (lastfragment != 4) {
+//                    switchFragment(lastfragment, 4);
+//                    lastfragment = 4;
+//                }
+//                return true;
+//            default:
+//                break;
+//        }
+//        return false;
+//    }
 
     /**
      * 切换fragmeng
@@ -141,12 +202,12 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
 
-        if (index == 3) {
-            rlTitle.setVisibility(View.GONE);
-        } else {
-            rlTitle.setVisibility(View.VISIBLE);
-
-        }
+//        if (index == 3) {
+//            rlTitle.setVisibility(View.GONE);
+//        } else {
+//            rlTitle.setVisibility(View.VISIBLE);
+//
+//        }
     }
 
 
@@ -165,4 +226,5 @@ public class MainActivity extends PermissionBaseActivity implements BottomNaviga
         }
 
     }
+
 }

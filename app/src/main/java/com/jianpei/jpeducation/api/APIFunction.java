@@ -3,16 +3,28 @@ package com.jianpei.jpeducation.api;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.config.UrlConfig;
+import com.jianpei.jpeducation.bean.AccessTokenBean;
+import com.jianpei.jpeducation.bean.BindPhoneJson;
+import com.jianpei.jpeducation.bean.CouponDataBean;
+import com.jianpei.jpeducation.bean.CouponDataJson;
+import com.jianpei.jpeducation.bean.CouponReceiveJson;
+import com.jianpei.jpeducation.bean.DisciplinesBean;
 import com.jianpei.jpeducation.bean.ForgetPwdJson;
+import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.bean.LoginJson;
 import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
+import com.jianpei.jpeducation.bean.WxLoginJson;
 
+
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * jpeducation
@@ -54,11 +66,54 @@ public interface APIFunction {
      */
     @POST(UrlConfig.codeLogin)
     Observable<BaseEntity<UserInfoBean>> codeLogin(@Body LoginJson loginJson);
+
     /**
      * 忘记密码
      */
     @POST(UrlConfig.forgetPwd)
     Observable<BaseEntity<String>> forgetPwd(@Body ForgetPwdJson forgetPwdJson);
+
+    /**
+     * 获取专业列表
+     */
+    @POST(UrlConfig.courseData)
+    Observable<BaseEntity<ArrayList<DisciplinesBean>>> getCourseData();
+
+    /**
+     * 首页数据
+     */
+    @POST(UrlConfig.homeInfo)
+    Observable<BaseEntity<String>> getHomeInfo(@Body HomeInfoJson homeInfoJson);
+
+    /**
+     * 微信登陆
+     */
+    @POST(UrlConfig.wxLogin)
+    Observable<BaseEntity<UserInfoBean>> wxLogin(@Body WxLoginJson wxLoginJson);
+
+    /**
+     * 绑定手机号
+     */
+    @POST(UrlConfig.bindPhone)
+    Observable<BaseEntity<UserInfoBean>> bingPhone(@Body BindPhoneJson bindPhoneJson);
+
+    /**
+     * 退出登陆
+     */
+    @POST(UrlConfig.loginOut)
+    Observable<BaseEntity<String>> loginOut();
+
+    /**
+     * 领取优惠券
+     */
+    @POST(UrlConfig.couponReceive)
+    Observable<BaseEntity<String>> couponReceive(@Body CouponReceiveJson couponReceiveJson);
+
+    /**
+     * 优惠券列表
+     */
+    @POST(UrlConfig.couponData)
+    Observable<BaseEntity<ArrayList<CouponDataBean>>> couponData(@Body CouponDataJson couponDataJson);
 
     /**
      * 获取微信ACCESS_TOKEN

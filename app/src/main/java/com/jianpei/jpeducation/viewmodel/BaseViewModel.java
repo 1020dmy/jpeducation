@@ -44,7 +44,7 @@ public abstract class BaseViewModel<B> extends ViewModel {
 
     public MutableLiveData<String> getErrData() {
         if (errData == null) {
-            errData = new MutableLiveData<>();
+            errData = new MutableLiveData<String>();
         }
         return errData;
     }

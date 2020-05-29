@@ -43,6 +43,10 @@
                 android:inputType="number"
                 android:maxLength="11" />
 
+            <ImageView
+                android:id="@+id/iv_phone_cancle"
+                style="@style/edit_cancle" />
+
 
         </LinearLayout>
 
@@ -70,6 +74,12 @@
                 android:inputType="number"
                 android:maxLength="6" />
 
+            <ImageView
+                android:id="@+id/iv_code_cancle"
+                style="@style/edit_cancle"
+                android:layout_marginRight="8dp" />
+
+
             <TextView
                 android:id="@+id/tv_sendCode"
                 android:layout_width="wrap_content"
@@ -82,33 +92,39 @@
         <TextView
             style="@style/login_line"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="23dp" />
+            />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center_vertical">-->
 
-            <ImageView
-                style="@style/reg_img"
-                android:src="@drawable/login_pwd" />
+<!--            <ImageView-->
+<!--                style="@style/reg_img"-->
+<!--                android:src="@drawable/login_pwd" />-->
 
-            <EditText
-                android:id="@+id/et_pwd"
-                style="@style/login_edit"
-                android:layout_marginLeft="13dp"
-                android:hint="@string/login_pwd"
-                android:inputType="textPassword" />
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/et_pwd"-->
+<!--                style="@style/login_edit"-->
+<!--                android:layout_marginLeft="13dp"-->
+<!--                android:hint="@string/login_pwd"-->
+<!--                android:inputType="textPassword" />-->
 
-        <TextView
-            style="@style/login_line"
-            android:layout_marginTop="10dp" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_pwd_cancle"-->
+<!--                style="@style/edit_cancle"-->
+<!--                android:layout_marginRight="8dp" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <TextView-->
+<!--            style="@style/login_line"-->
+<!--            android:layout_marginTop="10dp" />-->
 
 
         <TextView
             android:id="@+id/tv_tip"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
             android:textColor="@color/cFF0000"

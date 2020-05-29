@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/rl_title"
-    android:layout_height="@dimen/title_height">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/icon_selectzhuanye_title_bg">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/main_icon" />
 
     <Button
         android:id="@+id/btn_title"
@@ -15,14 +18,20 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@android:color/transparent"
-        android:text="一级建筑师" />
+        android:drawableRight="@drawable/select_title"
+        android:drawablePadding="20dp"
+        android:text="一级建筑师"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@drawable/main_kefu" />
 
 </RelativeLayout>

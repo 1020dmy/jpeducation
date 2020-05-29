@@ -49,7 +49,8 @@ public class CodeLoginModel extends BaseViewModel<String> implements CodeLoginCo
                         successData.setValue(t.getMsg());
                     } else {
                         errData.setValue("数据获取失败！");
-                    }                } else {
+                    }
+                } else {
                     errData.setValue(t.getMsg());
                 }
 

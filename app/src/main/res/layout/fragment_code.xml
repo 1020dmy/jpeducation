@@ -14,7 +14,7 @@
         android:background="@drawable/login_bg"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="50dp"
+        android:gravity="center"
         android:paddingRight="20dp">
 
         <LinearLayout
@@ -34,6 +34,9 @@
                 android:inputType="number"
                 android:maxLength="11" />
 
+          <ImageView
+              android:id="@+id/iv_phone_cancle"
+             style="@style/edit_cancle"/>
 
         </LinearLayout>
 
@@ -60,6 +63,12 @@
                 android:hint="@string/code"
                 android:inputType="number"
                 android:maxLength="6" />
+
+
+            <ImageView
+                android:id="@+id/iv_code_cancle"
+                android:layout_marginRight="8dp"
+                style="@style/edit_cancle"/>
 
             <TextView
                 android:id="@+id/tv_sendCode"

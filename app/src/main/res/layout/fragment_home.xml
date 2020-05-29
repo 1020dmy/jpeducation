@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -13,25 +13,108 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="107dp">
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/home_title_bg" />
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    app:indicator_normal_width="17dp"
+                    app:indicator_marginBottom="13dp"
+                    app:indicator_selected_color="@color/white"
+                    />
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="去播放" />
+                android:layout_marginTop="16dp">
 
-            <Button
-                android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="去登陆" />
+                <TextView
+                    style="@style/home_btn_text"
+                    android:drawableTop="@drawable/home_btn_one"
+                    android:text="@string/home_btn_one" />
 
+                <TextView
+                    style="@style/home_btn_text"
+                    android:drawableTop="@drawable/home_btn_two"
+                    android:text="@string/home_btn_two" />
+
+
+                <TextView
+                    style="@style/home_btn_text"
+                    android:drawableTop="@drawable/home_btn_three"
+                    android:text="@string/home_btn_three" />
+
+
+                <TextView
+                    style="@style/home_btn_text"
+                    android:drawableTop="@drawable/home_btn_four"
+                    android:text="@string/home_btn_four" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginRight="20dp">
+
+
+                <com.sunfusheng.marqueeview.MarqueeView
+                    android:id="@+id/marqueeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/shadow_home_notification_bg"
+                    android:paddingLeft="60dp"
+                    app:mvAnimDuration="1000"
+                    app:mvDirection="bottom_to_top"
+                    app:mvInterval="3000"
+                    app:mvSingleLine="true"
+                    app:mvTextColor="@color/cFF0000"
+                    app:mvTextSize="13sp" />
+
+                <TextView
+                    android:layout_width="78dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_notification_bg"
+                    android:gravity="center"
+                    android:text="@string/home_notification"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="9dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp" />
 
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

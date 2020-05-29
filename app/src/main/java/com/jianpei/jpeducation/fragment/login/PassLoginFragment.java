@@ -2,9 +2,13 @@ package com.jianpei.jpeducation.fragment.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -14,7 +18,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.login.ForgetPwdActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
-import com.jianpei.jpeducation.viewmodel.CodeLoginModel;
+import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.LoginModel;
 
 import butterknife.BindView;
@@ -33,6 +37,10 @@ public class PassLoginFragment extends BaseFragment {
     Button btnNext;
     @BindView(R.id.tv_tip)
     TextView tvTip;
+    @BindView(R.id.iv_phone_cancle)
+    ImageView ivPhoneCancle;
+    @BindView(R.id.iv_pwd_cancle)
+    ImageView ivPwdCancle;
 
 
     protected LoginModel loginModel;
@@ -71,10 +79,11 @@ public class PassLoginFragment extends BaseFragment {
 
             }
         });
-
+        etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
+        etPwdR.addTextChangedListener(new MyTextWatcher(ivPwdCancle));
     }
 
-    @OnClick({R.id.tv_forgetPwd, R.id.btn_next})
+    @OnClick({R.id.tv_forgetPwd, R.id.btn_next, R.id.iv_phone_cancle, R.id.iv_pwd_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forgetPwd:
@@ -84,6 +93,17 @@ public class PassLoginFragment extends BaseFragment {
                 showLoading("");
                 loginModel.login(etPhone.getText().toString(), etPwdR.getText().toString());
                 break;
+            case R.id.iv_phone_cancle:
+                etPhone.setText("");
+                break;
+            case R.id.iv_pwd_cancle:
+                etPwdR.setText("");
+                break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

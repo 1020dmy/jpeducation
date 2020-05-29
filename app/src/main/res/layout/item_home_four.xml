@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="免费试学课程"
+        android:textColor="@color/c161820"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:text="热门套餐，轻松过关"
+        android:textColor="@color/cE9412E"
+        android:textSize="11dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/home_back"
+        android:drawablePadding="13dp"
+        android:text="查看更多"
+        android:textColor="@color/cE73B30"
+        android:textSize="14dp" />
+</LinearLayout>

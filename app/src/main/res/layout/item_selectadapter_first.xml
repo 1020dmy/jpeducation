@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_40"
-    android:background="@color/colorAccent"
+    android:layout_height="@dimen/def_height"
     android:gravity="center_vertical"
-    android:paddingLeft="12dp">
+    android:paddingLeft="20dp">
 
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="建筑工程师" />
+        android:text="建筑工程师"
+        android:textColor="@color/c161820"
+        android:textSize="14dp" />
 
 </LinearLayout>
