@@ -17,7 +17,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class RegisteredRepository extends BaseRepository implements RegisteredContract.Repository {
+public class RegisteredRepository implements RegisteredContract.Repository {
 
     @Override
     public Observable<BaseEntity<String>> sendCode(String phone) {

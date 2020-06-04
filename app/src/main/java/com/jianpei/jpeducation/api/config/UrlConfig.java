@@ -24,27 +24,27 @@ public class UrlConfig {
     //获取验证码
     public static final String sendCode = "send/sendCode";
     //1-用户验证码注册/登录
-    public static final String  codeLogin="user/userLogin";
+    public static final String codeLogin = "user/userLogin";
     //忘记密码
-    public static final String  forgetPwd="user/editPwd";
+    public static final String forgetPwd = "user/editPwd";
     //获取课程目录
-    public static final String  courseData="course/courseData";
+    public static final String courseData = "course/courseData";
 
     //首页配置参数
-    public static final String  homeInfo="homeInfo";
+    public static final String homeInfo = "homeInfo";
 
     //微信登陆
-    public static final String  wxLogin="user/weChatAuth";
+    public static final String wxLogin = "user/weChatAuth";
     //绑定手机号
-    public static final String  bindPhone="user/phoneBinding";
+    public static final String bindPhone = "user/phoneBinding";
     //退出登陆
-    public static final String  loginOut="user/userOutLogin";
+    public static final String loginOut = "user/userOutLogin";
     //领取优惠券
-    public static final String  couponReceive="coupon/couponReceive";
+    public static final String couponReceive = "coupon/couponReceive";
     //优惠券列表
-    public static final String  couponData="coupon/couponData";
-
-
-
-
+    public static final String couponData = "coupon/couponData";
+    //资料下载
+    public static final String getDownloadUrl = "material/getDownloadUrl";
+    //首页公告
+    public static final String noticeData = "noticeData";
 }

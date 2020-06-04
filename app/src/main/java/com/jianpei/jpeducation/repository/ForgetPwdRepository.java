@@ -16,7 +16,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class ForgetPwdRepository extends BaseRepository implements ForgetPwdContract.Repository {
+public class ForgetPwdRepository implements ForgetPwdContract.Repository {
 
 
     @Override

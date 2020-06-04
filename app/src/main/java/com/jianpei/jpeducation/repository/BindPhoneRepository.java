@@ -17,7 +17,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class BindPhoneRepository extends BaseRepository implements BindPhoneContract.Repository {
+public class BindPhoneRepository implements BindPhoneContract.Repository {
 
     @Override
     public Observable<BaseEntity<UserInfoBean>> bindPhone(String uid, String phone, String code) {

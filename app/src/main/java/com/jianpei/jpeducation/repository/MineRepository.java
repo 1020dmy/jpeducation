@@ -8,7 +8,7 @@ package com.jianpei.jpeducation.repository;
  * <p>
  * Describe:
  */
-public class MineRepository extends BaseRepository {
+public class MineRepository {
 
 
 

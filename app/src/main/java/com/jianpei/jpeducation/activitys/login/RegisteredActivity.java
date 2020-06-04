@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.RegisteredModel;
@@ -22,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisteredActivity extends BaseActivity {
+public class RegisteredActivity extends BaseModelActivity<RegisteredModel, String> {
 
 
     @BindView(R.id.iv_back)
@@ -50,7 +51,6 @@ public class RegisteredActivity extends BaseActivity {
     TextView tvTip;
     @BindView(R.id.tv_status)
     TextView tvStatus;
-    protected RegisteredModel registeredModel;
 
     protected CountDownTimerUtils countDownTimerUtils;
     @BindView(R.id.iv_phone_cancle)
@@ -71,39 +71,14 @@ public class RegisteredActivity extends BaseActivity {
     protected void initView() {
         setTitleViewPadding(tvStatus);
         tvTitle.setText(getResources().getString(R.string.reg_title));
+        //
+        initViewModel();
 
     }
 
     @Override
     protected void initData() {
         countDownTimerUtils = new CountDownTimerUtils(tvSendCode, 60 * 1000, 1000);
-
-        registeredModel = ViewModelProviders.of(this).get(RegisteredModel.class);
-
-        registeredModel.getErrData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String error) {
-                dismissLoading();
-                if ("sjl".equals(error)) {
-                    shortToast("验证码发送成功");
-                    countDownTimerUtils.start();
-                    tvTip.setText("");
-                } else {
-                    tvTip.setText(error);
-                }
-            }
-        });
-        registeredModel.getScuucessData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String error) {
-                dismissLoading();
-                shortToast(error);
-                tvTip.setText("");
-                startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
-                finish();
-
-            }
-        });
 
 
         etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
@@ -114,6 +89,25 @@ public class RegisteredActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onError(String message) {
+        if ("sjl".equals(message)) {
+            shortToast("验证码发送成功");
+            countDownTimerUtils.start();
+            tvTip.setText("");
+        } else {
+            tvTip.setText(message);
+        }
+    }
+
+    @Override
+    protected void onSuccess(String data) {
+        shortToast(data);
+        tvTip.setText("");
+        startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
+        finish();
+    }
+
     @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.tv_bottom_xieyi, R.id.iv_phone_cancle, R.id.iv_code_cancle, R.id.iv_pwd_cancle, R.id.iv_pwdr_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -122,11 +116,11 @@ public class RegisteredActivity extends BaseActivity {
                 break;
             case R.id.tv_sendCode:
                 showLoading("");
-                registeredModel.sendCode(etPhone.getText().toString());
+                mViewModel.sendCode(etPhone.getText().toString());
                 break;
             case R.id.btn_next:
                 showLoading("");
-                registeredModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
+                mViewModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
                 break;
             case R.id.tv_bottom_xieyi:
                 break;

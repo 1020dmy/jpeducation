@@ -1,5 +1,7 @@
 package com.jianpei.jpeducation.viewmodel;
 
+import com.jianpei.jpeducation.base.BaseViewModel;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +10,7 @@ package com.jianpei.jpeducation.viewmodel;
  * <p>
  * Describe:
  */
-public class MineModel extends BaseViewModel{
+public class MineModel extends BaseViewModel {
 
 
 

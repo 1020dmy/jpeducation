@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.repository;
+package com.jianpei.jpeducation.base;
 
 /**
  * jpeducation

@@ -1,14 +1,8 @@
 package com.jianpei.jpeducation.viewmodel;
 
-import android.text.TextUtils;
-
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.api.base.BaseObserver;
-import com.jianpei.jpeducation.contract.MainContract;
-import com.jianpei.jpeducation.repository.MainRepository;
+import com.jianpei.jpeducation.base.BaseViewModel;
 
 /**
  * jpeducation
@@ -18,17 +12,17 @@ import com.jianpei.jpeducation.repository.MainRepository;
  * <p>
  * Describe:
  */
-public class MainModel extends BaseViewModel implements MainContract.Model {
+public class MainModel extends BaseViewModel<String> {
 
 
     private MutableLiveData<String> liveDataCatId;//catid更新
 
 
-    private MainRepository mainRepository;
+//    private MainRepository mainRepository;
 
-    public MainModel() {
-        mainRepository = new MainRepository();
-    }
+//    public MainModel() {
+//        mainRepository = new MainRepository();
+//    }
 
     public MutableLiveData<String> getCatId() {
         if (liveDataCatId == null) {
@@ -45,23 +39,33 @@ public class MainModel extends BaseViewModel implements MainContract.Model {
 
     }
 
-    @Override
-    public void getHomeData(String catId) {
-        if (TextUtils.isEmpty(catId)) {
-            return;
-        }
-        mainRepository.getHomeData(catId).compose(setThread()).subscribe(new BaseObserver<String>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<String> t) throws Exception {
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-
-            }
-        });
-
-    }
+//    @Override
+//    public void getHomeData(String catId) {
+//        if (TextUtils.isEmpty(catId)) {
+//            return;
+//        }
+//        mainRepository.getHomeData(catId).compose(setThread()).subscribe(new BaseObserver<HomeDataBean>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<HomeDataBean> t) throws Exception {
+//                if (t.isSuccess()) {
+//                    successData.setValue(t.getData());
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络问题！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//
+//    }
 }

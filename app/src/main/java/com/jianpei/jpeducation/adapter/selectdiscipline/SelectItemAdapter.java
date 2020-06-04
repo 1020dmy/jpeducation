@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.adapter;
+package com.jianpei.jpeducation.adapter.selectdiscipline;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.bean.DisciplinesBean;
-import com.jianpei.jpeducation.utils.MyItemOnClickListener;
+import com.jianpei.jpeducation.utils.listener.MyItemOnClickListener;
 
 import java.util.ArrayList;
 

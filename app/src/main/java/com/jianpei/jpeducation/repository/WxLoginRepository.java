@@ -16,7 +16,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class WxLoginRepository extends BaseRepository implements WxLoginContract.Repository {
+public class WxLoginRepository implements WxLoginContract.Repository {
 
     @Override
     public Observable<BaseEntity<UserInfoBean>> wxLogin(String refreshToken, String expiration, String screen_name, String access_token, String city, String gender, String openid, String province, String iconurl) {

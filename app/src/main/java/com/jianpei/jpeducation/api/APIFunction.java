@@ -3,13 +3,16 @@ package com.jianpei.jpeducation.api;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.config.UrlConfig;
-import com.jianpei.jpeducation.bean.AccessTokenBean;
 import com.jianpei.jpeducation.bean.BindPhoneJson;
 import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.CouponDataJson;
 import com.jianpei.jpeducation.bean.CouponReceiveJson;
 import com.jianpei.jpeducation.bean.DisciplinesBean;
+import com.jianpei.jpeducation.bean.DownloadBean;
+import com.jianpei.jpeducation.bean.DownloadJson;
 import com.jianpei.jpeducation.bean.ForgetPwdJson;
+import com.jianpei.jpeducation.bean.NoticeDataBean;
+import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.bean.LoginJson;
@@ -22,9 +25,7 @@ import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * jpeducation
@@ -83,7 +84,7 @@ public interface APIFunction {
      * 首页数据
      */
     @POST(UrlConfig.homeInfo)
-    Observable<BaseEntity<String>> getHomeInfo(@Body HomeInfoJson homeInfoJson);
+    Observable<BaseEntity<HomeDataBean>> getHomeInfo(@Body HomeInfoJson homeInfoJson);
 
     /**
      * 微信登陆
@@ -114,6 +115,18 @@ public interface APIFunction {
      */
     @POST(UrlConfig.couponData)
     Observable<BaseEntity<ArrayList<CouponDataBean>>> couponData(@Body CouponDataJson couponDataJson);
+
+    /**
+     * 资料下载
+     */
+    @POST(UrlConfig.getDownloadUrl)
+    Observable<BaseEntity<DownloadBean>> getDownloadUrl(@Body DownloadJson downloadJson);
+    /**
+     * 首页公告
+     */
+    @POST(UrlConfig.noticeData)
+    Observable<BaseEntity<ArrayList<NoticeDataBean>>> noticeData(@Body HomeInfoJson homeInfoJson);
+
 
     /**
      * 获取微信ACCESS_TOKEN

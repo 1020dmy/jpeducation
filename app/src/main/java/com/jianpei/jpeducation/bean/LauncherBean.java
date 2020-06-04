@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class LauncherBean {
+public class LauncherBean implements Parcelable {
 
     /**
      * guideList : ["https://jianpei-images.oss-cn-beijing.aliyuncs.com/images/public/guide1.jpg","https://jianpei-images.oss-cn-beijing.aliyuncs.com/images/public/guide2.jpg","https://jianpei-images.oss-cn-beijing.aliyuncs.com/images/public/guide3.jpg"]
@@ -36,4 +39,36 @@ public class LauncherBean {
     public void setGuideList(ArrayList<String> guideList) {
         this.guideList = guideList;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.startingInfo);
+        dest.writeStringList(this.guideList);
+    }
+
+    public LauncherBean() {
+    }
+
+    protected LauncherBean(Parcel in) {
+        this.startingInfo = in.readString();
+        this.guideList = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<LauncherBean> CREATOR = new Parcelable.Creator<LauncherBean>() {
+        @Override
+        public LauncherBean createFromParcel(Parcel source) {
+            return new LauncherBean(source);
+        }
+
+        @Override
+        public LauncherBean[] newArray(int size) {
+            return new LauncherBean[size];
+        }
+    };
 }

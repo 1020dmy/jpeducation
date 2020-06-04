@@ -16,7 +16,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class LauncherRepository extends BaseRepository implements LauncherContract.Repository {
+public class LauncherRepository implements LauncherContract.Repository {
 
     @Override
     public Observable<BaseEntity<LauncherBean>> appSet() {

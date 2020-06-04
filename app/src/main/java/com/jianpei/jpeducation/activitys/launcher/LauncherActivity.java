@@ -1,7 +1,5 @@
 package com.jianpei.jpeducation.activitys.launcher;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -12,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.SelectDisciplineActivity;
-import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.LauncherModel;
@@ -21,9 +19,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class LauncherActivity extends BaseActivity {
+public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherBean> {
 
-    private LauncherModel launcherModel;
     private int isfirst;
     @BindView(R.id.imageView)
     ImageView imageView;
@@ -39,29 +36,24 @@ public class LauncherActivity extends BaseActivity {
     protected void initView() {
         isfirst = (int) SpUtils.get(SpUtils.ISFirst, 0);
         catId = SpUtils.getValue(SpUtils.catId);
-        launcherModel = ViewModelProviders.of(this).get(LauncherModel.class);
-        launcherModel.getScuucessData().observe(this, new Observer<LauncherBean>() {
-            @Override
-            public void onChanged(LauncherBean launcherBean) {
-                Glide.with(LauncherActivity.this).load(launcherBean.getStartingInfo()).into(imageView);
-                start(launcherBean.getGuideList());
-            }
-        });
-        launcherModel.getErrData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-                shortToast(s);
-                start(null);
-            }
-        });
-
+        initViewModel();//初始化viewModel
     }
 
     @Override
     protected void initData() {
-        launcherModel.appSet();
+        mViewModel.appSet();
+    }
 
+    @Override
+    protected void onError(String message) {
+        shortToast(message);
+        start(null);
+    }
+
+    @Override
+    protected void onSuccess(LauncherBean data) {
+        Glide.with(LauncherActivity.this).load(data.getStartingInfo()).into(imageView);
+        start(data.getGuideList());
     }
 
     public void start(ArrayList<String> images) {

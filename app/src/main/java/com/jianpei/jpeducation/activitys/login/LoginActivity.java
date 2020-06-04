@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;
 import com.jianpei.jpeducation.viewmodel.WxLoginModel;
@@ -27,7 +28,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
 
 
     @BindView(R.id.tv_registered)
@@ -43,7 +44,6 @@ public class LoginActivity extends BaseActivity {
 //    @BindView(R.id.tv_accessToken)
 //    TextView textView;
 
-    private WxLoginModel wxLoginModel;
 
 
     private PassLoginFragment passLoginFragment;
@@ -60,38 +60,29 @@ public class LoginActivity extends BaseActivity {
         setTitleViewPadding(tvStatus);
         passLoginFragment = new PassLoginFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, passLoginFragment).show(passLoginFragment).commit();
-
+        initViewModel();//初始化
     }
 
     @Override
     protected void initData() {
 
-        wxLoginModel = new ViewModelProvider(this).get(WxLoginModel.class);
 
-        wxLoginModel.getErrData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String o) {
-                dismissLoading();
-                shortToast(o);
+    }
 
-            }
-        });
+    @Override
+    protected void onError(String message) {
+        shortToast(message);
+    }
 
-        wxLoginModel.getScuucessData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                dismissLoading();
-                if (TextUtils.isEmpty(s)) {
-                    startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
-                } else {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    @Override
+    protected void onSuccess(String data) {
+        if (TextUtils.isEmpty(data)) {
+            startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+        } else {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-                }
-                finish();
-            }
-        });
-
-
+        }
+        finish();
     }
 
 
@@ -174,7 +165,7 @@ public class LoginActivity extends BaseActivity {
 
 //                String access_token = map.get("access_token");
 //                System.out.println("=====access_token===" + access_token);
-                wxLoginModel.wxLogin(
+                mViewModel.wxLogin(
                         map.get("refreshToken"),
                         map.get("expiration"),
                         map.get("screen_name"),

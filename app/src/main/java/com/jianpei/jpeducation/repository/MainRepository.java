@@ -1,11 +1,6 @@
 package com.jianpei.jpeducation.repository;
 
-import com.jianpei.jpeducation.api.RetrofitFactory;
-import com.jianpei.jpeducation.api.base.BaseEntity;
-import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.contract.MainContract;
-
-import io.reactivex.Observable;
 
 /**
  * jpeducation
@@ -15,10 +10,10 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class MainRepository extends BaseRepository implements MainContract.Repository {
+public class MainRepository implements MainContract.Repository {
 
-    @Override
-    public Observable<BaseEntity<String>> getHomeData(String catId) {
-        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId));
-    }
+//    @Override
+//    public Observable<BaseEntity<HomeDataBean>> getHomeData(String catId) {
+//        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId));
+//    }
 }

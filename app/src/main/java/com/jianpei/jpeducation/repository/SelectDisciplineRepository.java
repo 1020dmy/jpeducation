@@ -17,7 +17,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class SelectDisciplineRepository extends BaseRepository implements SelectDisciplineContract.Repository {
+public class SelectDisciplineRepository implements SelectDisciplineContract.Repository {
 
 
     @Override

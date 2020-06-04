@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.viewmodel;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
+import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.contract.LauncherContract;
 import com.jianpei.jpeducation.repository.LauncherRepository;

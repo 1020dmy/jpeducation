@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
+import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.contract.LoginContract;
 import com.jianpei.jpeducation.repository.LoginRepository;

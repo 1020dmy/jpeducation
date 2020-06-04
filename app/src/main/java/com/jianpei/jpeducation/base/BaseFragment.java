@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.jianpei.jpeducation.utils.LoadingDialog;
 
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -36,6 +37,7 @@ public abstract class BaseFragment extends Fragment {
     private Toast toast;
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public abstract class BaseFragment extends Fragment {
         return rootView;
 
     }
+
 
     protected abstract int initLayout();
 
@@ -86,6 +89,7 @@ public abstract class BaseFragment extends Fragment {
             dialog.dismiss();
         }
     }
+
     public void shortToast(String message) {
         if (toast == null) {
             toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);

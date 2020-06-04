@@ -1,12 +1,16 @@
 package com.jianpei.jpeducation.adapter;
 
 
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
+import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.youth.banner.adapter.BannerAdapter;
 
 import java.util.List;
@@ -19,11 +23,15 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class BannerMainAdapter extends BannerAdapter<Integer, BannerMainAdapter.MyHolder> {
+public class BannerMainAdapter extends BannerAdapter<BannerDataBean, BannerMainAdapter.MyHolder> {
 
-    public BannerMainAdapter(List<Integer> datas) {
+    private Context context;
+
+    public BannerMainAdapter(List<BannerDataBean> datas, Context context) {
         super(datas);
+        this.context = context;
     }
+
 
     @Override
     public MyHolder onCreateHolder(ViewGroup parent, int viewType) {
@@ -37,8 +45,9 @@ public class BannerMainAdapter extends BannerAdapter<Integer, BannerMainAdapter.
     }
 
     @Override
-    public void onBindView(MyHolder holder, Integer data, int position, int size) {
-        holder.imageView.setImageResource(data);
+    public void onBindView(MyHolder holder, BannerDataBean data, int position, int size) {
+
+        Glide.with(context).load(data.getImg()).into(holder.imageView);
 
     }
 

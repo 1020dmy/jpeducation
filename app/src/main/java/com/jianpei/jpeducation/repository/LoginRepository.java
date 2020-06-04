@@ -17,7 +17,7 @@ import io.reactivex.Observable;
  * <p>
  * Describe:
  */
-public class LoginRepository extends BaseRepository implements LoginContract.Repository {
+public class LoginRepository implements LoginContract.Repository {
 
 
     @Override
