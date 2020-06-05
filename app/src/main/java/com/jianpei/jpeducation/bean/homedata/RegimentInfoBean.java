@@ -12,12 +12,9 @@ import android.os.Parcelable;
  * <p>
  * Describe:
  */
-public class RegimentInfoBean extends ProviderMultiEntity implements Parcelable {
+public class RegimentInfoBean  implements Parcelable {
 
-    @Override
-    public int getItemType() {
-        return RGI;
-    }
+
 
     /**
      * id : 42

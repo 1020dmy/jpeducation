@@ -215,7 +215,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
-                mainModel.upData(btnTitle.getText().toString());
+//                mainModel.upData(btnTitle.getText().toString());
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

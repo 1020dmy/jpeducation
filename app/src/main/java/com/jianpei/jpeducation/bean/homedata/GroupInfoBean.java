@@ -13,12 +13,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * <p>
  * Describe:
  */
-public class GroupInfoBean extends ProviderMultiEntity implements Parcelable {
-
-    @Override
-    public int getItemType() {
-        return GPI;
-    }
+public class GroupInfoBean  implements Parcelable {
 
     /**
      * id : 5

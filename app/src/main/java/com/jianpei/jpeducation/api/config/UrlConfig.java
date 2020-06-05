@@ -47,4 +47,6 @@ public class UrlConfig {
     public static final String getDownloadUrl = "material/getDownloadUrl";
     //首页公告
     public static final String noticeData = "noticeData";
+    //积分购买
+    public static final String integrlPay = "user/integrlPay";
 }

@@ -11,6 +11,7 @@ import com.jianpei.jpeducation.bean.DisciplinesBean;
 import com.jianpei.jpeducation.bean.DownloadBean;
 import com.jianpei.jpeducation.bean.DownloadJson;
 import com.jianpei.jpeducation.bean.ForgetPwdJson;
+import com.jianpei.jpeducation.bean.IntegrlPayJson;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
@@ -121,12 +122,18 @@ public interface APIFunction {
      */
     @POST(UrlConfig.getDownloadUrl)
     Observable<BaseEntity<DownloadBean>> getDownloadUrl(@Body DownloadJson downloadJson);
+
     /**
      * 首页公告
      */
     @POST(UrlConfig.noticeData)
     Observable<BaseEntity<ArrayList<NoticeDataBean>>> noticeData(@Body HomeInfoJson homeInfoJson);
 
+    /**
+     * 积分支付
+     */
+    @POST(UrlConfig.integrlPay)
+    Observable<BaseEntity<String>> integrlPay(@Body IntegrlPayJson integrlPayJson);
 
     /**
      * 获取微信ACCESS_TOKEN

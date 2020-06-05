@@ -39,6 +39,8 @@ public abstract class BaseModelFragment<T extends BaseViewModel, D> extends Base
 
     }
 
+
+
     protected abstract void onError(String message);
 
     protected abstract void onSuccess(D data);

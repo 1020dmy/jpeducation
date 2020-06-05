@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:drawableRight="@drawable/select_title"
+            android:drawableRight="@drawable/select_title_down"
             android:drawablePadding="20dp"
             android:text="一级建筑师"
             android:textColor="@color/white"

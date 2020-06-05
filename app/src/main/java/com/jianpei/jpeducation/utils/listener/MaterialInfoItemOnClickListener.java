@@ -14,5 +14,5 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
  */
 public interface MaterialInfoItemOnClickListener {
 
-    void OnItemClick(View view, String id );
+    void OnItemClick(View view, int position);
 }

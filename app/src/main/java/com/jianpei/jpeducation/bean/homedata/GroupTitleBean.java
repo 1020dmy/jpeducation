@@ -13,16 +13,12 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * <p>
  * Describe:
  */
-public class GroupTitleBean extends ProviderMultiEntity implements Parcelable {
+public class GroupTitleBean  implements Parcelable {
 
 
     private String title;
     private String Subtitle;
 
-    @Override
-    public int getItemType() {
-        return GPT;
-    }
 
     public GroupTitleBean(String title, String subtitle) {
         this.title = title;

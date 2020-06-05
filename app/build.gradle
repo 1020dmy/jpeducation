@@ -88,10 +88,11 @@ dependencies {
     //数据库
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"//版本看情况吧
+
     implementation "androidx.room:room-rxjava2:$room_version"
     //跑马灯
     implementation 'com.sunfusheng:MarqueeView:1.4.1'
-
 
 
     implementation project(path: ':umeng')

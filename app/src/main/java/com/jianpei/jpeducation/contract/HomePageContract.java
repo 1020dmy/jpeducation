@@ -23,7 +23,7 @@ public interface HomePageContract {
 
         Observable<BaseEntity<ArrayList<NoticeDataBean>>> noticeData(String catId);
 
-        Observable<BaseEntity<DownloadBean>> getDownloadUrl(String fileId);
+//        Observable<BaseEntity<DownloadBean>> getDownloadUrl(String fileId);
 
     }
 
@@ -32,7 +32,7 @@ public interface HomePageContract {
         void getHomeData(String catId);
 
         void noticeData(String catId);
-        void  getDownloadUrl(String fileId);
+//        void  getDownloadUrl(String fileId);
 
     }
 }

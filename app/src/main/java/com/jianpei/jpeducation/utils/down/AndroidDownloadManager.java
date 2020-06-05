@@ -2,15 +2,18 @@ package com.jianpei.jpeducation.utils.down;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 
 import com.jianpei.jpeducation.utils.L;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * jpeducation
@@ -31,6 +34,8 @@ public class AndroidDownloadManager {
 
     private AndroidDownloadManagerListener listener;
 
+    private TimerTask timerTask;
+
     public AndroidDownloadManager(Context context, String url) {
         this(context, url, getFileNameByUrl(url));
     }
@@ -49,7 +54,7 @@ public class AndroidDownloadManager {
     /**
      * 开始下载
      */
-    public void download() {
+    public void download(Handler handler) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         //移动网络情况下是否允许漫游
         request.setAllowedOverRoaming(false);
@@ -75,77 +80,128 @@ public class AndroidDownloadManager {
             }
             downloadId = downloadManager.enqueue(request);
         }
-        //IntentFilter filter=new IntentFilter();
-        //filter.addAction("downloadAction");
-        //注册广播接收者，监听下载状态
-        //context.registerReceiver(receiver,filter);
-        checkStatus();
-    }
+
+        DownloadManager.Query query = new DownloadManager.Query();
+        query.setFilterById(downloadId);
 
 
-    private void checkStatus() {
-        boolean isRuning = true;
-//        Intent intent = new Intent();
-        while (isRuning) {
-            DownloadManager.Query query = new DownloadManager.Query();
-            //通过下载的id查找
-            query.setFilterById(downloadId);
-            Cursor cursor = downloadManager.query(query);
-            int[] bytesAndStatus = new int[]{
-                    -1, -1, 0
-            };
-            if (cursor != null && cursor.moveToFirst()) {
-                int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                switch (status) {
-                    //下载暂停
-                    case DownloadManager.STATUS_PAUSED:
-                        break;
-                    //下载延迟
-                    case DownloadManager.STATUS_PENDING:
-                        break;
-                    //正在下载
-                    case DownloadManager.STATUS_RUNNING:
-                        L.i("gdchent", "下载中");
-                        //已经下载文件大小
-                        bytesAndStatus[0] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                        //下载文件的总大小
-                        bytesAndStatus[1] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                        //下载状态
-                        bytesAndStatus[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                        L.i("gdchent", "下载文件的进度" + String.valueOf(bytesAndStatus[0]));
+        Timer timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Cursor cursor = downloadManager.query(query);
 
-//                         intent.putExtra("data",bytesAndStatus[0]/bytesAndStatus[1]);
-//                         intent.setAction("downloadAction");
-//                         context.sendBroadcast(intent);
-                        double dProgress = deciMal(bytesAndStatus[0], bytesAndStatus[1]);
-                        if (listener != null) {
-                            listener.onDownLoading((int) (dProgress * 100));
-                        }
-                        break;
-                    //下载完成
-                    case DownloadManager.STATUS_SUCCESSFUL:
-                        if (listener != null) {
-                            listener.onSuccess(path);
-                        }
-                        cursor.close();
-                        //context.unregisterReceiver(receiver);
-                        isRuning = false;
-                        break;
-                    //下载失败
-                    case DownloadManager.STATUS_FAILED:
-                        if (listener != null) {
-                            listener.onFailed(new Exception("下载失败"));
-                        }
-                        cursor.close();
-                        //context.unregisterReceiver(receiver);
-                        isRuning = false;
-                        break;
+                if (cursor != null && cursor.moveToFirst()) {
+                    switch (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
+                        //下载完成
+                        case DownloadManager.STATUS_SUCCESSFUL:
+                            Message msg = Message.obtain();
+                            msg.arg1 = 100;
+                            handler.sendMessage(msg);
+                            cursor.close();
+                            timerTask.cancel();
+                            break;
+                        //下载暂停
+                        case DownloadManager.STATUS_PAUSED:
+                            break;
+                        //下载延迟
+                        case DownloadManager.STATUS_PENDING:
+                            L.e("========STATUS_PENDING========");
+                            break;
+                        //正在下载
+                        case DownloadManager.STATUS_RUNNING:
+                            long bytes_downloaded = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                            long bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                            int pro = (int) ((bytes_downloaded * 100) / bytes_total);
+
+                            L.e("========STATUS_RUNNING========" + bytes_downloaded + "," + bytes_total);
+
+                            L.e("下载进度：" + pro);
+                            Message message = Message.obtain();
+                            message.arg1 = pro;
+                            handler.sendMessage(message);
+                            break;
+                        //下载失败
+                        case DownloadManager.STATUS_FAILED:
+                            L.e("========STATUS_FAILED========");
+                            Message sss = Message.obtain();
+                            sss.arg1 = -1;
+                            handler.sendMessage(sss);
+                            cursor.close();
+                            timerTask.cancel();
+                            break;
+                    }
                 }
-            } else {
-                L.i("gdchent", "走这里");
+                cursor.close();
             }
-        }
+        };
+        timer.schedule(timerTask, 0, 3000);
     }
+
+
+//    private void checkStatus() {
+//        boolean isRuning = true;
+////        Intent intent = new Intent();
+//        while (isRuning) {
+//            DownloadManager.Query query = new DownloadManager.Query();
+//            //通过下载的id查找
+//            query.setFilterById(downloadId);
+//            Cursor cursor = downloadManager.query(query);
+//            int[] bytesAndStatus = new int[]{
+//                    -1, -1, 0
+//            };
+//            if (cursor != null && cursor.moveToFirst()) {
+//                int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+//                switch (status) {
+//                    //下载暂停
+//                    case DownloadManager.STATUS_PAUSED:
+//                        break;
+//                    //下载延迟
+//                    case DownloadManager.STATUS_PENDING:
+//                        break;
+//                    //正在下载
+//                    case DownloadManager.STATUS_RUNNING:
+//                        L.i("gdchent", "下载中");
+//                        //已经下载文件大小
+//                        bytesAndStatus[0] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+//                        //下载文件的总大小
+//                        bytesAndStatus[1] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+//                        //下载状态
+//                        bytesAndStatus[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+//                        L.i("gdchent", "下载文件的进度" + String.valueOf(bytesAndStatus[0]));
+//
+////                         intent.putExtra("data",bytesAndStatus[0]/bytesAndStatus[1]);
+////                         intent.setAction("downloadAction");
+////                         context.sendBroadcast(intent);
+//                        double dProgress = deciMal(bytesAndStatus[0], bytesAndStatus[1]);
+//                        if (listener != null) {
+//                            listener.onDownLoading((int) (dProgress * 100));
+//                        }
+//                        break;
+//                    //下载完成
+//                    case DownloadManager.STATUS_SUCCESSFUL:
+//                        if (listener != null) {
+//                            listener.onSuccess(path);
+//                        }
+//                        cursor.close();
+////                        context.unregisterReceiver(receiver);
+//                        isRuning = false;
+//                        break;
+//                    //下载失败
+//                    case DownloadManager.STATUS_FAILED:
+//                        if (listener != null) {
+//                            listener.onFailed(new Exception("下载失败"));
+//                        }
+//                        cursor.close();
+//                        //context.unregisterReceiver(receiver);
+//                        isRuning = false;
+//                        break;
+//                }
+//            } else {
+//                L.i("gdchent", "走这里");
+//            }
+//        }
+//    }
 
     //广播监听下载的各个状态
 //    private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -173,10 +229,12 @@ public class AndroidDownloadManager {
         return filename;
     }
 
-    private double deciMal(int top, int below) {
+    private int deciMal(int top, int below) {
         double result = new BigDecimal((float) top / below).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         L.e("返回的两位数", result + "'");
-        return result;
+        return (int) result;
 
     }
+
+
 }

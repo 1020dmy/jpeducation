@@ -3,6 +3,11 @@ package com.jianpei.jpeducation.bean.homedata;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 /**
@@ -13,12 +18,9 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * <p>
  * Describe:
  */
-public class MaterialInfoBean extends ProviderMultiEntity implements Parcelable {
+@Entity(tableName = "material")
+public class MaterialInfoBean implements Parcelable {
 
-    @Override
-    public int getItemType() {
-        return MTI;
-    }
 
     /**
      * id : 2376
@@ -43,26 +45,97 @@ public class MaterialInfoBean extends ProviderMultiEntity implements Parcelable 
      */
 
 
+//    private String id;
+//    private String type_id;
+//    private String cat_id;
+//    private String class_id;
+//    private String title;
+//    private String file_type;
+//    private String file_size;
+//    private String oss_path;
+//    private String year_of;
+//    private String is_free;
+//    private String price;
+//    private String give_by_class;
+//    private String download;
+//    private String created_at;
+//    private String expired_at;
+//    private String chapter_id;
+//    private String sort;
+//    private String total;
+//    private String is_rec;
 
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "materialid")
     private String id;
+    @ColumnInfo(name = "type_id")
     private String type_id;
+    @ColumnInfo(name = "cat_id")
     private String cat_id;
+    @ColumnInfo(name = "class_id")
     private String class_id;
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "file_type")
     private String file_type;
+    @ColumnInfo(name = "file_size")
     private String file_size;
+    @ColumnInfo(name = "oss_path")
     private String oss_path;
+    @ColumnInfo(name = "year_of")
     private String year_of;
+    @ColumnInfo(name = "is_free")
     private String is_free;
+    @ColumnInfo(name = "price")
     private String price;
+    @ColumnInfo(name = "give_by_class")
     private String give_by_class;
+    @ColumnInfo(name = "download")
     private String download;
+    @ColumnInfo(name = "created_at")
     private String created_at;
+    @ColumnInfo(name = "expired_at")
     private String expired_at;
+    @ColumnInfo(name = "chapter_id")
     private String chapter_id;
+    @ColumnInfo(name = "sort")
     private String sort;
+    @ColumnInfo(name = "total")
     private String total;
+    @ColumnInfo(name = "is_rec")
     private String is_rec;
+    @ColumnInfo(name = "status")
+    private String status;
+    @ColumnInfo(name = "path")
+    private String path;
+    @ColumnInfo(name = "progress")
+    private int progress;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
 
     public String getId() {
         return id;
@@ -217,6 +290,9 @@ public class MaterialInfoBean extends ProviderMultiEntity implements Parcelable 
     }
 
 
+    public MaterialInfoBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -243,9 +319,9 @@ public class MaterialInfoBean extends ProviderMultiEntity implements Parcelable 
         dest.writeString(this.sort);
         dest.writeString(this.total);
         dest.writeString(this.is_rec);
-    }
-
-    public MaterialInfoBean() {
+        dest.writeString(this.status);
+        dest.writeString(this.path);
+        dest.writeInt(this.progress);
     }
 
     protected MaterialInfoBean(Parcel in) {
@@ -268,9 +344,12 @@ public class MaterialInfoBean extends ProviderMultiEntity implements Parcelable 
         this.sort = in.readString();
         this.total = in.readString();
         this.is_rec = in.readString();
+        this.status = in.readString();
+        this.path = in.readString();
+        this.progress = in.readInt();
     }
 
-    public static final Parcelable.Creator<MaterialInfoBean> CREATOR = new Parcelable.Creator<MaterialInfoBean>() {
+    public static final Creator<MaterialInfoBean> CREATOR = new Creator<MaterialInfoBean>() {
         @Override
         public MaterialInfoBean createFromParcel(Parcel source) {
             return new MaterialInfoBean(source);

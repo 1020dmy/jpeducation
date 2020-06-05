@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * <p>
  * Describe:
  */
-public class MaterialTitleBean extends ProviderMultiEntity implements Parcelable {
+public class MaterialTitleBean  implements Parcelable {
 
     private String title;
     private String Subtitle;
@@ -24,10 +24,6 @@ public class MaterialTitleBean extends ProviderMultiEntity implements Parcelable
         Subtitle = subtitle;
     }
 
-    @Override
-    public int getItemType() {
-        return MTT;
-    }
 
     public String getTitle() {
         return title;

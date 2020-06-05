@@ -12,6 +12,7 @@ import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.contract.HomePageContract;
 import com.jianpei.jpeducation.repository.HomePageRepositiry;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class HomePageModel extends BaseViewModel<HomeDataBean> implements HomePa
 
     private MutableLiveData<ArrayList<NoticeDataBean>> noticeDatas;
 
-    private MutableLiveData<DownloadBean> downloadBeanMutableLiveData;
+//    private MutableLiveData<DownloadBean> downloadBeanMutableLiveData;
 
 
     public HomePageModel() {
@@ -44,13 +45,13 @@ public class HomePageModel extends BaseViewModel<HomeDataBean> implements HomePa
         return noticeDatas;
     }
 
-    public MutableLiveData<DownloadBean> getDownloadBeanMutableLiveData() {
-        if (downloadBeanMutableLiveData == null) {
-            downloadBeanMutableLiveData = new MutableLiveData<>();
-
-        }
-        return downloadBeanMutableLiveData;
-    }
+//    public MutableLiveData<DownloadBean> getDownloadBeanMutableLiveData() {
+//        if (downloadBeanMutableLiveData == null) {
+//            downloadBeanMutableLiveData = new MutableLiveData<>();
+//
+//        }
+//        return downloadBeanMutableLiveData;
+//    }
 
     @Override
     public void getHomeData(String catId) {
@@ -73,6 +74,7 @@ public class HomePageModel extends BaseViewModel<HomeDataBean> implements HomePa
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                L.e("onFailure:"+e.getMessage());
                 if (isNetWorkError) {
                     errData.setValue("网络问题！");
                 } else {
@@ -115,37 +117,37 @@ public class HomePageModel extends BaseViewModel<HomeDataBean> implements HomePa
         });
     }
 
-    @Override
-    public void getDownloadUrl(String fileId) {
-        if (TextUtils.isEmpty(fileId)) {
-            errData.setValue("文件ID不能为空");
-            return;
-        }
-
-        homePageRepositiry.getDownloadUrl(fileId).compose(setThread()).subscribe(new BaseObserver<DownloadBean>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<DownloadBean> t) throws Exception {
-                if (t.isSuccess()) {
-                    if (downloadBeanMutableLiveData == null) {
-                        downloadBeanMutableLiveData = new MutableLiveData<>();
-                    }
-                    downloadBeanMutableLiveData.setValue(t.getData());
-                } else {
-                    errData.setValue(t.getMsg());
-                }
-
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                if (isNetWorkError) {
-                    errData.setValue("网络问题！");
-                } else {
-                    errData.setValue(e.getMessage());
-                }
-            }
-        });
-    }
+//    @Override
+//    public void getDownloadUrl(String fileId) {
+//        if (TextUtils.isEmpty(fileId)) {
+//            errData.setValue("文件ID不能为空");
+//            return;
+//        }
+//
+//        homePageRepositiry.getDownloadUrl(fileId).compose(setThread()).subscribe(new BaseObserver<DownloadBean>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<DownloadBean> t) throws Exception {
+//                if (t.isSuccess()) {
+//                    if (downloadBeanMutableLiveData == null) {
+//                        downloadBeanMutableLiveData = new MutableLiveData<>();
+//                    }
+//                    downloadBeanMutableLiveData.setValue(t.getData());
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络问题！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//    }
 }

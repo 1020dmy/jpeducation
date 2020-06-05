@@ -21,6 +21,24 @@ public class DownloadBean implements Parcelable {
 
     private String is_pay;
     private String downloadUrl;
+    private String intergral_price;
+    private String user_intergral;
+
+    public String getIntergral_price() {
+        return intergral_price;
+    }
+
+    public void setIntergral_price(String intergral_price) {
+        this.intergral_price = intergral_price;
+    }
+
+    public String getUser_intergral() {
+        return user_intergral;
+    }
+
+    public void setUser_intergral(String user_intergral) {
+        this.user_intergral = user_intergral;
+    }
 
     public String getIs_pay() {
         return is_pay;
@@ -38,6 +56,8 @@ public class DownloadBean implements Parcelable {
         this.downloadUrl = downloadUrl;
     }
 
+    public DownloadBean() {
+    }
 
     @Override
     public int describeContents() {
@@ -48,17 +68,18 @@ public class DownloadBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.is_pay);
         dest.writeString(this.downloadUrl);
-    }
-
-    public DownloadBean() {
+        dest.writeString(this.intergral_price);
+        dest.writeString(this.user_intergral);
     }
 
     protected DownloadBean(Parcel in) {
         this.is_pay = in.readString();
         this.downloadUrl = in.readString();
+        this.intergral_price = in.readString();
+        this.user_intergral = in.readString();
     }
 
-    public static final Parcelable.Creator<DownloadBean> CREATOR = new Parcelable.Creator<DownloadBean>() {
+    public static final Creator<DownloadBean> CREATOR = new Creator<DownloadBean>() {
         @Override
         public DownloadBean createFromParcel(Parcel source) {
             return new DownloadBean(source);

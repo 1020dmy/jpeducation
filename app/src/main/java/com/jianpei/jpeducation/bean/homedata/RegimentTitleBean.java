@@ -12,7 +12,7 @@ import android.os.Parcelable;
  * <p>
  * Describe:
  */
-public class RegimentTitleBean extends ProviderMultiEntity implements Parcelable {
+public class RegimentTitleBean  implements Parcelable {
 
     private String title;
     private String Subtitle;
@@ -22,10 +22,6 @@ public class RegimentTitleBean extends ProviderMultiEntity implements Parcelable
         Subtitle = subtitle;
     }
 
-    @Override
-    public int getItemType() {
-        return RGT;
-    }
 
     public String getTitle() {
         return title;
