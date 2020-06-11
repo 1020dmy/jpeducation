@@ -9,6 +9,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.chad.library.adapter.base.entity.node.BaseNode;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -19,7 +24,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * Describe:
  */
 @Entity(tableName = "material")
-public class MaterialInfoBean implements Parcelable {
+public class MaterialInfoBean extends BaseNode implements Parcelable {
 
 
     /**
@@ -106,11 +111,11 @@ public class MaterialInfoBean implements Parcelable {
     @ColumnInfo(name = "is_rec")
     private String is_rec;
     @ColumnInfo(name = "status")
-    private String status;
+    private String status = "下载";
     @ColumnInfo(name = "path")
     private String path;
     @ColumnInfo(name = "progress")
-    private int progress;
+    private int progress = 0;
 
 
     public String getStatus() {
@@ -360,4 +365,10 @@ public class MaterialInfoBean implements Parcelable {
             return new MaterialInfoBean[size];
         }
     };
+
+    @Nullable
+    @Override
+    public List<BaseNode> getChildNode() {
+        return null;
+    }
 }

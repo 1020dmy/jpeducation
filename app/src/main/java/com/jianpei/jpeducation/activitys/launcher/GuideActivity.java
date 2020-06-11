@@ -9,10 +9,9 @@ import android.widget.LinearLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.SelectDisciplineActivity;
 import com.jianpei.jpeducation.adapter.GuideAdapter;
-import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.SpUtils;
 
@@ -22,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends BaseNoStatusActivity {
 
     @BindView(R.id.viewPage)
     ViewPager2 viewPage;

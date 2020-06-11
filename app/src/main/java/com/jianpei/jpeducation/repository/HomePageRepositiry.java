@@ -50,6 +50,8 @@ public class HomePageRepositiry implements HomePageContract.Repository {
             }
         });
 
+//        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId));
+
     }
 
     @Override

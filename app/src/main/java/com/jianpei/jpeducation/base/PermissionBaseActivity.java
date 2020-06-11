@@ -22,7 +22,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public abstract class PermissionBaseActivity extends BaseActivity {
+public abstract class PermissionBaseActivity extends BaseNoStatusActivity {
 
 
     private AlertDialog mPermissionDialog;

@@ -12,7 +12,10 @@ import com.jianpei.jpeducation.bean.DownloadBean;
 import com.jianpei.jpeducation.bean.DownloadJson;
 import com.jianpei.jpeducation.bean.ForgetPwdJson;
 import com.jianpei.jpeducation.bean.IntegrlPayJson;
+import com.jianpei.jpeducation.bean.MaterialDataBean;
+import com.jianpei.jpeducation.bean.MaterialDataJson;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
+import com.jianpei.jpeducation.bean.SubMaterialDataJson;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -20,6 +23,7 @@ import com.jianpei.jpeducation.bean.LoginJson;
 import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
+import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 
 
 import java.util.ArrayList;
@@ -134,6 +138,18 @@ public interface APIFunction {
      */
     @POST(UrlConfig.integrlPay)
     Observable<BaseEntity<String>> integrlPay(@Body IntegrlPayJson integrlPayJson);
+
+    /**
+     * 资料一级列表
+     */
+    @POST(UrlConfig.materialData)
+    Observable<BaseEntity<MaterialDataBean>> materialData(@Body MaterialDataJson materialDataJson);
+
+    /**
+     * 资料二级列表
+     */
+    @POST(UrlConfig.subMaterialData)
+    Observable<BaseEntity<ArrayList<MaterialInfoBean>>> subMaterialData(@Body SubMaterialDataJson subMaterialDataJson);
 
     /**
      * 获取微信ACCESS_TOKEN

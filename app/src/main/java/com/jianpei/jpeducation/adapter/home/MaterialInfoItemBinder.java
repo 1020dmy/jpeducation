@@ -41,6 +41,7 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
         } else if ("2".equals(materialInfoBean.getStatus())) {
             myHolder.tvDown.setText("下载完成");
             myHolder.progressBar.setVisibility(View.VISIBLE);
+            myHolder.tvDown.setEnabled(false);
         } else {
             myHolder.tvDown.setText("下载");
             myHolder.progressBar.setVisibility(View.INVISIBLE);

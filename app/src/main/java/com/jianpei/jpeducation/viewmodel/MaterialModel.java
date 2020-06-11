@@ -76,6 +76,8 @@ public class MaterialModel extends BaseViewModel implements MaterialContract.Mod
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                L.e("===getDownloadUrl==onFailure=="+e.getMessage());
+
                 if (isNetWorkError) {
                     errData.setValue("网络问题！");
                 } else {

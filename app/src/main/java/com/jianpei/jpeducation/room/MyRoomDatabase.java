@@ -28,6 +28,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(MyApplication.getInstance(),
                             MyRoomDatabase.class, "JianPei.db")
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

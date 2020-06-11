@@ -34,8 +34,8 @@ public interface MaterialInfoDao {
      *
      * @return
      */
-    @Query("SELECT * FROM material")
-    ArrayList<MaterialInfoBean> getAllMaterialInfoBeans();
+//    @Query("SELECT * FROM material")
+//    ArrayList<MaterialInfoBean> getAllMaterialInfoBeans();
 
     @Insert
     void insertMaterialInfo(MaterialInfoBean materialInfoBean);

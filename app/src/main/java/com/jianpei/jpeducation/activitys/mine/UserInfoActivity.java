@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
 import com.jianpei.umeng.ShareActivity;
@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserInfoActivity extends BaseActivity {
+public class UserInfoActivity extends BaseNoStatusActivity {
 
     @BindView(R.id.iv_back)
     ImageView tvBack;

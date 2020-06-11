@@ -11,6 +11,8 @@ package com.jianpei.jpeducation.api.base;
  */
 public class BaseEntity<T> {
     private static String SUCCESS_CODE = "success";//成功的code
+    private static String LOGIN = "login";//成功的code
+
     private String msg;
     private long time;
     private T data;
@@ -20,6 +22,10 @@ public class BaseEntity<T> {
     public boolean isSuccess() {
 
         return getStatus().equals(SUCCESS_CODE);
+    }
+
+    public boolean isLogin() {
+        return getStatus().equals(LOGIN);
     }
 
 

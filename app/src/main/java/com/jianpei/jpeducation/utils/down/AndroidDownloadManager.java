@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.utils.down;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -80,7 +81,6 @@ public class AndroidDownloadManager {
             }
             downloadId = downloadManager.enqueue(request);
         }
-
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(downloadId);
 
@@ -137,6 +137,8 @@ public class AndroidDownloadManager {
         };
         timer.schedule(timerTask, 0, 3000);
     }
+
+
 
 
 //    private void checkStatus() {
@@ -233,8 +235,5 @@ public class AndroidDownloadManager {
         double result = new BigDecimal((float) top / below).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         L.e("返回的两位数", result + "'");
         return (int) result;
-
     }
-
-
 }

@@ -13,7 +13,7 @@ import java.lang.reflect.ParameterizedType;
  * <p>
  * Describe:
  */
-public abstract class BaseModelActivity<T extends BaseViewModel, D> extends BaseActivity {
+public abstract class BaseModelActivity<T extends BaseViewModel, D> extends BaseNoStatusActivity {
 
     protected T mViewModel;
 

@@ -43,7 +43,6 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.homedata.MaterialTitleBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentTitleBean;
-import com.jianpei.jpeducation.room.MyRoomDatabase;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.down.AndroidDownloadManager;
@@ -152,7 +151,7 @@ public class HomeFragment extends BaseFragment {
                 .addItemBinder(RegimentInfoBean.class, new RegimentInfoItemBinder(getActivity()))
                 .addItemBinder(GroupTitleBean.class, new GroupTitleItemBinder())
                 .addItemBinder(GroupInfoBean.class, new GroupInfoItemBinder(getActivity()))
-                .addItemBinder(MaterialTitleBean.class, new MaterialTitleItemBinder())
+                .addItemBinder(MaterialTitleBean.class, new MaterialTitleItemBinder(getActivity()))
                 .addItemBinder(String.class, new MateriallTitleTItemBinder())
                 .addItemBinder(MaterialInfoBean.class, materialInfoItemBinder);
         recyclerView.setAdapter(baseBinderAdapter);

@@ -1,6 +1,10 @@
 package com.jianpei.jpeducation.api.base;
 
 import android.accounts.NetworkErrorException;
+import android.content.Intent;
+
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
+import com.jianpei.jpeducation.base.MyApplication;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -8,6 +12,8 @@ import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 /**
@@ -30,6 +36,11 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
     public void onNext(BaseEntity<T> tBaseEntity) {
         onRequestEnd();
         try {
+            if (tBaseEntity.isLogin()) {
+                MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), LoginActivity.class).setFlags(FLAG_ACTIVITY_NEW_TASK));
+                onComplete();
+                return;
+            }
             onSuccees(tBaseEntity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,6 +99,7 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
     }
 
     protected void onRequestEnd() {
+
     }
 
 }

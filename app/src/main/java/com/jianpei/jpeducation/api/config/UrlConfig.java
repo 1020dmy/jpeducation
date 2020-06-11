@@ -49,4 +49,8 @@ public class UrlConfig {
     public static final String noticeData = "noticeData";
     //积分购买
     public static final String integrlPay = "user/integrlPay";
+    //资料一级列表
+    public static final String materialData = "material/materialData";
+    //资料二级列表
+    public static final String subMaterialData = "material/subMaterialData";
 }

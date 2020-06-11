@@ -1,5 +1,7 @@
 package com.jianpei.jpeducation.adapter.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.bean.homedata.MaterialTitleBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +25,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MaterialTitleItemBinder extends BaseItemBinder<MaterialTitleBean, MaterialTitleItemBinder.MyHolder> {
 
+    private Context context;
+
+    public MaterialTitleItemBinder(Context context) {
+        this.context = context;
+    }
+
     @Override
     public void convert(@NotNull MyHolder myHolder, MaterialTitleBean materialTitleBean) {
         myHolder.tvTitle.setText(materialTitleBean.getTitle());
@@ -35,6 +44,11 @@ public class MaterialTitleItemBinder extends BaseItemBinder<MaterialTitleBean, M
         return new MyHolder(view);
     }
 
+    @Override
+    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, MaterialTitleBean data, int position) {
+        context.startActivity(new Intent(context, MaterialListActivity.class));
+    }
+
     class MyHolder extends BaseViewHolder {
         private TextView tvTitle, tvTip, tvMore;
 
@@ -43,6 +57,8 @@ public class MaterialTitleItemBinder extends BaseItemBinder<MaterialTitleBean, M
             tvTitle = view.findViewById(R.id.tv_title);
             tvTip = view.findViewById(R.id.tv_tip);
             tvMore = view.findViewById(R.id.tv_more);
+
+            addChildClickViewIds(R.id.tv_more);
         }
     }
 }

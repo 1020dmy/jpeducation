@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -95,7 +96,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     @Override
     protected void initData() {
-        mainModel = ViewModelProviders.of(this).get(MainModel.class);
+        mainModel = new ViewModelProvider(this).get(MainModel.class);
     }
 
     @Override

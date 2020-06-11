@@ -12,12 +12,12 @@ import android.widget.TextView;
 
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class WebActivity extends BaseActivity {
+public class WebActivity extends BaseNoStatusActivity {
 
 
     @BindView(R.id.tv_status)

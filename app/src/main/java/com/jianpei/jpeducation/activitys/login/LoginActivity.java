@@ -8,12 +8,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
-import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;

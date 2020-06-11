@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.adapter.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.ClassInfoActivity;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +55,7 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
         return new MyHolder(view);
     }
 
-    class MyHolder extends BaseViewHolder {
+    class MyHolder extends BaseViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView tvTitle, tvZhekou, tvNums, tvSubmit;
         private LinearLayout llZhekou;
@@ -66,6 +68,14 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
             tvNums = view.findViewById(R.id.tv_nums);
             tvSubmit = view.findViewById(R.id.tv_submit);
             llZhekou = view.findViewById(R.id.ll_zhekou);
+            tvSubmit.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            context.startActivity(new Intent(context, ClassInfoActivity.class));
+
         }
     }
 }
