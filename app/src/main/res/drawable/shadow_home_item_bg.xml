@@ -14,6 +14,8 @@
         <shape android:shape="rectangle">
             <padding
                 android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
                 android:top="2px" />
 
             <solid android:color="#10CCCCCC" />

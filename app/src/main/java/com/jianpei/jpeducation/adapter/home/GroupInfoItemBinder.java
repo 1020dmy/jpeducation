@@ -55,7 +55,7 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
         return new MyHolder(view);
     }
 
-    class MyHolder extends BaseViewHolder implements View.OnClickListener {
+    class MyHolder extends BaseViewHolder {
         private ImageView imageView;
         private TextView tvTitle, tvZhekou, tvNums, tvSubmit;
         private LinearLayout llZhekou;
@@ -68,14 +68,13 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
             tvNums = view.findViewById(R.id.tv_nums);
             tvSubmit = view.findViewById(R.id.tv_submit);
             llZhekou = view.findViewById(R.id.ll_zhekou);
-            tvSubmit.setOnClickListener(this);
+            addChildClickViewIds(R.id.tv_submit);
 
         }
+    }
 
-        @Override
-        public void onClick(View v) {
-            context.startActivity(new Intent(context, ClassInfoActivity.class));
-
-        }
+    @Override
+    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, GroupInfoBean data, int position) {
+        context.startActivity(new Intent(context, ClassInfoActivity.class).putExtra("groupInfoBean", data));
     }
 }

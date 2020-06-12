@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:paddingLeft="37dp"
+    android:paddingRight="26dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/directory_trylistener" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@id/imageView"
+        android:text="第一节：建筑工程一"
+        android:textColor="@color/c161820"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_try"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_directory_trylistener"
+        android:paddingLeft="29dp"
+        android:paddingTop="6dp"
+        android:paddingRight="29dp"
+        android:paddingBottom="6dp"
+        android:text="试听"
+        android:textColor="@color/cE73B30"
+        android:textSize="14dp" />
+
+</RelativeLayout>

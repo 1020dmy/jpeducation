@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys;
 
 
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.fragment.info.ClassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
@@ -48,6 +50,11 @@ public class ClassInfoActivity extends BaseActivity {
     @BindView(R.id.submit)
     TextView submit;
 
+    @BindView(R.id.tv_now_price)
+    TextView tvNowPrice;
+    @BindView(R.id.tv_price)
+    TextView tvPrice;
+
     @BindView(R.id.viewPage)
     ViewPager2 viewPager;
     @BindView(R.id.iv_black_back)
@@ -71,6 +78,8 @@ public class ClassInfoActivity extends BaseActivity {
 
     private int height;
 
+    private GroupInfoBean groupInfoBean;
+
 
     @Override
     protected int setLayoutView() {
@@ -81,7 +90,10 @@ public class ClassInfoActivity extends BaseActivity {
     protected void initView() {
         height = DisplayUtil.dp2px(300);
 
+        groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
+
         classInfoModel = new ViewModelProvider(this).get(ClassInfoModel.class);//初始化model
+        //接收来自与ClassInfoFragment的消息
         classInfoModel.getTabViewStatus().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer scrollY) {
@@ -96,8 +108,39 @@ public class ClassInfoActivity extends BaseActivity {
                 } else {
                     llStatus.setAlpha(1f);
                 }
+            }
+        });
+        //接收来自与ClassInfoFragment的消息
+        classInfoModel.getPrices().observe(this, new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] strings) {
+                //如果没有活动价格，隐藏原价
+                if (strings[0] == null) {
+                    tvPrice.setVisibility(View.GONE);
+                    tvNowPrice.setText(strings[1]);
+                } else {
+                    tvNowPrice.setText(strings[0]);
+                    tvPrice.setText("原价：" + strings[1]);
+                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                }
 
+            }
+        });
+        ////传递信息到fagemnt
+        classInfoModel.setGroupInfo(groupInfoBean);
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                llStatus.setAlpha(1f);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
 

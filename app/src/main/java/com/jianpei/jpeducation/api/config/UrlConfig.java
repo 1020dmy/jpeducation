@@ -53,4 +53,14 @@ public class UrlConfig {
     public static final String materialData = "material/materialData";
     //资料二级列表
     public static final String subMaterialData = "material/subMaterialData";
+    //班级课程详情（含团购）
+    public static final String groupInfo = "group/groupInfo";
+    //班级课程目录
+    public static final String classDirectory = "group/classDirectory";
+    //课程列表
+    public static final String groupData = "group/groupData";
+    //评价列表
+    public static final String commentList = "comment/commentList";
+
+
 }

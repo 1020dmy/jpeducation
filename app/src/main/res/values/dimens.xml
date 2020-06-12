@@ -12,4 +12,12 @@
     <dimen name="titleSize">20dp</dimen>
 
     <dimen name="title_right_size">14dp</dimen>
+
+
+    <dimen name="radius_size">15dp</dimen>
+
+    <dimen name="shape_width">1dp</dimen>
+    
+    
+    <dimen name="dp_10">5dp</dimen>
 </resources>

@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/shadow_classinfo_one"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -43,23 +43,24 @@
                     android:textSize="11dp" />
 
                 <TextView
+                    android:id="@+id/tv_now_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="￥598"
                     android:textColor="@color/cFF0000"
                     android:textSize="13dp" />
 
                 <TextView
+                    android:id="@+id/tv_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="9dp"
                     android:layout_weight="1"
-                    android:text="原价：598-4500"
                     android:textColor="@color/cA5A7B0"
                     android:textSize="11dp" />
 
                 <TextView
+                    android:id="@+id/tv_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_info_lingquan"
@@ -77,22 +78,23 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="2020二级建造师无忧取证班"
                 android:textColor="@color/c161820"
                 android:textSize="16dp" />
 
             <TextView
+                android:id="@+id/tv_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
-                android:text="双师资授课，个性化定制服务双师资授课，个性化定制服务"
                 android:textColor="@color/c888B96"
                 android:textSize="12dp" />
 
             <LinearLayout
+                android:id="@+id/ll_handsel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp">
@@ -105,10 +107,10 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_handsel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="购买课程送相关课程资料，快点来领取吧！"
                     android:textColor="@color/cE63831"
                     android:textSize="12dp" />
 
@@ -127,10 +129,10 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_teachers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="曾雨   卢小飞"
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />
 
@@ -151,10 +153,10 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_class"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="0.5h-226h"
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />
 
@@ -172,18 +174,18 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_aging"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:layout_weight="1"
-                    android:text="2022-05-08"
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_nums"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2232人已报名"
                     android:textColor="@color/cA5A7B0"
                     android:textSize="11dp" />
             </LinearLayout>
@@ -198,7 +200,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
-            android:background="@color/white"
+            android:background="@drawable/shadow_home_item_bg"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -214,8 +216,10 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_server"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:text=""
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />
@@ -234,8 +238,10 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tv_guarantee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:text=""
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />
@@ -252,7 +258,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
-            android:background="@color/white"
+            android:background="@drawable/shadow_home_item_bg"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -280,8 +286,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
-            android:background="@color/white"
-            android:padding="10dp"/>
+            android:background="@drawable/shadow_home_item_bg"
+            android:padding="10dp" />
         <!--****************bottom*****************-->
 
 

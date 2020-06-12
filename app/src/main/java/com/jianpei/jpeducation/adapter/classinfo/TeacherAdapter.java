@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.adapter.classinfo;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.classinfo.TeacherBean;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -21,6 +26,14 @@ import com.jianpei.jpeducation.R;
  */
 public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.MyHolder> {
 
+    private List<TeacherBean> teachers;
+    private Context context;
+
+    public TeacherAdapter(List<TeacherBean> teachers, Context context) {
+        this.teachers = teachers;
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,12 +43,18 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.MyHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        TeacherBean teacherBean = teachers.get(position);
+
+        Glide.with(context).load(teacherBean.getImg()).into(holder.imageView);
+        holder.tvName.setText(teacherBean.getTitle());
+        holder.tvTitle.setText(teacherBean.getZj_class());
+        holder.tvInfo.setText(teacherBean.getInfo());
 
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return teachers != null ? teachers.size() : 0;
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

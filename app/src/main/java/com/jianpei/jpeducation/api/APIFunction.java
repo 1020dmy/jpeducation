@@ -4,6 +4,7 @@ package com.jianpei.jpeducation.api;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.config.UrlConfig;
 import com.jianpei.jpeducation.bean.BindPhoneJson;
+import com.jianpei.jpeducation.bean.CommentListBean;
 import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.CouponDataJson;
 import com.jianpei.jpeducation.bean.CouponReceiveJson;
@@ -16,6 +17,8 @@ import com.jianpei.jpeducation.bean.MaterialDataBean;
 import com.jianpei.jpeducation.bean.MaterialDataJson;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.SubMaterialDataJson;
+import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
+import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -24,9 +27,12 @@ import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.json.CommentListJson;
+import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -150,6 +156,24 @@ public interface APIFunction {
      */
     @POST(UrlConfig.subMaterialData)
     Observable<BaseEntity<ArrayList<MaterialInfoBean>>> subMaterialData(@Body SubMaterialDataJson subMaterialDataJson);
+
+    /**
+     * 1-班级课程详情（含团购）
+     */
+    @POST(UrlConfig.groupInfo)
+    Observable<BaseEntity<ClassInfoBean>> groupInfo(@Body GroupInfoJson groupInfoJson);
+
+    /**
+     * 班级课程目录
+     */
+    @POST(UrlConfig.classDirectory)
+    Observable<BaseEntity<List<DirectoryProfessionBean>>> classDirectory(@Body GroupInfoJson groupInfoJson);
+
+    /**
+     * 班级课程目录
+     */
+    @POST(UrlConfig.commentList)
+    Observable<BaseEntity<CommentListBean>> commentList(@Body CommentListJson commentListJson);
 
     /**
      * 获取微信ACCESS_TOKEN

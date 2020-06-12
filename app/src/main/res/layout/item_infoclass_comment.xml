@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cim_head"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:src="@drawable/icon_no_image" />
@@ -21,6 +22,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="建培网校学员"
@@ -28,6 +30,7 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -36,6 +39,7 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
