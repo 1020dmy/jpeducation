@@ -8,3 +8,6 @@
 /build
 /captures
 .externalNativeBuild
+/Aliyunplayer/player_demo/build/
+/Aliyunplayer/AlivcPlayer/build/
+/zxing/build/
