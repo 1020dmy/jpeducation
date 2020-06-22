@@ -1,0 +1,1 @@
+export PATH=/Users/jianpei/Library/Android/sdk/platform-tools/:$PATH
