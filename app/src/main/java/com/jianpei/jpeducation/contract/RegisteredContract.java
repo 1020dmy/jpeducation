@@ -26,7 +26,7 @@ public interface RegisteredContract {
     interface Model {
         void sendCode(String phone);
 
-        void register(String phone, String code, String password,String passwordR);
+        void register(String phone, String code, String password, String passwordR);
 
     }
 }

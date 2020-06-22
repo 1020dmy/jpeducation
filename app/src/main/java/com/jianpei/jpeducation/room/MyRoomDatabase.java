@@ -16,7 +16,7 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
  * Describe:
  */
 @Database(entities = {MaterialInfoBean.class}, version = 1)
-public abstract class MyRoomDatabase extends RoomDatabase {
+public abstract  class MyRoomDatabase extends RoomDatabase {
 
     private static volatile MyRoomDatabase INSTANCE;
 

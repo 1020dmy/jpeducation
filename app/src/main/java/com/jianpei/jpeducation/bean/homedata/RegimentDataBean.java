@@ -71,7 +71,7 @@ public class RegimentDataBean implements Parcelable {
         this.data = in.createTypedArrayList(RegimentInfoBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<RegimentDataBean> CREATOR = new Parcelable.Creator<RegimentDataBean>() {
+    public static final Creator<RegimentDataBean> CREATOR = new Creator<RegimentDataBean>() {
         @Override
         public RegimentDataBean createFromParcel(Parcel source) {
             return new RegimentDataBean(source);

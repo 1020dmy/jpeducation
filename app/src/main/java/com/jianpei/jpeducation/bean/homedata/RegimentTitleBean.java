@@ -58,7 +58,7 @@ public class RegimentTitleBean  implements Parcelable {
         this.Subtitle = in.readString();
     }
 
-    public static final Parcelable.Creator<RegimentTitleBean> CREATOR = new Parcelable.Creator<RegimentTitleBean>() {
+    public static final Creator<RegimentTitleBean> CREATOR = new Creator<RegimentTitleBean>() {
         @Override
         public RegimentTitleBean createFromParcel(Parcel source) {
             return new RegimentTitleBean(source);

@@ -2,11 +2,15 @@ package com.jianpei.jpeducation.adapter.classinfo;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.jianpei.jpeducation.adapter.classinfo.directory.DirectoryChapterProvider;
+import com.jianpei.jpeducation.adapter.classinfo.directory.DirectoryProfessionProvider;
+import com.jianpei.jpeducation.adapter.classinfo.directory.DirectorySectionProvider;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryChapterBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -19,6 +23,15 @@ import java.util.List;
  * Describe:
  */
 public class DirectoryAdapter extends BaseNodeAdapter {
+
+
+    public DirectoryAdapter() {
+        super();
+        addNodeProvider(new DirectoryProfessionProvider());
+        addNodeProvider(new DirectoryChapterProvider());
+        addNodeProvider(new DirectorySectionProvider());
+
+    }
 
     @Override
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {

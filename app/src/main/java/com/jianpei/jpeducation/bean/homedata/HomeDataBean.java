@@ -105,7 +105,7 @@ public class HomeDataBean implements Parcelable {
         this.huoDongData = in.createTypedArrayList(HuoDongDataBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<HomeDataBean> CREATOR = new Parcelable.Creator<HomeDataBean>() {
+    public static final Creator<HomeDataBean> CREATOR = new Creator<HomeDataBean>() {
         @Override
         public HomeDataBean createFromParcel(Parcel source) {
             return new HomeDataBean(source);

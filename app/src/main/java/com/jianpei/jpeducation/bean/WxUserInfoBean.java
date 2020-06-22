@@ -144,7 +144,7 @@ public class WxUserInfoBean implements Parcelable {
         this.privilege = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<WxUserInfoBean> CREATOR = new Parcelable.Creator<WxUserInfoBean>() {
+    public static final Creator<WxUserInfoBean> CREATOR = new Creator<WxUserInfoBean>() {
         @Override
         public WxUserInfoBean createFromParcel(Parcel source) {
             return new WxUserInfoBean(source);

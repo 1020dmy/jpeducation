@@ -11,9 +11,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AliyunVideoCommon" />
-            <option value="$PROJECT_DIR$/alyplayer" />
+            <option value="$PROJECT_DIR$/Aliyunplayer" />
+            <option value="$PROJECT_DIR$/Aliyunplayer/AlivcPlayer" />
+            <option value="$PROJECT_DIR$/Aliyunplayer/player_demo" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/umeng" />
+            <option value="$PROJECT_DIR$/zxing" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

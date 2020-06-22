@@ -57,7 +57,7 @@ public class IntegrlPayJson implements Parcelable {
         this.integrl = in.readString();
     }
 
-    public static final Parcelable.Creator<IntegrlPayJson> CREATOR = new Parcelable.Creator<IntegrlPayJson>() {
+    public static final Creator<IntegrlPayJson> CREATOR = new Creator<IntegrlPayJson>() {
         @Override
         public IntegrlPayJson createFromParcel(Parcel source) {
             return new IntegrlPayJson(source);

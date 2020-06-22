@@ -58,7 +58,7 @@ public class GroupInfoJson implements Parcelable {
         this.regiment_id = in.readString();
     }
 
-    public static final Parcelable.Creator<GroupInfoJson> CREATOR = new Parcelable.Creator<GroupInfoJson>() {
+    public static final Creator<GroupInfoJson> CREATOR = new Creator<GroupInfoJson>() {
         @Override
         public GroupInfoJson createFromParcel(Parcel source) {
             return new GroupInfoJson(source);

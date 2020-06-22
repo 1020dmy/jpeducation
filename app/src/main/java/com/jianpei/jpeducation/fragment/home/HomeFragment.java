@@ -2,7 +2,9 @@ package com.jianpei.jpeducation.fragment.home;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.graphics.Point;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -22,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseBinderAdapter;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
+import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.home.GroupInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.GroupTitleItemBinder;
@@ -31,6 +35,7 @@ import com.jianpei.jpeducation.adapter.home.MaterialTitleItemBinder;
 import com.jianpei.jpeducation.adapter.home.MateriallTitleTItemBinder;
 import com.jianpei.jpeducation.adapter.home.RegimentInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.RegimentTitleItemBinder;
+import com.jianpei.jpeducation.adapter.material.MaterialInfoAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.DownloadBean;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
@@ -46,10 +51,12 @@ import com.jianpei.jpeducation.bean.homedata.RegimentTitleBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.down.AndroidDownloadManager;
+import com.jianpei.jpeducation.utils.down.QueueListener;
 import com.jianpei.jpeducation.utils.listener.MaterialInfoItemOnClickListener;
 import com.jianpei.jpeducation.viewmodel.HomePageModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
+import com.liulishuo.okdownload.DownloadTask;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -86,27 +93,32 @@ public class HomeFragment extends BaseFragment {
 
     String downUrl;
 
-    private MaterialInfoBean mmaterialInfoBean;
-    private int mposition;
+//    private MaterialInfoBean mmaterialInfoBean;
+//    private int mposition;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            int pro = msg.arg1;
-            if (pro == -1) {
-                mmaterialInfoBean.setStatus("3");
-            } else {
-                mmaterialInfoBean.setProgress(pro);
-            }
-            if (pro == 100) {
-                mmaterialInfoBean.setStatus("2");
-                L.e("下载完成，开始存入数据库");
-//                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(mmaterialInfoBean);
-            }
-            baseBinderAdapter.notifyItemChanged(mposition);
-        }
-    };
+//    private Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(@NonNull Message msg) {
+//            super.handleMessage(msg);
+//            int pro = msg.arg1;
+//            if (pro == -1) {
+//                mmaterialInfoBean.setStatus("3");
+//            } else {
+//                mmaterialInfoBean.setProgress(pro);
+//            }
+//            if (pro == 100) {
+//                mmaterialInfoBean.setStatus("2");
+//                L.e("下载完成，开始存入数据库");
+////                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(mmaterialInfoBean);
+//            }
+//            baseBinderAdapter.notifyItemChanged(mposition);
+//        }
+//    };
+
+    QueueListener queueListener;
+    private MaterialInfoItemBinder.MyHolder mMyHolder;
+    private String name;
+
 
     @Override
     protected int initLayout() {
@@ -134,14 +146,20 @@ public class HomeFragment extends BaseFragment {
         materialInfoItemBinder = new MaterialInfoItemBinder();
         materialInfoItemBinder.setMaterialInfoItemOnClickListener(new MaterialInfoItemOnClickListener() {
             @Override
-            public void OnItemClick(View view, int position) {
-                mposition = position;
-                MaterialInfoBean materialInfoBean = (MaterialInfoBean) datas.get(position);
-                mmaterialInfoBean = materialInfoBean;
-                mmaterialInfoBean.setStatus("1");
-                baseBinderAdapter.notifyItemChanged(position);
+            public void OnItemClick(MaterialInfoItemBinder.MyHolder myHolder, MaterialInfoBean materialInfoBean) {
 
-                materialModel.getDownloadUrl(mmaterialInfoBean.getId());
+
+                if (materialInfoBean.getStatus().equals("2")) {
+
+                    startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));
+
+                } else {
+                    showLoading("");
+                    mMyHolder = myHolder;
+                    name = materialInfoBean.getTitle();
+                    materialModel.getDownloadUrl(materialInfoBean.getId());
+                }
+
 
             }
         });
@@ -173,6 +191,7 @@ public class HomeFragment extends BaseFragment {
         homePageModel.getScuucessData().observe(this, new Observer<HomeDataBean>() {
             @Override
             public void onChanged(HomeDataBean data) {
+                SpUtils.putString("customerServiceUrl",data.getCustomerServiceUrl());//存储客服地址
                 bannerDataBeans.clear();
                 bannerDataBeans.addAll(data.getBannerData());
                 banner.setDatas(bannerDataBeans);
@@ -213,17 +232,39 @@ public class HomeFragment extends BaseFragment {
         materialModel.getDownloadBeanMutableLiveData().observe(this, new Observer<DownloadBean>() {
             @Override
             public void onChanged(DownloadBean downloadBean) {
-                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分
-                    AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downloadBean.getDownloadUrl());
-                    downloadManager.download(handler);
-                } else {//要积分
+//                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分
+//                    AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downloadBean.getDownloadUrl());
+//                    downloadManager.download(handler);
+//                } else {//要积分
+//                    if (alertDialog == null) {
+//                        myDialog(downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
+//                    } else {
+//                        alertDialog.show();
+//                    }
+//                }
+                L.e("===============获取到下载的资料");
+                dismissLoading();
+                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
+                    if (queueListener == null) {
+                        queueListener = new QueueListener();
+                    }
+
+                    DownloadTask task = new DownloadTask.Builder(downloadBean.getDownloadUrl(), getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
+                            .setFilename(name)
+                            .setMinIntervalMillisCallbackProcess(30)
+                            .setPassIfAlreadyCompleted(false)
+                            .build();
+                    queueListener.bind(task, mMyHolder);
+                    task.enqueue(queueListener);
+
+                } else {
+                    //要积分，弹窗
                     if (alertDialog == null) {
                         myDialog(downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
                     } else {
                         alertDialog.show();
                     }
                 }
-
             }
         });
         //积分付款
@@ -231,8 +272,8 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onChanged(String s) {
 
-                AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downUrl);
-                downloadManager.download(handler);
+//                AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downUrl);
+//                downloadManager.download(handler);
             }
         });
 

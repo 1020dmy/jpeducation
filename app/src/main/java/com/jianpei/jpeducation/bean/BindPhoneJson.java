@@ -67,7 +67,7 @@ public class BindPhoneJson implements Parcelable {
         this.code = in.readString();
     }
 
-    public static final Parcelable.Creator<BindPhoneJson> CREATOR = new Parcelable.Creator<BindPhoneJson>() {
+    public static final Creator<BindPhoneJson> CREATOR = new Creator<BindPhoneJson>() {
         @Override
         public BindPhoneJson createFromParcel(Parcel source) {
             return new BindPhoneJson(source);

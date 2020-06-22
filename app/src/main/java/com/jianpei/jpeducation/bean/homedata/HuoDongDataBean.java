@@ -243,7 +243,7 @@ public class HuoDongDataBean implements Parcelable {
         this.title = in.readString();
     }
 
-    public static final Parcelable.Creator<HuoDongDataBean> CREATOR = new Parcelable.Creator<HuoDongDataBean>() {
+    public static final Creator<HuoDongDataBean> CREATOR = new Creator<HuoDongDataBean>() {
         @Override
         public HuoDongDataBean createFromParcel(Parcel source) {
             return new HuoDongDataBean(source);

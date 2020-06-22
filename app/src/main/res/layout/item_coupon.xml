@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="@drawable/coupon_list_bg"
+    android:gravity="center_vertical"
+    android:paddingLeft="17dp"
+    android:paddingRight="17dp">
+
+    <TextView
+        android:id="@+id/tv_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:gravity="bottom"
+        android:text="¥"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="50"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="56dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="老用户消费满300减50"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="有效期至：2020-05-08   05：25：21"
+            android:textColor="@color/white"
+            android:textSize="9dp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_coupon_bg"
+        android:drawableRight="@drawable/coupon_jiantou"
+        android:drawablePadding="4dp"
+        android:paddingLeft="11dp"
+        android:paddingTop="6dp"
+        android:paddingRight="11dp"
+        android:paddingBottom="6dp"
+        android:text="点击领取"
+        android:textColor="@color/cFE0004"
+        android:textSize="12dp" />
+
+</LinearLayout>

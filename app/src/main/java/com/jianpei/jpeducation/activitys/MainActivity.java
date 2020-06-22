@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -49,7 +50,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     RadioGroup radioGroup;
 
 
-
     private Fragment[] fragments;
     private int lastfragment = 0;
 
@@ -61,6 +61,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     private String catId, catName;
     private String ncatId;
+
+    private String customerServiceUrl;
 
     @Override
     protected int setLayoutView() {
@@ -90,13 +92,13 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         });
 
 
-
     }
 
 
     @Override
     protected void initData() {
         mainModel = new ViewModelProvider(this).get(MainModel.class);
+
     }
 
     @Override
@@ -217,6 +219,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         switch (view.getId()) {
             case R.id.imageButton:
 //                mainModel.upData(btnTitle.getText().toString());
+                startActivity(new Intent(this, WebActivity.class));
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

@@ -55,7 +55,7 @@ public class CouponReceiveJson implements Parcelable {
         this.shareUserId = in.readString();
     }
 
-    public static final Parcelable.Creator<CouponReceiveJson> CREATOR = new Parcelable.Creator<CouponReceiveJson>() {
+    public static final Creator<CouponReceiveJson> CREATOR = new Creator<CouponReceiveJson>() {
         @Override
         public CouponReceiveJson createFromParcel(Parcel source) {
             return new CouponReceiveJson(source);

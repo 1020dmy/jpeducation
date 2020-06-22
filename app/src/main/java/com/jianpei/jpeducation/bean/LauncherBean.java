@@ -60,7 +60,7 @@ public class LauncherBean implements Parcelable {
         this.guideList = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<LauncherBean> CREATOR = new Parcelable.Creator<LauncherBean>() {
+    public static final Creator<LauncherBean> CREATOR = new Creator<LauncherBean>() {
         @Override
         public LauncherBean createFromParcel(Parcel source) {
             return new LauncherBean(source);

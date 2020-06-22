@@ -61,7 +61,7 @@ public class MaterialTitleBean  implements Parcelable {
         this.Subtitle = in.readString();
     }
 
-    public static final Parcelable.Creator<MaterialTitleBean> CREATOR = new Parcelable.Creator<MaterialTitleBean>() {
+    public static final Creator<MaterialTitleBean> CREATOR = new Creator<MaterialTitleBean>() {
         @Override
         public MaterialTitleBean createFromParcel(Parcel source) {
             return new MaterialTitleBean(source);

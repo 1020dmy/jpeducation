@@ -253,7 +253,7 @@ public class GroupInfoBean  implements Parcelable {
         this.coupon_str = in.readString();
     }
 
-    public static final Parcelable.Creator<GroupInfoBean> CREATOR = new Parcelable.Creator<GroupInfoBean>() {
+    public static final Creator<GroupInfoBean> CREATOR = new Creator<GroupInfoBean>() {
         @Override
         public GroupInfoBean createFromParcel(Parcel source) {
             return new GroupInfoBean(source);

@@ -3,6 +3,8 @@ package com.jianpei.jpeducation.contract;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
+import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
+import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 
 import java.util.List;
 
@@ -22,11 +24,15 @@ public interface CIDirectoryContract {
 
         Observable<BaseEntity<List<DirectoryProfessionBean>>> classDirectory(String groupId);
 
+        Observable<BaseEntity<List<DirectorySectionBean>>> viodList(String class_id, String chapter_id, String type);
+
+
     }
 
 
     interface Model {
         void classDirectory(String groupId);
 
+        void viodList(String class_id, String chapter_id);
     }
 }

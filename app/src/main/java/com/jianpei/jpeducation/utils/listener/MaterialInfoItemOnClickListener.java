@@ -2,6 +2,8 @@ package com.jianpei.jpeducation.utils.listener;
 
 import android.view.View;
 
+import com.jianpei.jpeducation.adapter.home.MaterialInfoItemBinder;
+import com.jianpei.jpeducation.adapter.material.MaterialInfoAdapter;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 
 /**
@@ -14,5 +16,5 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
  */
 public interface MaterialInfoItemOnClickListener {
 
-    void OnItemClick(View view, int position);
+    void OnItemClick(MaterialInfoItemBinder.MyHolder myHolder, MaterialInfoBean materialInfoBean);
 }

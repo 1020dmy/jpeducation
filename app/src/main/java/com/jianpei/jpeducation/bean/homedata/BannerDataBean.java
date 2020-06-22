@@ -224,7 +224,7 @@ public class BannerDataBean implements Parcelable {
         this.cat_id = in.readString();
     }
 
-    public static final Parcelable.Creator<BannerDataBean> CREATOR = new Parcelable.Creator<BannerDataBean>() {
+    public static final Creator<BannerDataBean> CREATOR = new Creator<BannerDataBean>() {
         @Override
         public BannerDataBean createFromParcel(Parcel source) {
             return new BannerDataBean(source);

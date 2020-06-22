@@ -152,7 +152,7 @@ public class AppInfoBean implements Parcelable {
         this.vendor = in.readString();
     }
 
-    public static final Parcelable.Creator<AppInfoBean> CREATOR = new Parcelable.Creator<AppInfoBean>() {
+    public static final Creator<AppInfoBean> CREATOR = new Creator<AppInfoBean>() {
         @Override
         public AppInfoBean createFromParcel(Parcel source) {
             return new AppInfoBean(source);

@@ -32,6 +32,12 @@ public class DirectorySectionProvider extends BaseNodeProvider {
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
         DirectorySectionBean directorySectionBean = (DirectorySectionBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, directorySectionBean.getTitle());
-
+        if ("1".equals(directorySectionBean.getIsfree())) {
+            baseViewHolder.setImageResource(R.id.imageView, R.drawable.directory_trylistener);
+            baseViewHolder.setTextColorRes(R.id.tv_title, R.color.c161820);
+            baseViewHolder.setBackgroundResource(R.id.tv_try, R.drawable.shape_directory_trylistener);
+            baseViewHolder.setText(R.id.tv_try, "试听");
+            baseViewHolder.setTextColorRes(R.id.tv_try, R.color.cE73B30);
+        }
     }
 }

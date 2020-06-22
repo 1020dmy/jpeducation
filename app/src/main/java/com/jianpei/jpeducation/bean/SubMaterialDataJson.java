@@ -55,7 +55,7 @@ public class SubMaterialDataJson implements Parcelable {
         this.class_id = in.readString();
     }
 
-    public static final Parcelable.Creator<SubMaterialDataJson> CREATOR = new Parcelable.Creator<SubMaterialDataJson>() {
+    public static final Creator<SubMaterialDataJson> CREATOR = new Creator<SubMaterialDataJson>() {
         @Override
         public SubMaterialDataJson createFromParcel(Parcel source) {
             return new SubMaterialDataJson(source);

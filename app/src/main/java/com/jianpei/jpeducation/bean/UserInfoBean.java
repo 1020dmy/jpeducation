@@ -478,7 +478,7 @@ public class UserInfoBean implements Parcelable {
         this.total_time_str = in.readString();
     }
 
-    public static final Parcelable.Creator<UserInfoBean> CREATOR = new Parcelable.Creator<UserInfoBean>() {
+    public static final Creator<UserInfoBean> CREATOR = new Creator<UserInfoBean>() {
         @Override
         public UserInfoBean createFromParcel(Parcel source) {
             return new UserInfoBean(source);

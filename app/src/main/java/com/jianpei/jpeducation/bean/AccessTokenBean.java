@@ -93,7 +93,7 @@ public class AccessTokenBean implements Parcelable {
         this.scope = in.readString();
     }
 
-    public static final Parcelable.Creator<AccessTokenBean> CREATOR = new Parcelable.Creator<AccessTokenBean>() {
+    public static final Creator<AccessTokenBean> CREATOR = new Creator<AccessTokenBean>() {
         @Override
         public AccessTokenBean createFromParcel(Parcel source) {
             return new AccessTokenBean(source);

@@ -11,5 +11,5 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
  * Describe:
  */
 public interface MyItemChildClickListener {
-    void onClick(MaterialInfoBean materialInfoBean , MaterialInfoAdapter.MyHolder myHolder);
+    void onClick(MaterialInfoBean materialInfoBean, MaterialInfoAdapter.MyHolder myHolder);
 }

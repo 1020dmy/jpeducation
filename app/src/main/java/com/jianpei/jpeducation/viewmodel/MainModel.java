@@ -18,7 +18,25 @@ public class MainModel extends BaseViewModel<String> {
     private MutableLiveData<String> liveDataCatId;//catid更新
 
 
-//    private MainRepository mainRepository;
+//    private MutableLiveData<String> customerServiceUrlLiveData;//客服地址
+
+//    public MutableLiveData<String> getCustomerServiceUrlLiveData() {
+//        if (customerServiceUrlLiveData == null) {
+//            customerServiceUrlLiveData = new MutableLiveData<>();
+//        }
+//        return customerServiceUrlLiveData;
+//    }
+//
+//    public void setCustomerServiceUrlLiveData(String customerServiceUrl) {
+//
+//        if (customerServiceUrlLiveData == null) {
+//            customerServiceUrlLiveData = new MutableLiveData<>();
+//        }
+//
+//        customerServiceUrlLiveData.setValue(customerServiceUrl);
+//    }
+
+    //    private MainRepository mainRepository;
 
 //    public MainModel() {
 //        mainRepository = new MainRepository();

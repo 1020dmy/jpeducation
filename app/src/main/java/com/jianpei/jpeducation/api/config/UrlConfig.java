@@ -61,6 +61,15 @@ public class UrlConfig {
     public static final String groupData = "group/groupData";
     //评价列表
     public static final String commentList = "comment/commentList";
+    //购买选择课程科目（含团购）
+    public static final String groupClass = "group/groupClass";
+    //课程优惠券列表
+    public static final String groupCoupon = "coupon/groupCoupon";
+    //课程章节列表
+    public static final String viodList = "course/viodList";
+    //获取视频播放url
+    public static final String videoUrl = "video/videoUrl";
+
 
 
 }

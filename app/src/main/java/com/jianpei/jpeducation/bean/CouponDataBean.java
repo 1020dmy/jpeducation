@@ -190,7 +190,7 @@ public class CouponDataBean implements Parcelable {
         this.ux_time_str = in.readString();
     }
 
-    public static final Parcelable.Creator<CouponDataBean> CREATOR = new Parcelable.Creator<CouponDataBean>() {
+    public static final Creator<CouponDataBean> CREATOR = new Creator<CouponDataBean>() {
         @Override
         public CouponDataBean createFromParcel(Parcel source) {
             return new CouponDataBean(source);

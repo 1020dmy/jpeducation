@@ -65,7 +65,7 @@ public class CouponDataJson implements Parcelable {
         this.type = in.readString();
     }
 
-    public static final Parcelable.Creator<CouponDataJson> CREATOR = new Parcelable.Creator<CouponDataJson>() {
+    public static final Creator<CouponDataJson> CREATOR = new Creator<CouponDataJson>() {
         @Override
         public CouponDataJson createFromParcel(Parcel source) {
             return new CouponDataJson(source);

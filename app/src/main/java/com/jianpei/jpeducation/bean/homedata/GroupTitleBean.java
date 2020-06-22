@@ -61,7 +61,7 @@ public class GroupTitleBean  implements Parcelable {
         this.Subtitle = in.readString();
     }
 
-    public static final Parcelable.Creator<GroupTitleBean> CREATOR = new Parcelable.Creator<GroupTitleBean>() {
+    public static final Creator<GroupTitleBean> CREATOR = new Creator<GroupTitleBean>() {
         @Override
         public GroupTitleBean createFromParcel(Parcel source) {
             return new GroupTitleBean(source);

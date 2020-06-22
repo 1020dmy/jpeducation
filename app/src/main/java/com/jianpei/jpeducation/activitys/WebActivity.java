@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
+import com.jianpei.jpeducation.utils.SpUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,7 +42,7 @@ public class WebActivity extends BaseNoStatusActivity {
         setTitleViewPadding(tvStatus);
 
 
-        url = getIntent().getStringExtra("customerServiceUrl");
+        url = SpUtils.getValue("customerServiceUrl");
 
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

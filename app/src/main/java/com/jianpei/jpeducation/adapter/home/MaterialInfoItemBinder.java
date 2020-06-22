@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.material.MaterialTitleAdapter;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.utils.listener.MaterialInfoItemOnClickListener;
 
@@ -31,47 +32,56 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
     }
 
     @Override
-    public void convert(@NotNull MyHolder myHolder, MaterialInfoBean materialInfoBean) {
+    public void convert(@NotNull MaterialInfoItemBinder.MyHolder holder, MaterialInfoBean materialInfoBean) {
+//
+//        if ("3".equals(materialInfoBean.getStatus())) {
+//            myHolder.tvDown.setText("下载失败");
+//        } else if ("1".equals(materialInfoBean.getStatus())) {
+//            myHolder.tvDown.setText("正在下载");
+//            myHolder.progressBar.setVisibility(View.VISIBLE);
+//        } else if ("2".equals(materialInfoBean.getStatus())) {
+//            myHolder.tvDown.setText("下载完成");
+//            myHolder.progressBar.setVisibility(View.VISIBLE);
+//            myHolder.tvDown.setEnabled(false);
+//        } else {
+//            myHolder.tvDown.setText("下载");
+//            myHolder.progressBar.setVisibility(View.INVISIBLE);
+//        }
+//        myHolder.progressBar.setProgress(materialInfoBean.getProgress());
+//        myHolder.tvTitle.setText(materialInfoBean.getTitle());
+//        myHolder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
 
-        if ("3".equals(materialInfoBean.getStatus())) {
-            myHolder.tvDown.setText("下载失败");
-        } else if ("1".equals(materialInfoBean.getStatus())) {
-            myHolder.tvDown.setText("正在下载");
-            myHolder.progressBar.setVisibility(View.VISIBLE);
-        } else if ("2".equals(materialInfoBean.getStatus())) {
-            myHolder.tvDown.setText("下载完成");
-            myHolder.progressBar.setVisibility(View.VISIBLE);
-            myHolder.tvDown.setEnabled(false);
-        } else {
-            myHolder.tvDown.setText("下载");
-            myHolder.progressBar.setVisibility(View.INVISIBLE);
+        holder.tvTitle.setText(materialInfoBean.getTitle());
+
+        holder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
+
+        if (materialInfoBean.getStatus().equals("2")) {
+            holder.tvDown.setText("下载完成");
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.progressBar.setProgress(100);
         }
-        myHolder.progressBar.setProgress(materialInfoBean.getProgress());
-        myHolder.tvTitle.setText(materialInfoBean.getTitle());
-        myHolder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
-
     }
 
     @NotNull
     @Override
-    public MyHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
+    public MaterialInfoItemBinder.MyHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home_six, viewGroup, false);
         return new MyHolder(view);
     }
 
 
     @Override
-    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, MaterialInfoBean data, int position) {
+    public void onChildClick(@NotNull MaterialInfoItemBinder.MyHolder holder, @NotNull View view, MaterialInfoBean data, int position) {
         if (materialInfoItemOnClickListener != null) {
-            materialInfoItemOnClickListener.OnItemClick(view, position);
+            materialInfoItemOnClickListener.OnItemClick(holder, data);
         }
 
     }
 
 
-    class MyHolder extends BaseViewHolder {
-        private TextView tvTitle, tvNums, tvDown;
-        private ProgressBar progressBar;
+    public class MyHolder extends BaseViewHolder {
+        public TextView tvTitle, tvNums, tvDown;
+        public ProgressBar progressBar;
 
         public MyHolder(@NotNull View view) {
             super(view);
@@ -80,10 +90,18 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
             tvDown = view.findViewById(R.id.tv_down);
 
             progressBar = view.findViewById(R.id.progressBar);
-
+//
             addChildClickViewIds(R.id.tv_down);
 
         }
+
+
+        public MaterialInfoBean getData() {
+
+            return (MaterialInfoBean) MaterialInfoItemBinder.this.getData().get(getLayoutPosition());
+        }
+
+
     }
 
 }

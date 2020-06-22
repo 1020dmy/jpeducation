@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.bean.MaterialDataBean;
 
@@ -77,7 +78,7 @@ public class MaterialTitleAdapter extends RecyclerView.Adapter<MaterialTitleAdap
         return materialTitles != null ? materialTitles.size() : 0;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+   public  class MyHolder extends BaseViewHolder implements View.OnClickListener {
 
         private TextView tvTitle;
         private LinearLayout llTitle;

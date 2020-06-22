@@ -19,6 +19,11 @@ import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.SubMaterialDataJson;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
+import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
+import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
+import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
+import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -29,6 +34,8 @@ import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
+import com.jianpei.jpeducation.bean.json.VideoUrlJson;
+import com.jianpei.jpeducation.bean.json.ViodListJson;
 
 
 import java.util.ArrayList;
@@ -170,11 +177,33 @@ public interface APIFunction {
     Observable<BaseEntity<List<DirectoryProfessionBean>>> classDirectory(@Body GroupInfoJson groupInfoJson);
 
     /**
-     * 班级课程目录
+     * 评价列表
      */
     @POST(UrlConfig.commentList)
     Observable<BaseEntity<CommentListBean>> commentList(@Body CommentListJson commentListJson);
 
+    /**
+     * 购买选择课程科目（含团购）
+     */
+    @POST(UrlConfig.groupClass)
+    Observable<BaseEntity<List<GroupClassBean>>> groupClass(@Body GroupInfoJson groupInfoJson);
+
+    /**
+     * 课程优惠券列表
+     */
+    @POST(UrlConfig.groupCoupon)
+    Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(@Body HomeInfoJson homeInfoJson);
+
+    /**
+     * 课程优惠券列表
+     */
+    @POST(UrlConfig.viodList)
+    Observable<BaseEntity<List<DirectorySectionBean>>> viodList(@Body ViodListJson viodListJson);
+    /**
+     * 获取视频播放url
+     */
+    @POST(UrlConfig.videoUrl)
+    Observable<BaseEntity<VideoUrlBean>> videoUrl(@Body VideoUrlJson videoUrlJson);
     /**
      * 获取微信ACCESS_TOKEN
      *

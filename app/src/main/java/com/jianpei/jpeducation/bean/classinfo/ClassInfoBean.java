@@ -52,7 +52,7 @@ public class ClassInfoBean {
     private String status;
     private String teacher_ids;
     private String img;
-    private String content;
+    private List<String> content;
     private String start_time;
     private String end_time;
     private String year_num;
@@ -153,11 +153,11 @@ public class ClassInfoBean {
         this.img = img;
     }
 
-    public String getContent() {
+    public List<String> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(List<String> content) {
         this.content = content;
     }
 

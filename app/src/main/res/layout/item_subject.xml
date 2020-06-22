@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="26dp"
+    android:id="@+id/ll_title"
+    android:background="@drawable/select_subject"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="建筑工程+三门公共科目 "
+        android:textColor="@color/select_subject"
+        android:textSize="13dp" />
+
+</LinearLayout>

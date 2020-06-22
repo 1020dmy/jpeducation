@@ -1,4 +1,3 @@
 rootProject.name='jpeducation'
-include ':app', ':AliyunVideoCommon'
-include ':alyplayer'
+include ':app', ':zxing', ':AliyunVideoCommon', ':Aliyunplayer:player_demo', ':Aliyunplayer:AlivcPlayer'
 include ':umeng'

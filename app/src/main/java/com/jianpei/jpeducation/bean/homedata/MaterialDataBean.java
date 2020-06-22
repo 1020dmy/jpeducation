@@ -70,7 +70,7 @@ public class MaterialDataBean implements Parcelable {
         this.data = in.createTypedArrayList(MaterialInfoBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<MaterialDataBean> CREATOR = new Parcelable.Creator<MaterialDataBean>() {
+    public static final Creator<MaterialDataBean> CREATOR = new Creator<MaterialDataBean>() {
         @Override
         public MaterialDataBean createFromParcel(Parcel source) {
             return new MaterialDataBean(source);

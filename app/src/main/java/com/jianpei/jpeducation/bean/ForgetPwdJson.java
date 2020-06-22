@@ -83,7 +83,7 @@ public class ForgetPwdJson implements Parcelable {
         this.confirm_pwd = in.readString();
     }
 
-    public static final Parcelable.Creator<ForgetPwdJson> CREATOR = new Parcelable.Creator<ForgetPwdJson>() {
+    public static final Creator<ForgetPwdJson> CREATOR = new Creator<ForgetPwdJson>() {
         @Override
         public ForgetPwdJson createFromParcel(Parcel source) {
             return new ForgetPwdJson(source);

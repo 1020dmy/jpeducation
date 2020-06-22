@@ -159,7 +159,7 @@ public class WxLoginJson implements Parcelable {
         this.iconurl = in.readString();
     }
 
-    public static final Parcelable.Creator<WxLoginJson> CREATOR = new Parcelable.Creator<WxLoginJson>() {
+    public static final Creator<WxLoginJson> CREATOR = new Creator<WxLoginJson>() {
         @Override
         public WxLoginJson createFromParcel(Parcel source) {
             return new WxLoginJson(source);

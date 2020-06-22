@@ -67,7 +67,7 @@ public class MaterialDataJson implements Parcelable {
         this.pageSize = in.readInt();
     }
 
-    public static final Parcelable.Creator<MaterialDataJson> CREATOR = new Parcelable.Creator<MaterialDataJson>() {
+    public static final Creator<MaterialDataJson> CREATOR = new Creator<MaterialDataJson>() {
         @Override
         public MaterialDataJson createFromParcel(Parcel source) {
             return new MaterialDataJson(source);

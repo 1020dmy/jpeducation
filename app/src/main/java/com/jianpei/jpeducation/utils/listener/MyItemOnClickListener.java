@@ -10,5 +10,5 @@ package com.jianpei.jpeducation.utils.listener;
  */
 public interface MyItemOnClickListener {
 
-    void onClick(int position,String id,String catname);
+    void onClick(int position, String id, String catname);
 }

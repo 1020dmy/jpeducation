@@ -124,7 +124,7 @@ public class NoticeDataBean implements Parcelable, IMarqueeItem {
         this.update_time = in.readString();
     }
 
-    public static final Parcelable.Creator<NoticeDataBean> CREATOR = new Parcelable.Creator<NoticeDataBean>() {
+    public static final Creator<NoticeDataBean> CREATOR = new Creator<NoticeDataBean>() {
         @Override
         public NoticeDataBean createFromParcel(Parcel source) {
             return new NoticeDataBean(source);

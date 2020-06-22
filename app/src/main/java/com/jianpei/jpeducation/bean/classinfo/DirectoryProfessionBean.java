@@ -46,9 +46,12 @@ public class DirectoryProfessionBean extends BaseNode {
         this.class_directory = class_directory;
     }
 
+
     @Nullable
     @Override
     public List<BaseNode> getChildNode() {
-        return null;
+        List<BaseNode> baseNodes = new ArrayList<>();
+        baseNodes.addAll(class_directory);
+        return baseNodes;
     }
 }

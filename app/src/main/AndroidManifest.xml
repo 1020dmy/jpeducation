@@ -22,7 +22,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.material.MaterialListActivity"></activity>
+        <activity
+            android:name=".activitys.player.TryPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".activitys.material.MaterialListActivity" />
 
         <service
             android:name=".service.DownloadService"
@@ -35,7 +40,10 @@
         <activity android:name=".activitys.pdf.PdfReaderActivity" />
         <activity android:name=".activitys.mine.UserInfoActivity" />
         <activity android:name=".activitys.SelectDisciplineActivity" />
-        <activity android:name=".activitys.ClassInfoActivity" />
+        <activity
+            android:name=".activitys.ClassInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".activitys.login.LoginActivity">
 
             <!-- <intent-filter> -->

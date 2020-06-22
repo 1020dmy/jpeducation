@@ -4,19 +4,38 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.info.ClassInfoFragment">
+    android:fillViewport="true"
+    android:overScrollMode="never">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/alivc_common_bg_black" />
+            android:layout_height="wrap_content">
+
+            <com.aliyun.vodplayerview.widget.AliyunVodPlayerView
+                android:id="@+id/aliyunPlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_tryListener"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:background="@drawable/shape_try_listener"
+                android:text="试听"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
         <!--*********************************-->
         <LinearLayout
+            android:id="@+id/ll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shadow_classinfo_one"
@@ -195,10 +214,11 @@
         <!--*****************服务保障****************-->
 
         <LinearLayout
+            android:id="@+id/ll_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/shadow_home_item_bg"
             android:orientation="vertical"
@@ -253,10 +273,11 @@
         <!--****************班级说明*****************-->
 
         <LinearLayout
+            android:id="@+id/ll_classInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/shadow_home_item_bg"
             android:orientation="vertical"
@@ -270,11 +291,18 @@
                 android:textSize="14dp" />
 
 
-            <TextView
-                android:id="@+id/tv_explanation"
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_explanation"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_explanation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
         <!--****************教师列表*****************-->
@@ -284,14 +312,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/shadow_home_item_bg"
+            android:nestedScrollingEnabled="false"
             android:padding="10dp" />
         <!--****************bottom*****************-->
 
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"

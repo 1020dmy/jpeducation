@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".fragment.info.DirectoryFragment">
 
@@ -10,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="120dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -26,6 +28,7 @@
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/tv_teacher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -39,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="22dp"
+        android:layout_marginRight="10dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -47,6 +51,7 @@
             android:src="@drawable/directory_class" />
 
         <TextView
+            android:id="@+id/tv_className"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
@@ -56,6 +61,7 @@
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/tv_changeClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -66,12 +72,14 @@
             android:paddingBottom="8dp"
             android:text="切换科目"
             android:textColor="@color/white"
-            android:textSize="13dp" />
+            android:textSize="13dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="6dp" />
 
 </LinearLayout>

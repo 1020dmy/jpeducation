@@ -54,7 +54,7 @@ public class HomeInfoJson implements Parcelable {
 //        this.uid = in.readString();
     }
 
-    public static final Parcelable.Creator<HomeInfoJson> CREATOR = new Parcelable.Creator<HomeInfoJson>() {
+    public static final Creator<HomeInfoJson> CREATOR = new Creator<HomeInfoJson>() {
         @Override
         public HomeInfoJson createFromParcel(Parcel source) {
             return new HomeInfoJson(source);

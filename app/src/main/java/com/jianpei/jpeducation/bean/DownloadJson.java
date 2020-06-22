@@ -41,7 +41,7 @@ public class DownloadJson implements Parcelable {
         this.file_id = in.readString();
     }
 
-    public static final Parcelable.Creator<DownloadJson> CREATOR = new Parcelable.Creator<DownloadJson>() {
+    public static final Creator<DownloadJson> CREATOR = new Creator<DownloadJson>() {
         @Override
         public DownloadJson createFromParcel(Parcel source) {
             return new DownloadJson(source);

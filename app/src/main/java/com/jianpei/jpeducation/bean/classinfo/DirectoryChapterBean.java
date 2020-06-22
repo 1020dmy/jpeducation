@@ -21,7 +21,13 @@ public class DirectoryChapterBean extends BaseExpandNode {
     private String id;
     private String title;
 
-    private List<DirectorySectionBean> dir;
+    private List<BaseNode> baseNodes;
+
+    public DirectoryChapterBean() {
+        setExpanded(false);
+    }
+
+    //    private List<DirectorySectionBean> dir;
 
 
     public String getId() {
@@ -40,17 +46,29 @@ public class DirectoryChapterBean extends BaseExpandNode {
         this.title = title;
     }
 
-    public List<DirectorySectionBean> getDir() {
-        return dir;
+//    public List<DirectorySectionBean> getDir() {
+//        return dir;
+//    }
+
+//    public void setDir(List<DirectorySectionBean> dir) {
+//        this.dir = dir;
+//    }
+
+
+    public List<BaseNode> getBaseNodes() {
+        if(baseNodes==null){
+            baseNodes=new ArrayList<>();
+        }
+        return baseNodes;
     }
 
-    public void setDir(List<DirectorySectionBean> dir) {
-        this.dir = dir;
+    public void setBaseNodes(List<BaseNode> baseNodes) {
+        this.baseNodes = baseNodes;
     }
 
     @Nullable
     @Override
     public List<BaseNode> getChildNode() {
-        return null;
+        return getBaseNodes();
     }
 }

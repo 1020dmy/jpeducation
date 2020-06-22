@@ -71,7 +71,7 @@ public class GroupDataBean implements Parcelable {
         this.data = in.createTypedArrayList(GroupInfoBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<GroupDataBean> CREATOR = new Parcelable.Creator<GroupDataBean>() {
+    public static final Creator<GroupDataBean> CREATOR = new Creator<GroupDataBean>() {
         @Override
         public GroupDataBean createFromParcel(Parcel source) {
             return new GroupDataBean(source);
