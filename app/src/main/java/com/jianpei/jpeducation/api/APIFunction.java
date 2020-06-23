@@ -32,10 +32,12 @@ import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
+import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 
 
 import java.util.ArrayList;
@@ -204,6 +206,12 @@ public interface APIFunction {
      */
     @POST(UrlConfig.videoUrl)
     Observable<BaseEntity<VideoUrlBean>> videoUrl(@Body VideoUrlJson videoUrlJson);
+
+    /**
+     * 购买课程下单/计算价格
+     */
+    @POST(UrlConfig.classGenerateOrder)
+    Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(@Body ClassGenerateOrderJson classGenerateOrderJson);
     /**
      * 获取微信ACCESS_TOKEN
      *

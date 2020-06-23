@@ -70,6 +70,10 @@ public class UrlConfig {
     //获取视频播放url
     public static final String videoUrl = "video/videoUrl";
 
+    //1-购买课程下单/计算价格
+    public static final String classGenerateOrder = "order/classGenerateOrder";
+    //订单发起支付
+    public static final String orderPayment = "order/orderPayment";
 
 
 }
