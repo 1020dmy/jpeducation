@@ -2,22 +2,17 @@ package com.jianpei.jpeducation.activitys;
 
 import android.Manifest;
 import android.content.Intent;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.fragment.school.SchoolFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
@@ -219,7 +214,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         switch (view.getId()) {
             case R.id.imageButton:
 //                mainModel.upData(btnTitle.getText().toString());
-                startActivity(new Intent(this, WebActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

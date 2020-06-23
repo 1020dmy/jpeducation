@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 
 import org.jetbrains.annotations.NotNull;

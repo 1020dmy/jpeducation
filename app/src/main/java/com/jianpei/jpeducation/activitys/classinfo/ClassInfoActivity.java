@@ -1,10 +1,9 @@
-package com.jianpei.jpeducation.activitys;
+package com.jianpei.jpeducation.activitys.classinfo;
 
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
@@ -252,7 +252,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 subjectPopup.showPop();
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, WebActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
 
                 break;
         }

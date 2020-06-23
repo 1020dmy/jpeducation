@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.WebActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
@@ -48,6 +48,6 @@ public class ElectiveFragment extends BaseFragment {
 
     @OnClick(R.id.iv_kefu)
     public void onViewClicked() {
-        startActivity(new Intent(getActivity(), WebActivity.class));
+        startActivity(new Intent(getActivity(), KeFuActivity.class));
     }
 }

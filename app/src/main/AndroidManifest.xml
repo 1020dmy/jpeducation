@@ -22,18 +22,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
+        <activity android:name=".activitys.web.GuiZeActivity"></activity>
+        <activity android:name=".activitys.classinfo.GroupInfoActivity" />
         <activity
             android:name=".activitys.player.TryPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activitys.material.MaterialListActivity" />
 
         <service
             android:name=".service.DownloadService"
             android:exported="false" />
 
-        <activity android:name=".activitys.WebActivity" />
+        <activity android:name=".activitys.web.KeFuActivity" />
         <activity android:name=".activitys.login.BindPhoneActivity" />
         <activity android:name=".activitys.login.ForgetPwdActivity" />
         <activity android:name=".activitys.login.RegisteredActivity" />
@@ -41,9 +43,9 @@
         <activity android:name=".activitys.mine.UserInfoActivity" />
         <activity android:name=".activitys.SelectDisciplineActivity" />
         <activity
-            android:name=".activitys.ClassInfoActivity"
+            android:name=".activitys.classinfo.ClassInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".activitys.login.LoginActivity">
 
             <!-- <intent-filter> -->

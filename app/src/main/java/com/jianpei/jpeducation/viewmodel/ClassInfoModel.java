@@ -10,6 +10,7 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
+import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.contract.ClassInfoContract;
 import com.jianpei.jpeducation.repository.ClassInfoRepository;
 
@@ -25,26 +26,30 @@ import java.util.List;
  */
 public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.Model {
 
+    //tabview状态
     private MutableLiveData<Integer> tabViewStatus;
-
+    //
     private MutableLiveData<GroupInfoBean> groupInfoBeanMutableLiveData;
-
+    //价格回传
     private MutableLiveData<String[]> pricesLiveData;
 
     private ClassInfoRepository classInfoRepository;
 
     //科目列表
-    private MutableLiveData<List<GroupClassBean>>  groupClassBeansLiveData;
+    private MutableLiveData<List<GroupClassBean>> groupClassBeansLiveData;
+
+    //团购参数
+    private MutableLiveData<RegimentInfoBean> regimentInfoBeanMutableLiveData;
 
 
     public MutableLiveData<List<GroupClassBean>> getGroupClassBeansLiveData() {
-        if(groupClassBeansLiveData==null)
-            groupClassBeansLiveData=new MutableLiveData<>();
+        if (groupClassBeansLiveData == null)
+            groupClassBeansLiveData = new MutableLiveData<>();
         return groupClassBeansLiveData;
     }
 
     public ClassInfoModel() {
-        classInfoRepository=new ClassInfoRepository();
+        classInfoRepository = new ClassInfoRepository();
     }
 
     public MutableLiveData<String[]> getPrices() {
@@ -57,6 +62,7 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     public void setPrices(String[] prices) {
         pricesLiveData.setValue(prices);
     }
+    ////
 
     public MutableLiveData<GroupInfoBean> getGroupInfoBeanMutableLiveData() {
         if (groupInfoBeanMutableLiveData == null) {
@@ -74,6 +80,7 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
 
     }
 
+    ///
     public MutableLiveData<Integer> getTabViewStatus() {
         if (tabViewStatus == null) {
             tabViewStatus = new MutableLiveData<>();
@@ -84,10 +91,26 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     public void tabViewStatusChange(int isShow) {
         tabViewStatus.setValue(isShow);
     }
+    ////
 
+
+    public MutableLiveData<RegimentInfoBean> getRegimentInfoBeanMutableLiveData() {
+        if (regimentInfoBeanMutableLiveData == null) {
+            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
+        }
+        return regimentInfoBeanMutableLiveData;
+    }
+
+    public void setRegimentInfoBeanMutableLiveData(RegimentInfoBean regimentInfoBean) {
+        if (regimentInfoBeanMutableLiveData == null) {
+            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
+        }
+        regimentInfoBeanMutableLiveData.setValue(regimentInfoBean);
+    }
 
     /**
      * 获取科目
+     *
      * @param groupId
      * @param regimentId
      */
@@ -97,13 +120,13 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
             return;
         }
 
-        classInfoRepository.groupClass(groupId,regimentId).compose(setThread()).subscribe(new BaseObserver<List<GroupClassBean>>(){
+        classInfoRepository.groupClass(groupId, regimentId).compose(setThread()).subscribe(new BaseObserver<List<GroupClassBean>>() {
 
             @Override
             protected void onSuccees(BaseEntity<List<GroupClassBean>> t) throws Exception {
-                if (t.isSuccess()){
+                if (t.isSuccess()) {
                     groupClassBeansLiveData.setValue(t.getData());
-                }else{
+                } else {
                     errData.setValue(t.getMsg());
                 }
 

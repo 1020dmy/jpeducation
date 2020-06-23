@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.adapter.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.classinfo.GroupInfoActivity;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +53,7 @@ public class RegimentInfoItemBinder extends BaseItemBinder<RegimentInfoBean, Reg
 
     class MyHolder extends BaseViewHolder {
         private ImageView imageView;
-        private TextView tvTitle, tvPrice, tvNums, tvBaoming;
+        private TextView tvTitle, tvPrice, tvNums;
 
         public MyHolder(@NotNull View view) {
             super(view);
@@ -58,7 +61,12 @@ public class RegimentInfoItemBinder extends BaseItemBinder<RegimentInfoBean, Reg
             tvTitle = view.findViewById(R.id.tv_title);
             tvPrice = view.findViewById(R.id.tv_price);
             tvNums = view.findViewById(R.id.tv_nums);
-            tvBaoming = view.findViewById(R.id.tv_baoming);
+            addChildClickViewIds(R.id.tv_baoming);
         }
+    }
+
+    @Override
+    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, RegimentInfoBean data, int position) {
+        context.startActivity(new Intent(context, GroupInfoActivity.class).putExtra("regimentInfoBean", data));
     }
 }

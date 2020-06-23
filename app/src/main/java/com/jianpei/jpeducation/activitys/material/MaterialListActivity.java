@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.adapter.material.MaterialInfoAdapter;
 import com.jianpei.jpeducation.adapter.material.MaterialTitleAdapter;

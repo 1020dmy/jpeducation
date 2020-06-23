@@ -73,6 +73,54 @@ public class ClassInfoBean {
     private List<String> teacher_names;
     private List<TeacherBean> teachers;
 
+    //拼团
+    private String regiment_people;
+    private String regiment_price_info;
+    private String regiment_num;
+    private String regiment_rules_url;
+
+    private RegimentInfoBean regiment_info;
+
+    public String getRegiment_people() {
+        return regiment_people;
+    }
+
+    public void setRegiment_people(String regiment_people) {
+        this.regiment_people = regiment_people;
+    }
+
+    public String getRegiment_price_info() {
+        return regiment_price_info;
+    }
+
+    public void setRegiment_price_info(String regiment_price_info) {
+        this.regiment_price_info = regiment_price_info;
+    }
+
+    public String getRegiment_num() {
+        return regiment_num;
+    }
+
+    public void setRegiment_num(String regiment_num) {
+        this.regiment_num = regiment_num;
+    }
+
+    public String getRegiment_rules_url() {
+        return regiment_rules_url;
+    }
+
+    public void setRegiment_rules_url(String regiment_rules_url) {
+        this.regiment_rules_url = regiment_rules_url;
+    }
+
+    public RegimentInfoBean getRegiment_info() {
+        return regiment_info;
+    }
+
+    public void setRegiment_info(RegimentInfoBean regiment_info) {
+        this.regiment_info = regiment_info;
+    }
+
     public String getHuod_price_info() {
         return huod_price_info;
     }

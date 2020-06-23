@@ -1,7 +1,8 @@
-package com.jianpei.jpeducation.activitys;
+package com.jianpei.jpeducation.activitys.web;
 
 
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -10,15 +11,14 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
-import com.jianpei.jpeducation.utils.SpUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WebActivity extends BaseNoStatusActivity {
+public class GuiZeActivity extends BaseNoStatusActivity {
 
 
     @BindView(R.id.tv_status)
@@ -30,36 +30,31 @@ public class WebActivity extends BaseNoStatusActivity {
     @BindView(R.id.webView)
     WebView webView;
 
-    private String url;
+    String url;
 
     @Override
     protected int setLayoutView() {
-        return R.layout.activity_web;
+        return R.layout.activity_gui_ze;
     }
 
     @Override
     protected void initView() {
         setTitleViewPadding(tvStatus);
 
-
-        url = SpUtils.getValue("customerServiceUrl");
-
+        url = getIntent().getStringExtra("webUrl");
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings()
                     .setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.setWebViewClient(new WebViewClient());
-        tvTitle.setText("在线客服");
-
-
+        tvTitle.setText("拼团规则");
     }
 
     @Override
     protected void initData() {
         if (!TextUtils.isEmpty(url))
             webView.loadUrl(url);
-
     }
 
 
