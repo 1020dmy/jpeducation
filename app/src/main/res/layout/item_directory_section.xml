@@ -35,7 +35,9 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="12dp"
         android:layout_toRightOf="@id/imageView"
-        android:text="第一节：建筑工程一"
+        android:maxLines="1"
+        android:layout_marginRight="100dp"
+        android:ellipsize="end"
         android:textColor="@color/cA5A7B0"
         android:textSize="14dp" />
 

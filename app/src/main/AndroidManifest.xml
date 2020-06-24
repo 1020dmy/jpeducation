@@ -22,8 +22,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.web.GuiZeActivity"></activity>
-        <activity android:name=".activitys.classinfo.GroupInfoActivity" />
+        <activity android:name=".activitys.order.OrderConfirmActivity"></activity>
+        <activity android:name=".activitys.web.GuiZeActivity" />
+        <activity
+            android:name=".activitys.classinfo.GroupInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.player.TryPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

@@ -35,9 +35,11 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
+import com.jianpei.jpeducation.bean.json.OrderInfoJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 
 
 import java.util.ArrayList;
@@ -201,6 +203,7 @@ public interface APIFunction {
      */
     @POST(UrlConfig.viodList)
     Observable<BaseEntity<List<DirectorySectionBean>>> viodList(@Body ViodListJson viodListJson);
+
     /**
      * 获取视频播放url
      */
@@ -212,6 +215,12 @@ public interface APIFunction {
      */
     @POST(UrlConfig.classGenerateOrder)
     Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(@Body ClassGenerateOrderJson classGenerateOrderJson);
+
+    /**
+     * 1-订单详情
+     */
+    @POST(UrlConfig.orderInfo)
+    Observable<BaseEntity<OrderInfoBean>> orderInfo(@Body OrderInfoJson orderInfoJson);
     /**
      * 获取微信ACCESS_TOKEN
      *

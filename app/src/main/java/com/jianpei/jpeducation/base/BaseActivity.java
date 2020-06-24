@@ -33,7 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        StatusBarUtil.setTransparent(this);
+        StatusBarUtil.setTransparent(this);
 
 
         setContentView(setLayoutView());

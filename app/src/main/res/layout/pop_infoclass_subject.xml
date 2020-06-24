@@ -30,7 +30,6 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2020年一级建筑师 《三科作图+建筑结构》学霸班"
                 android:textColor="@color/c161920"
                 android:textSize="14dp" />
 
@@ -43,7 +42,6 @@
                     android:id="@+id/tv_now_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥598"
                     android:textColor="@color/cFF0001"
                     android:textSize="13dp" />
 
@@ -52,7 +50,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="原价：598-4500"
                     android:textColor="@color/cA5A8B0"
                     android:textSize="11dp" />
             </LinearLayout>
@@ -119,7 +116,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="赠送资料"
             android:textColor="@color/cA5A8B0"
             android:textSize="13dp" />
 

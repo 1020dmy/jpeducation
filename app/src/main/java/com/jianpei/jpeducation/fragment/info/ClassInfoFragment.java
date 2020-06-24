@@ -49,6 +49,7 @@ import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
 import com.jianpei.jpeducation.adapter.classinfo.ExplanationAdapter;
 import com.jianpei.jpeducation.adapter.classinfo.TeacherAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.BasePlayerFragment;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
 import com.jianpei.jpeducation.bean.classinfo.TeacherBean;
@@ -70,7 +71,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassInfoFragment extends BaseFragment {
+public class ClassInfoFragment extends BasePlayerFragment {
 
 
     @BindView(R.id.nestedScrollView)
@@ -106,8 +107,6 @@ public class ClassInfoFragment extends BaseFragment {
     TextView tvServer;
     @BindView(R.id.tv_guarantee)
     TextView tvGuarantee;
-    @BindView(R.id.aliyunPlayerView)
-    AliyunVodPlayerView aliyunPlayerView;
     @BindView(R.id.ll_content)
     LinearLayout llContent;
     @BindView(R.id.ll_server)
@@ -142,11 +141,12 @@ public class ClassInfoFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
-        classInfoFModel = new ViewModelProvider(getActivity()).get(ClassInfoFModel.class);
+        classInfoFModel = new ViewModelProvider(this).get(ClassInfoFModel.class);
         classInfoFModel.getClassInfoBean().observe(getActivity(), new Observer<ClassInfoBean>() {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
+                classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
                 classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "");//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
@@ -229,7 +229,7 @@ public class ClassInfoFragment extends BaseFragment {
             tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
         //更新ClassInfoActivity价格
-        classInfoModel.setPrices(new String[]{classInfoBean.getHuod_price_info(), classInfoBean.getOriginal_price_info(),classInfoBean.getMaterial_des()});
+//        classInfoModel.setPrices(new String[]{classInfoBean.getHuod_price_info(), classInfoBean.getOriginal_price_info(), classInfoBean.getMaterial_des()});
         tvTitle.setText(classInfoBean.getTitle());
         //班级描述
         if (classInfoBean.getSub_title() == null) {
@@ -311,94 +311,6 @@ public class ClassInfoFragment extends BaseFragment {
     }
 
 
-    //初始化阿里云播放器
-    protected void initAliyunPlayerView() {
-//        String sdDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_save_cache";
-//        File file = new File(sdDir);
-//        if (!file.exists()) {
-//            try {
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-        aliyunPlayerView.setTitleBarCanShow(false);
-        aliyunPlayerView.setControlBarCanShow(false);
-        //保持屏幕敞亮
-        aliyunPlayerView.setKeepScreenOn(false);
-//        PlayParameter.PLAY_PARAM_URL = palyUrl;
-//        aliyunPlayerView.setPlayingCache(true, sdDir, 60 * 60 /*时长, s */, 300 /*大小，MB*/);
-        aliyunPlayerView.setTheme(AliyunVodPlayerView.Theme.Blue);
-        aliyunPlayerView.setCirclePlay(false);//是否循环播放
-        aliyunPlayerView.setAutoPlay(false);//是否自动播放
-        //设置画面缩放模式：宽高比填充，宽高比适应，拉伸填充
-        //aliyunPlayerView.setVideoScalingMode(IPlayer.ScaleMode.SCALE_ASPECT_FILL);
-
-        aliyunPlayerView.setOnShowMoreClickListener(new ControlView.OnShowMoreClickListener() {
-            @Override
-            public void showMore() {
-                showMorea();
-            }
-        });
-
-    }
-
-    //播放视频
-    protected void playVideo(VideoUrlBean videoUrlBean) {
-        String videoPath = PlayParameter.PLAY_PARAM_URL;
-        // String videoPath = "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4";
-
-
-        //下面的这 2 种视频路径，到4.7.0版本，不支持播放
-        //String videoPath1 = "android.resource://" + getPackageName() + "/" + R.raw.video_1;
-        // String videoPath2 = "file:///android_asset/video_1.mp4";
-//        UrlSource urlSource = new UrlSource();
-//        urlSource.setUri(videoPath);
-
-
-//        PlayerConfig playerConfig = aliyunPlayerView.getPlayerConfig();
-//        //默认是5000
-//        int maxDelayTime = 5000;
-//        if (PlayParameter.PLAY_PARAM_URL.startsWith("artp")) {
-//            //如果url的开头是artp，将直播延迟设置成100，
-//            maxDelayTime = 100;
-//        }
-//        playerConfig.mMaxDelayTime = maxDelayTime;
-
-        VidAuth vidAuth = new VidAuth();
-        vidAuth.setPlayAuth(videoUrlBean.getAuth());
-        vidAuth.setVid(videoUrlBean.getVid());
-//        vidAuth.setRegion("https://vod.cn-shanghai.aliyuncs.com");
-        vidAuth.setRegion("cn-shanghai");
-
-
-//        aliyunPlayerView.setPlayerConfig(playerConfig);
-        aliyunPlayerView.setAuthInfo(vidAuth);
-//        aliyunPlayerView.setLocalSource(urlSource);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        if (aliyunPlayerView != null) {
-//            aliyunPlayerView.setAutoPlay(false);
-//            aliyunPlayerView.onResume();
-//        }
-        updatePlayerViewMode();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        L.e("=====ClassInfoFragment:onStop");
-
-        if (aliyunPlayerView != null) {
-            aliyunPlayerView.setAutoPlay(false);
-            aliyunPlayerView.onStop();
-        }
-    }
-
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -428,154 +340,5 @@ public class ClassInfoFragment extends BaseFragment {
         updatePlayerViewMode();
     }
 
-    private void updatePlayerViewMode() {
-        if (aliyunPlayerView != null) {
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                //转为竖屏了。
-                //显示状态栏
-                //                if (!isStrangePhone()) {
-                //                    getSupportActionBar().show();
-                //                }
 
-                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-
-                //设置view的布局，宽高之类
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
-                        .getLayoutParams();
-                aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(getActivity()) * 9.0f / 16);
-                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                //转到横屏了。
-                //隐藏状态栏
-                if (!isStrangePhone()) {
-
-                    getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-                }
-                //设置view的布局，宽高
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
-                        .getLayoutParams();
-                aliVcVideoViewLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            }
-        }
-    }
-
-    protected boolean isStrangePhone() {
-        boolean strangePhone = "mx5".equalsIgnoreCase(Build.DEVICE)
-                || "Redmi Note2".equalsIgnoreCase(Build.DEVICE)
-                || "Z00A_1".equalsIgnoreCase(Build.DEVICE)
-                || "hwH60-L02".equalsIgnoreCase(Build.DEVICE)
-                || "hermes".equalsIgnoreCase(Build.DEVICE)
-                || ("V4".equalsIgnoreCase(Build.DEVICE) && "Meitu".equalsIgnoreCase(Build.MANUFACTURER))
-                || ("m1metal".equalsIgnoreCase(Build.DEVICE) && "Meizu".equalsIgnoreCase(Build.MANUFACTURER));
-
-        VcPlayerLog.e("lfj1115 ", " Build.Device = " + Build.DEVICE + " , isStrange = " + strangePhone);
-        return strangePhone;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        L.e("=====ClassInfoFragment:onPause");
-        if (aliyunPlayerView != null) {
-            aliyunPlayerView.pause();
-        }
-    }
-
-    AlivcShowMoreDialog showMoreDialog;
-
-    private void showMorea() {
-        showMoreDialog = new AlivcShowMoreDialog(getActivity());
-        AliyunShowMoreValue moreValue = new AliyunShowMoreValue();
-        moreValue.setSpeed(aliyunPlayerView.getCurrentSpeed());
-        moreValue.setVolume((int) aliyunPlayerView.getCurrentVolume());
-
-        ShowMoreView showMoreView = new ShowMoreView(getActivity(), moreValue);
-        showMoreDialog.setContentView(showMoreView);
-        showMoreDialog.show();
-
-        showMoreView.setOnSpeedCheckedChangedListener(new ShowMoreView.OnSpeedCheckedChangedListener() {
-            @Override
-            public void onSpeedChanged(RadioGroup group, int checkedId) {
-                // 点击速度切换
-                if (checkedId == com.aliyun.vodplayer.R.id.rb_speed_normal) {
-                    aliyunPlayerView.changeSpeed(SpeedValue.One);
-                } else if (checkedId == com.aliyun.vodplayer.R.id.rb_speed_onequartern) {
-                    aliyunPlayerView.changeSpeed(SpeedValue.OneQuartern);
-                } else if (checkedId == com.aliyun.vodplayer.R.id.rb_speed_onehalf) {
-                    aliyunPlayerView.changeSpeed(SpeedValue.OneHalf);
-                } else if (checkedId == com.aliyun.vodplayer.R.id.rb_speed_twice) {
-                    aliyunPlayerView.changeSpeed(SpeedValue.Twice);
-                }
-
-            }
-        });
-
-        /**
-         * 初始化亮度
-         */
-        if (aliyunPlayerView != null) {
-            showMoreView.setBrightness(aliyunPlayerView.getScreenBrightness());
-        }
-        // 亮度seek
-        showMoreView.setOnLightSeekChangeListener(new ShowMoreView.OnLightSeekChangeListener() {
-            @Override
-            public void onStart(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onProgress(SeekBar seekBar, int progress, boolean fromUser) {
-                setWindowBrightness(progress);
-                if (aliyunPlayerView != null) {
-                    aliyunPlayerView.setScreenBrightness(progress);
-                }
-            }
-
-            @Override
-            public void onStop(SeekBar seekBar) {
-
-            }
-        });
-
-        /**
-         * 初始化音量
-         */
-        if (aliyunPlayerView != null) {
-            showMoreView.setVoiceVolume(aliyunPlayerView.getCurrentVolume());
-        }
-        showMoreView.setOnVoiceSeekChangeListener(new ShowMoreView.OnVoiceSeekChangeListener() {
-            @Override
-            public void onStart(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onProgress(SeekBar seekBar, int progress, boolean fromUser) {
-                aliyunPlayerView.setCurrentVolume(progress / 100.00f);
-            }
-
-            @Override
-            public void onStop(SeekBar seekBar) {
-
-            }
-        });
-
-    }
-
-    private void setWindowBrightness(int brightness) {
-        Window window = getActivity().getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.screenBrightness = brightness / 255.0f;
-        window.setAttributes(lp);
-    }
 }

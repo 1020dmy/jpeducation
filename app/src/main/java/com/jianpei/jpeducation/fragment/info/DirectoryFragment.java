@@ -24,6 +24,7 @@ import com.jianpei.jpeducation.bean.classinfo.DirectoryChapterBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
+import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.viewmodel.CIDirectoryModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -117,6 +118,8 @@ public class DirectoryFragment extends BaseFragment {
                 tvTeacher.setText(teachers);
             }
         });
+
+        ///班级
         classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
             @Override
             public void onChanged(GroupInfoBean groupInfoBean) {
@@ -124,6 +127,13 @@ public class DirectoryFragment extends BaseFragment {
                 ciDirectoryModel.classDirectory(groupInfoBean.getId());
 
 
+            }
+        });
+        ///团购
+        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(getActivity(), new Observer<RegimentInfoBean>() {
+            @Override
+            public void onChanged(RegimentInfoBean regimentInfoBean) {
+                ciDirectoryModel.classDirectory(regimentInfoBean.getPoint_id());
             }
         });
 
@@ -163,10 +173,8 @@ public class DirectoryFragment extends BaseFragment {
                             DirectoryProfessionBean DirectoryProfessionBean = (DirectoryProfessionBean) adapter.getData().get(directoryAdapter.findParentNode(position));
                             ciDirectoryModel.viodList(DirectoryProfessionBean.getId(), directoryChapterBean.getId());
                         }
-
                         directoryAdapter.expandOrCollapse(position);
                         break;
-
                 }
             }
         });

@@ -75,5 +75,8 @@ public class UrlConfig {
     //订单发起支付
     public static final String orderPayment = "order/orderPayment";
 
+    //1-订单详情
+    public static final String orderInfo = "order/orderInfo";
+
 
 }

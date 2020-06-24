@@ -239,15 +239,22 @@
 
             <include layout="@layout/line" />
 
-            <include layout="@layout/item_group_list" />
+            <!--            <include layout="@layout/item_group_list" />-->
 
-            <include layout="@layout/item_group_list" />
+            <!--            <include layout="@layout/item_group_list" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
 
 
         </LinearLayout>
 
         <!--*****************规则****************-->
         <LinearLayout
+            android:id="@+id/ll_guize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

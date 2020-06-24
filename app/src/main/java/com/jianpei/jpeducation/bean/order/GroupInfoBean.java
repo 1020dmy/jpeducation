@@ -1,6 +1,9 @@
 package com.jianpei.jpeducation.bean.order;
 
-public class GroupInfoBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GroupInfoBean implements Parcelable {
 
 
     /**
@@ -76,4 +79,46 @@ public class GroupInfoBean {
     public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.sub_title);
+        dest.writeString(this.status);
+        dest.writeString(this.img);
+        dest.writeString(this.deleted);
+        dest.writeString(this.end_time);
+    }
+
+    public GroupInfoBean() {
+    }
+
+    protected GroupInfoBean(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.sub_title = in.readString();
+        this.status = in.readString();
+        this.img = in.readString();
+        this.deleted = in.readString();
+        this.end_time = in.readString();
+    }
+
+    public static final Parcelable.Creator<GroupInfoBean> CREATOR = new Parcelable.Creator<GroupInfoBean>() {
+        @Override
+        public GroupInfoBean createFromParcel(Parcel source) {
+            return new GroupInfoBean(source);
+        }
+
+        @Override
+        public GroupInfoBean[] newArray(int size) {
+            return new GroupInfoBean[size];
+        }
+    };
 }

@@ -4,7 +4,9 @@ import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.base.BaseRepository;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
+import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.contract.ClassInfoContract;
 
 import java.util.List;
@@ -15,6 +17,11 @@ public class ClassInfoRepository extends BaseRepository implements ClassInfoCont
 
     @Override
     public Observable<BaseEntity<List<GroupClassBean>>> groupClass(String groupId, String regimentId) {
-        return RetrofitFactory.getInstance().API().groupClass(new GroupInfoJson(groupId,regimentId));
+        return RetrofitFactory.getInstance().API().groupClass(new GroupInfoJson(groupId, regimentId));
+    }
+
+    @Override
+    public Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id) {
+        return RetrofitFactory.getInstance().API().classGenerateOrder(new ClassGenerateOrderJson(goods_type, group_id, coupon_id, order_id, class_ids, suites_ids, regiment_id, gather_id));
     }
 }

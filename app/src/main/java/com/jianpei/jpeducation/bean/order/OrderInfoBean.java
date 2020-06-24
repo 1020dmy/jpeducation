@@ -1,6 +1,9 @@
 package com.jianpei.jpeducation.bean.order;
 
-public class OrderInfoBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class OrderInfoBean implements Parcelable {
 
 
     /**
@@ -84,6 +87,34 @@ public class OrderInfoBean {
     private String huod_id;
     private String regiment_id;
     private String gather_id;
+
+    private String class_name_str;
+    private String material_des;
+    private String is_material;
+
+    public String getClass_name_str() {
+        return class_name_str;
+    }
+
+    public void setClass_name_str(String class_name_str) {
+        this.class_name_str = class_name_str;
+    }
+
+    public String getMaterial_des() {
+        return material_des;
+    }
+
+    public void setMaterial_des(String material_des) {
+        this.material_des = material_des;
+    }
+
+    public String getIs_material() {
+        return is_material;
+    }
+
+    public void setIs_material(String is_material) {
+        this.is_material = is_material;
+    }
 
     public String getId() {
         return id;
@@ -396,4 +427,116 @@ public class OrderInfoBean {
     public void setGather_id(String gather_id) {
         this.gather_id = gather_id;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.number);
+        dest.writeString(this.type);
+        dest.writeString(this.gid);
+        dest.writeString(this.num);
+        dest.writeString(this.mid);
+        dest.writeString(this.money);
+        dest.writeString(this.integral);
+        dest.writeString(this.count_integral);
+        dest.writeString(this.discount_integral);
+        dest.writeString(this.pro_id);
+        dest.writeString(this.city_id);
+        dest.writeString(this.area_id);
+        dest.writeString(this.address);
+        dest.writeString(this.name);
+        dest.writeString(this.tel);
+        dest.writeString(this.pay);
+        dest.writeString(this.pay_type);
+        dest.writeString(this.state);
+        dest.writeString(this.addtime);
+        dest.writeString(this.kuaidi);
+        dest.writeString(this.kuaidi_number);
+        dest.writeString(this.optime);
+        dest.writeString(this.zhekou);
+        dest.writeString(this.pid);
+        dest.writeString(this.is_down);
+        dest.writeString(this.zk_id);
+        dest.writeString(this.tagent_id);
+        dest.writeString(this.updtime);
+        dest.writeString(this.add_type);
+        dest.writeString(this.tagent_zhekou);
+        dest.writeString(this.suit_id);
+        dest.writeString(this.group_id);
+        dest.writeString(this.goods_type);
+        dest.writeString(this.timeout);
+        dest.writeString(this.add_time_str);
+        dest.writeString(this.huod_id);
+        dest.writeString(this.regiment_id);
+        dest.writeString(this.gather_id);
+        dest.writeString(this.class_name_str);
+        dest.writeString(this.material_des);
+        dest.writeString(this.is_material);
+    }
+
+    public OrderInfoBean() {
+    }
+
+    protected OrderInfoBean(Parcel in) {
+        this.id = in.readString();
+        this.number = in.readString();
+        this.type = in.readString();
+        this.gid = in.readString();
+        this.num = in.readString();
+        this.mid = in.readString();
+        this.money = in.readString();
+        this.integral = in.readString();
+        this.count_integral = in.readString();
+        this.discount_integral = in.readString();
+        this.pro_id = in.readString();
+        this.city_id = in.readString();
+        this.area_id = in.readString();
+        this.address = in.readString();
+        this.name = in.readString();
+        this.tel = in.readString();
+        this.pay = in.readString();
+        this.pay_type = in.readString();
+        this.state = in.readString();
+        this.addtime = in.readString();
+        this.kuaidi = in.readString();
+        this.kuaidi_number = in.readString();
+        this.optime = in.readString();
+        this.zhekou = in.readString();
+        this.pid = in.readString();
+        this.is_down = in.readString();
+        this.zk_id = in.readString();
+        this.tagent_id = in.readString();
+        this.updtime = in.readString();
+        this.add_type = in.readString();
+        this.tagent_zhekou = in.readString();
+        this.suit_id = in.readString();
+        this.group_id = in.readString();
+        this.goods_type = in.readString();
+        this.timeout = in.readString();
+        this.add_time_str = in.readString();
+        this.huod_id = in.readString();
+        this.regiment_id = in.readString();
+        this.gather_id = in.readString();
+        this.class_name_str = in.readString();
+        this.material_des = in.readString();
+        this.is_material = in.readString();
+    }
+
+    public static final Creator<OrderInfoBean> CREATOR = new Creator<OrderInfoBean>() {
+        @Override
+        public OrderInfoBean createFromParcel(Parcel source) {
+            return new OrderInfoBean(source);
+        }
+
+        @Override
+        public OrderInfoBean[] newArray(int size) {
+            return new OrderInfoBean[size];
+        }
+    };
 }

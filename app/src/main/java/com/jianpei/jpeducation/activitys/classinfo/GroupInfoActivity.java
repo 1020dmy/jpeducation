@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +26,10 @@ import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.fragment.group.GclassInfoFragment;
 import com.jianpei.jpeducation.fragment.group.GcommentFragment;
 import com.jianpei.jpeducation.fragment.group.GdirectoryFragment;
+import com.jianpei.jpeducation.fragment.info.CommentFragment;
+import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 
@@ -69,8 +73,10 @@ public class GroupInfoActivity extends BaseActivity {
 
     private String[] tabTitle = {"详情", "目录", "评价"};
     private GclassInfoFragment classInfoFragment;//详情
-    private GdirectoryFragment directoryFragment;//目录
-    private GcommentFragment commentFragment;//评价
+    //    private GdirectoryFragment directoryFragment;//目录
+    private DirectoryFragment directoryFragment;
+    //    private GcommentFragment commentFragment;//评价
+    private CommentFragment commentFragment;
     private Fragment[] fragments;
 
     private ClassInfoTabFragmentAdapter classInfoTabFragmentAdapter;
@@ -148,8 +154,8 @@ public class GroupInfoActivity extends BaseActivity {
         });
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
         classInfoFragment = new GclassInfoFragment();
-        directoryFragment = new GdirectoryFragment();
-        commentFragment = new GcommentFragment();
+        directoryFragment = new DirectoryFragment();
+        commentFragment = new CommentFragment();
         fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
 
     }
@@ -173,7 +179,7 @@ public class GroupInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.tv_shopping, R.id.submit})
+    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.tv_shopping, R.id.submit, R.id.rl_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -193,10 +199,33 @@ public class GroupInfoActivity extends BaseActivity {
                 break;
             case R.id.submit:
                 if (subjectPopup == null) {
-                    subjectPopup = new SubjectPopup(this, mGroupClassBeans, "", "");
+                    subjectPopup = new SubjectPopup(this, mGroupClassBeans,null);
                 }
                 subjectPopup.showPop();
                 break;
+            case R.id.rl_buy:
+//                if (subjectPopup == null) {
+//                    subjectPopup = new SubjectPopup(this, mGroupClassBeans, "", "");
+//                }
+//                subjectPopup.showPop();
+                break;
+        }
+    }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        int type = this.getResources().getConfiguration().orientation;
+        if (type == Configuration.ORIENTATION_LANDSCAPE) {
+            llBottom.setVisibility(View.GONE);
+            rlTitle.setVisibility(View.GONE);
+            //切换到了横屏
+        } else if (type == Configuration.ORIENTATION_PORTRAIT) {
+            //切换到了竖屏
+            llBottom.setVisibility(View.VISIBLE);
+            rlTitle.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -21,17 +21,21 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
+import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.fragment.info.ClassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
+import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 import com.jianpei.umeng.ShareActivity;
 import com.umeng.socialize.ShareAction;
@@ -113,8 +117,14 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     private UMShareListener mShareListener;
 
     //
-    private String originPrice;
-    private String material;
+//    private String originPrice;
+//    private String material;
+    //
+//    private List<String> classIds;
+//    private List<String> suitesIds;
+
+
+    private ClassInfoBean mClassInfoBean;
 
 
     @Override
@@ -127,9 +137,33 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
         height = DisplayUtil.dp2px(300);
 
         groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
+        viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
+        classInfoFragment = new ClassInfoFragment();
+        directoryFragment = new DirectoryFragment();
+        commentFragment = new CommentFragment();
+        fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
 
 
         classInfoModel = new ViewModelProvider(this).get(ClassInfoModel.class);//初始化model
+
+        classInfoModel.getClassInfoBeanLiveData().observe(this, new Observer<ClassInfoBean>() {
+            @Override
+            public void onChanged(ClassInfoBean classInfoBean) {
+                mClassInfoBean = classInfoBean;
+                //更新界面数据
+                if (classInfoBean.getHuod_price_info() == null) {
+                    tvPrice.setVisibility(View.GONE);
+                    tvNowPrice.setText(classInfoBean.getOriginal_price_info());
+                } else {
+                    tvNowPrice.setText(classInfoBean.getHuod_price_info());
+                    tvPrice.setText("原价：" + classInfoBean.getOriginal_price_info());
+                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+                }
+
+            }
+        });
+
         //接收来自与ClassInfoFragment的消息
         classInfoModel.getTabViewStatus().observe(this, new Observer<Integer>() {
             @Override
@@ -148,32 +182,52 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             }
         });
         //接收来自与ClassInfoFragment的消息
-        classInfoModel.getPrices().observe(this, new Observer<String[]>() {
-            @Override
-            public void onChanged(String[] strings) {
-                //如果没有活动价格，隐藏原价
-                if (strings[0] == null) {
-                    tvPrice.setVisibility(View.GONE);
-                    tvNowPrice.setText(strings[1]);
-                } else {
-                    tvNowPrice.setText(strings[0]);
-                    originPrice=strings[1];
-                    tvPrice.setText("原价：" + originPrice);
-                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                }
-                material=strings[2];
-
-            }
-        });
+//        classInfoModel.getPrices().observe(this, new Observer<String[]>() {
+//            @Override
+//            public void onChanged(String[] strings) {
+//                //如果没有活动价格，隐藏原价
+//                if (strings[0] == null) {
+//                    tvPrice.setVisibility(View.GONE);
+//                    tvNowPrice.setText(strings[1]);
+//                } else {
+//                    tvNowPrice.setText(strings[0]);
+//                    originPrice = strings[1];
+//                    tvPrice.setText("原价：" + originPrice);
+//                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//                }
+//                material = strings[2];
+//
+//            }
+//        });
         //获取科目信息
         mGroupClassBeans = new ArrayList<>();
         classInfoModel.getGroupClassBeansLiveData().observe(this, new Observer<List<GroupClassBean>>() {
             @Override
             public void onChanged(List<GroupClassBean> groupClassBeans) {
+                dismissLoading();
                 mGroupClassBeans.addAll(groupClassBeans);
+                showPow();
 
             }
         });
+        //获取 购买课程下单/计算价格结果
+        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+            @Override
+            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+                dismissLoading();
+                startActivity(new Intent(ClassInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean));
+            }
+        });
+
+        classInfoModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+
+            }
+        });
+
         ////传递信息到fagemnt
         classInfoModel.setGroupInfo(groupInfoBean);
 
@@ -191,14 +245,6 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-        viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
-        classInfoFragment = new ClassInfoFragment();
-        directoryFragment = new DirectoryFragment();
-        commentFragment = new CommentFragment();
-        fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
-
-        classInfoModel.groupClass(groupInfoBean.getId(), "");
 
 
     }
@@ -246,16 +292,37 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 }
                 break;
             case R.id.submit:
-                if (subjectPopup == null) {
-                    subjectPopup = new SubjectPopup(this, mGroupClassBeans,tvPrice.getText().toString(),material);
+                if (mGroupClassBeans.size() != 0) {
+                    showPow();
+                } else {
+                    showLoading("");
+                    classInfoModel.groupClass(groupInfoBean.getId(), "");
                 }
-                subjectPopup.showPop();
                 break;
             case R.id.tv_kefu:
                 startActivity(new Intent(this, KeFuActivity.class));
 
                 break;
         }
+    }
+
+    public void showPow() {
+
+        if (subjectPopup == null) {
+            subjectPopup = new SubjectPopup(this, mGroupClassBeans, mClassInfoBean);
+
+            subjectPopup.setClassIds(new ArrayList<String>());
+            subjectPopup.setSuitesIds(new ArrayList<String>());
+            subjectPopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoading("");
+                    classInfoModel.classGenerateOrder("1", groupInfoBean.getId(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
+
+                }
+            });
+        }
+        subjectPopup.showPop();
     }
 
     @Override
@@ -287,6 +354,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     protected void onDestroy() {
         super.onDestroy();
         UMShareAPI.get(this).release();
+
     }
 
 
@@ -302,7 +370,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 .share();
     }
 
-    private  class CustomShareListener implements UMShareListener {
+    private class CustomShareListener implements UMShareListener {
 
         private WeakReference<ShareActivity> mActivity;
 
@@ -346,4 +414,5 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
 
         }
     }
+
 }

@@ -2,12 +2,14 @@ package com.jianpei.jpeducation.fragment.group;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -16,19 +18,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
 import com.jianpei.jpeducation.adapter.classinfo.ExplanationAdapter;
+import com.jianpei.jpeducation.adapter.classinfo.GroupAdapter;
 import com.jianpei.jpeducation.adapter.classinfo.TeacherAdapter;
-import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.BasePlayerFragment;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.classinfo.TeacherBean;
+import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.dialog.GroupDialog;
 import com.jianpei.jpeducation.utils.pop.GroupPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -43,11 +45,9 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class GclassInfoFragment extends BaseFragment {
+public class GclassInfoFragment extends BasePlayerFragment {
 
 
-    @BindView(R.id.aliyunPlayerView)
-    AliyunVodPlayerView aliyunPlayerView;
     @BindView(R.id.tv_tryListener)
     TextView tvTryListener;
     @BindView(R.id.tv_now_price)
@@ -74,26 +74,6 @@ public class GclassInfoFragment extends BaseFragment {
     LinearLayout llContent;
     @BindView(R.id.tv_more)
     TextView tvMore;
-    //    @BindView(R.id.civ_head)
-//    CircleImageView civHead;
-//    @BindView(R.id.tv_name)
-//    TextView tvName;
-//    @BindView(R.id.tv_nums)
-//    TextView tvNums;
-//    @BindView(R.id.tv_time)
-//    TextView tvTime;
-//    @BindView(R.id.tv_join)
-//    TextView tvJoin;
-//    @BindView(R.id.civ_head)
-//    CircleImageView civHead;
-//    @BindView(R.id.tv_name)
-//    TextView tvName;
-//    @BindView(R.id.tv_nums)
-//    TextView tvNums;
-//    @BindView(R.id.tv_time)
-//    TextView tvTime;
-//    @BindView(R.id.tv_join)
-//    TextView tvJoin;
     @BindView(R.id.tv_guize)
     TextView tvGuize;
     @BindView(R.id.tv_server)
@@ -118,10 +98,18 @@ public class GclassInfoFragment extends BaseFragment {
     TextView tvPeople;
     @BindView(R.id.ll_pinTuan)
     LinearLayout llPinTuan;
+    @BindView(R.id.ll_guize)
+    LinearLayout llGuize;
+    @BindView(R.id.rv_items)
+    RecyclerView rvItems;
     //GroupInfoActivity的model
     private ClassInfoModel classInfoModel;
     //自己的额model
     private ClassInfoFModel classInfoFModel;
+
+
+    private GroupAdapter groupAdapter;
+    private List<RegimentBean> regimentBeans;
 
 
     @Override
@@ -154,7 +142,7 @@ public class GclassInfoFragment extends BaseFragment {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
-//                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "");//获取试看视频
+                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "");//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
         });
@@ -166,9 +154,24 @@ public class GclassInfoFragment extends BaseFragment {
                 shortToast(o);
             }
         });
+        //视频结果监听
+        classInfoFModel.getVideoUrlBeansLiveData().observe(getActivity(), new Observer<VideoUrlBean>() {
+            @Override
+            public void onChanged(VideoUrlBean videoUrlBean) {
+                //试听课程结果
+                aliyunPlayerView.setCoverUri(videoUrlBean.getImg());
+                //初始化播放器并播放试听课程
+                initAliyunPlayerView();
+                playVideo(videoUrlBean);
+
+            }
+        });
         rvExplanation.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(10));
+
+        rvItems.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
 
     @Override
@@ -177,22 +180,28 @@ public class GclassInfoFragment extends BaseFragment {
         teacherAdapter = new TeacherAdapter(teacherBeans, getActivity());
 
         recyclerView.setAdapter(teacherAdapter);
+        ///团购
+        regimentBeans = new ArrayList<>();
+        groupAdapter = new GroupAdapter(regimentBeans, getContext());
+        rvItems.setAdapter(groupAdapter);
 
     }
 
     GroupPopup groupPopup;
-    private List<RegimentBean> regimentBeans;
 
     @OnClick({R.id.tv_tryListener, R.id.tv_more, R.id.tv_guize})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_tryListener:
+                aliyunPlayerView.start();
+                tvTryListener.setVisibility(View.GONE);
+                aliyunPlayerView.setControlBarCanShow(true);
                 break;
             case R.id.tv_more:
                 if (groupPopup == null) {
                     groupPopup = new GroupPopup(getActivity(), regimentBeans);
                 }
-                L.e("regimentBeans:"+regimentBeans.size());
+                L.e("regimentBeans:" + regimentBeans.size());
                 groupPopup.showPop();
                 break;
             case R.id.tv_guize:
@@ -213,13 +222,13 @@ public class GclassInfoFragment extends BaseFragment {
         if (classInfoBean == null)
             return;
         webUrl = classInfoBean.getRegiment_rules_url();
-        if (regimentBeans == null) {
-            regimentBeans = new ArrayList<>();
-        }
-        L.e("setDatatoView:"+classInfoBean.getRegiment_info().getRegiment_data().size());
+//        if (regimentBeans == null) {
+//            regimentBeans = new ArrayList<>();
+//        }
+        L.e("setDatatoView:" + classInfoBean.getRegiment_info().getRegiment_data().size());
 
         regimentBeans.addAll(classInfoBean.getRegiment_info().getRegiment_data());
-        if(regimentBeans.size()==0){
+        if (regimentBeans.size() == 0) {
             llPinTuan.setVisibility(View.GONE);
         }
         //如果没有活动价格，隐藏原价
@@ -281,4 +290,40 @@ public class GclassInfoFragment extends BaseFragment {
             teacherAdapter.notifyDataSetChanged();
         }
     }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int type = this.getResources().getConfiguration().orientation;
+        if (type == Configuration.ORIENTATION_LANDSCAPE) {
+            L.e("==========", "切换到了横屏");
+            llClassInfo.setVisibility(View.GONE);
+            llContent.setVisibility(View.GONE);
+            llServer.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            llGuize.setVisibility(View.GONE);
+            llPinTuan.setVisibility(View.GONE);
+            aliyunPlayerView.setTitleBarCanShow(true);
+
+            //切换到了横屏
+        } else if (type == Configuration.ORIENTATION_PORTRAIT) {
+            L.e("==========", "切换到了竖屏");
+            //切换到了竖屏
+            llClassInfo.setVisibility(View.VISIBLE);
+            llContent.setVisibility(View.VISIBLE);
+            llServer.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            llGuize.setVisibility(View.VISIBLE);
+            llPinTuan.setVisibility(View.VISIBLE);
+            aliyunPlayerView.setTitleBarCanShow(false);
+
+
+        }
+        updatePlayerViewMode();
+    }
+
+
 }

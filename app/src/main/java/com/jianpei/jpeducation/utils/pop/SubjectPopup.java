@@ -18,11 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
+import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.utils.L;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectPopup extends PopupWindow {
@@ -43,19 +47,45 @@ public class SubjectPopup extends PopupWindow {
     private List<GroupClassBean> mGroupClassBeans;
     private Context mContext;
 
-    private String originPrice;
-    private String material;
+//    private String originPrice;
+//    private String material;
 
+    private ClassInfoBean classInfoBean;
+
+    private List<String> classIds;
+    private List<String> suitesIds;
 
     private double totalPrice;
 
 
-    public SubjectPopup(Context context, List<GroupClassBean> groupClassBeans, String originPrice, String material) {
+    public List<String> getClassIds() {
+        return classIds;
+    }
+
+    public void setClassIds(List<String> classIds) {
+        this.classIds = classIds;
+    }
+
+    public List<String> getSuitesIds() {
+        return suitesIds;
+    }
+
+    public void setSuitesIds(List<String> suitesIds) {
+        this.suitesIds = suitesIds;
+    }
+
+    public void setOnClickListener(View.OnClickListener clickListener) {
+        button.setOnClickListener(clickListener);
+    }
+
+
+    public SubjectPopup(Context context, List<GroupClassBean> groupClassBeans, ClassInfoBean classInfoBean) {
 
         mContext = context;
         mGroupClassBeans = groupClassBeans;
-        this.originPrice = originPrice;
-        this.material = material;
+//        this.originPrice = originPrice;
+//        this.material = material;
+        this.classInfoBean = classInfoBean;
 
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -84,20 +114,24 @@ public class SubjectPopup extends PopupWindow {
     }
 
     private void setData() {
-        tvPrice.setText(originPrice);
+        tvPrice.setText(classInfoBean.getOriginal_price_info());
         tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        if (!TextUtils.isEmpty(material)) {
-            tvData.setText(material);
-        } else {
+        Glide.with(mContext).load(classInfoBean.getImg()).placeholder(R.drawable.home_icon_demo).into(imageView);
+        mtvTitle.setText(classInfoBean.getTitle());
+
+        if (classInfoBean.getMaterial_des() == null) {
             llData.setVisibility(View.GONE);
+        } else {
+            tvData.setText(classInfoBean.getMaterial_des());
         }
-        if (mGroupClassBeans.size() != 0) {
-            mGroupClassBeans.get(0).setSelect(true);
-            tvNowPrice.setText("￥" + mGroupClassBeans.get(0).getPrice());
-            if (mGroupClassBeans.get(0).getPrice() != null)
-                totalPrice = Double.parseDouble(mGroupClassBeans.get(0).getPrice());
-            mtvTitle.setText(mGroupClassBeans.get(0).getTitle());
-        }
+
+//        if (mGroupClassBeans.size() != 0) {
+//            mGroupClassBeans.get(0).setSelect(true);
+//            tvNowPrice.setText("￥" + mGroupClassBeans.get(0).getPrice());
+//            if (mGroupClassBeans.get(0).getPrice() != null)
+//                totalPrice = Double.parseDouble(mGroupClassBeans.get(0).getPrice());
+//            mtvTitle.setText(mGroupClassBeans.get(0).getTitle());
+//        }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(10));
         MyAdapter myAdapter = new MyAdapter();
@@ -128,12 +162,13 @@ public class SubjectPopup extends PopupWindow {
 //            holder.tvTitle.setEnabled(!groupClassBean.isSelect());
 
             if (groupClassBean.isSelect()) {
+                addIds(groupClassBean);
                 holder.llTitle.setBackgroundResource(R.drawable.shape_subject_select_bg);
                 holder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
             } else {
+                removeIds(groupClassBean);
                 holder.llTitle.setBackgroundResource(R.drawable.shape_subject_unselect_bg);
                 holder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.cA5A8B0));
-
             }
             holder.tvTitle.setText(groupClassBean.getTitle());
 
@@ -167,12 +202,25 @@ public class SubjectPopup extends PopupWindow {
                 notifyItemChanged(getLayoutPosition());
                 if (groupClassBean.getPrice() == null)
                     return;
+
+
                 if (groupClassBean.isSelect()) {
+//                    if (groupClassBean.getType() == 1) {
+//                        classIds.add(groupClassBean.getId());
+//                    } else {
+//                        suitesIds.add(groupClassBean.getId());
+//                    }
                     totalPrice += Double.parseDouble(groupClassBean.getPrice());
                 } else {
+//                    if (groupClassBean.getType() == 1) {
+//                        classIds.remove(groupClassBean.getId());
+//                    } else {
+//                        suitesIds.remove(groupClassBean.getId());
+//                    }
                     totalPrice -= Double.parseDouble(groupClassBean.getPrice());
                 }
                 tvNowPrice.setText("￥" + totalPrice);
+
 //                mGroupClassBeans.get(selectPoint).setSelect(false);
 //                notifyItemChanged(selectPoint);
 //                mGroupClassBeans.get(getLayoutPosition()).setSelect(true);
@@ -193,4 +241,45 @@ public class SubjectPopup extends PopupWindow {
     }
 
 
+    public void addIds(GroupClassBean groupClassBean) {
+        if (classIds == null && suitesIds == null)
+            return;
+        if (groupClassBean.getType() == 1) {
+            classIds.add(groupClassBean.getId());
+        } else {
+            suitesIds.add(groupClassBean.getId());
+        }
+
+//        dataListenter();
+    }
+
+    public void removeIds(GroupClassBean groupClassBean) {
+        if (classIds == null && suitesIds == null)
+            return;
+        if (groupClassBean.getType() == 1) {
+            classIds.remove(groupClassBean.getId());
+        } else {
+            suitesIds.remove(groupClassBean.getId());
+        }
+//        dataListenter();
+
+    }
+
+
+    public void dataListenter() {
+        for (String classId : classIds) {
+            L.e("classId:" + classId);
+        }
+        for (String suitesId : suitesIds) {
+            L.e("suitesId:" + suitesId);
+        }
+
+        L.e("=========================");
+
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
 }

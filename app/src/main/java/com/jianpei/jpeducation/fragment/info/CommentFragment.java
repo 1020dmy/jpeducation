@@ -15,6 +15,7 @@ import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.CommentBean;
 import com.jianpei.jpeducation.bean.CommentListBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
+import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.viewmodel.CICommentModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 
@@ -75,11 +76,18 @@ public class CommentFragment extends BaseFragment {
                 shortToast(o);
             }
         });
-        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
+        classInfoModel.getGroupInfoBeanMutableLiveData().observe(this, new Observer<GroupInfoBean>() {
             @Override
             public void onChanged(GroupInfoBean groupInfoBean) {
                 showLoading("");
                 ciCommentModel.commentList(groupInfoBean.getId(), 1, 10);
+            }
+        });
+        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
+            @Override
+            public void onChanged(RegimentInfoBean regimentInfoBean) {
+                ciCommentModel.commentList(regimentInfoBean.getPoint_id(), 1, 10);
+
             }
         });
 

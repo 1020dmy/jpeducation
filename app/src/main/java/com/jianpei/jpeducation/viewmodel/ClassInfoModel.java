@@ -2,17 +2,20 @@ package com.jianpei.jpeducation.viewmodel;
 
 import android.text.TextUtils;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
+import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.contract.ClassInfoContract;
 import com.jianpei.jpeducation.repository.ClassInfoRepository;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.List;
 
@@ -41,6 +44,28 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     //团购参数
     private MutableLiveData<RegimentInfoBean> regimentInfoBeanMutableLiveData;
 
+
+    private MutableLiveData<ClassInfoBean> classInfoBeanLiveData;
+
+    public MutableLiveData<ClassInfoBean> getClassInfoBeanLiveData() {
+        if (classInfoBeanLiveData == null)
+            classInfoBeanLiveData = new MutableLiveData<>();
+        return classInfoBeanLiveData;
+    }
+
+
+    //购买课程下单/计算价格结果
+
+    private MutableLiveData<ClassGenerateOrderBean> classGenerateOrderBeanLiveData;
+
+
+    public MutableLiveData<ClassGenerateOrderBean> getClassGenerateOrderBeanLiveData() {
+
+        if (classGenerateOrderBeanLiveData == null) {
+            classGenerateOrderBeanLiveData = new MutableLiveData<>();
+        }
+        return classGenerateOrderBeanLiveData;
+    }
 
     public MutableLiveData<List<GroupClassBean>> getGroupClassBeansLiveData() {
         if (groupClassBeansLiveData == null)
@@ -141,5 +166,83 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
                 }
             }
         });
+    }
+
+
+    /**
+     * 1-购买课程下单/计算价格
+     *
+     * @param goods_type
+     * @param group_id
+     * @param coupon_id
+     * @param order_id
+     * @param class_ids
+     * @param suites_ids
+     * @param regiment_id
+     * @param gather_id
+     */
+    @Override
+    public void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, List<String> class_ids, List<String> suites_ids, String regiment_id, String gather_id) {
+        if (TextUtils.isEmpty(goods_type)) {
+            return;
+        }
+        if (TextUtils.isEmpty(group_id)) {
+            return;
+        }
+
+        if (class_ids.size() == 0 && suites_ids.size() == 0) {
+            errData.setValue("请选择要购买的课程");
+            return;
+        }
+
+        String classIds = "";
+        String suitesIds = "";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (class_ids.size() != 0) {
+            for (String classID : class_ids) {
+                stringBuilder.append(classID);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            classIds = stringBuilder.toString();
+        }
+        if (suites_ids.size() != 0) {
+            stringBuilder.delete(0, stringBuilder.length());
+            for (String suiteId : suites_ids) {
+                stringBuilder.append(suiteId);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            suitesIds = stringBuilder.toString();
+
+        }
+        stringBuilder.delete(0, stringBuilder.length() - 1);
+        stringBuilder = null;
+
+        L.e("classIds:" + classIds + ",suitesIds:" + suitesIds);
+
+
+        classInfoRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, classIds, suitesIds, regiment_id, gather_id).compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<ClassGenerateOrderBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    classGenerateOrderBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
     }
 }

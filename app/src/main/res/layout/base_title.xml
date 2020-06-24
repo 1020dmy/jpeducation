@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/tv_status"
         android:layout_width="match_parent"
@@ -17,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="21dp"
-            android:paddingRight="21dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/back_icon" />
 
         <TextView
@@ -39,8 +41,16 @@
             android:paddingRight="20dp"
             android:textColor="@color/c161820"
             android:textSize="@dimen/title_right_size"
+            android:visibility="gone" />
 
-            />
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginRight="10dp" />
     </RelativeLayout>
 
 </LinearLayout>
