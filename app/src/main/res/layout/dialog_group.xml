@@ -26,8 +26,13 @@
             android:textColor="@color/c161820"
             android:textSize="15dp" />
 
+        <include layout="@layout/line"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:layout_marginTop="11dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

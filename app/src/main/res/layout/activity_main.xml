@@ -8,7 +8,9 @@
     <!--    android:paddingTop="?attr/actionBarSize"-->
 
     <!--    <include layout="@layout/base_title_status" />-->
-    <include layout="@layout/include_basetitle_statusbar" />
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/include_basetitle_statusbar" />
 
     <FrameLayout
         android:id="@+id/frameLayout"

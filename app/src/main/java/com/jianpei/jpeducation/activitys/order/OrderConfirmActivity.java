@@ -2,18 +2,27 @@ package com.jianpei.jpeducation.activitys.order;
 
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.utils.pop.MyCouponPopup;
+import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -66,10 +75,28 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.submit)
     TextView submit;
 
+    @BindView(R.id.line)
+    TextView tvLine;
+
     int payType = 1;
+    @BindView(R.id.iv_quan)
+    ImageView ivQuan;
+    @BindView(R.id.tv_quan)
+    TextView tvQuan;
+    @BindView(R.id.ll_quan)
+    LinearLayout llQuan;
 
 
-    private ClassGenerateOrderBean classGenerateOrderBean;
+    private MyCouponPopup couponPopup;
+
+
+    private ClassGenerateOrderBean mClassGenerateOrderBean;
+    private String type;
+
+    private OrderConfirmModel orderConfirmModel;
+    private ArrayList<CouponDataBean.CouponData> mCouponDatas;
+
+    private String mCouponTitle;
 
     @Override
     protected int setLayoutView() {
@@ -84,9 +111,40 @@ public class OrderConfirmActivity extends BaseActivity {
 
         llWeixinPay.setEnabled(false);
         ivWeixin.setEnabled(false);
+        mClassGenerateOrderBean = getIntent().getParcelableExtra("classGenerateOrderBean");
+        type = getIntent().getStringExtra("type");
 
-        classGenerateOrderBean = getIntent().getParcelableExtra("classGenerateOrderBean");
+        orderConfirmModel = new ViewModelProvider(this).get(OrderConfirmModel.class);
 
+        orderConfirmModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+            }
+        });
+        orderConfirmModel.getCouponDataBeanLiveData().observe(this, new Observer<CouponDataBean>() {
+            @Override
+            public void onChanged(CouponDataBean couponDataBean) {
+                dismissLoading();
+                if (mCouponDatas == null)
+                    mCouponDatas = new ArrayList<>();
+                mCouponDatas.addAll(couponDataBean.getData());
+
+                showPop();
+            }
+        });
+        orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+            @Override
+            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+                dismissLoading();
+                if (couponPopup != null) {
+                    couponPopup.dismiss();
+                }
+                mClassGenerateOrderBean = classGenerateOrderBean;
+                setData();
+            }
+        });
 
     }
 
@@ -98,16 +156,16 @@ public class OrderConfirmActivity extends BaseActivity {
 
     protected void setData() {
 
-        if (classGenerateOrderBean == null)
+        if (mClassGenerateOrderBean == null)
             return;
-        GroupInfoBean groupInfoBean = classGenerateOrderBean.getGroup_info();
-        OrderInfoBean orderInfoBean = classGenerateOrderBean.getOrder_info();
+        GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
+        OrderInfoBean orderInfoBean = mClassGenerateOrderBean.getOrder_info();
         //用户信息
         tvName.setText(orderInfoBean.getName());
         tvPhone.setText(orderInfoBean.getTel());
         //订单信息
         tvOrderNum.setText(orderInfoBean.getNumber());
-        tvTime.setText(orderInfoBean.getUpdtime());
+        tvTime.setText(orderInfoBean.getAdd_time_str());
         Glide.with(this).load(groupInfoBean.getImg()).into(ivIcon);
         tvClassTitle.setText(groupInfoBean.getTitle());
         tvClassNames.setText(orderInfoBean.getClass_name_str());
@@ -116,7 +174,20 @@ public class OrderConfirmActivity extends BaseActivity {
         } else {
             tvMaterial.setVisibility(View.GONE);
             tvMaterialName.setVisibility(View.GONE);
+            tvLine.setVisibility(View.GONE);
         }
+        if("GroupInfo".equals(type)){
+            llQuan.setVisibility(View.GONE);
+        }
+        //优惠券信息
+        if ("1".equals(orderInfoBean.getIs_user_coupon())) {
+            ivQuan.setImageResource(R.drawable.icon_quanou_is);
+            tvQuan.setText("有可用优惠券");
+            llQuan.setEnabled(true);
+        }
+
+        if (!TextUtils.isEmpty(mCouponTitle))
+            tvQuan.setText(mCouponTitle);
 
         //价格信息
         tvOriginPrice.setText("￥" + orderInfoBean.getCount_integral());
@@ -129,7 +200,7 @@ public class OrderConfirmActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_right, R.id.ll_weixin_pay, R.id.ll_zhifubao_pay, R.id.submit})
+    @OnClick({R.id.iv_back, R.id.iv_right, R.id.ll_weixin_pay, R.id.ll_zhifubao_pay, R.id.submit, R.id.ll_quan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -146,8 +217,17 @@ public class OrderConfirmActivity extends BaseActivity {
                 break;
             case R.id.submit:
                 break;
+            case R.id.ll_quan:
+                if (mCouponDatas == null || mCouponDatas.size() == 0) {
+                    orderConfirmModel.couponData("1", "10", "1");
+                } else {
+                    showPop();
+                }
+
+                break;
         }
     }
+
 
     public void changeStatus(int type) {
         if (type == 1) {
@@ -163,4 +243,20 @@ public class OrderConfirmActivity extends BaseActivity {
         }
 
     }
+
+    protected void showPop() {
+        if (couponPopup == null) {
+            couponPopup = new MyCouponPopup(this, mCouponDatas);
+            couponPopup.setMyCouponReceiveListener(new MyCouponPopup.MyCouponReceiveListener() {
+                @Override
+                public void onClickCouponReceive(String couponId, String couponTitle) {
+                    showLoading("");
+                    mCouponTitle = couponTitle;
+                    orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getGroup_info().getId(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
+                }
+            });
+        }
+        couponPopup.showPop();
+    }
+
 }

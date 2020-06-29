@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.order.OrderConfirmActivity"></activity>
+        <activity android:name=".activitys.classinfo.GroupResultActivity"></activity>
+        <activity android:name=".activitys.order.OrderConfirmActivity" />
         <activity android:name=".activitys.web.GuiZeActivity" />
         <activity
             android:name=".activitys.classinfo.GroupInfoActivity"

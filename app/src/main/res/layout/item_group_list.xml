@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_head"
         android:layout_width="26dp"
         android:layout_height="26dp"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/ce9e9e9"
         android:layout_centerVertical="true"
         android:src="@mipmap/ic_launcher" />
 
@@ -22,12 +25,30 @@
 
 
     <TextView
-        android:id="@+id/tv_nums"
+        android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
         android:layout_toLeftOf="@id/tv_join"
-        android:text="还差1人拼成"
+        android:text="拼成"
+        android:textColor="@color/c161820"
+        android:textSize="11dp" />
+    <TextView
+        android:id="@+id/tv_nums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_toLeftOf="@id/tv_tip"
+        android:text="1人"
+        android:textColor="@color/cE63B2F"
+        android:textSize="11dp" />
+    <TextView
+        android:id="@+id/tv_tipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_toLeftOf="@id/tv_nums"
+        android:text="还差"
         android:textColor="@color/c161820"
         android:textSize="11dp" />
 

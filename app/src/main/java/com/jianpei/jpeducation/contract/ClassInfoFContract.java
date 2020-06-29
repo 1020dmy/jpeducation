@@ -4,6 +4,8 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 
 import java.util.List;
@@ -30,7 +32,14 @@ public interface ClassInfoFContract {
 
         Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id);
 
-        Observable<BaseEntity<String>> couponReceive(String couponId,String shareUserId);
+        Observable<BaseEntity<String>> couponReceive(String couponId, String shareUserId);
+
+
+        Observable<BaseEntity<RegimentBean>> regimentInfo(String regiment_id);
+
+
+        Observable<BaseEntity<RegimentDataBean>> regimentData(String huod_id);
+
 
     }
 
@@ -42,6 +51,10 @@ public interface ClassInfoFContract {
 
         void videoUrl(String video_id, String buy_id);
 
-        void couponReceive(String couponId,String shareUserId);
+        void couponReceive(String couponId, String shareUserId);
+
+        void regimentInfo(String regiment_id);
+
+        void regimentData(String huod_id);
     }
 }

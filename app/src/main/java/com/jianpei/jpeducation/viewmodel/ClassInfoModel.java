@@ -2,7 +2,6 @@ package com.jianpei.jpeducation.viewmodel;
 
 import android.text.TextUtils;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
@@ -10,6 +9,7 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
@@ -44,6 +44,16 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     //团购参数
     private MutableLiveData<RegimentInfoBean> regimentInfoBeanMutableLiveData;
 
+    //选择参团数据回传
+    private MutableLiveData<String> joinGroupInfoLiveData;
+
+
+    public MutableLiveData<String> getJoinGroupInfoLiveData() {
+        if(joinGroupInfoLiveData==null)
+            joinGroupInfoLiveData=new MutableLiveData<>();
+        return joinGroupInfoLiveData;
+    }
+
 
     private MutableLiveData<ClassInfoBean> classInfoBeanLiveData;
 
@@ -54,7 +64,7 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     }
 
 
-    //购买课程下单/计算价格结果
+    //购买课程下单/计算价格结果（生成订单）
 
     private MutableLiveData<ClassGenerateOrderBean> classGenerateOrderBeanLiveData;
 
@@ -73,20 +83,30 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
         return groupClassBeansLiveData;
     }
 
+    //计算价格
+    private MutableLiveData<ImputedPriceBean> imputedPriceBeanLiveData;
+
+
+    public MutableLiveData<ImputedPriceBean> getImputedPriceBeanLiveData() {
+        if (imputedPriceBeanLiveData == null)
+            imputedPriceBeanLiveData = new MutableLiveData<>();
+        return imputedPriceBeanLiveData;
+    }
+
     public ClassInfoModel() {
         classInfoRepository = new ClassInfoRepository();
     }
 
-    public MutableLiveData<String[]> getPrices() {
-        if (pricesLiveData == null) {
-            pricesLiveData = new MutableLiveData<>();
-        }
-        return pricesLiveData;
-    }
+//    public MutableLiveData<String[]> getPrices() {
+//        if (pricesLiveData == null) {
+//            pricesLiveData = new MutableLiveData<>();
+//        }
+//        return pricesLiveData;
+//    }
 
-    public void setPrices(String[] prices) {
-        pricesLiveData.setValue(prices);
-    }
+//    public void setPrices(String[] prices) {
+//        pricesLiveData.setValue(prices);
+//    }
     ////
 
     public MutableLiveData<GroupInfoBean> getGroupInfoBeanMutableLiveData() {
@@ -220,7 +240,7 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
         stringBuilder.delete(0, stringBuilder.length() - 1);
         stringBuilder = null;
 
-        L.e("classIds:" + classIds + ",suitesIds:" + suitesIds);
+//        L.e("classIds:" + classIds + ",suitesIds:" + suitesIds);
 
 
         classInfoRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, classIds, suitesIds, regiment_id, gather_id).compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
@@ -244,5 +264,62 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
             }
         });
 
+    }
+
+    @Override
+    public void imputedPrice(String group_id, List<String> class_ids, List<String> suites_ids, String regiment_id) {
+        if (class_ids.size() == 0 && suites_ids.size() == 0) {
+            errData.setValue("请选择至少一门课程");
+            return;
+        }
+
+        String classIds = "";
+        String suitesIds = "";
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (class_ids.size() != 0) {
+            for (String classID : class_ids) {
+                stringBuilder.append(classID);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            classIds = stringBuilder.toString();
+        }
+        if (suites_ids.size() != 0) {
+            stringBuilder.delete(0, stringBuilder.length());
+            for (String suiteId : suites_ids) {
+                stringBuilder.append(suiteId);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            suitesIds = stringBuilder.toString();
+
+        }
+        stringBuilder.reverse();
+        stringBuilder = null;
+
+        L.e("classIds:" + classIds + ",suitesIds:" + suitesIds);
+
+        classInfoRepository.imputedPrice(group_id, classIds, suitesIds, regiment_id).compose(setThread()).subscribe(new BaseObserver<ImputedPriceBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<ImputedPriceBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    imputedPriceBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
     }
 }

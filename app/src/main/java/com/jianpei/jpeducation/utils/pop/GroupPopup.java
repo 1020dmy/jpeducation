@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.classinfo.GroupAdapter;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 
 import java.util.List;
 
@@ -24,12 +25,20 @@ public class GroupPopup extends PopupWindow {
     private View contentView;
     private ImageButton imbCancel;
     private RecyclerView recyclerView;
+    private RegimentDataBean mRegimentDataBean;
+    private GroupAdapter.ToJoinGroupListener toJoinGroupListener;
 
-    private List<RegimentBean> regimentBeans;
+    private GroupAdapter groupAdapter;
 
-    public GroupPopup(Context mContext, List<RegimentBean> regimentBeans) {
+    public void setToJoinGroupListener(GroupAdapter.ToJoinGroupListener toJoinGroupListener) {
+
+        this.toJoinGroupListener = toJoinGroupListener;
+        groupAdapter.setToJoinGroupListener(this.toJoinGroupListener);
+    }
+
+    public GroupPopup(Context mContext, RegimentDataBean regimentDataBean) {
         this.mContext = mContext;
-        this.regimentBeans=regimentBeans;
+        this.mRegimentDataBean = regimentDataBean;
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setOutsideTouchable(true);
@@ -50,9 +59,16 @@ public class GroupPopup extends PopupWindow {
 
     }
 
+    @Override
+    public void dismiss() {
+        toJoinGroupListener = null;
+        super.dismiss();
+    }
+
     private void setData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        GroupAdapter groupAdapter = new GroupAdapter(regimentBeans, mContext);
+        groupAdapter = new GroupAdapter(mRegimentDataBean.getData(), mContext);
+        groupAdapter.setToJoinGroupListener(toJoinGroupListener);
         recyclerView.setAdapter(groupAdapter);
     }
 

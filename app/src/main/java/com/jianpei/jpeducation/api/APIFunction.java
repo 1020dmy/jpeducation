@@ -22,6 +22,9 @@ import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
+import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
@@ -35,7 +38,10 @@ import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
+import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
+import com.jianpei.jpeducation.bean.json.RegimentDataJson;
+import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
@@ -136,7 +142,7 @@ public interface APIFunction {
      * 优惠券列表
      */
     @POST(UrlConfig.couponData)
-    Observable<BaseEntity<ArrayList<CouponDataBean>>> couponData(@Body CouponDataJson couponDataJson);
+    Observable<BaseEntity<CouponDataBean>> couponData(@Body CouponDataJson couponDataJson);
 
     /**
      * 资料下载
@@ -199,7 +205,7 @@ public interface APIFunction {
     Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(@Body HomeInfoJson homeInfoJson);
 
     /**
-     * 课程优惠券列表
+     * 课程章节列表
      */
     @POST(UrlConfig.viodList)
     Observable<BaseEntity<List<DirectorySectionBean>>> viodList(@Body ViodListJson viodListJson);
@@ -221,6 +227,27 @@ public interface APIFunction {
      */
     @POST(UrlConfig.orderInfo)
     Observable<BaseEntity<OrderInfoBean>> orderInfo(@Body OrderInfoJson orderInfoJson);
+
+    /**
+     * 1-计算价格
+     */
+    @POST(UrlConfig.imputedPrice)
+    Observable<BaseEntity<ImputedPriceBean>> imputedPrice(@Body ImputedPriceJson imputedPriceJson);
+
+
+    /**
+     * 1-参与拼团详情
+     */
+    @POST(UrlConfig.regimentInfo)
+    Observable<BaseEntity<RegimentBean>> regimentInfo(@Body RegimentInfoJson regimentInfoJson);
+
+
+    /**
+     * 1-团列表
+     */
+    @POST(UrlConfig.regimentData)
+    Observable<BaseEntity<RegimentDataBean>> regimentData(@Body RegimentDataJson regimentDataJson);
+
     /**
      * 获取微信ACCESS_TOKEN
      *

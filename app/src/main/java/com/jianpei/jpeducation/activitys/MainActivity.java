@@ -2,10 +2,13 @@ package com.jianpei.jpeducation.activitys;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,15 +17,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
-import com.jianpei.jpeducation.fragment.school.SchoolFragment;
+import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
-import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
+import com.jianpei.jpeducation.fragment.school.SchoolFragment;
 import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -44,6 +48,13 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
+    @BindView(R.id.include_title)
+    LinearLayout llTitle;
+    @BindView(R.id.tv_message)
+    TextView tvMessage;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+
 
     private Fragment[] fragments;
     private int lastfragment = 0;
@@ -57,7 +68,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     private String catId, catName;
     private String ncatId;
 
-    private String customerServiceUrl;
 
     @Override
     protected int setLayoutView() {
@@ -200,20 +210,25 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
 
-//        if (index == 3) {
-//            rlTitle.setVisibility(View.GONE);
-//        } else {
-//            rlTitle.setVisibility(View.VISIBLE);
-//
-//        }
+        if (index == 4) {
+            tvMessage.setVisibility(View.VISIBLE);
+            tvSetting.setVisibility(View.VISIBLE);
+            imageButton.setVisibility(View.GONE);
+            btnTitle.setVisibility(View.GONE);
+
+        } else {
+            tvMessage.setVisibility(View.GONE);
+            tvSetting.setVisibility(View.GONE);
+            btnTitle.setVisibility(View.VISIBLE);
+            imageButton.setVisibility(View.VISIBLE);
+        }
     }
 
 
-    @OnClick({R.id.imageButton, R.id.btn_title})
+    @OnClick({R.id.imageButton, R.id.btn_title, R.id.tv_message, R.id.tv_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
-//                mainModel.upData(btnTitle.getText().toString());
                 startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.btn_title:
@@ -221,9 +236,14 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
                 overridePendingTransition(R.anim.activity_close_in, R.anim.activity_close_out);
 //                inActivity();
                 break;
+            case R.id.tv_message:
+                break;
+            case R.id.tv_setting:
+                break;
 
         }
 
     }
+
 
 }

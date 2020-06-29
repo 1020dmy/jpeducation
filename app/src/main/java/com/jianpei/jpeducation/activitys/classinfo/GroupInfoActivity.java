@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,11 +19,16 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
+import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.fragment.group.GclassInfoFragment;
 import com.jianpei.jpeducation.fragment.group.GcommentFragment;
 import com.jianpei.jpeducation.fragment.group.GdirectoryFragment;
@@ -30,6 +36,7 @@ import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.pop.GroupingPopup;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 
@@ -90,7 +97,11 @@ public class GroupInfoActivity extends BaseActivity {
     ///科目列表
     private List<GroupClassBean> mGroupClassBeans;
     private SubjectPopup subjectPopup;
-
+    private ClassInfoBean mClassInfoBean;
+    //所参团的ID
+    private String groupId;
+    //类型
+    private String goods_type = "2";
 
     @Override
     protected int setLayoutView() {
@@ -142,14 +153,59 @@ public class GroupInfoActivity extends BaseActivity {
         classInfoModel.getGroupClassBeansLiveData().observe(this, new Observer<List<GroupClassBean>>() {
             @Override
             public void onChanged(List<GroupClassBean> groupClassBeans) {
+                dismissLoading();
                 mGroupClassBeans.addAll(groupClassBeans);
+                showPow();
 
+            }
+        });
+
+        //获取 购买课程下单/计算价格结果
+        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+            @Override
+            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+                dismissLoading();
+                startActivity(new Intent(GroupInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean).putExtra("type", "GroupInfo"));
+            }
+        });
+        //获取计算的价格的结果
+        classInfoModel.getImputedPriceBeanLiveData().observe(this, new Observer<ImputedPriceBean>() {
+            @Override
+            public void onChanged(ImputedPriceBean imputedPriceBean) {
+                if (subjectPopup != null) {
+                    subjectPopup.upDataPrice(imputedPriceBean.getTotal_price(), imputedPriceBean.getPrice(), imputedPriceBean.getIs_material());
+                }
             }
         });
         classInfoModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
+                dismissLoading();
                 shortToast(o);
+            }
+        });
+        //显示用户当前的拼团
+        classInfoModel.getClassInfoBeanLiveData().observe(this, new Observer<ClassInfoBean>() {
+            @Override
+            public void onChanged(ClassInfoBean classInfoBean) {
+                mClassInfoBean = classInfoBean;
+                if (classInfoBean.getUser_regiment_info() != null) {
+                    showGroupingPow();
+                }
+            }
+        });
+        //去参团数据回传，弹出科目选择框
+        classInfoModel.getJoinGroupInfoLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                groupId = s;
+                goods_type = "2";
+                if (mGroupClassBeans.size() != 0) {
+                    showPow();
+                } else {
+                    showLoading("");
+                    classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                }
             }
         });
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
@@ -173,9 +229,6 @@ public class GroupInfoActivity extends BaseActivity {
             }
         }).attach();
 
-
-        classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
-
     }
 
 
@@ -198,18 +251,64 @@ public class GroupInfoActivity extends BaseActivity {
             case R.id.tv_shopping:
                 break;
             case R.id.submit:
-                if (subjectPopup == null) {
-                    subjectPopup = new SubjectPopup(this, mGroupClassBeans,null);
+                groupId = "";
+                goods_type = "2";
+                if (mClassInfoBean.getUser_regiment_info() != null) {
+                    showGroupingPow();
+                } else {
+                    if (mGroupClassBeans.size() != 0) {
+                        showPow();
+                    } else {
+                        showLoading("");
+                        classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                    }
                 }
-                subjectPopup.showPop();
                 break;
             case R.id.rl_buy:
-//                if (subjectPopup == null) {
-//                    subjectPopup = new SubjectPopup(this, mGroupClassBeans, "", "");
-//                }
-//                subjectPopup.showPop();
+                goods_type = "1";
+                groupId = "";
+                if (mGroupClassBeans.size() != 0) {
+                    showPow();
+                } else {
+                    showLoading("");
+                    classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                }
                 break;
         }
+    }
+
+    public void showPow() {
+        if (subjectPopup == null) {
+            subjectPopup = new SubjectPopup(this, mGroupClassBeans, mClassInfoBean);
+
+            subjectPopup.setClassIds(new ArrayList<String>());
+            subjectPopup.setSuitesIds(new ArrayList<String>());
+            subjectPopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoading("");
+                    classInfoModel.classGenerateOrder(goods_type, regimentInfoBean.getPoint_id(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), regimentInfoBean.getId(), groupId);
+
+                }
+            });
+
+            subjectPopup.setMyItemOnClickListener(new SubjectPopup.MyItemClickListener() {
+                @Override
+                public void onClicker() {
+                    classInfoModel.imputedPrice(regimentInfoBean.getPoint_id(), subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), regimentInfoBean.getId());
+                }
+            });
+        }
+        subjectPopup.showPop();
+    }
+
+    private GroupingPopup groupingPopup;
+
+    public void showGroupingPow() {
+        if (groupingPopup == null) {
+            groupingPopup = new GroupingPopup(this, mClassInfoBean.getUser_regiment_info());
+        }
+        groupingPopup.showPop();
     }
 
 

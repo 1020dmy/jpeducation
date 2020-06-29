@@ -219,6 +219,7 @@
                 android:layout_marginBottom="9dp">
 
                 <TextView
+                    android:id="@+id/tv_regiment_des"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

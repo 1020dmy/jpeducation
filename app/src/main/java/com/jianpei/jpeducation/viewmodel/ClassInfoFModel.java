@@ -9,6 +9,8 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.contract.ClassInfoFContract;
 import com.jianpei.jpeducation.repository.ClassInfoFRepository;
@@ -36,6 +38,24 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
 
     private MutableLiveData<String> couponReceiveLiveData;
 
+    private MutableLiveData<RegimentBean> regimentBeanLiveData;
+
+
+    private MutableLiveData<RegimentDataBean> regimentDataBeanLiveData;
+
+
+    public MutableLiveData<RegimentDataBean> getRegimentDataBeanLiveData() {
+
+        if (regimentDataBeanLiveData == null)
+            regimentDataBeanLiveData = new MutableLiveData<>();
+        return regimentDataBeanLiveData;
+    }
+
+    public MutableLiveData<RegimentBean> getRegimentBeanLiveData() {
+        if (regimentBeanLiveData == null)
+            regimentBeanLiveData = new MutableLiveData<>();
+        return regimentBeanLiveData;
+    }
 
     public MutableLiveData<VideoUrlBean> getVideoUrlBeansLiveData() {
         if (videoUrlBeansLiveData == null) {
@@ -58,8 +78,8 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
     }
 
     public MutableLiveData<String> getCouponReceiveLiveData() {
-        if(couponReceiveLiveData==null){
-            couponReceiveLiveData=new MutableLiveData<>();
+        if (couponReceiveLiveData == null) {
+            couponReceiveLiveData = new MutableLiveData<>();
         }
         return couponReceiveLiveData;
     }
@@ -173,6 +193,79 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
                 } else {
                     errData.setValue(t.getMsg());
                 }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 拼团详情
+     *
+     * @param regiment_id
+     */
+
+    @Override
+    public void regimentInfo(String regiment_id) {
+        if (TextUtils.isEmpty(regiment_id)) {
+            return;
+        }
+
+        classInfoRepository.regimentInfo(regiment_id).compose(setThread()).subscribe(new BaseObserver<RegimentBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<RegimentBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    regimentBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * 拼团列表
+     *
+     * @param huod_id
+     */
+
+    @Override
+    public void regimentData(String huod_id) {
+
+        if (TextUtils.isEmpty(huod_id)) {
+            return;
+        }
+        classInfoRepository.regimentData(huod_id).compose(setThread()).subscribe(new BaseObserver<RegimentDataBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<RegimentDataBean> t) throws Exception {
+
+                if (t.isSuccess()) {
+                    regimentDataBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+
+                }
+
             }
 
             @Override

@@ -21,6 +21,7 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:background="@drawable/shadow"
@@ -173,6 +174,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_quan"
+                    android:saveEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
@@ -184,12 +186,14 @@
                         android:textColor="@color/c161820" />
 
                     <ImageView
+                        android:id="@+id/iv_quan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="9dp"
                         android:src="@drawable/icon_quanou" />
 
                     <TextView
+                        android:id="@+id/tv_quan"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

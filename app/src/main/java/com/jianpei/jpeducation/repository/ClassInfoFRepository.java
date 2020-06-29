@@ -7,8 +7,12 @@ import com.jianpei.jpeducation.bean.CouponReceiveJson;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
+import com.jianpei.jpeducation.bean.json.RegimentDataJson;
+import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.contract.ClassInfoFContract;
 
@@ -38,11 +42,21 @@ public class ClassInfoFRepository extends BaseRepository implements ClassInfoFCo
 
     @Override
     public Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id) {
-        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type,video_id,buy_id));
+        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type, video_id, buy_id));
     }
 
     @Override
     public Observable<BaseEntity<String>> couponReceive(String couponId, String shareUserId) {
-        return RetrofitFactory.getInstance().API().couponReceive(new CouponReceiveJson(couponId,shareUserId));
+        return RetrofitFactory.getInstance().API().couponReceive(new CouponReceiveJson(couponId, shareUserId));
+    }
+
+    @Override
+    public Observable<BaseEntity<RegimentBean>> regimentInfo(String regiment_id) {
+        return RetrofitFactory.getInstance().API().regimentInfo(new RegimentInfoJson(regiment_id));
+    }
+
+    @Override
+    public Observable<BaseEntity<RegimentDataBean>> regimentData(String huod_id) {
+        return RetrofitFactory.getInstance().API().regimentData(new RegimentDataJson(huod_id, 1, 6));
     }
 }

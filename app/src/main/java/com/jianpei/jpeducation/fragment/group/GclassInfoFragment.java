@@ -27,10 +27,12 @@ import com.jianpei.jpeducation.adapter.classinfo.TeacherAdapter;
 import com.jianpei.jpeducation.base.BasePlayerFragment;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.TeacherBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.pop.GroupJoinPopup;
 import com.jianpei.jpeducation.utils.pop.GroupPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -45,7 +47,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class GclassInfoFragment extends BasePlayerFragment {
+public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapter.ToJoinGroupListener {
 
 
     @BindView(R.id.tv_tryListener)
@@ -102,6 +104,8 @@ public class GclassInfoFragment extends BasePlayerFragment {
     LinearLayout llGuize;
     @BindView(R.id.rv_items)
     RecyclerView rvItems;
+    @BindView(R.id.tv_regiment_des)
+    TextView tvRegimentDes;
     //GroupInfoActivity的model
     private ClassInfoModel classInfoModel;
     //自己的额model
@@ -110,7 +114,12 @@ public class GclassInfoFragment extends BasePlayerFragment {
 
     private GroupAdapter groupAdapter;
     private List<RegimentBean> regimentBeans;
+    //加入团购弹窗
+    private GroupJoinPopup groupJoinPopup;
+    //团购列表弹窗
+    private GroupPopup groupPopup;
 
+    private String groupId;
 
     @Override
     protected int initLayout() {
@@ -131,6 +140,8 @@ public class GclassInfoFragment extends BasePlayerFragment {
         classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
             @Override
             public void onChanged(RegimentInfoBean regimentInfoBean) {//获取成功，调用详情接口
+                //获取团购Id
+                groupId = regimentInfoBean.getId();
                 showLoading("");
                 //获取详情数据
                 classInfoFModel.groupInfo(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
@@ -142,6 +153,7 @@ public class GclassInfoFragment extends BasePlayerFragment {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
+                classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
                 classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "");//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
@@ -166,6 +178,25 @@ public class GclassInfoFragment extends BasePlayerFragment {
 
             }
         });
+        //团购详情监听
+        classInfoFModel.getRegimentBeanLiveData().observe(this, new Observer<RegimentBean>() {
+            @Override
+            public void onChanged(RegimentBean regimentBean) {
+                L.e("========团购详情监听");
+                dismissLoading();
+                showJoinGroupPop(regimentBean);
+            }
+        });
+
+        //团购列表监听
+        classInfoFModel.getRegimentDataBeanLiveData().observe(this, new Observer<RegimentDataBean>() {
+            @Override
+            public void onChanged(RegimentDataBean regimentDataBean) {
+                dismissLoading();
+                showGroupListPop(regimentDataBean);
+
+            }
+        });
         rvExplanation.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(10));
@@ -183,11 +214,11 @@ public class GclassInfoFragment extends BasePlayerFragment {
         ///团购
         regimentBeans = new ArrayList<>();
         groupAdapter = new GroupAdapter(regimentBeans, getContext());
+        groupAdapter.setToJoinGroupListener(this);
         rvItems.setAdapter(groupAdapter);
 
     }
 
-    GroupPopup groupPopup;
 
     @OnClick({R.id.tv_tryListener, R.id.tv_more, R.id.tv_guize})
     public void onViewClicked(View view) {
@@ -198,11 +229,8 @@ public class GclassInfoFragment extends BasePlayerFragment {
                 aliyunPlayerView.setControlBarCanShow(true);
                 break;
             case R.id.tv_more:
-                if (groupPopup == null) {
-                    groupPopup = new GroupPopup(getActivity(), regimentBeans);
-                }
-                L.e("regimentBeans:" + regimentBeans.size());
-                groupPopup.showPop();
+                showLoading("");
+                classInfoFModel.regimentData(groupId);
                 break;
             case R.id.tv_guize:
                 startActivity(new Intent(getActivity(), GuiZeActivity.class).putExtra("webUrl", webUrl));
@@ -217,20 +245,20 @@ public class GclassInfoFragment extends BasePlayerFragment {
     private List<TeacherBean> teacherBeans;
     private String webUrl;
 
+    private String joinGroupId;
+
 
     protected void setDatatoView(ClassInfoBean classInfoBean) {
         if (classInfoBean == null)
             return;
         webUrl = classInfoBean.getRegiment_rules_url();
-//        if (regimentBeans == null) {
-//            regimentBeans = new ArrayList<>();
-//        }
-        L.e("setDatatoView:" + classInfoBean.getRegiment_info().getRegiment_data().size());
 
-        regimentBeans.addAll(classInfoBean.getRegiment_info().getRegiment_data());
-        if (regimentBeans.size() == 0) {
-            llPinTuan.setVisibility(View.GONE);
+
+        if (classInfoBean.getUser_regiment_info() != null) {
+            joinGroupId = classInfoBean.getUser_regiment_info().getId();
         }
+
+
         //如果没有活动价格，隐藏原价
         if (classInfoBean.getHuod_price_info() == null) {
             tvPrice.setVisibility(View.INVISIBLE);
@@ -244,7 +272,6 @@ public class GclassInfoFragment extends BasePlayerFragment {
         tvItem.setText(classInfoBean.getRegiment_people());
         tvNums.setText("已拼" + classInfoBean.getRegiment_num() + "件");
 
-//        classInfoModel.setPrices(new String[]{classInfoBean.getHuod_price_info(), classInfoBean.getOriginal_price_info(),classInfoBean.getMaterial_des()});
         tvTitle.setText(classInfoBean.getTitle());
         //班级描述
         if (classInfoBean.getSub_title() == null) {
@@ -259,6 +286,15 @@ public class GclassInfoFragment extends BasePlayerFragment {
             material = classInfoBean.getMaterial_des();
             tvHandsel.setText(material);
         }
+        //拼团
+        if (classInfoBean.getRegiment_info() == null) {
+            llPinTuan.setVisibility(View.GONE);
+        } else {
+            tvRegimentDes.setText(classInfoBean.getRegiment_info().getRegiment_des() + "人正在拼团");
+            regimentBeans.addAll(classInfoBean.getRegiment_info().getRegiment_data());
+            groupAdapter.notifyDataSetChanged();
+        }
+
         //教师
         StringBuilder stringBuilder = new StringBuilder();
         for (String teacherNum : classInfoBean.getTeacher_names()) {
@@ -297,7 +333,6 @@ public class GclassInfoFragment extends BasePlayerFragment {
         super.onConfigurationChanged(newConfig);
         int type = this.getResources().getConfiguration().orientation;
         if (type == Configuration.ORIENTATION_LANDSCAPE) {
-            L.e("==========", "切换到了横屏");
             llClassInfo.setVisibility(View.GONE);
             llContent.setVisibility(View.GONE);
             llServer.setVisibility(View.GONE);
@@ -306,10 +341,8 @@ public class GclassInfoFragment extends BasePlayerFragment {
             llGuize.setVisibility(View.GONE);
             llPinTuan.setVisibility(View.GONE);
             aliyunPlayerView.setTitleBarCanShow(true);
-
             //切换到了横屏
         } else if (type == Configuration.ORIENTATION_PORTRAIT) {
-            L.e("==========", "切换到了竖屏");
             //切换到了竖屏
             llClassInfo.setVisibility(View.VISIBLE);
             llContent.setVisibility(View.VISIBLE);
@@ -326,4 +359,35 @@ public class GclassInfoFragment extends BasePlayerFragment {
     }
 
 
+    @Override
+    public void onJoinGroupClick(String groupId) {
+        if (groupId.equals(joinGroupId)) {
+            shortToast("不能参与自己的团");
+            return;
+        }
+        showLoading("");
+        classInfoFModel.regimentInfo(groupId);
+
+    }
+
+    protected void showJoinGroupPop(RegimentBean regimentBean) {
+        if (groupJoinPopup == null)
+            groupJoinPopup = new GroupJoinPopup(getActivity(), regimentBean, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        groupJoinPopup.showPop();
+
+    }
+
+    protected void showGroupListPop(RegimentDataBean regimentDataBean) {
+        if (groupPopup == null) {
+            groupPopup = new GroupPopup(getActivity(), regimentDataBean);
+            groupPopup.setToJoinGroupListener(this);
+        }
+        groupPopup.showPop();
+
+    }
 }

@@ -1,5 +1,7 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import java.util.List;
+
 public class RegimentBean {
 
     /**
@@ -28,7 +30,10 @@ public class RegimentBean {
     private String img;
     private String num_people;
     private int remaining_number;
-    private int remaining_time;
+    private long remaining_time;
+
+
+    private List<RegimentBean> regiment_data;
 
     public String getId() {
         return id;
@@ -118,11 +123,20 @@ public class RegimentBean {
         this.remaining_number = remaining_number;
     }
 
-    public int getRemaining_time() {
+    public long getRemaining_time() {
         return remaining_time;
     }
 
-    public void setRemaining_time(int remaining_time) {
+    public void setRemaining_time(long remaining_time) {
         this.remaining_time = remaining_time;
+    }
+
+
+    public List<RegimentBean> getRegiment_data() {
+        return regiment_data;
+    }
+
+    public void setRegiment_data(List<RegimentBean> regiment_data) {
+        this.regiment_data = regiment_data;
     }
 }

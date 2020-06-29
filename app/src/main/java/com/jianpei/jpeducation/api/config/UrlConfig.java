@@ -77,6 +77,14 @@ public class UrlConfig {
 
     //1-订单详情
     public static final String orderInfo = "order/orderInfo";
+    //1-计算价格
+    public static final String imputedPrice = "order/imputedPrice";
+
+    //1-参与拼团详情
+    public static final String regimentInfo = "group/regimentInfo";
+
+    //1-团列表
+    public static final String regimentData = "group/regimentData";
 
 
 }

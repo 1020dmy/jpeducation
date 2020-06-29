@@ -27,6 +27,7 @@ import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
+import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.fragment.info.ClassInfoFragment;
@@ -35,7 +36,6 @@ import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
-import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 import com.jianpei.umeng.ShareActivity;
 import com.umeng.socialize.ShareAction;
@@ -115,13 +115,6 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     //分享相关
     private ShareAction mShareAction;
     private UMShareListener mShareListener;
-
-    //
-//    private String originPrice;
-//    private String material;
-    //
-//    private List<String> classIds;
-//    private List<String> suitesIds;
 
 
     private ClassInfoBean mClassInfoBean;
@@ -215,7 +208,17 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             @Override
             public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
                 dismissLoading();
-                startActivity(new Intent(ClassInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean));
+                startActivity(new Intent(ClassInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean).putExtra("type", "ClassInfo"));
+            }
+        });
+
+        //获取计算的价格的结果
+        classInfoModel.getImputedPriceBeanLiveData().observe(this, new Observer<ImputedPriceBean>() {
+            @Override
+            public void onChanged(ImputedPriceBean imputedPriceBean) {
+                if (subjectPopup != null) {
+                    subjectPopup.upDataPrice(imputedPriceBean.getTotal_price(), imputedPriceBean.getPrice(), imputedPriceBean.getIs_material());
+                }
             }
         });
 
@@ -319,6 +322,13 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                     showLoading("");
                     classInfoModel.classGenerateOrder("1", groupInfoBean.getId(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
 
+                }
+            });
+
+            subjectPopup.setMyItemOnClickListener(new SubjectPopup.MyItemClickListener() {
+                @Override
+                public void onClicker() {
+                    classInfoModel.imputedPrice(groupInfoBean.getId(), subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "");
                 }
             });
         }

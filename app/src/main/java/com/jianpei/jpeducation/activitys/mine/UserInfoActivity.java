@@ -2,59 +2,64 @@ package com.jianpei.jpeducation.activitys.mine;
 
 
 import android.content.Intent;
-
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
-import com.jianpei.umeng.ShareActivity;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
-
-
-import java.lang.ref.WeakReference;
+import com.jianpei.jpeducation.utils.dialog.ChangeNameDialog;
+import com.jianpei.jpeducation.utils.dialog.ChangeSexDialog;
+import com.jianpei.jpeducation.utils.dialog.DatePickerDialog;
+import com.jianpei.jpeducation.utils.dialog.PhotoSelectDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserInfoActivity extends BaseNoStatusActivity implements ShareBoardlistener {
+public class UserInfoActivity extends BaseNoStatusActivity {
 
     @BindView(R.id.iv_back)
     ImageView tvBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.btn_photo)
-    Button btnPhoto;
-    @BindView(R.id.btn_camera)
-    Button btnCamera;
 
     @BindView(R.id.imageView)
     CircleImageView imageView;
+    @BindView(R.id.ll_head)
+    LinearLayout llHead;
+    @BindView(R.id.ll_name)
+    LinearLayout llName;
+    @BindView(R.id.ll_sex)
+    LinearLayout llSex;
+    @BindView(R.id.ll_birthday)
+    LinearLayout llBirthday;
+    @BindView(R.id.ll_phone)
+    LinearLayout llPhone;
+    @BindView(R.id.ll_wx)
+    LinearLayout llWx;
+    @BindView(R.id.ll_pwd)
+    LinearLayout llPwd;
 
-    private AlertDialog dialog;
 
     private SelectphotoUtils selectphotoUtils;
 
-    //分享相关
-    private ShareAction mShareAction;
-    private UMShareListener mShareListener;
+    //日期弹窗
+    private DatePickerDialog datePickerDialog;
+    //修改头像弹窗
+    private PhotoSelectDialog photoSelectDialog;
+    //修改姓名弹窗
+    private ChangeNameDialog changeNameDialog;
+    //性别修改弹窗
+    private ChangeSexDialog changeSexDialog;
+
 
     @Override
     protected int setLayoutView() {
@@ -69,35 +74,9 @@ public class UserInfoActivity extends BaseNoStatusActivity implements ShareBoard
 
     @Override
     protected void initData() {
+        //初始化相册工具
+        selectphotoUtils = new SelectphotoUtils(this);
 
-        mShareAction = new ShareAction(this).setDisplayList(
-                SHARE_MEDIA.WEIXIN,
-                SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.QQ,
-                SHARE_MEDIA.QZONE
-        ).setShareboardclickCallback(this);
-
-    }
-
-    @OnClick({R.id.iv_back, R.id.btn_photo, R.id.btn_camera, R.id.btn_pdf})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.btn_photo:
-            case R.id.btn_camera:
-                if (dialog == null) {
-                    viewInit();
-                }
-                dialog.show();//显示对话框
-                break;
-            case R.id.btn_pdf:
-//                startActivity(new Intent(this, PdfReaderActivity.class));
-                startActivity(new Intent(this, ShareActivity.class));
-
-                break;
-        }
     }
 
     @Override
@@ -122,47 +101,6 @@ public class UserInfoActivity extends BaseNoStatusActivity implements ShareBoard
     }
 
 
-    public void viewInit() {
-        if (selectphotoUtils == null) {
-            selectphotoUtils = new SelectphotoUtils(this);
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);//创建对话框
-        View layout = getLayoutInflater().inflate(R.layout.dialog_photo_camera, null);//获取自定义布局
-        TextView takePhotoTV = layout.findViewById(R.id.photograph);
-        TextView choosePhotoTV = layout.findViewById(R.id.photo);
-        TextView cancelTV = layout.findViewById(R.id.cancel);
-        cancelTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        takePhotoTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    selectphotoUtils.takePhone();
-
-                    dialog.dismiss();
-                } catch (Exception e) {
-                    L.e(e.getMessage());
-                }
-
-            }
-        });
-        choosePhotoTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectphotoUtils.openGallery();
-                dialog.dismiss();
-            }
-        });
-
-        builder.setView(layout);//设置对话框的布局
-        dialog = builder.create();//生成最终的对话框
-    }
-
-
     @Override
     protected void onDestroy() {
         if (selectphotoUtils != null) {
@@ -173,61 +111,41 @@ public class UserInfoActivity extends BaseNoStatusActivity implements ShareBoard
 
     }
 
-
-    @Override
-    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-        UMWeb web = new UMWeb("http://mobile.umeng.com/social");
-        web.setTitle("来自分享面板标题");
-        web.setDescription("来自分享面板内容");
-        web.setThumb(new UMImage(this, com.jianpei.umeng.R.drawable.ic_launcher));
-        new ShareAction(this).withMedia(web)
-                .setPlatform(share_media)
-                .setCallback(mShareListener)
-                .share();
-    }
-
-    private  class CustomShareListener implements UMShareListener {
-
-        private WeakReference<ShareActivity> mActivity;
-
-        private CustomShareListener(ShareActivity activity) {
-            mActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA share_media) {
-
-        }
-
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-
-        }
-
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-
-            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
-                    && platform != SHARE_MEDIA.EMAIL
-                    && platform != SHARE_MEDIA.FLICKR
-                    && platform != SHARE_MEDIA.FOURSQUARE
-                    && platform != SHARE_MEDIA.TUMBLR
-                    && platform != SHARE_MEDIA.POCKET
-                    && platform != SHARE_MEDIA.PINTEREST
-
-                    && platform != SHARE_MEDIA.INSTAGRAM
-                    && platform != SHARE_MEDIA.GOOGLEPLUS
-                    && platform != SHARE_MEDIA.YNOTE
-                    && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
+    @OnClick({R.id.ll_head, R.id.ll_name, R.id.ll_sex, R.id.ll_birthday, R.id.ll_phone, R.id.ll_wx, R.id.ll_pwd, R.id.iv_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.ll_head:
+                if (photoSelectDialog == null) {
+                    photoSelectDialog = new PhotoSelectDialog(this, selectphotoUtils);
+                }
+                photoSelectDialog.show();
+                break;
+            case R.id.ll_name:
+                if (changeNameDialog == null) {
+                    changeNameDialog = new ChangeNameDialog(this);
+                }
+                changeNameDialog.show();
+                break;
+            case R.id.ll_sex:
+                if (changeSexDialog == null) {
+                    changeSexDialog = new ChangeSexDialog(this);
+                }
+                changeSexDialog.show();
+                break;
+            case R.id.ll_birthday:
+                if (datePickerDialog == null)
+                    datePickerDialog = new DatePickerDialog(this);
+                datePickerDialog.show();
+                break;
+            case R.id.ll_phone:
+                break;
+            case R.id.ll_wx:
+                break;
+            case R.id.ll_pwd:
+                break;
         }
     }
 }

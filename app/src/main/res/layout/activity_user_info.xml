@@ -9,29 +9,218 @@
     <include layout="@layout/base_title" />
 
 
-    <Button
-        android:id="@+id/btn_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="相册获取" />
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_photo"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="相册获取" />-->
 
-    <Button
-        android:id="@+id/btn_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="拍照" />
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_camera"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="拍照" />-->
+    <LinearLayout
+        android:id="@+id/ll_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_height="150dp" />
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="头像" />
 
-    <Button
-        android:id="@+id/btn_pdf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PDF" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="昵称" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="小鱼儿"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_sex"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="性别" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="女"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/ll_birthday"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="生日" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="1990-5-1"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_phone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="手机号" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="130****0000"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_wx"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="微信号" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="未绑定"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:layout_weight="1"
+            android:text="登录密码" />
+
+        <TextView
+            style="@style/userInfo_txt"
+            android:text="修改"
+            android:textColor="@color/c151820" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/material_shrink" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

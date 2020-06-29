@@ -1,15 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+
     tools:context=".fragment.mine.MineFragment">
 
-    <Button
-        android:id="@+id/btn_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="个人信息"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:background="@drawable/mine_bg"
+            android:paddingLeft="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_head"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/civ_head"
+                android:text="小鱼儿"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_jifen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/civ_head"
+                android:drawableRight="@drawable/mine_jifen"
+                android:text="积分："
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_jinbi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_jifen"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/civ_head"
+                android:drawableRight="@drawable/mine_jinbi"
+                android:text="金币："
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/tv_jifen"
+                android:text="222"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_jifen"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/tv_jinbi"
+                android:text="222"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_signin"
+                android:layout_width="120dp"
+                android:layout_height="34dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/mine_qiandao_bg"
+                android:drawableLeft="@drawable/mine_qiandao_icon"
+                android:drawablePadding="13dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:text="未签到"
+                android:textColor="@color/white"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:translationY="-40dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/mine_guanggao" />
+
+            <!--////////////////////////////-->
+            <LinearLayout
+                style="@style/mineLinebg"
+                android:layout_marginTop="14dp">
+
+                <TextView
+                    android:id="@+id/tv_wait_pay"
+                    style="@style/mineText"
+                    android:drawableTop="@drawable/mine_wait_pay"
+                    android:text="待支付" />
+
+                <TextView
+                    android:id="@+id/tv_pay"
+                    style="@style/mineText"
+                    android:drawableTop="@drawable/mine_pay"
+                    android:text="已支付" />
+
+                <TextView
+                    android:id="@+id/tv_shop"
+                    style="@style/mineText"
+                    android:drawableTop="@drawable/mine_shop"
+                    android:text="购物车" />
+
+                <TextView
+                    android:id="@+id/tv_coupon"
+                    style="@style/mineText"
+                    android:drawableTop="@drawable/mine_quan"
+                    android:text="优惠券" />
+
+                <TextView
+                    android:id="@+id/tv_integral"
+                    style="@style/mineText"
+                    android:drawableTop="@drawable/mine_jifen_icon"
+                    android:text="积分" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mineLinebg"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_my_class"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/mine_myclass"
+                    android:paddingBottom="20dp"
+                    android:text="我的课程" />
+
+                <include layout="@layout/line" />
+
+                <TextView
+                    android:id="@+id/tv_my_tiku"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/mine_my_tiku"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="我的题库" />
+
+                <include layout="@layout/line" />
+
+
+                <TextView
+                    android:id="@+id/tv_my_data"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/mine_my_ziliao"
+                    android:paddingTop="20dp"
+                    android:text="我的资料" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mineLinebg"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_my_moving"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/mine_my_dongtai"
+                    android:paddingBottom="20dp"
+                    android:text="我的动态" />
+
+                <include layout="@layout/line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/mine_friend"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:text="邀请好友"
+                        android:textColor="@color/c15171F"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/material_shrink"
+                        android:drawablePadding="15dp"
+                        android:gravity="center"
+                        android:text="送积分"
+                        android:textColor="@color/cD71E06"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mineLinebg"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_suggest"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/mine_fankui"
+                    android:paddingBottom="20dp"
+                    android:text="意见反馈" />
+
+                <include layout="@layout/line" />
+
+                <TextView
+                    android:id="@+id/tv_service"
+                    style="@style/mineText_two"
+                    android:drawableLeft="@drawable/orderconfirm_kefu"
+                    android:paddingTop="20dp"
+                    android:text="客服中心" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

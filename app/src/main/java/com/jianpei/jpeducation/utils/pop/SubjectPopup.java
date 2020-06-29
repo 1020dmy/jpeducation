@@ -24,6 +24,8 @@ import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.listener.MyItemOnClickListener;
+import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,16 +49,19 @@ public class SubjectPopup extends PopupWindow {
     private List<GroupClassBean> mGroupClassBeans;
     private Context mContext;
 
-//    private String originPrice;
-//    private String material;
 
     private ClassInfoBean classInfoBean;
 
     private List<String> classIds;
     private List<String> suitesIds;
 
-    private double totalPrice;
+//    private double totalPrice;
 
+    private MyItemClickListener myItemOnClickListener;
+
+    public void setMyItemOnClickListener(MyItemClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
 
     public List<String> getClassIds() {
         return classIds;
@@ -80,11 +85,8 @@ public class SubjectPopup extends PopupWindow {
 
 
     public SubjectPopup(Context context, List<GroupClassBean> groupClassBeans, ClassInfoBean classInfoBean) {
-
         mContext = context;
         mGroupClassBeans = groupClassBeans;
-//        this.originPrice = originPrice;
-//        this.material = material;
         this.classInfoBean = classInfoBean;
 
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -120,18 +122,11 @@ public class SubjectPopup extends PopupWindow {
         mtvTitle.setText(classInfoBean.getTitle());
 
         if (classInfoBean.getMaterial_des() == null) {
-            llData.setVisibility(View.GONE);
+            llData.setVisibility(View.INVISIBLE);
         } else {
             tvData.setText(classInfoBean.getMaterial_des());
         }
 
-//        if (mGroupClassBeans.size() != 0) {
-//            mGroupClassBeans.get(0).setSelect(true);
-//            tvNowPrice.setText("￥" + mGroupClassBeans.get(0).getPrice());
-//            if (mGroupClassBeans.get(0).getPrice() != null)
-//                totalPrice = Double.parseDouble(mGroupClassBeans.get(0).getPrice());
-//            mtvTitle.setText(mGroupClassBeans.get(0).getTitle());
-//        }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(10));
         MyAdapter myAdapter = new MyAdapter();
@@ -146,7 +141,6 @@ public class SubjectPopup extends PopupWindow {
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
-//        private int selectPoint = 0;
 
         @NonNull
         @Override
@@ -158,15 +152,12 @@ public class SubjectPopup extends PopupWindow {
         @Override
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             GroupClassBean groupClassBean = mGroupClassBeans.get(position);
-//            holder.llTitle.setEnabled(!groupClassBean.isSelect());
-//            holder.tvTitle.setEnabled(!groupClassBean.isSelect());
-
             if (groupClassBean.isSelect()) {
-                addIds(groupClassBean);
+//                addIds(groupClassBean);
                 holder.llTitle.setBackgroundResource(R.drawable.shape_subject_select_bg);
                 holder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
             } else {
-                removeIds(groupClassBean);
+//                removeIds(groupClassBean);
                 holder.llTitle.setBackgroundResource(R.drawable.shape_subject_unselect_bg);
                 holder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.cA5A8B0));
             }
@@ -195,47 +186,18 @@ public class SubjectPopup extends PopupWindow {
 
             @Override
             public void onClick(View v) {
-
                 GroupClassBean groupClassBean = mGroupClassBeans.get(getLayoutPosition());
-
                 groupClassBean.setSelect(!groupClassBean.isSelect());
                 notifyItemChanged(getLayoutPosition());
-                if (groupClassBean.getPrice() == null)
-                    return;
-
-
                 if (groupClassBean.isSelect()) {
-//                    if (groupClassBean.getType() == 1) {
-//                        classIds.add(groupClassBean.getId());
-//                    } else {
-//                        suitesIds.add(groupClassBean.getId());
-//                    }
-                    totalPrice += Double.parseDouble(groupClassBean.getPrice());
+                    addIds(groupClassBean);
                 } else {
-//                    if (groupClassBean.getType() == 1) {
-//                        classIds.remove(groupClassBean.getId());
-//                    } else {
-//                        suitesIds.remove(groupClassBean.getId());
-//                    }
-                    totalPrice -= Double.parseDouble(groupClassBean.getPrice());
+                    removeIds(groupClassBean);
                 }
-                tvNowPrice.setText("￥" + totalPrice);
 
-//                mGroupClassBeans.get(selectPoint).setSelect(false);
-//                notifyItemChanged(selectPoint);
-//                mGroupClassBeans.get(getLayoutPosition()).setSelect(true);
-//                selectPoint = getLayoutPosition();
-//                tvNowPrice.setText("￥" + mGroupClassBeans.get(selectPoint).getPrice());
-//                mtvTitle.setText(mGroupClassBeans.get(selectPoint).getTitle());
-//
-//                if (mGroupClassBeans.get(selectPoint).getIs_material() == 1) {
-//                    llData.setVisibility(View.VISIBLE);
-//                } else {
-//                    llData.setVisibility(View.GONE);
-//                }
-//                notifyItemChanged(selectPoint);
-
-
+                if (myItemOnClickListener != null) {
+                    myItemOnClickListener.onClicker();
+                }
             }
         }
     }
@@ -249,7 +211,6 @@ public class SubjectPopup extends PopupWindow {
         } else {
             suitesIds.add(groupClassBean.getId());
         }
-
 //        dataListenter();
     }
 
@@ -263,6 +224,17 @@ public class SubjectPopup extends PopupWindow {
         }
 //        dataListenter();
 
+    }
+
+    public void upDataPrice(String total_price, String price, String is_material) {
+
+        tvNowPrice.setText("￥" + price);
+        tvPrice.setText("原价：" + total_price);
+        if ("0".equals(is_material)) {
+            llData.setVisibility(View.INVISIBLE);
+        } else {
+            llData.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -280,6 +252,13 @@ public class SubjectPopup extends PopupWindow {
 
     @Override
     public void dismiss() {
+        myItemOnClickListener = null;
         super.dismiss();
+    }
+
+
+    public interface MyItemClickListener {
+
+        void onClicker();
     }
 }

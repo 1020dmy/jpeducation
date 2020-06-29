@@ -81,6 +81,8 @@ public class ClassInfoBean {
 
     private RegimentInfoBean regiment_info;
 
+    private RegimentBean user_regiment_info;
+
     public String getRegiment_people() {
         return regiment_people;
     }
@@ -351,5 +353,13 @@ public class ClassInfoBean {
 
     public void setTeachers(List<TeacherBean> teachers) {
         this.teachers = teachers;
+    }
+
+    public RegimentBean getUser_regiment_info() {
+        return user_regiment_info;
+    }
+
+    public void setUser_regiment_info(RegimentBean user_regiment_info) {
+        this.user_regiment_info = user_regiment_info;
     }
 }
