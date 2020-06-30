@@ -121,4 +121,7 @@ public class GroupInfoBean implements Parcelable {
             return new GroupInfoBean[size];
         }
     };
+
+
+
 }

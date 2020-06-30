@@ -1,5 +1,9 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +14,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class ClassInfoBean {
+public class ClassInfoBean implements Parcelable {
 
 
     /**
@@ -362,4 +366,103 @@ public class ClassInfoBean {
     public void setUser_regiment_info(RegimentBean user_regiment_info) {
         this.user_regiment_info = user_regiment_info;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.cat_id);
+        dest.writeString(this.title);
+        dest.writeString(this.sub_title);
+        dest.writeString(this.desc);
+        dest.writeString(this.tags);
+        dest.writeString(this.status);
+        dest.writeString(this.teacher_ids);
+        dest.writeString(this.img);
+        dest.writeStringList(this.content);
+        dest.writeString(this.start_time);
+        dest.writeString(this.end_time);
+        dest.writeString(this.year_num);
+        dest.writeString(this.deleted);
+        dest.writeString(this.add_time);
+        dest.writeString(this.sort_num);
+        dest.writeString(this.start_time_str);
+        dest.writeString(this.end_time_str);
+        dest.writeString(this.original_price_info);
+        dest.writeString(this.huod_price_info);
+        dest.writeString(this.buy_num);
+        dest.writeString(this.material_des);
+        dest.writeString(this.our_service);
+        dest.writeString(this.our_guarantee);
+        dest.writeString(this.video_id);
+        dest.writeString(this.video_time_str);
+        dest.writeInt(this.is_coupon);
+        dest.writeStringList(this.teacher_names);
+        dest.writeList(this.teachers);
+        dest.writeString(this.regiment_people);
+        dest.writeString(this.regiment_price_info);
+        dest.writeString(this.regiment_num);
+        dest.writeString(this.regiment_rules_url);
+        dest.writeParcelable(this.regiment_info, flags);
+        dest.writeParcelable(this.user_regiment_info, flags);
+    }
+
+    public ClassInfoBean() {
+    }
+
+    protected ClassInfoBean(Parcel in) {
+        this.id = in.readString();
+        this.cat_id = in.readString();
+        this.title = in.readString();
+        this.sub_title = in.readString();
+        this.desc = in.readString();
+        this.tags = in.readString();
+        this.status = in.readString();
+        this.teacher_ids = in.readString();
+        this.img = in.readString();
+        this.content = in.createStringArrayList();
+        this.start_time = in.readString();
+        this.end_time = in.readString();
+        this.year_num = in.readString();
+        this.deleted = in.readString();
+        this.add_time = in.readString();
+        this.sort_num = in.readString();
+        this.start_time_str = in.readString();
+        this.end_time_str = in.readString();
+        this.original_price_info = in.readString();
+        this.huod_price_info = in.readString();
+        this.buy_num = in.readString();
+        this.material_des = in.readString();
+        this.our_service = in.readString();
+        this.our_guarantee = in.readString();
+        this.video_id = in.readString();
+        this.video_time_str = in.readString();
+        this.is_coupon = in.readInt();
+        this.teacher_names = in.createStringArrayList();
+        this.teachers = new ArrayList<TeacherBean>();
+        in.readList(this.teachers, TeacherBean.class.getClassLoader());
+        this.regiment_people = in.readString();
+        this.regiment_price_info = in.readString();
+        this.regiment_num = in.readString();
+        this.regiment_rules_url = in.readString();
+        this.regiment_info = in.readParcelable(RegimentInfoBean.class.getClassLoader());
+        this.user_regiment_info = in.readParcelable(RegimentBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ClassInfoBean> CREATOR = new Parcelable.Creator<ClassInfoBean>() {
+        @Override
+        public ClassInfoBean createFromParcel(Parcel source) {
+            return new ClassInfoBean(source);
+        }
+
+        @Override
+        public ClassInfoBean[] newArray(int size) {
+            return new ClassInfoBean[size];
+        }
+    };
 }

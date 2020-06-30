@@ -1,6 +1,9 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
-public class GroupClassBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GroupClassBean implements Parcelable {
 
 
     /**
@@ -66,4 +69,44 @@ public class GroupClassBean {
     public void setPrice(String price) {
         this.price = price;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeInt(this.type);
+        dest.writeInt(this.is_material);
+        dest.writeString(this.price);
+        dest.writeByte(this.isSelect ? (byte) 1 : (byte) 0);
+    }
+
+    public GroupClassBean() {
+    }
+
+    protected GroupClassBean(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.type = in.readInt();
+        this.is_material = in.readInt();
+        this.price = in.readString();
+        this.isSelect = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<GroupClassBean> CREATOR = new Parcelable.Creator<GroupClassBean>() {
+        @Override
+        public GroupClassBean createFromParcel(Parcel source) {
+            return new GroupClassBean(source);
+        }
+
+        @Override
+        public GroupClassBean[] newArray(int size) {
+            return new GroupClassBean[size];
+        }
+    };
 }

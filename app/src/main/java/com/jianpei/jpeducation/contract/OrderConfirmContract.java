@@ -1,12 +1,16 @@
 package com.jianpei.jpeducation.contract;
 
+import com.alipay.sdk.app.PayTask;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.UserInfoBean;
+import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -25,6 +29,11 @@ public interface OrderConfirmContract {
 
         Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
 
+        Observable<BaseEntity<OrderPaymentBean>> orderPayment(String type, String order_id);
+
+        Observable<BaseEntity<CheckPayStatusBean>> checkPayStatus(String order_id, String pay_type);
+
+        Observable<String> aliPay(String orderInfo, PayTask payTask);
 
     }
 
@@ -35,6 +44,10 @@ public interface OrderConfirmContract {
 
         void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id);
 
+        void orderPayment(String type, String order_id);
 
+        void checkPayStatus(String order_id, String pay_type);
+
+        void aliPay(String orderInfo, PayTask payTask);
     }
 }

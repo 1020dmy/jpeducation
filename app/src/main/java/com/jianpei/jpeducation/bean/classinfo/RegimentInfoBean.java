@@ -1,9 +1,13 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class RegimentInfoBean {
+public class RegimentInfoBean implements Parcelable {
 
 
     /**
@@ -31,4 +35,35 @@ public class RegimentInfoBean {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.regiment_des);
+        dest.writeList(this.regiment_data);
+    }
+
+    public RegimentInfoBean() {
+    }
+
+    protected RegimentInfoBean(Parcel in) {
+        this.regiment_des = in.readString();
+        this.regiment_data = new ArrayList<RegimentBean>();
+        in.readList(this.regiment_data, RegimentBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<RegimentInfoBean> CREATOR = new Parcelable.Creator<RegimentInfoBean>() {
+        @Override
+        public RegimentInfoBean createFromParcel(Parcel source) {
+            return new RegimentInfoBean(source);
+        }
+
+        @Override
+        public RegimentInfoBean[] newArray(int size) {
+            return new RegimentInfoBean[size];
+        }
+    };
 }

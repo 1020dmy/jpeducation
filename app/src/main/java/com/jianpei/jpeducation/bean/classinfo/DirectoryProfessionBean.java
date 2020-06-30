@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +18,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class DirectoryProfessionBean extends BaseNode {
+public class DirectoryProfessionBean extends BaseNode implements Parcelable {
     private String id;
 
     private String title;
@@ -54,4 +57,38 @@ public class DirectoryProfessionBean extends BaseNode {
         baseNodes.addAll(class_directory);
         return baseNodes;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeTypedList(this.class_directory);
+    }
+
+    public DirectoryProfessionBean() {
+    }
+
+    protected DirectoryProfessionBean(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.class_directory = in.createTypedArrayList(DirectoryChapterBean.CREATOR);
+    }
+
+    public static final Parcelable.Creator<DirectoryProfessionBean> CREATOR = new Parcelable.Creator<DirectoryProfessionBean>() {
+        @Override
+        public DirectoryProfessionBean createFromParcel(Parcel source) {
+            return new DirectoryProfessionBean(source);
+        }
+
+        @Override
+        public DirectoryProfessionBean[] newArray(int size) {
+            return new DirectoryProfessionBean[size];
+        }
+    };
 }

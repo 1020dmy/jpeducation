@@ -1,19 +1,21 @@
-package com.jianpei.jpeducation.activitys.classinfo;
+package com.jianpei.jpeducation.activitys.order;
 
+
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GroupResultActivity extends BaseActivity {
+public class OrderResultActivity extends BaseActivity {
+
 
     @BindView(R.id.tv_status)
     TextView tvStatus;
@@ -23,26 +25,34 @@ public class GroupResultActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.iv_right)
     ImageView ivRight;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.iv_result)
-    ImageView ivResult;
-    @BindView(R.id.tv_result)
-    TextView tvResult;
+    @BindView(R.id.iv_tip)
+    ImageView ivTip;
     @BindView(R.id.btn_one)
     Button btnOne;
     @BindView(R.id.btn_back)
     Button btnBack;
 
+    private String state;
 
     @Override
     protected int setLayoutView() {
-        return R.layout.activity_group_result;
+        return R.layout.activity_order_result;
     }
 
     @Override
     protected void initView() {
+        state = getIntent().getStringExtra("state");
+        ivBack.setVisibility(View.GONE);
 
+        if ("1".equals(state)) {
+            tvTitle.setText("订单完成");
+            btnOne.setText("去学习");
+            ivTip.setImageResource(R.drawable.ic_order_result_pay_success);
+        } else {
+            tvTitle.setText("订单失败");
+            btnOne.setText("查看订单");
+            ivTip.setImageResource(R.drawable.ic_order_result_pay_fail);
+        }
 
     }
 
@@ -51,15 +61,15 @@ public class GroupResultActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.btn_one, R.id.btn_back})
+
+    @OnClick({R.id.btn_one, R.id.btn_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
             case R.id.btn_one:
                 break;
             case R.id.btn_back:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
         }
     }

@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.classinfo;
  * <p>
  * Describe:
  */
-public class TeacherBean {
+public class TeacherBean implements Parcelable {
 
 
     /**
@@ -194,4 +197,68 @@ public class TeacherBean {
     public void setName(String name) {
         this.name = name;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.onclick);
+        dest.writeString(this.sort);
+        dest.writeString(this.status);
+        dest.writeString(this.seo_title);
+        dest.writeString(this.seo_keywords);
+        dest.writeString(this.seo_description);
+        dest.writeString(this.create_time);
+        dest.writeString(this.update_time);
+        dest.writeString(this.info);
+        dest.writeString(this.zj_class);
+        dest.writeString(this.img);
+        dest.writeString(this.mz_img);
+        dest.writeString(this.index);
+        dest.writeString(this.phone);
+        dest.writeString(this.class_category);
+        dest.writeString(this.name);
+    }
+
+    public TeacherBean() {
+    }
+
+    protected TeacherBean(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.onclick = in.readString();
+        this.sort = in.readString();
+        this.status = in.readString();
+        this.seo_title = in.readString();
+        this.seo_keywords = in.readString();
+        this.seo_description = in.readString();
+        this.create_time = in.readString();
+        this.update_time = in.readString();
+        this.info = in.readString();
+        this.zj_class = in.readString();
+        this.img = in.readString();
+        this.mz_img = in.readString();
+        this.index = in.readString();
+        this.phone = in.readString();
+        this.class_category = in.readString();
+        this.name = in.readString();
+    }
+
+    public static final Parcelable.Creator<TeacherBean> CREATOR = new Parcelable.Creator<TeacherBean>() {
+        @Override
+        public TeacherBean createFromParcel(Parcel source) {
+            return new TeacherBean(source);
+        }
+
+        @Override
+        public TeacherBean[] newArray(int size) {
+            return new TeacherBean[size];
+        }
+    };
 }

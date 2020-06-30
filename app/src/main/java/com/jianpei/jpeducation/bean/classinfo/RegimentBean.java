@@ -1,8 +1,12 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class RegimentBean {
+public class RegimentBean implements Parcelable {
 
     /**
      * id : 1
@@ -139,4 +143,59 @@ public class RegimentBean {
     public void setRegiment_data(List<RegimentBean> regiment_data) {
         this.regiment_data = regiment_data;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.start_time);
+        dest.writeString(this.end_time);
+        dest.writeString(this.create_time);
+        dest.writeString(this.user_id);
+        dest.writeString(this.huod_id);
+        dest.writeString(this.is_source);
+        dest.writeString(this.user_name);
+        dest.writeString(this.img);
+        dest.writeString(this.num_people);
+        dest.writeInt(this.remaining_number);
+        dest.writeLong(this.remaining_time);
+        dest.writeList(this.regiment_data);
+    }
+
+    public RegimentBean() {
+    }
+
+    protected RegimentBean(Parcel in) {
+        this.id = in.readString();
+        this.start_time = in.readString();
+        this.end_time = in.readString();
+        this.create_time = in.readString();
+        this.user_id = in.readString();
+        this.huod_id = in.readString();
+        this.is_source = in.readString();
+        this.user_name = in.readString();
+        this.img = in.readString();
+        this.num_people = in.readString();
+        this.remaining_number = in.readInt();
+        this.remaining_time = in.readLong();
+        this.regiment_data = new ArrayList<RegimentBean>();
+        in.readList(this.regiment_data, RegimentBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<RegimentBean> CREATOR = new Parcelable.Creator<RegimentBean>() {
+        @Override
+        public RegimentBean createFromParcel(Parcel source) {
+            return new RegimentBean(source);
+        }
+
+        @Override
+        public RegimentBean[] newArray(int size) {
+            return new RegimentBean[size];
+        }
+    };
 }

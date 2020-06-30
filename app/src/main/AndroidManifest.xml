@@ -22,36 +22,68 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.classinfo.GroupResultActivity"></activity>
-        <activity android:name=".activitys.order.OrderConfirmActivity" />
-        <activity android:name=".activitys.web.GuiZeActivity" />
+        <activity android:name=".activitys.order.OrderInfoActivity"></activity>
+        <activity android:name=".activitys.TryListenerListActivity" />
+        <activity
+            android:name=".activitys.order.OrderResultActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.order.GroupResultActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.order.OrderConfirmActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.web.GuiZeActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.classinfo.GroupInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.player.TryPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activitys.material.MaterialListActivity" />
+        <activity
+            android:name=".activitys.material.MaterialListActivity"
+            android:launchMode="singleTask" />
 
         <service
             android:name=".service.DownloadService"
             android:exported="false" />
 
-        <activity android:name=".activitys.web.KeFuActivity" />
-        <activity android:name=".activitys.login.BindPhoneActivity" />
-        <activity android:name=".activitys.login.ForgetPwdActivity" />
-        <activity android:name=".activitys.login.RegisteredActivity" />
-        <activity android:name=".activitys.pdf.PdfReaderActivity" />
-        <activity android:name=".activitys.mine.UserInfoActivity" />
-        <activity android:name=".activitys.SelectDisciplineActivity" />
+        <activity
+            android:name=".activitys.web.KeFuActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.login.BindPhoneActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.login.ForgetPwdActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.login.RegisteredActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.pdf.PdfReaderActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.UserInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.SelectDisciplineActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.classinfo.ClassInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".activitys.login.LoginActivity">
+        <activity
+            android:name=".activitys.login.LoginActivity"
+            android:launchMode="singleTask">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -60,7 +92,9 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activitys.launcher.GuideActivity" />
+        <activity
+            android:name=".activitys.launcher.GuideActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/title_activity_main"
@@ -78,7 +112,15 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- QQ -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:enabled="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -95,7 +137,10 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- QQ -->
+
+
         <meta-data
             android:name="design_width_in_dp"
             android:value="375" />

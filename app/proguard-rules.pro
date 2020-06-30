@@ -300,6 +300,19 @@
 
 
 -keep class com.jianpei.jpeducation.api.base.** { *; }
+-keep class com.jianpei.jpeducation.bean.** { *; }
+
+#支付宝支付
+-libraryjars libs/alipaySdk-15.7.6-20200521195109.aar
+
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+
+
 
 
 

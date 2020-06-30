@@ -27,6 +27,10 @@ public class ClassGenerateOrderBean implements Parcelable {
     }
 
 
+    public ClassGenerateOrderBean() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -38,15 +42,12 @@ public class ClassGenerateOrderBean implements Parcelable {
         dest.writeParcelable(this.order_info, flags);
     }
 
-    public ClassGenerateOrderBean() {
-    }
-
     protected ClassGenerateOrderBean(Parcel in) {
         this.group_info = in.readParcelable(GroupInfoBean.class.getClassLoader());
         this.order_info = in.readParcelable(OrderInfoBean.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<ClassGenerateOrderBean> CREATOR = new Parcelable.Creator<ClassGenerateOrderBean>() {
+    public static final Creator<ClassGenerateOrderBean> CREATOR = new Creator<ClassGenerateOrderBean>() {
         @Override
         public ClassGenerateOrderBean createFromParcel(Parcel source) {
             return new ClassGenerateOrderBean(source);

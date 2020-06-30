@@ -35,17 +35,21 @@ import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
+import com.jianpei.jpeducation.bean.json.OrderPaymentJson;
 import com.jianpei.jpeducation.bean.json.RegimentDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
+import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 
 
 import java.util.ArrayList;
@@ -247,6 +251,19 @@ public interface APIFunction {
      */
     @POST(UrlConfig.regimentData)
     Observable<BaseEntity<RegimentDataBean>> regimentData(@Body RegimentDataJson regimentDataJson);
+
+
+    /**
+     * 1-订单发起支付
+     */
+    @POST(UrlConfig.orderPayment)
+    Observable<BaseEntity<OrderPaymentBean>> orderPayment(@Body OrderPaymentJson orderPaymentJson);
+
+    /**
+     * 支付状态查询
+     */
+    @POST(UrlConfig.checkPayStatus)
+    Observable<BaseEntity<CheckPayStatusBean>> checkPayStatus(@Body CheckPayStatusJson checkPayStatusJson);
 
     /**
      * 获取微信ACCESS_TOKEN

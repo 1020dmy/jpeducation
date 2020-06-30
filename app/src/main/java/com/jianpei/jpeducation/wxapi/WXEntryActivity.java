@@ -12,4 +12,6 @@ import com.umeng.socialize.weixin.view.WXCallbackActivity;
  * Describe:
  */
 public class WXEntryActivity extends WXCallbackActivity {
+
+
 }

@@ -19,32 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <LinearLayout
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:background="@drawable/shadow"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp">
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/orderconfirm_shou"
-                    android:drawablePadding="12dp"
-                    android:textColor="@color/c333333"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/c333333"
-                    android:textSize="13dp" />
-            </LinearLayout>
+            <include layout="@layout/include_orderinfo_group" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +136,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="14dp"
                     android:textColor="@color/c888B96"
                     android:textSize="11dp" />
 
@@ -169,15 +143,16 @@
                     android:id="@+id/line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
                     android:background="@color/ce9e9e9" />
 
                 <LinearLayout
                     android:id="@+id/ll_quan"
-                    android:saveEnabled="false"
-                    android:layout_marginTop="14dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:saveEnabled="false">
 
                     <TextView
                         android:layout_width="wrap_content"

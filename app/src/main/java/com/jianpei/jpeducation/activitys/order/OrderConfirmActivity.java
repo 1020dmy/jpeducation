@@ -11,16 +11,23 @@ import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.CouponDataBean;
+import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
+import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.utils.pop.MyCouponPopup;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.ArrayList;
 
@@ -98,6 +105,9 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private String mCouponTitle;
 
+    private IWXAPI msgApi;
+
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_order_confirm;
@@ -105,6 +115,8 @@ public class OrderConfirmActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        msgApi = WXAPIFactory.createWXAPI(this, null);
+
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.drawable.orderconfirm_kefu);
         tvTitle.setText("订单确认");
@@ -123,6 +135,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 shortToast(o);
             }
         });
+        //优惠券
         orderConfirmModel.getCouponDataBeanLiveData().observe(this, new Observer<CouponDataBean>() {
             @Override
             public void onChanged(CouponDataBean couponDataBean) {
@@ -134,6 +147,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 showPop();
             }
         });
+        //选择优惠券后发起订单
         orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
             @Override
             public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
@@ -145,6 +159,83 @@ public class OrderConfirmActivity extends BaseActivity {
                 setData();
             }
         });
+        //发起支付
+        orderConfirmModel.getOrderPaymentBeanLiveData().observe(this, new Observer<OrderPaymentBean>() {
+            @Override
+            public void onChanged(OrderPaymentBean orderPaymentBean) {
+                dismissLoading();
+                if (payType == 1) {//微信支付
+                    WxInfo wxInfo = orderPaymentBean.getWx_info();
+                    if (wxInfo == null) {
+                        shortToast("获取订单信息失败！");
+                        return;
+                    }
+                    PayReq request = new PayReq();
+                    request.appId = wxInfo.getAppid();
+                    request.partnerId = wxInfo.getPartnerid();
+                    request.prepayId = wxInfo.getPrepayid();
+                    request.packageValue = "Sign=WXPay";
+                    request.nonceStr = wxInfo.getNoncestr();
+                    request.timeStamp = String.valueOf(wxInfo.getTimestamp());
+                    request.sign = wxInfo.getSign();
+                    msgApi.sendReq(request);
+                } else {//支付宝支付
+                    orderConfirmModel.aliPay(orderPaymentBean.getAli_info(), new PayTask(OrderConfirmActivity.this));
+
+                }
+            }
+        });
+        //支付宝支付返回的结果
+        orderConfirmModel.getAliPayLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (TextUtils.equals(s, "9000")) {
+                    // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                    showLoading("");
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                } else {
+                    // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                    shortToast("支付失败！" + s);
+                }
+            }
+        });
+        //支付结果查询
+        orderConfirmModel.getCheckPayStatusBeanLiveData().observe(this, new Observer<CheckPayStatusBean>() {
+            @Override
+            public void onChanged(CheckPayStatusBean checkPayStatusBean) {
+                if ("0".equals(checkPayStatusBean.getState())) {//未支付
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                } else {
+                    dismissLoading();
+                    if ("GroupInfo".equals(type)) {
+                        startActivity(new Intent(OrderConfirmActivity.this, GroupResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
+
+                    } else {
+                        startActivity(new Intent(OrderConfirmActivity.this, OrderResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
+
+                    }
+                }
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        int resultCode = intent.getIntExtra("resultCode", -10);
+        if (resultCode == 0) {
+            showLoading("");
+            orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+        } else if (resultCode == -1) {
+            shortToast("支付失败！");
+        } else if (resultCode == -2) {
+            shortToast("取消支付！");
+        } else {
+            shortToast("未知错误！");
+        }
+        super.onNewIntent(intent);
 
     }
 
@@ -176,7 +267,7 @@ public class OrderConfirmActivity extends BaseActivity {
             tvMaterialName.setVisibility(View.GONE);
             tvLine.setVisibility(View.GONE);
         }
-        if("GroupInfo".equals(type)){
+        if ("GroupInfo".equals(type)) {
             llQuan.setVisibility(View.GONE);
         }
         //优惠券信息
@@ -216,6 +307,8 @@ public class OrderConfirmActivity extends BaseActivity {
                 changeStatus(2);
                 break;
             case R.id.submit:
+                showLoading("");
+                orderConfirmModel.orderPayment(payType + "", mClassGenerateOrderBean.getOrder_info().getId());
                 break;
             case R.id.ll_quan:
                 if (mCouponDatas == null || mCouponDatas.size() == 0) {
@@ -230,6 +323,7 @@ public class OrderConfirmActivity extends BaseActivity {
 
 
     public void changeStatus(int type) {
+        payType = type;
         if (type == 1) {
             llWeixinPay.setEnabled(false);
             ivWeixin.setEnabled(false);

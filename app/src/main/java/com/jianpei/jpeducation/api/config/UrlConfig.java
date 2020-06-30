@@ -86,5 +86,6 @@ public class UrlConfig {
     //1-团列表
     public static final String regimentData = "group/regimentData";
 
-
+    //1-支付状态查询
+    public static final String checkPayStatus = "order/checkPayStatus";
 }

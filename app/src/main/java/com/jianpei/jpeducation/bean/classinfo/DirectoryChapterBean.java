@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.classinfo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.chad.library.adapter.base.entity.node.BaseExpandNode;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
@@ -16,7 +19,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class DirectoryChapterBean extends BaseExpandNode {
+public class DirectoryChapterBean extends BaseExpandNode implements Parcelable {
 
     private String id;
     private String title;
@@ -71,4 +74,36 @@ public class DirectoryChapterBean extends BaseExpandNode {
     public List<BaseNode> getChildNode() {
         return getBaseNodes();
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeList(this.baseNodes);
+    }
+
+    protected DirectoryChapterBean(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.baseNodes = new ArrayList<BaseNode>();
+        in.readList(this.baseNodes, BaseNode.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<DirectoryChapterBean> CREATOR = new Parcelable.Creator<DirectoryChapterBean>() {
+        @Override
+        public DirectoryChapterBean createFromParcel(Parcel source) {
+            return new DirectoryChapterBean(source);
+        }
+
+        @Override
+        public DirectoryChapterBean[] newArray(int size) {
+            return new DirectoryChapterBean[size];
+        }
+    };
 }
