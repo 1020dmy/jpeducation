@@ -3,7 +3,6 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,23 +18,20 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
-import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
+import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
-import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.fragment.group.GclassInfoFragment;
-import com.jianpei.jpeducation.fragment.group.GcommentFragment;
-import com.jianpei.jpeducation.fragment.group.GdirectoryFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.GroupingPopup;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -71,8 +67,8 @@ public class GroupInfoActivity extends BaseActivity {
     LinearLayout llStatus;
     @BindView(R.id.tv_kefu)
     TextView tvKefu;
-    @BindView(R.id.tv_shopping)
-    TextView tvShopping;
+    //    @BindView(R.id.tv_shopping)
+//    TextView tvShopping;
     @BindView(R.id.submit)
     TextView submit;
     @BindView(R.id.ll_bottom)
@@ -86,7 +82,7 @@ public class GroupInfoActivity extends BaseActivity {
     private CommentFragment commentFragment;
     private Fragment[] fragments;
 
-    private ClassInfoTabFragmentAdapter classInfoTabFragmentAdapter;
+    private TabFragmentAdapter classInfoTabFragmentAdapter;
     private int height;
 
     private ClassInfoModel classInfoModel;
@@ -110,6 +106,7 @@ public class GroupInfoActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
         height = DisplayUtil.dp2px(300);
         regimentInfoBean = getIntent().getParcelableExtra("regimentInfoBean");
         classInfoModel = new ViewModelProvider(this).get(ClassInfoModel.class);//初始化model
@@ -218,7 +215,7 @@ public class GroupInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        classInfoTabFragmentAdapter = new ClassInfoTabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
+        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
         viewPage.setAdapter(classInfoTabFragmentAdapter);
 
 
@@ -232,7 +229,7 @@ public class GroupInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.tv_shopping, R.id.submit, R.id.rl_buy})
+    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.submit, R.id.rl_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -241,14 +238,13 @@ public class GroupInfoActivity extends BaseActivity {
                 break;
             case R.id.iv_shopping:
             case R.id.iv_black_shopping:
+                startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
             case R.id.iv_share:
             case R.id.iv_black_share:
                 break;
             case R.id.tv_kefu:
                 startActivity(new Intent(this, KeFuActivity.class));
-                break;
-            case R.id.tv_shopping:
                 break;
             case R.id.submit:
                 groupId = "";

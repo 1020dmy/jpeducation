@@ -252,7 +252,6 @@ public class SubjectPopup extends PopupWindow {
 
     @Override
     public void dismiss() {
-        myItemOnClickListener = null;
         super.dismiss();
     }
 

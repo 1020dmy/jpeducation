@@ -22,7 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.order.OrderInfoActivity"></activity>
+        <activity android:name=".activitys.mine.ShoppingCartActivity"></activity>
+        <activity android:name=".activitys.mine.UserCouponActivity" />
+        <activity android:name=".activitys.mine.UserOrderListActivity" />
+        <activity android:name=".activitys.order.OrderInfoActivity" />
         <activity android:name=".activitys.TryListenerListActivity" />
         <activity
             android:name=".activitys.order.OrderResultActivity"
@@ -120,7 +123,7 @@
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -139,8 +142,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- QQ -->
-
-
         <meta-data
             android:name="design_width_in_dp"
             android:value="375" />

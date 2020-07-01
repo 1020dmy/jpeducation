@@ -115,33 +115,38 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shadow_info_bottom"
-        android:paddingLeft="10dp">
+        android:background="@drawable/shadow_info_bottom">
 
 
         <TextView
             android:id="@+id/tv_kefu"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:drawableTop="@drawable/info_kefu"
             android:gravity="center"
+            android:paddingLeft="10dp"
             android:paddingTop="4dp"
+            android:paddingRight="10dp"
             android:text="客服"
             android:textColor="@color/c555555"
             android:textSize="13dp" />
 
         <TextView
-            android:id="@+id/tv_shopping"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/info_red_shoppint"
-            android:gravity="center"
-            android:paddingTop="4dp"
-            android:text="购物车"
-            android:textColor="@color/cE73B30"
-            android:textSize="13dp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_shopping"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:drawableTop="@drawable/info_red_shoppint"-->
+        <!--            android:gravity="center"-->
+        <!--            android:paddingTop="4dp"-->
+        <!--            android:text="购物车"-->
+        <!--            android:textColor="@color/cE73B30"-->
+        <!--            android:textSize="13dp" />-->
 
         <RelativeLayout
             android:id="@+id/rl_buy"

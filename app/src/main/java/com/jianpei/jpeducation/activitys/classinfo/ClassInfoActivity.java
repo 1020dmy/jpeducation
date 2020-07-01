@@ -3,7 +3,6 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,10 +20,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
-import com.jianpei.jpeducation.adapter.ClassInfoTabFragmentAdapter;
+import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
@@ -55,7 +56,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ClassInfoActivity extends BaseActivity implements ShareBoardlistener {
+public class ClassInfoActivity extends BaseActivity {
 
 
     @BindView(R.id.iv_back)
@@ -75,10 +76,10 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     @BindView(R.id.submit)
     TextView submit;
 
-    @BindView(R.id.tv_now_price)
-    TextView tvNowPrice;
-    @BindView(R.id.tv_price)
-    TextView tvPrice;
+//    @BindView(R.id.tv_now_price)
+//    TextView tvNowPrice;
+//    @BindView(R.id.tv_price)
+//    TextView tvPrice;
 
     @BindView(R.id.viewPage)
     ViewPager2 viewPager;
@@ -100,7 +101,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     private CommentFragment commentFragment;//评价
     private Fragment[] fragments;
 
-    private ClassInfoTabFragmentAdapter classInfoTabFragmentAdapter;
+    private TabFragmentAdapter classInfoTabFragmentAdapter;
 
     private ClassInfoModel classInfoModel;
 
@@ -112,12 +113,11 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
 
     private List<GroupClassBean> mGroupClassBeans;
 
-    //分享相关
-    private ShareAction mShareAction;
-    private UMShareListener mShareListener;
-
 
     private ClassInfoBean mClassInfoBean;
+
+    //是否添加购物车
+    private boolean isShop;
 
 
     @Override
@@ -128,6 +128,8 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     @Override
     protected void initView() {
         height = DisplayUtil.dp2px(300);
+        //初始化分享
+        initShare();
 
         groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
         viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
@@ -144,15 +146,15 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             public void onChanged(ClassInfoBean classInfoBean) {
                 mClassInfoBean = classInfoBean;
                 //更新界面数据
-                if (classInfoBean.getHuod_price_info() == null) {
-                    tvPrice.setVisibility(View.GONE);
-                    tvNowPrice.setText(classInfoBean.getOriginal_price_info());
-                } else {
-                    tvNowPrice.setText(classInfoBean.getHuod_price_info());
-                    tvPrice.setText("原价：" + classInfoBean.getOriginal_price_info());
-                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-
-                }
+//                if (classInfoBean.getHuod_price_info() == null) {
+//                    tvPrice.setVisibility(View.GONE);
+//                    tvNowPrice.setText(classInfoBean.getOriginal_price_info());
+//                } else {
+//                    tvNowPrice.setText(classInfoBean.getHuod_price_info());
+//                    tvPrice.setText("原价：" + classInfoBean.getOriginal_price_info());
+//                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//
+//                }
 
             }
         });
@@ -174,24 +176,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 }
             }
         });
-        //接收来自与ClassInfoFragment的消息
-//        classInfoModel.getPrices().observe(this, new Observer<String[]>() {
-//            @Override
-//            public void onChanged(String[] strings) {
-//                //如果没有活动价格，隐藏原价
-//                if (strings[0] == null) {
-//                    tvPrice.setVisibility(View.GONE);
-//                    tvNowPrice.setText(strings[1]);
-//                } else {
-//                    tvNowPrice.setText(strings[0]);
-//                    originPrice = strings[1];
-//                    tvPrice.setText("原价：" + originPrice);
-//                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//                }
-//                material = strings[2];
-//
-//            }
-//        });
+
         //获取科目信息
         mGroupClassBeans = new ArrayList<>();
         classInfoModel.getGroupClassBeansLiveData().observe(this, new Observer<List<GroupClassBean>>() {
@@ -255,7 +240,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
     @Override
     protected void initData() {
 
-        classInfoTabFragmentAdapter = new ClassInfoTabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
+        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
         viewPager.setAdapter(classInfoTabFragmentAdapter);
 
 
@@ -266,19 +251,11 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             }
         }).attach();
 
-        mShareListener = new CustomShareListener(this);
 
-
-        mShareAction = new ShareAction(this).setDisplayList(
-                SHARE_MEDIA.WEIXIN,
-                SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.QQ,
-                SHARE_MEDIA.QZONE
-        ).setShareboardclickCallback(this);
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.submit, R.id.tv_kefu})
+    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.submit, R.id.tv_kefu, R.id.tv_shopping})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -287,6 +264,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 break;
             case R.id.iv_shopping:
             case R.id.iv_black_shopping:
+                startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
             case R.id.iv_share:
             case R.id.iv_black_share:
@@ -295,6 +273,7 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 }
                 break;
             case R.id.submit:
+                isShop = false;
                 if (mGroupClassBeans.size() != 0) {
                     showPow();
                 } else {
@@ -304,7 +283,15 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
                 break;
             case R.id.tv_kefu:
                 startActivity(new Intent(this, KeFuActivity.class));
-
+                break;
+            case R.id.tv_shopping:
+                isShop = true;
+                if (mGroupClassBeans.size() != 0) {
+                    showPow();
+                } else {
+                    showLoading("");
+                    classInfoModel.groupClass(groupInfoBean.getId(), "");
+                }
                 break;
         }
     }
@@ -319,9 +306,12 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
             subjectPopup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showLoading("");
-                    classInfoModel.classGenerateOrder("1", groupInfoBean.getId(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
-
+                    if (!isShop) {
+                        showLoading("");
+                        classInfoModel.classGenerateOrder("1", groupInfoBean.getId(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
+                    } else {
+                        shortToast("添加购物车成功！");
+                    }
                 }
             });
 
@@ -367,62 +357,5 @@ public class ClassInfoActivity extends BaseActivity implements ShareBoardlistene
 
     }
 
-
-    @Override
-    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-        UMWeb web = new UMWeb("http://mobile.umeng.com/social");
-        web.setTitle("来自分享面板标题");
-        web.setDescription("来自分享面板内容");
-        web.setThumb(new UMImage(this, com.jianpei.umeng.R.drawable.ic_launcher));
-        new ShareAction(this).withMedia(web)
-                .setPlatform(share_media)
-                .setCallback(mShareListener)
-                .share();
-    }
-
-    private class CustomShareListener implements UMShareListener {
-
-        private WeakReference<ShareActivity> mActivity;
-
-        private CustomShareListener(ClassInfoActivity activity) {
-            mActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA share_media) {
-
-        }
-
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-
-        }
-
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-
-            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
-                    && platform != SHARE_MEDIA.EMAIL
-                    && platform != SHARE_MEDIA.FLICKR
-                    && platform != SHARE_MEDIA.FOURSQUARE
-                    && platform != SHARE_MEDIA.TUMBLR
-                    && platform != SHARE_MEDIA.POCKET
-                    && platform != SHARE_MEDIA.PINTEREST
-
-                    && platform != SHARE_MEDIA.INSTAGRAM
-                    && platform != SHARE_MEDIA.GOOGLEPLUS
-                    && platform != SHARE_MEDIA.YNOTE
-                    && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
 
 }

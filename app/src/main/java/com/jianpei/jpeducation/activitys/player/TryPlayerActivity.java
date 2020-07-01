@@ -119,61 +119,8 @@ public class TryPlayerActivity extends AppCompatActivity {
     }
 
 
-    //初始化阿里云播放器
-//    protected void initAliyunPlayerView() {
-//        aliyunPlayerView.changeScreenMode(AliyunScreenMode.Full, false);
-//
-//        String sdDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_save_cache";
-//        File file = new File(sdDir);
-//        if (!file.exists()) {
-//            try {
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        //保持屏幕敞亮
-//        aliyunPlayerView.setKeepScreenOn(false);
-////        PlayParameter.PLAY_PARAM_URL = playerUrl;
-//        aliyunPlayerView.setPlayingCache(false, sdDir, 60 * 60 /*时长, s */, 300 /*大小，MB*/);
-//        aliyunPlayerView.setTheme(AliyunVodPlayerView.Theme.Blue);
-//        aliyunPlayerView.setCirclePlay(false);//是否循环播放
-//        aliyunPlayerView.setAutoPlay(false);//是否自动播放
-//        //设置画面缩放模式：宽高比填充，宽高比适应，拉伸填充
-//        //aliyunPlayerView.setVideoScalingMode(IPlayer.ScaleMode.SCALE_ASPECT_FILL);
-//
-//        aliyunPlayerView.setOnShowMoreClickListener(new ControlView.OnShowMoreClickListener() {
-//            @Override
-//            public void showMore() {
-//                showMorea();
-//            }
-//        });
-//
-//        aliyunPlayerView.setOnChangeQualityListener(new OnChangeQualityListener() {
-//            @Override
-//            public void onChangeQualitySuccess(String quality) {
-//
-//            }
-//
-//            @Override
-//            public void onChangeQualityFail(int code, String msg) {
-//
-//            }
-//        });
-//
-//    }
-
     //播放视频
     protected void playVideo(VideoUrlBean videoUrlBean) {
-//        String videoPath = PlayParameter.PLAY_PARAM_URL;
-        // String videoPath = "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4";
-
-
-        //下面的这 2 种视频路径，到4.7.0版本，不支持播放
-        //String videoPath1 = "android.resource://" + getPackageName() + "/" + R.raw.video_1;
-        // String videoPath2 = "file:///android_asset/video_1.mp4";
-//        UrlSource urlSource = new UrlSource();
-//        urlSource.setUri(videoPath);
 
 
         PlayerConfig playerConfig = aliyunPlayerView.getPlayerConfig();

@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.order;
 
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,7 +11,6 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 

@@ -1,6 +1,8 @@
 package com.jianpei.jpeducation.base;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -8,8 +10,20 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.utils.LoadingDialog;
 import com.jianpei.jpeducation.utils.StatusBarUtil;
+import com.jianpei.umeng.ShareActivity;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,7 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setTransparent(this);
 
 
         setContentView(setLayoutView());
@@ -153,6 +166,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        UMShareAPI.get(this).release();
         unbinder.unbind();
         if (dialog != null) {
             dialog.dismiss();
@@ -160,15 +174,85 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    public void setTitleViewPadding(View view) {
-//        int statusH = getStatusBarHeight();
-//        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) view.getLayoutParams(); //取控件textView当前的布局参数 linearParams.height = 20;// 控件的高强制设成20
-//        linearParams.height = statusH;// 控件的宽强制设成30
-//        view.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
-//
-//    }
-//
-//    private int getStatusBarHeight() {
-//        return getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    //分享相关
+    public ShareAction mShareAction;
+    private UMShareListener mShareListener;
+
+    public void initShare() {
+        mShareListener = new CustomShareListener(this);
+
+
+        mShareAction = new ShareAction(this).setDisplayList(
+                SHARE_MEDIA.WEIXIN,
+                SHARE_MEDIA.WEIXIN_CIRCLE,
+                SHARE_MEDIA.QQ,
+                SHARE_MEDIA.QZONE
+        ).setShareboardclickCallback(new ShareBoardlistener() {
+            @Override
+            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                UMWeb web = new UMWeb("http://mobile.umeng.com/social");
+                web.setTitle("来自分享面板标题");
+                web.setDescription("来自分享面板内容");
+                web.setThumb(new UMImage(BaseActivity.this, com.jianpei.umeng.R.drawable.ic_launcher));
+                new ShareAction(BaseActivity.this).withMedia(web)
+                        .setPlatform(share_media)
+                        .setCallback(mShareListener)
+                        .share();
+            }
+        });
+
+    }
+
+    private class CustomShareListener implements UMShareListener {
+
+        private WeakReference<ShareActivity> mActivity;
+
+        private CustomShareListener(Activity activity) {
+            mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+
+            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                    && platform != SHARE_MEDIA.EMAIL
+                    && platform != SHARE_MEDIA.FLICKR
+                    && platform != SHARE_MEDIA.FOURSQUARE
+                    && platform != SHARE_MEDIA.TUMBLR
+                    && platform != SHARE_MEDIA.POCKET
+                    && platform != SHARE_MEDIA.PINTEREST
+
+                    && platform != SHARE_MEDIA.INSTAGRAM
+                    && platform != SHARE_MEDIA.GOOGLEPLUS
+                    && platform != SHARE_MEDIA.YNOTE
+                    && platform != SHARE_MEDIA.EVERNOTE) {
+                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
 }

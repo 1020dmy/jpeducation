@@ -8,7 +8,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
+import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
 import com.jianpei.jpeducation.activitys.mine.UserInfoActivity;
+import com.jianpei.jpeducation.activitys.mine.UserOrderListActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 
 import butterknife.BindView;
@@ -77,12 +80,16 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
             case R.id.tv_wait_pay://未支付
+                startActivity(new Intent(getActivity(), UserOrderListActivity.class).putExtra("type", 0));
                 break;
             case R.id.tv_pay://已支付
+                startActivity(new Intent(getActivity(), UserOrderListActivity.class).putExtra("type", 1));
                 break;
             case R.id.tv_shop://购物车
+                startActivity(new Intent(getActivity(), ShoppingCartActivity.class));
                 break;
             case R.id.tv_coupon://优惠券
+                startActivity(new Intent(getActivity(), UserCouponActivity.class));
                 break;
             case R.id.tv_integral://积分
                 break;

@@ -1,9 +1,5 @@
 package com.jianpei.jpeducation.repository;
 
-import android.app.Activity;
-import android.content.Context;
-
-import com.alipay.sdk.app.PayResultActivity;
 import com.alipay.sdk.app.PayTask;
 import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
@@ -20,7 +16,6 @@ import com.jianpei.jpeducation.contract.OrderConfirmContract;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.PayResult;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import io.reactivex.Observable;

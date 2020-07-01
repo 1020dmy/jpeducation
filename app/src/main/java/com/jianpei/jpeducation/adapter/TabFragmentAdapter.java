@@ -1,14 +1,11 @@
 package com.jianpei.jpeducation.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import java.util.ArrayList;
 
 /**
  * jpeducation
@@ -18,11 +15,11 @@ import java.util.ArrayList;
  * <p>
  * Describe:
  */
-public class ClassInfoTabFragmentAdapter extends FragmentStateAdapter {
+public class TabFragmentAdapter extends FragmentStateAdapter {
 
     private Fragment[] fragments;
 
-    public ClassInfoTabFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Fragment[] fragments) {
+    public TabFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Fragment[] fragments) {
         super(fragmentManager, lifecycle);
         this.fragments = fragments;
     }

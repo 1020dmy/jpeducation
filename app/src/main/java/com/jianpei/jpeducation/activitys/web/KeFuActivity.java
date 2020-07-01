@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.SpUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class KeFuActivity extends BaseNoStatusActivity {
+public class KeFuActivity extends BaseActivity {
 
 
     @BindView(R.id.tv_status)
@@ -39,7 +40,6 @@ public class KeFuActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initView() {
-        setTitleViewPadding(tvStatus);
 
 
         url = SpUtils.getValue("customerServiceUrl");

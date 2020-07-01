@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,8 +25,8 @@ public class SelectDisciplineActivity extends BaseModelActivity<SelectDiscipline
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    //    @BindView(R.id.tv_status)
-//    TextView tvStatus;
+        @BindView(R.id.tv_status)
+        ImageView tvStatus;
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
@@ -43,7 +44,7 @@ public class SelectDisciplineActivity extends BaseModelActivity<SelectDiscipline
 
     @Override
     protected void initView() {
-//        setTitleViewPadding(tvStatus);
+        setTitleViewPadding(tvStatus);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         initViewModel();
 

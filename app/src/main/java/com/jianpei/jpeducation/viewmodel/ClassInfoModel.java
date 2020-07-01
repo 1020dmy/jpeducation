@@ -34,7 +34,7 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     //
     private MutableLiveData<GroupInfoBean> groupInfoBeanMutableLiveData;
     //价格回传
-    private MutableLiveData<String[]> pricesLiveData;
+//    private MutableLiveData<String[]> pricesLiveData;
 
     private ClassInfoRepository classInfoRepository;
 

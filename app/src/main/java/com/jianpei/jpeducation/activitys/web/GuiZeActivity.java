@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GuiZeActivity extends BaseNoStatusActivity {
+public class GuiZeActivity extends BaseActivity {
 
 
     @BindView(R.id.tv_status)
@@ -39,7 +40,7 @@ public class GuiZeActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initView() {
-        setTitleViewPadding(tvStatus);
+
 
         url = getIntent().getStringExtra("webUrl");
         webView.getSettings().setJavaScriptEnabled(true);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     TextView tvMessage;
     @BindView(R.id.tv_setting)
     TextView tvSetting;
+    @BindView(R.id.iv_statue)
+    ImageView ivStatue;
 
 
     private Fragment[] fragments;
@@ -76,6 +79,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     @Override
     protected void initView() {
+        setTitleViewPadding(ivStatue);
         homeFragment = new HomeFragment();
         schoolFragment = new SchoolFragment();
         electiveFragment = new ElectiveFragment();
@@ -244,6 +248,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         }
 
     }
+
 
 
 }
