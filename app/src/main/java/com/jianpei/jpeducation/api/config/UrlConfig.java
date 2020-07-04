@@ -88,4 +88,20 @@ public class UrlConfig {
 
     //1-支付状态查询
     public static final String checkPayStatus = "order/checkPayStatus";
+
+    //1-添加购物车
+    public static final String insertCar = "car/insertCar";
+
+    //1-从购物车删除
+    public static final String removeCar = "car/removeCar";
+
+    //    1-购物车详情
+    public static final String carInfo = "car/carInfo";
+
+    // 1-订单列表
+    public static final String orderData = "order/orderData";
+    // 1-添加评价
+    public static final String insertComment = "comment/insertComment";
+    // 1-取消订单
+    public static final String cancelOrder = "order/cancelOrder";
 }

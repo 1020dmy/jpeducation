@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
+import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -23,6 +24,7 @@ import com.jianpei.jpeducation.bean.order.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.MyCouponPopup;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -98,7 +100,7 @@ public class OrderConfirmActivity extends BaseActivity {
 
 
     private ClassGenerateOrderBean mClassGenerateOrderBean;
-    private String type;
+//    private String type;
 
     private OrderConfirmModel orderConfirmModel;
     private ArrayList<CouponDataBean.CouponData> mCouponDatas;
@@ -115,6 +117,7 @@ public class OrderConfirmActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        Constants.orderType = "0";
         msgApi = WXAPIFactory.createWXAPI(this, null);
 
         ivRight.setVisibility(View.VISIBLE);
@@ -124,7 +127,7 @@ public class OrderConfirmActivity extends BaseActivity {
         llWeixinPay.setEnabled(false);
         ivWeixin.setEnabled(false);
         mClassGenerateOrderBean = getIntent().getParcelableExtra("classGenerateOrderBean");
-        type = getIntent().getStringExtra("type");
+//        type = getIntent().getStringExtra("type");
 
         orderConfirmModel = new ViewModelProvider(this).get(OrderConfirmModel.class);
 
@@ -207,7 +210,7 @@ public class OrderConfirmActivity extends BaseActivity {
                     orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
                 } else {
                     dismissLoading();
-                    if ("GroupInfo".equals(type)) {
+                    if ("2".equals(mClassGenerateOrderBean.getOrder_info().getGoods_type())) {
                         startActivity(new Intent(OrderConfirmActivity.this, GroupResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
 
                     } else {
@@ -252,8 +255,10 @@ public class OrderConfirmActivity extends BaseActivity {
         GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
         OrderInfoBean orderInfoBean = mClassGenerateOrderBean.getOrder_info();
         //用户信息
-        tvName.setText(orderInfoBean.getName());
-        tvPhone.setText(orderInfoBean.getTel());
+//        tvName.setText(orderInfoBean.getName());
+//        tvPhone.setText(orderInfoBean.getTel());
+
+
         //订单信息
         tvOrderNum.setText(orderInfoBean.getNumber());
         tvTime.setText(orderInfoBean.getAdd_time_str());
@@ -267,7 +272,7 @@ public class OrderConfirmActivity extends BaseActivity {
             tvMaterialName.setVisibility(View.GONE);
             tvLine.setVisibility(View.GONE);
         }
-        if ("GroupInfo".equals(type)) {
+        if ("2".equals(orderInfoBean.getGoods_type())) {
             llQuan.setVisibility(View.GONE);
         }
         //优惠券信息
@@ -276,7 +281,7 @@ public class OrderConfirmActivity extends BaseActivity {
             tvQuan.setText("有可用优惠券");
             llQuan.setEnabled(true);
         }
-
+         mCouponTitle=orderInfoBean.getCoupon_type_str();
         if (!TextUtils.isEmpty(mCouponTitle))
             tvQuan.setText(mCouponTitle);
 
@@ -312,7 +317,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 break;
             case R.id.ll_quan:
                 if (mCouponDatas == null || mCouponDatas.size() == 0) {
-                    orderConfirmModel.couponData("1", "10", "1");
+                    orderConfirmModel.couponData(1, 10, 1);
                 } else {
                     showPop();
                 }

@@ -116,5 +116,11 @@ dependencies {
     //支付宝支付
     implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
 
+    //刷新/加载
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+//    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
+    implementation 'com.scwang.smart:refresh-header-material:2.0.1'    //谷歌刷新头
+    implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
+
 
 }

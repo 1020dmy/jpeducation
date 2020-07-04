@@ -22,11 +22,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.mine.ShoppingCartActivity"></activity>
-        <activity android:name=".activitys.mine.UserCouponActivity" />
-        <activity android:name=".activitys.mine.UserOrderListActivity" />
-        <activity android:name=".activitys.order.OrderInfoActivity" />
-        <activity android:name=".activitys.TryListenerListActivity" />
+        <activity android:name=".activitys.mine.IntegralActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activitys.mine.MineMessageActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.CommentClassActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.MyClassActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.ShoppingCartActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.UserCouponActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.UserOrderListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.order.OrderInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.TryListenerListActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.order.OrderResultActivity"
             android:launchMode="singleTask" />

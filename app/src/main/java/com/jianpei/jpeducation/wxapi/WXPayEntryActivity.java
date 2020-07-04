@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.jianpei.jpeducation.Constants;
+import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -33,7 +34,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            startActivity(new Intent(this, OrderConfirmActivity.class).putExtra("resultCode", resp.errCode));
+            if ("0".equals(Constants.orderType)) {
+                startActivity(new Intent(this, OrderConfirmActivity.class).putExtra("resultCode", resp.errCode));
+            } else {
+                startActivity(new Intent(this, ShoppingCartActivity.class).putExtra("resultCode", resp.errCode));
+            }
             finish();
         }
 

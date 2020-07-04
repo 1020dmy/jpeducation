@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
@@ -241,6 +242,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                inActivity();
                 break;
             case R.id.tv_message:
+                startActivity(new Intent(this, MineMessageActivity.class));
                 break;
             case R.id.tv_setting:
                 break;
@@ -248,7 +250,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         }
 
     }
-
 
 
 }

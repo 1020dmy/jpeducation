@@ -1,10 +1,12 @@
 package com.jianpei.jpeducation.api.interceptor;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.jianpei.jpeducation.api.config.HttpConfig;
 import com.jianpei.jpeducation.bean.AppInfoBean;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.safety.Configure;
 import com.jianpei.jpeducation.utils.safety.DesUtil;
@@ -41,7 +43,8 @@ public class InterceptorUtil {
         return new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.w(TAG, "log: " + message);
+//                Log.w(TAG, "log: " + message);
+                L.moreLog(TAG, "result:" + message);
             }
         }).setLevel(HttpLoggingInterceptor.Level.BODY);//设置打印数据的级别
     }
@@ -84,6 +87,7 @@ public class InterceptorUtil {
                         request = request.newBuilder().post(RequestBody.create(newJsonParams, MediaType.parse(HttpConfig.request_head))).build();
                     } catch (Exception e) {
                         e.printStackTrace();
+
                     }
 
 

@@ -3,12 +3,25 @@ package com.jianpei.jpeducation.bean.order;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.bean.shop.GroupBean;
+
+import java.util.List;
+
 public class ClassGenerateOrderBean implements Parcelable {
 
     private GroupInfoBean group_info;
 
     private OrderInfoBean order_info;
 
+    private List<GroupBean> group_list;
+
+    public List<GroupBean> getGroup_list() {
+        return group_list;
+    }
+
+    public void setGroup_list(List<GroupBean> group_list) {
+        this.group_list = group_list;
+    }
 
     public GroupInfoBean getGroup_info() {
         return group_info;

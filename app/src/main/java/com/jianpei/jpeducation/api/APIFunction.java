@@ -35,21 +35,30 @@ import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.json.CancelOrderJson;
+import com.jianpei.jpeducation.bean.json.CarInfoJson;
 import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
+import com.jianpei.jpeducation.bean.json.InsertCarJson;
+import com.jianpei.jpeducation.bean.json.InsertCommentJson;
+import com.jianpei.jpeducation.bean.json.OrderDataJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
 import com.jianpei.jpeducation.bean.json.OrderPaymentJson;
 import com.jianpei.jpeducation.bean.json.RegimentDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
+import com.jianpei.jpeducation.bean.json.RemoveCarJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
+import com.jianpei.jpeducation.bean.shop.CarInfoBean;
 
 
 import java.util.ArrayList;
@@ -57,6 +66,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -264,6 +274,43 @@ public interface APIFunction {
      */
     @POST(UrlConfig.checkPayStatus)
     Observable<BaseEntity<CheckPayStatusBean>> checkPayStatus(@Body CheckPayStatusJson checkPayStatusJson);
+
+    /**
+     * 添加购物车
+     */
+    @POST(UrlConfig.insertCar)
+    Observable<BaseEntity<String>> insertCar(@Body InsertCarJson insertCarJson);
+
+    /**
+     * 从购物车删除
+     */
+    @POST(UrlConfig.removeCar)
+    Observable<BaseEntity<String>> removeCar(@Body RemoveCarJson removeCarJson);
+
+    /**
+     * 购物车详情
+     */
+    @POST(UrlConfig.carInfo)
+    Observable<BaseEntity<ClassGenerateOrderBean>> carInfo(@Body CarInfoJson carInfoJson);
+
+
+    /**
+     * 1-订单列表
+     */
+    @POST(UrlConfig.orderData)
+    Observable<BaseEntity<OrderListBean>> orderData(@Body OrderDataJson orderDataJson);
+
+    /**
+     * 1-添加评价
+     */
+    @POST(UrlConfig.insertComment)
+    Observable<BaseEntity<String>> insertComment(@Body InsertCommentJson insertCommentJson);
+
+    /**
+     * 1-取消订单
+     */
+    @POST(UrlConfig.cancelOrder)
+    Observable<BaseEntity<String>> cancelOrder(@Body CancelOrderJson cancelOrderJson);
 
     /**
      * 获取微信ACCESS_TOKEN

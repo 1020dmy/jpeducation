@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.shop.GroupBean;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -25,6 +30,14 @@ public class ShoppingCatAdapter extends RecyclerView.Adapter<ShoppingCatAdapter.
 
     private MyItemDeleteListener myItemDeleteListener;
 
+    private List<GroupBean> groupBeans;
+
+    private Context mContext;
+
+    public ShoppingCatAdapter(List<GroupBean> groupBeans,Context context) {
+        this.groupBeans = groupBeans;
+        this.mContext=context;
+    }
 
     public void setMyItemDeleteListener(MyItemDeleteListener myItemDeleteListener) {
         this.myItemDeleteListener = myItemDeleteListener;
@@ -39,12 +52,25 @@ public class ShoppingCatAdapter extends RecyclerView.Adapter<ShoppingCatAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        GroupBean groupBean=groupBeans.get(position);
+
+        Glide.with(mContext).load(groupBean.getImg()).into(holder.ivHead);
+        holder.tvTitle.setText(groupBean.getTitle());
+        holder.tvClassinfo.setText(groupBean.getClass_name_str());
+        holder.tvPrice.setText("￥"+groupBean.getPrice());
+        if("1".equals(groupBean.getIs_material())){
+            holder.tvMaterialName.setText(groupBean.getMaterial_des());
+        }else{
+            holder.tvMaterialName.setVisibility(View.GONE);
+            holder.tvMaterial.setVisibility(View.GONE);
+
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return groupBeans!=null ? groupBeans.size() : 0;
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -68,13 +94,13 @@ public class ShoppingCatAdapter extends RecyclerView.Adapter<ShoppingCatAdapter.
         @Override
         public void onClick(View v) {
             if (myItemDeleteListener != null) {
-                myItemDeleteListener.onDeleteClick(getLayoutPosition(), "");
+                myItemDeleteListener.onDeleteClick(getLayoutPosition(), groupBeans.get(getLayoutPosition()).getCar_id());
             }
 
         }
     }
 
     public interface MyItemDeleteListener {
-        void onDeleteClick(int position, String aaa);
+        void onDeleteClick(int position, String carId);
     }
 }

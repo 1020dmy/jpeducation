@@ -85,7 +85,7 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
     }
 
     @Override
-    public void couponData(String pageIndex, String pageSize, String type) {
+    public void couponData(int pageIndex, int pageSize, int type) {
 
         orderConfirmRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
 

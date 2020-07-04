@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,8 +50,10 @@ public class UserCouponActivity extends BaseActivity {
     protected void initView() {
         tvTitle.setText("我的优惠券");
 
+
         tabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
         viewPage.setAdapter(tabFragmentAdapter);
+
 
         new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

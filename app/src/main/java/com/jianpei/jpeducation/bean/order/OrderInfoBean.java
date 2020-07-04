@@ -94,6 +94,16 @@ public class OrderInfoBean implements Parcelable {
 
     private String is_user_coupon;
 
+    private String coupon_type_str;
+
+    public String getCoupon_type_str() {
+        return coupon_type_str;
+    }
+
+    public void setCoupon_type_str(String coupon_type_str) {
+        this.coupon_type_str = coupon_type_str;
+    }
+
     public String getIs_user_coupon() {
         return is_user_coupon;
     }
@@ -489,6 +499,8 @@ public class OrderInfoBean implements Parcelable {
         dest.writeString(this.material_des);
         dest.writeString(this.is_material);
         dest.writeString(this.is_user_coupon);
+        dest.writeString(this.coupon_type_str);
+
     }
 
     public OrderInfoBean() {
@@ -538,6 +550,8 @@ public class OrderInfoBean implements Parcelable {
         this.material_des = in.readString();
         this.is_material = in.readString();
         this.is_user_coupon = in.readString();
+        this.coupon_type_str = in.readString();
+
     }
 
     public static final Creator<OrderInfoBean> CREATOR = new Creator<OrderInfoBean>() {

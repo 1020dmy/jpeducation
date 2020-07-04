@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
 import com.jianpei.jpeducation.activitys.mine.UserInfoActivity;
@@ -91,7 +92,9 @@ public class MineFragment extends BaseFragment {
             case R.id.tv_coupon://优惠券
                 startActivity(new Intent(getActivity(), UserCouponActivity.class));
                 break;
+            case R.id.tv_signin://签到
             case R.id.tv_integral://积分
+                startActivity(new Intent(getActivity(), IntegralActivity.class));
                 break;
             case R.id.tv_my_class://我的课程
                 break;
@@ -108,8 +111,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.tv_service://客服中心
                 break;
-            case R.id.tv_signin://签到
-                break;
+
         }
     }
 

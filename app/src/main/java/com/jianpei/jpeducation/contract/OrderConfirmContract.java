@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 public interface OrderConfirmContract {
 
     interface Repository {
-        Observable<BaseEntity<CouponDataBean>> couponData(String pageIndex, String pageSize, String type);
+        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type);
 
         Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
 
@@ -39,7 +39,7 @@ public interface OrderConfirmContract {
 
 
     interface Model {
-        void couponData(String pageIndex, String pageSize, String type);
+        void couponData(int pageIndex, int pageSize, int type);
 
 
         void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id);

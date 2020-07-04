@@ -49,8 +49,8 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
 
 
     public MutableLiveData<String> getJoinGroupInfoLiveData() {
-        if(joinGroupInfoLiveData==null)
-            joinGroupInfoLiveData=new MutableLiveData<>();
+        if (joinGroupInfoLiveData == null)
+            joinGroupInfoLiveData = new MutableLiveData<>();
         return joinGroupInfoLiveData;
     }
 
@@ -321,5 +321,63 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
                 }
             }
         });
+    }
+
+    /**
+     * 加入购物车
+     *
+     * @param group_id
+     * @param class_ids
+     * @param suites_ids
+     */
+
+    @Override
+    public void insertCar(String group_id, List<String> class_ids, List<String> suites_ids) {
+        if (class_ids.size() == 0 && suites_ids.size() == 0) {
+            errData.setValue("请选择至少一门课程");
+            return;
+        }
+        String classIds = "";
+        String suitesIds = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        if (class_ids.size() != 0) {
+            for (String classID : class_ids) {
+                stringBuilder.append(classID);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            classIds = stringBuilder.toString();
+        }
+        if (suites_ids.size() != 0) {
+            stringBuilder.delete(0, stringBuilder.length());
+            for (String suiteId : suites_ids) {
+                stringBuilder.append(suiteId);
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            suitesIds = stringBuilder.toString();
+
+        }
+        stringBuilder.reverse();
+        stringBuilder = null;
+
+        classInfoRepository.insertCar(group_id, classIds, suitesIds).compose(setThread()).subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+
+                errData.setValue(t.getMsg());
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
     }
 }

@@ -12,40 +12,41 @@ import android.os.Parcelable;
  * Describe:
  */
 public class CouponDataJson implements Parcelable {
-    private String pageIndex;
-    private String pageSize;
-    private String type;
+    private int pageIndex;
+    private int pageSize;
+    private int type;
 
 
-    public CouponDataJson(String pageIndex, String pageSize, String type) {
+    public CouponDataJson(int pageIndex, int pageSize, int type) {
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
         this.type = type;
     }
 
-    public String getPageIndex() {
+    public int getPageIndex() {
         return pageIndex;
     }
 
-    public void setPageIndex(String pageIndex) {
+    public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
     }
 
-    public String getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(String pageSize) {
+    public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
+
 
     @Override
     public int describeContents() {
@@ -54,15 +55,15 @@ public class CouponDataJson implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.pageIndex);
-        dest.writeString(this.pageSize);
-        dest.writeString(this.type);
+        dest.writeInt(this.pageIndex);
+        dest.writeInt(this.pageSize);
+        dest.writeInt(this.type);
     }
 
     protected CouponDataJson(Parcel in) {
-        this.pageIndex = in.readString();
-        this.pageSize = in.readString();
-        this.type = in.readString();
+        this.pageIndex = in.readInt();
+        this.pageSize = in.readInt();
+        this.type = in.readInt();
     }
 
     public static final Creator<CouponDataJson> CREATOR = new Creator<CouponDataJson>() {

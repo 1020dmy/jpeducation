@@ -19,6 +19,8 @@ public interface ClassInfoContract {
 
         Observable<BaseEntity<ImputedPriceBean>> imputedPrice(String group_id, String class_ids, String suites_ids, String regiment_id);
 
+        Observable<BaseEntity<String>> insertCar(String group_id, String class_ids, String suites_ids);
+
 
     }
 
@@ -30,5 +32,6 @@ public interface ClassInfoContract {
 
         void imputedPrice(String group_id, List<String> class_ids, List<String> suites_ids, String regiment_id);
 
+        void insertCar(String group_id, List<String> class_ids, List<String> suites_ids);
     }
 }

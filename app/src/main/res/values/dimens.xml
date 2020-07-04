@@ -20,4 +20,17 @@
     
     
     <dimen name="dp_10">5dp</dimen>
+
+
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+
+    <!--margin-->
+    <dimen name="m_dp_40">40dp</dimen>
+    <dimen name="m_dp_15">15dp</dimen>
+
+    <dimen name="m_dp_18">18dp</dimen>
+
+
+
 </resources>

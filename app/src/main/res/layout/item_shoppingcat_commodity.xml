@@ -75,7 +75,14 @@
 
     </LinearLayout>
 
-    <include layout="@layout/line" />
+<!--    <include-->
+<!--        android:id="@+id/tv_line"-->
+<!--        layout="@layout/line" />-->
+    <TextView
+        android:id="@+id/tv_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ce9e9e9" />
 
     <TextView
         android:id="@+id/tv_material"

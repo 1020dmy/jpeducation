@@ -8,9 +8,9 @@ import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
+import com.jianpei.jpeducation.bean.json.InsertCarJson;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.contract.ClassInfoContract;
-import com.jianpei.jpeducation.utils.L;
 
 import java.util.List;
 
@@ -31,5 +31,10 @@ public class ClassInfoRepository extends BaseRepository implements ClassInfoCont
     @Override
     public Observable<BaseEntity<ImputedPriceBean>> imputedPrice(String group_id, String class_ids, String suites_ids, String regiment_id) {
         return RetrofitFactory.getInstance().API().imputedPrice(new ImputedPriceJson(group_id, class_ids, suites_ids, regiment_id));
+    }
+
+    @Override
+    public Observable<BaseEntity<String>> insertCar(String group_id, String class_ids, String suites_ids) {
+        return RetrofitFactory.getInstance().API().insertCar(new InsertCarJson(group_id,class_ids,suites_ids));
     }
 }

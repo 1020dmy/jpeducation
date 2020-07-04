@@ -31,8 +31,8 @@ public class RetrofitFactory {
                 .readTimeout(HttpConfig.HTTP_TIME, TimeUnit.SECONDS)
                 .writeTimeout(HttpConfig.HTTP_TIME, TimeUnit.SECONDS)
                 .addInterceptor(InterceptorUtil.LogInterceptor())
-                .addInterceptor(InterceptorUtil.parameterInterceptor()) //参数加密
                 .addInterceptor(InterceptorUtil.addHeadInterceptor())//请求头
+                .addInterceptor(InterceptorUtil.parameterInterceptor()) //参数加密
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HttpConfig.BASE_URL)
