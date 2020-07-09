@@ -1,5 +1,9 @@
 package com.jianpei.jpeducation.adapter.coupon;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,15 @@ public class CouponAdapter extends RecyclerView.Adapter {
 
 
     private List<CouponDataBean.CouponData> couponDatas;
+
+    private MyCouponReceiveListener myCouponReceiveListener;
+
+//    private int type;//展示的位置1：课程详情2：我的优惠券
+
+
+    public void setMyCouponReceiveListener(MyCouponReceiveListener myCouponReceiveListener) {
+        this.myCouponReceiveListener = myCouponReceiveListener;
+    }
 
     public CouponAdapter(List<CouponDataBean.CouponData> couponDatas) {
         this.couponDatas = couponDatas;
@@ -61,29 +74,49 @@ public class CouponAdapter extends RecyclerView.Adapter {
         CouponDataBean.CouponData couponData = couponDatas.get(position);
         if (holder instanceof MJHolder) {
             MJHolder mjHolder = (MJHolder) holder;
-            int price = Integer.valueOf(couponData.getDescribe()) * 100;
-            mjHolder.tvPrice.setText(price + "");
+            mjHolder.tvPrice.setText(couponData.getDescribe());
             mjHolder.tvTitle.setText(couponData.getTitle());
             mjHolder.tvTime.setText("有效期至：" + couponData.getEnd_time_str());
 
             if ("1".equals(couponData.getType())) {//没使用
                 mjHolder.tvStatus.setText("可使用");
-
-            } else if ("0".equals(couponData.getType())) {//已经使用
+                mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_used);
+            } else if ("2".equals(couponData.getType())) {//已经使用
                 mjHolder.tvStatus.setText("已使用");
+                mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+            } else {//过期
+                mjHolder.tvStatus.setText("已过期");
+                mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+
             }
 
         } else {
             ZKHolder zkHolder = (ZKHolder) holder;
-            zkHolder.tvNum.setText(couponData.getDescribe());
-//            zkHolder.tvNum.setText("8.5");
+
+            if (!TextUtils.isEmpty(couponData.getSon_describe())) {
+                String aaa=couponData.getDescribe()+"." + couponData.getSon_describe();
+                SpannableString spanString = new SpannableString(aaa);
+                AbsoluteSizeSpan span = new AbsoluteSizeSpan(20,true);//这里设置要改变的字的大小
+                spanString.setSpan(span, couponData.getDescribe().length(), aaa.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                zkHolder.tvNum.setText(spanString);
+
+            } else {
+                zkHolder.tvNum.setText(couponData.getDescribe());
+
+            }
 
             zkHolder.tvTitle.setText(couponData.getTitle());
             zkHolder.tvTime.setText("有效期至：" + couponData.getEnd_time_str());
             if ("1".equals(couponData.getType())) {//没使用
                 zkHolder.tvStatus.setText("可使用");
-            } else if ("0".equals(couponData.getType())) {//已经使用
+                zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_used);
+            } else if ("2".equals(couponData.getType())) {//已经使用
                 zkHolder.tvStatus.setText("已使用");
+                zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+            } else {//过期
+                zkHolder.tvStatus.setText("已过期");
+                zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+
             }
         }
 
@@ -95,9 +128,11 @@ public class CouponAdapter extends RecyclerView.Adapter {
     }
 
 
-    class MJHolder extends RecyclerView.ViewHolder {
+    class MJHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvPrice, tvTitle, tvTime, tvStatus;
         private LinearLayout llStatus;
+//        private TextView tvSubmit;
+        private LinearLayout linearLayout;
 
         public MJHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,13 +142,31 @@ public class CouponAdapter extends RecyclerView.Adapter {
             tvStatus = itemView.findViewById(R.id.tv_status);
 
             llStatus = itemView.findViewById(R.id.ll_status);
+//            tvSubmit = itemView.findViewById(R.id.tv_submit);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(this);
+//            if (type == 1) {
+//                tvSubmit.setVisibility(View.VISIBLE);
+//                llStatus.setVisibility(View.GONE);
+//            }
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myCouponReceiveListener != null) {
+                myCouponReceiveListener.onClickCouponReceive(couponDatas.get(getLayoutPosition()).getId(), couponDatas.get(getLayoutPosition()).getTitle());
+            }
         }
     }
 
-    class ZKHolder extends RecyclerView.ViewHolder {
+    class ZKHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvNum, tvTitle, tvTime, tvStatus;
         private LinearLayout llStatus;
+//        private TextView tvSubmit;
+        private LinearLayout linearLayout;
+//        private TextView tvNumt;
+
 
         public ZKHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,6 +175,31 @@ public class CouponAdapter extends RecyclerView.Adapter {
             tvTime = itemView.findViewById(R.id.tv_time);
             tvStatus = itemView.findViewById(R.id.tv_status);
             llStatus = itemView.findViewById(R.id.ll_status);
+//            tvSubmit = itemView.findViewById(R.id.tv_submit);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(this);
+
+//            tvNumt = itemView.findViewById(R.id.tv_numt);
+
+//            if (type == 1) {
+//                tvSubmit.setVisibility(View.VISIBLE);
+//                llStatus.setVisibility(View.GONE);
+//                tvSubmit.setOnClickListener(this);
+//
+//            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myCouponReceiveListener != null) {
+                myCouponReceiveListener.onClickCouponReceive(couponDatas.get(getLayoutPosition()).getId(), couponDatas.get(getLayoutPosition()).getTitle());
+            }
         }
     }
+
+
+    public interface MyCouponReceiveListener {
+        void onClickCouponReceive(String couponId, String title);
+    }
+
 }

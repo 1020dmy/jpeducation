@@ -13,8 +13,6 @@ import com.jianpei.jpeducation.bean.DownloadBean;
 import com.jianpei.jpeducation.bean.DownloadJson;
 import com.jianpei.jpeducation.bean.ForgetPwdJson;
 import com.jianpei.jpeducation.bean.IntegrlPayJson;
-import com.jianpei.jpeducation.bean.MaterialDataBean;
-import com.jianpei.jpeducation.bean.MaterialDataJson;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.SubMaterialDataJson;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
@@ -26,7 +24,6 @@ import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
-import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -34,16 +31,22 @@ import com.jianpei.jpeducation.bean.LoginJson;
 import com.jianpei.jpeducation.bean.SendCodeJson;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.WxLoginJson;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.integral.IntegralDataBean;
+import com.jianpei.jpeducation.bean.integral.IntegralInfoBean;
+import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
 import com.jianpei.jpeducation.bean.json.CancelOrderJson;
 import com.jianpei.jpeducation.bean.json.CarInfoJson;
 import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
+import com.jianpei.jpeducation.bean.json.ClassDataJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
+import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.InsertCarJson;
 import com.jianpei.jpeducation.bean.json.InsertCommentJson;
+import com.jianpei.jpeducation.bean.json.IntegralDataJson;
+import com.jianpei.jpeducation.bean.json.MaterialDataJson;
 import com.jianpei.jpeducation.bean.json.OrderDataJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
 import com.jianpei.jpeducation.bean.json.OrderPaymentJson;
@@ -52,13 +55,15 @@ import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
+import com.jianpei.jpeducation.bean.material.MaterialDataBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ClassDataBean;
+import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
-import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
-import com.jianpei.jpeducation.bean.shop.CarInfoBean;
 
 
 import java.util.ArrayList;
@@ -66,7 +71,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -158,11 +162,7 @@ public interface APIFunction {
     @POST(UrlConfig.couponData)
     Observable<BaseEntity<CouponDataBean>> couponData(@Body CouponDataJson couponDataJson);
 
-    /**
-     * 资料下载
-     */
-    @POST(UrlConfig.getDownloadUrl)
-    Observable<BaseEntity<DownloadBean>> getDownloadUrl(@Body DownloadJson downloadJson);
+
 
     /**
      * 首页公告
@@ -170,23 +170,7 @@ public interface APIFunction {
     @POST(UrlConfig.noticeData)
     Observable<BaseEntity<ArrayList<NoticeDataBean>>> noticeData(@Body HomeInfoJson homeInfoJson);
 
-    /**
-     * 积分支付
-     */
-    @POST(UrlConfig.integrlPay)
-    Observable<BaseEntity<String>> integrlPay(@Body IntegrlPayJson integrlPayJson);
 
-    /**
-     * 资料一级列表
-     */
-    @POST(UrlConfig.materialData)
-    Observable<BaseEntity<MaterialDataBean>> materialData(@Body MaterialDataJson materialDataJson);
-
-    /**
-     * 资料二级列表
-     */
-    @POST(UrlConfig.subMaterialData)
-    Observable<BaseEntity<ArrayList<MaterialInfoBean>>> subMaterialData(@Body SubMaterialDataJson subMaterialDataJson);
 
     /**
      * 1-班级课程详情（含团购）
@@ -312,6 +296,61 @@ public interface APIFunction {
     @POST(UrlConfig.cancelOrder)
     Observable<BaseEntity<String>> cancelOrder(@Body CancelOrderJson cancelOrderJson);
 
+    /**
+     * 1--积分首页
+     */
+    @POST(UrlConfig.integralInfo)
+    Observable<BaseEntity<IntegralInfoBean>> integralInfo(@Body CarInfoJson carInfoJson);
+
+    /**
+     * 1-积分任务列表
+     */
+    @POST(UrlConfig.integralTask)
+    Observable<BaseEntity<List<IntegralTaskBean>>> integralTask(@Body CarInfoJson carInfoJson);
+    /**
+     * 积分支付
+     */
+    @POST(UrlConfig.integrlPay)
+    Observable<BaseEntity<String>> integrlPay(@Body IntegrlPayJson integrlPayJson);
+
+    /**
+     * 积分列表
+     */
+    @POST(UrlConfig.integralData)
+    Observable<BaseEntity<IntegralDataBean>> integralData(@Body IntegralDataJson integralDataJson);
+    /**
+     * 资料一级列表
+     */
+    @POST(UrlConfig.materialData)
+    Observable<BaseEntity<MaterialDataBean>> materialData(@Body MaterialDataJson materialDataJson);
+
+    /**
+     * 资料二级列表
+     */
+    @POST(UrlConfig.subMaterialData)
+    Observable<BaseEntity<ArrayList<MaterialInfoBean>>> subMaterialData(@Body SubMaterialDataJson subMaterialDataJson);
+    /**
+     * 资料下载
+     */
+    @POST(UrlConfig.getDownloadUrl)
+    Observable<BaseEntity<DownloadBean>> getDownloadUrl(@Body DownloadJson downloadJson);
+    /**
+     * 1-我的资料
+     */
+    @POST(UrlConfig.myMaterialData)
+    Observable<BaseEntity<MaterialDataBean>> myMaterialData(@Body MaterialDataJson integralDataJson);
+
+    /**
+     * 1-我的课程列表
+     */
+    @POST(UrlConfig.classData)
+    Observable<BaseEntity<ClassDataBean>> classData(@Body ClassDataJson classDataJson);
+
+    /**
+     * 1-1-我的课程详情
+     */
+    @POST(UrlConfig.classInfo)
+    Observable<BaseEntity<MClassInfoBean>> classInfo(@Body ClassInfoJson classInfoJson);
     /**
      * 获取微信ACCESS_TOKEN
      *

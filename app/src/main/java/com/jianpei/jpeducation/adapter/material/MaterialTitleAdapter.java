@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.bean.MaterialDataBean;
+import com.jianpei.jpeducation.bean.material.MaterialDataBean;
+import com.jianpei.jpeducation.bean.material.MaterialTitle;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ import java.util.ArrayList;
  */
 public class MaterialTitleAdapter extends RecyclerView.Adapter<MaterialTitleAdapter.MyHolder> {
 
-    private ArrayList<MaterialDataBean.MaterialTitle> materialTitles;
+    private ArrayList<MaterialTitle> materialTitles;
 
     private Context context;
 
@@ -45,7 +45,7 @@ public class MaterialTitleAdapter extends RecyclerView.Adapter<MaterialTitleAdap
         this.myItemChildClickListener = myItemChildClickListener;
     }
 
-    public MaterialTitleAdapter(ArrayList<MaterialDataBean.MaterialTitle> materialTitles, Context context) {
+    public MaterialTitleAdapter(ArrayList<MaterialTitle> materialTitles, Context context) {
         this.materialTitles = materialTitles;
         this.context = context;
     }
@@ -60,7 +60,7 @@ public class MaterialTitleAdapter extends RecyclerView.Adapter<MaterialTitleAdap
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        MaterialDataBean.MaterialTitle materialTitle = materialTitles.get(position);
+        MaterialTitle materialTitle = materialTitles.get(position);
 
         holder.tvTitle.setText(materialTitle.getTitle());
 

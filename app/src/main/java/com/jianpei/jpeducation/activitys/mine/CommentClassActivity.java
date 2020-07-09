@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.viewmodel.CommentClassModel;
+import com.jianpei.jpeducation.viewmodel.CommentModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +34,7 @@ public class CommentClassActivity extends BaseActivity {
     @BindView(R.id.et_content)
     EditText etContent;
 
-    private CommentClassModel commentClassModel;
+    private CommentModel commentModel;
 
     private String classId;
 
@@ -73,8 +73,8 @@ public class CommentClassActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        commentClassModel = new ViewModelProvider(this).get(CommentClassModel.class);
-        commentClassModel.getSuccessLiveData().observe(this, new Observer<String>() {
+        commentModel = new ViewModelProvider(this).get(CommentModel.class);
+        commentModel.getCommentSuccessLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
@@ -82,7 +82,7 @@ public class CommentClassActivity extends BaseActivity {
                 finish();
             }
         });
-        commentClassModel.getErrData().observe(this, new Observer<String>() {
+        commentModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
@@ -98,7 +98,7 @@ public class CommentClassActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_right:
                 showLoading("");
-                commentClassModel.insertComment(classId, etContent.getText().toString());
+                commentModel.insertComment(classId, etContent.getText().toString());
                 break;
             case R.id.iv_back:
                 finish();

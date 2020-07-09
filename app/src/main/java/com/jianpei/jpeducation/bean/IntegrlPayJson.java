@@ -13,13 +13,17 @@ import android.os.Parcelable;
  */
 public class IntegrlPayJson implements Parcelable {
 
-    private int type;//1看课，2做题，3下资料
+    private int type;//1看课，2做题，3下资料,4签到，5补签
     private String integrl;
+    private String repair_time;
 
-    public IntegrlPayJson(int type, String integrl) {
+    public IntegrlPayJson(int type, String integrl, String repair_time) {
         this.type = type;
         this.integrl = integrl;
+        this.repair_time = repair_time;
     }
+
+
 
     public int getType() {
         return type;
@@ -37,6 +41,13 @@ public class IntegrlPayJson implements Parcelable {
         this.integrl = integrl;
     }
 
+    public String getRepair_time() {
+        return repair_time;
+    }
+
+    public void setRepair_time(String repair_time) {
+        this.repair_time = repair_time;
+    }
 
     @Override
     public int describeContents() {
@@ -47,6 +58,8 @@ public class IntegrlPayJson implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.type);
         dest.writeString(this.integrl);
+        dest.writeString(this.repair_time);
+
     }
 
     public IntegrlPayJson() {
@@ -55,6 +68,8 @@ public class IntegrlPayJson implements Parcelable {
     protected IntegrlPayJson(Parcel in) {
         this.type = in.readInt();
         this.integrl = in.readString();
+        this.repair_time=in.readString();
+
     }
 
     public static final Creator<IntegrlPayJson> CREATOR = new Creator<IntegrlPayJson>() {

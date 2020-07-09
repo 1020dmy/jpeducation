@@ -5,7 +5,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.jianpei.jpeducation.base.MyApplication;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 /**
  * jpeducation
@@ -28,7 +28,6 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(MyApplication.getInstance(),
                             MyRoomDatabase.class, "JianPei.db")
-                            .allowMainThreadQueries()
                             .build();
                 }
             }

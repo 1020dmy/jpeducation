@@ -2,7 +2,6 @@ package com.jianpei.jpeducation.activitys;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
+import com.jianpei.jpeducation.activitys.mine.SettingActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
@@ -28,14 +28,11 @@ import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class MainActivity extends PermissionBaseActivity implements RadioGroup.OnCheckedChangeListener {
 
-//    @BindView(R.id.nav_view)
-//    BottomNavigationView navView;
 
     HomeFragment homeFragment;
     SchoolFragment schoolFragment;
@@ -92,7 +89,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         radioGroup.check(R.id.rb_home);
         radioGroup.setOnCheckedChangeListener(this);
 
-//        navView.setOnNavigationItemSelectedListener(this);
 
         setPermissions(mPermissions, new InterfacePermission() {
             @Override
@@ -161,44 +157,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     }
 
-    //    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.navigation_home:
-//                if (lastfragment != 0) {
-//                    switchFragment(lastfragment, 0);
-//                    lastfragment = 0;
-//                }
-//                return true;
-//            case R.id.navigation_school:
-//                if (lastfragment != 1) {
-//                    switchFragment(lastfragment, 1);
-//                    lastfragment = 1;
-//                }
-//                return true;
-//            case R.id.navigation_elective:
-//                if (lastfragment != 2) {
-//                    switchFragment(lastfragment, 2);
-//                    lastfragment = 2;
-//                }
-//                return true;
-//            case R.id.navigation_tiku:
-//                if (lastfragment != 3) {
-//                    switchFragment(lastfragment, 3);
-//                    lastfragment = 3;
-//                }
-//                return true;
-//            case R.id.navigation_mine:
-//                if (lastfragment != 4) {
-//                    switchFragment(lastfragment, 4);
-//                    lastfragment = 4;
-//                }
-//                return true;
-//            default:
-//                break;
-//        }
-//        return false;
-//    }
 
     /**
      * 切换fragmeng
@@ -216,12 +174,14 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         transaction.show(fragments[index]).commitAllowingStateLoss();
 
         if (index == 4) {
+            llTitle.setVisibility(View.VISIBLE);
             tvMessage.setVisibility(View.VISIBLE);
             tvSetting.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.GONE);
             btnTitle.setVisibility(View.GONE);
 
         } else {
+            llTitle.setVisibility(View.VISIBLE);
             tvMessage.setVisibility(View.GONE);
             tvSetting.setVisibility(View.GONE);
             btnTitle.setVisibility(View.VISIBLE);
@@ -245,6 +205,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
                 startActivity(new Intent(this, MineMessageActivity.class));
                 break;
             case R.id.tv_setting:
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
 
         }

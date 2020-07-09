@@ -130,6 +130,16 @@ public class CouponDataBean implements Parcelable {
 
         private String type;
 
+        private String son_describe;
+
+        public String getSon_describe() {
+            return son_describe;
+        }
+
+        public void setSon_describe(String son_describe) {
+            this.son_describe = son_describe;
+        }
+
         public String getCoupon_type() {
             return coupon_type;
         }
@@ -210,6 +220,8 @@ public class CouponDataBean implements Parcelable {
             dest.writeString(this.user_time_str);
             dest.writeString(this.coupon_type);
             dest.writeString(this.type);
+            dest.writeString(this.son_describe);
+
         }
 
         public CouponData() {
@@ -224,6 +236,8 @@ public class CouponDataBean implements Parcelable {
             this.user_time_str = in.readString();
             this.coupon_type = in.readString();
             this.type = in.readString();
+            this.son_describe = in.readString();
+
         }
 
         public static final Creator<CouponData> CREATOR = new Creator<CouponData>() {

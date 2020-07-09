@@ -1,7 +1,5 @@
 package com.jianpei.jpeducation.repository;
 
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
-
 /**
  * jpeducation
  * <p>

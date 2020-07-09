@@ -3,6 +3,8 @@ package com.jianpei.jpeducation.bean.homedata;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
+
 import java.util.List;
 
 /**

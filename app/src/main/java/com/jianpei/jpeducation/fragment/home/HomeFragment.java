@@ -3,20 +3,9 @@ package com.jianpei.jpeducation.fragment.home;
 import android.content.Context;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseBinderAdapter;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.home.GroupInfoItemBinder;
@@ -35,7 +23,6 @@ import com.jianpei.jpeducation.adapter.home.MaterialTitleItemBinder;
 import com.jianpei.jpeducation.adapter.home.MateriallTitleTItemBinder;
 import com.jianpei.jpeducation.adapter.home.RegimentInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.RegimentTitleItemBinder;
-import com.jianpei.jpeducation.adapter.material.MaterialInfoAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.DownloadBean;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
@@ -44,16 +31,16 @@ import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.GroupTitleBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.homedata.HuoDongDataBean;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.homedata.MaterialTitleBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentTitleBean;
-import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.utils.SpUtils;
-import com.jianpei.jpeducation.utils.down.AndroidDownloadManager;
+import com.jianpei.jpeducation.utils.dialog.IntegralBuyDialog;
 import com.jianpei.jpeducation.utils.down.QueueListener;
 import com.jianpei.jpeducation.utils.listener.MaterialInfoItemOnClickListener;
 import com.jianpei.jpeducation.viewmodel.HomePageModel;
+import com.jianpei.jpeducation.viewmodel.IntegralModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
 import com.liulishuo.okdownload.DownloadTask;
@@ -76,10 +63,14 @@ public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
+    //课程切换
     private MainModel mainModel;
+    //获取资料url
     private MaterialModel materialModel;
+    //首页数据
     private HomePageModel homePageModel;
+    //积分支付
+    private IntegralModel integralModel;
     //banner
     private ArrayList<BannerDataBean> bannerDataBeans;
 
@@ -89,35 +80,14 @@ public class HomeFragment extends BaseFragment {
 
     private MaterialInfoItemBinder materialInfoItemBinder;
 
-    private AlertDialog alertDialog;
-
-    String downUrl;
-
-//    private MaterialInfoBean mmaterialInfoBean;
-//    private int mposition;
-
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(@NonNull Message msg) {
-//            super.handleMessage(msg);
-//            int pro = msg.arg1;
-//            if (pro == -1) {
-//                mmaterialInfoBean.setStatus("3");
-//            } else {
-//                mmaterialInfoBean.setProgress(pro);
-//            }
-//            if (pro == 100) {
-//                mmaterialInfoBean.setStatus("2");
-//                L.e("下载完成，开始存入数据库");
-////                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(mmaterialInfoBean);
-//            }
-//            baseBinderAdapter.notifyItemChanged(mposition);
-//        }
-//    };
 
     QueueListener queueListener;
     private MaterialInfoItemBinder.MyHolder mMyHolder;
-    private String name;
+    private String name, nums;
+
+    private IntegralBuyDialog integralBuyDialog;
+
+    private String downloadUrl;
 
 
     @Override
@@ -128,11 +98,14 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         //获取首页数据
-        homePageModel = new ViewModelProvider(getActivity()).get(HomePageModel.class);
+        homePageModel = new ViewModelProvider(this).get(HomePageModel.class);
         //获取专业切换
         mainModel = new ViewModelProvider(getActivity()).get(MainModel.class);
-        //资料下载，支付相关
-        materialModel = new ViewModelProvider(getActivity()).get(MaterialModel.class);
+        //资料下载
+        materialModel = new ViewModelProvider(this).get(MaterialModel.class);
+        //积分支付
+        integralModel = new ViewModelProvider(this).get(IntegralModel.class);
+        //
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -148,7 +121,6 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void OnItemClick(MaterialInfoItemBinder.MyHolder myHolder, MaterialInfoBean materialInfoBean) {
 
-
                 if (materialInfoBean.getStatus().equals("2")) {
 
                     startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));
@@ -157,6 +129,7 @@ public class HomeFragment extends BaseFragment {
                     showLoading("");
                     mMyHolder = myHolder;
                     name = materialInfoBean.getTitle();
+                    nums = materialInfoBean.getTotal();
                     materialModel.getDownloadUrl(materialInfoBean.getId());
                 }
 
@@ -191,7 +164,7 @@ public class HomeFragment extends BaseFragment {
         homePageModel.getScuucessData().observe(this, new Observer<HomeDataBean>() {
             @Override
             public void onChanged(HomeDataBean data) {
-                SpUtils.putString("customerServiceUrl",data.getCustomerServiceUrl());//存储客服地址
+                SpUtils.putString("customerServiceUrl", data.getCustomerServiceUrl());//存储客服地址
                 bannerDataBeans.clear();
                 bannerDataBeans.addAll(data.getBannerData());
                 banner.setDatas(bannerDataBeans);
@@ -232,57 +205,65 @@ public class HomeFragment extends BaseFragment {
         materialModel.getDownloadBeanMutableLiveData().observe(this, new Observer<DownloadBean>() {
             @Override
             public void onChanged(DownloadBean downloadBean) {
-//                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分
-//                    AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downloadBean.getDownloadUrl());
-//                    downloadManager.download(handler);
-//                } else {//要积分
-//                    if (alertDialog == null) {
-//                        myDialog(downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
-//                    } else {
-//                        alertDialog.show();
-//                    }
-//                }
-                L.e("===============获取到下载的资料");
                 dismissLoading();
-                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
-                    if (queueListener == null) {
-                        queueListener = new QueueListener();
-                    }
-
-                    DownloadTask task = new DownloadTask.Builder(downloadBean.getDownloadUrl(), getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
-                            .setFilename(name)
-                            .setMinIntervalMillisCallbackProcess(30)
-                            .setPassIfAlreadyCompleted(false)
-                            .build();
-                    queueListener.bind(task, mMyHolder);
-                    task.enqueue(queueListener);
-
+                downloadUrl = downloadBean.getDownloadUrl();
+                if ("0".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
+                    downloadMaterial(downloadBean.getDownloadUrl());
                 } else {
                     //要积分，弹窗
-                    if (alertDialog == null) {
-                        myDialog(downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
-                    } else {
-                        alertDialog.show();
+                    if (integralBuyDialog == null) {
+                        integralBuyDialog = new IntegralBuyDialog(getActivity(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                integralModel.integrlPay(3, downloadBean.getIntergral_price(), "");
+
+                            }
+                        }, name, nums, downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
                     }
+                    integralBuyDialog.show();
+
                 }
             }
         });
-        //积分付款
-        materialModel.getIntegrlPayLiveData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-//                AndroidDownloadManager downloadManager = new AndroidDownloadManager(getActivity(), downUrl);
-//                downloadManager.download(handler);
-            }
-        });
-
         materialModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
+                dismissLoading();
                 shortToast(o);
             }
         });
+        //积分付款
+        integralModel.getIntegrlPayLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                downloadMaterial(downloadUrl);
+
+            }
+        });
+        integralModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+            }
+        });
+
+    }
+
+
+    public void downloadMaterial(String url) {
+        if (queueListener == null) {
+            queueListener = new QueueListener();
+        }
+
+        DownloadTask task = new DownloadTask.Builder(url, getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
+                .setFilename(name)
+                .setMinIntervalMillisCallbackProcess(30)
+                .setPassIfAlreadyCompleted(false)
+                .build();
+        queueListener.bind(task, mMyHolder);
+        task.enqueue(queueListener);
     }
 
 
@@ -292,44 +273,5 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    protected void myDialog(String intergral_price, String user_intergral) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_download, null);
-        TextView tvXjifen = view.findViewById(R.id.tv_xjifen);
-        TextView textView = view.findViewById(R.id.tv_jifen);
-        tvXjifen.setText(intergral_price);
-        textView.setText("您现在有" + user_intergral + "积分");
-        Button button = view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-        Button btnDownload = view.findViewById(R.id.btn_download);
-        btnDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                materialModel.integrlPay(intergral_price);
-            }
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Translucent_NoTitle);
-        builder.setView(view);
-        alertDialog = builder.create();
-        alertDialog.show();
-        Window window = alertDialog.getWindow();
-        WindowManager m = window.getWindowManager();
-        Point p = new Point();
-        m.getDefaultDisplay().getSize(p);
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.height = p.y; // 高度设置为屏幕的0.5
-        params.width = p.x; // 宽度设置为屏幕的0.6
-        params.gravity = Gravity.CENTER;
-        window.setAttributes(params);
-
-
-    }
 
 }

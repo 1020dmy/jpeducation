@@ -23,6 +23,7 @@ public class UserCouponModel extends BaseViewModel implements UserCouponContract
 
     private MutableLiveData<CouponDataBean> couponDataBeanLiveData;
 
+
     public MutableLiveData<CouponDataBean> getCouponDataBeanLiveData() {
         if (couponDataBeanLiveData == null)
             couponDataBeanLiveData = new MutableLiveData<>();

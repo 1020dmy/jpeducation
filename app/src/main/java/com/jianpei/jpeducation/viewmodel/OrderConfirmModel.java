@@ -84,32 +84,32 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
         return couponDataBeanLiveData;
     }
 
-    @Override
-    public void couponData(int pageIndex, int pageSize, int type) {
-
-        orderConfirmRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<CouponDataBean> t) throws Exception {
-
-                if (t.isSuccess()) {
-                    couponDataBeanLiveData.setValue(t.getData());
-                } else {
-                    errData.setValue(t.getMsg());
-                }
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                if (isNetWorkError) {
-                    errData.setValue("网络问题！");
-                } else {
-                    errData.setValue(e.getMessage());
-                }
-            }
-        });
-    }
+//    @Override
+//    public void couponData(int pageIndex, int pageSize, int type) {
+//
+//        orderConfirmRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<CouponDataBean> t) throws Exception {
+//
+//                if (t.isSuccess()) {
+//                    couponDataBeanLiveData.setValue(t.getData());
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络问题！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id) {

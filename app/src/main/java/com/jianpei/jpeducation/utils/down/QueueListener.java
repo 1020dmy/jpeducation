@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.adapter.home.MaterialInfoItemBinder;
 import com.jianpei.jpeducation.adapter.material.MaterialInfoAdapter;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
-import com.jianpei.jpeducation.utils.L;
 import com.liulishuo.okdownload.DownloadTask;
 import com.liulishuo.okdownload.core.cause.EndCause;
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause;
@@ -27,6 +26,8 @@ import com.liulishuo.okdownload.core.listener.assist.Listener1Assist;
  * Describe:
  */
 public class QueueListener extends DownloadListener1 {
+
+
 
 
     private SparseArray<RecyclerView.ViewHolder> holderMap = new SparseArray<>();

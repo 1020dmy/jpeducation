@@ -9,7 +9,7 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 import java.io.File;
 

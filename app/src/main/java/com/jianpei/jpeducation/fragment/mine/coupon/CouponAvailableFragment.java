@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.mine.coupon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,8 @@ public class CouponAvailableFragment extends BaseFragment {
 
     private UserCouponModel userCouponModel;
 
+    private int formActivity;
+
 
     private int page = 1;
     private int type = 1;
@@ -48,6 +51,9 @@ public class CouponAvailableFragment extends BaseFragment {
 
     private CouponAdapter couponAdapter;
 
+    public CouponAvailableFragment(int formActivity) {
+        this.formActivity = formActivity;
+    }
 
     @Override
     protected int initLayout() {
@@ -72,7 +78,7 @@ public class CouponAvailableFragment extends BaseFragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
-                page=1;
+                page = 1;
                 userCouponModel.couponData(page, pageSize, type);
 
             }
@@ -86,6 +92,15 @@ public class CouponAvailableFragment extends BaseFragment {
 
         couponDatas = new ArrayList<>();
         couponAdapter = new CouponAdapter(couponDatas);
+        if (formActivity == 0) {//如果是购物车或者订单确认跳转过来的才设置
+            couponAdapter.setMyCouponReceiveListener(new CouponAdapter.MyCouponReceiveListener() {
+                @Override
+                public void onClickCouponReceive(String couponId, String title) {
+                    getActivity().setResult(102, new Intent().putExtra("couponTitle", title).putExtra("couponId", couponId));
+                    getActivity().finish();
+                }
+            });
+        }
         recyclerView.setAdapter(couponAdapter);
 
         userCouponModel = new ViewModelProvider(this).get(UserCouponModel.class);

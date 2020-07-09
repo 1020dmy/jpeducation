@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
-
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,8 +37,8 @@ public class UserCouponActivity extends BaseActivity {
 
     private TabFragmentAdapter tabFragmentAdapter;
 
-    private Fragment[] fragments = {new CouponAvailableFragment(), new CouponUsedFragment(), new CouponExpiredFragment()};
 
+    private int formActivity;
 
     @Override
     protected int setLayoutView() {
@@ -49,8 +48,11 @@ public class UserCouponActivity extends BaseActivity {
     @Override
     protected void initView() {
         tvTitle.setText("我的优惠券");
+        formActivity = getIntent().getIntExtra("formActivity", -1);
 
+        viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
+        Fragment[] fragments = {new CouponAvailableFragment(formActivity), new CouponUsedFragment(), new CouponExpiredFragment()};
         tabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
         viewPage.setAdapter(tabFragmentAdapter);
 

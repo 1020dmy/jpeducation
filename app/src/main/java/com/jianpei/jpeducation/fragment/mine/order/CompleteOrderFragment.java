@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.CommentClassActivity;
-import com.jianpei.jpeducation.activitys.mine.MyClassActivity;
+import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.adapter.order.CompleteOrderAdapter;
 import com.jianpei.jpeducation.adapter.order.MyOrderListItemListener;

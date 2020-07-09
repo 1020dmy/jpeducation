@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,30 +36,6 @@ public class ZiliaoAdapter extends BaseQuickAdapter<MaterialInfoBean, ZiliaoAdap
     }
 
 
-    //    private ArrayList<HomeDataBean.MaterialDataBean.DataBeanXX> dataBeanXXES;
-
-//    public ZiliaoAdapter(ArrayList<HomeDataBean.MaterialDataBean.DataBeanXX> dataBeanXXES) {
-//        this.dataBeanXXES = dataBeanXXES;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_six, parent, false);
-//        return new MyHolder(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-//        holder.tvTitle.setText(dataBeanXXES.get(position).getTitle());
-//        holder.tvNums.setText(dataBeanXXES.get(position).getDownload() + "次下载");
-//
-//    }
-
-//    @Override
-//    public int getItemCount() {
-//        return dataBeanXXES != null ? dataBeanXXES.size() : 0;
-//    }
 
     class MyHolder extends BaseViewHolder {
         private TextView tvTitle, tvNums, tvDown;

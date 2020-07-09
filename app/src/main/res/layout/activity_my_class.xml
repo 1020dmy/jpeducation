@@ -5,8 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activitys.mine.MyClassActivity">
+    tools:context=".activitys.mine.mclass.MyClassActivity">
 
     <include layout="@layout/base_title" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/cE73B30"
+        app:tabSelectedTextColor="@color/cE73B30"
+        app:tabTextColor="@color/c333333" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:id="@+id/viewPage"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -84,8 +84,22 @@
 
     <color name="cFFC5BD">#FFC5BD</color>
 
+    <color name="cFCFFFD">#FCFFFD</color>
 
+    <color name="c272A29">#272A29</color>
 
+    <color name="cACACAC">#ACACAC</color>
+
+    <color name="cFFA303">#FFA303</color>
+
+    <color name="cB81A0A">#B81A0A</color>
+
+    <color name="c686868">#686868</color>
+
+    <color name="c80000000">#80000000</color>
+
+    <color name="c666666">#666666</color>
+    <color name="cF6F6F6">#F6F6F6</color>
 
 
 </resources>

@@ -22,6 +22,16 @@ public class GroupCouponBean implements Parcelable {
 
     private String type;
 
+    private String son_describe;
+
+    public String getSon_describe() {
+        return son_describe;
+    }
+
+    public void setSon_describe(String son_describe) {
+        this.son_describe = son_describe;
+    }
+
     public String getType() {
         return type;
     }
@@ -84,6 +94,8 @@ public class GroupCouponBean implements Parcelable {
         dest.writeString(this.describe);
         dest.writeInt(this.is_receive);
         dest.writeString(this.type);
+        dest.writeString(this.son_describe);
+
     }
 
     public GroupCouponBean() {
@@ -96,6 +108,9 @@ public class GroupCouponBean implements Parcelable {
         this.describe = in.readString();
         this.is_receive = in.readInt();
         this.type = in.readString();
+
+        this.son_describe = in.readString();
+
     }
 
     public static final Parcelable.Creator<GroupCouponBean> CREATOR = new Parcelable.Creator<GroupCouponBean>() {

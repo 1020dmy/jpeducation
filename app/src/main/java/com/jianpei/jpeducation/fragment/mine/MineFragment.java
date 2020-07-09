@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
+import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
+import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
 import com.jianpei.jpeducation.activitys.mine.UserInfoActivity;
 import com.jianpei.jpeducation.activitys.mine.UserOrderListActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.utils.pop.CustomerServicePopup;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -54,6 +57,8 @@ public class MineFragment extends BaseFragment {
     TextView tvService;
     @BindView(R.id.tv_signin)
     TextView tvSignin;
+
+    private CustomerServicePopup customerServicePopup;
 
 
 //    @BindView(R.id.btn_info)
@@ -97,11 +102,12 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), IntegralActivity.class));
                 break;
             case R.id.tv_my_class://我的课程
+                startActivity(new Intent(getActivity(), MyClassActivity.class));
                 break;
             case R.id.tv_my_tiku://我的题库
                 break;
             case R.id.tv_my_data://我的资料
-                shortToast("我的资料");
+                startActivity(new Intent(getActivity(), MaterialActivity.class));
                 break;
             case R.id.tv_my_moving://我的动态
                 break;
@@ -110,6 +116,10 @@ public class MineFragment extends BaseFragment {
             case R.id.tv_suggest://意见反馈
                 break;
             case R.id.tv_service://客服中心
+                if (customerServicePopup == null) {
+                    customerServicePopup = new CustomerServicePopup(getActivity(), "13121597264");
+                }
+                customerServicePopup.showPop();
                 break;
 
         }

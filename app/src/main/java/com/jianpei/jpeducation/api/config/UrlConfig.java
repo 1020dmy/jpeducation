@@ -47,8 +47,7 @@ public class UrlConfig {
     public static final String getDownloadUrl = "material/getDownloadUrl";
     //首页公告
     public static final String noticeData = "noticeData";
-    //积分购买
-    public static final String integrlPay = "user/integrlPay";
+
     //资料一级列表
     public static final String materialData = "material/materialData";
     //资料二级列表
@@ -61,6 +60,9 @@ public class UrlConfig {
     public static final String groupData = "group/groupData";
     //评价列表
     public static final String commentList = "comment/commentList";
+    // 1-添加评价
+    public static final String insertComment = "comment/insertComment";
+
     //购买选择课程科目（含团购）
     public static final String groupClass = "group/groupClass";
     //课程优惠券列表
@@ -100,8 +102,24 @@ public class UrlConfig {
 
     // 1-订单列表
     public static final String orderData = "order/orderData";
-    // 1-添加评价
-    public static final String insertComment = "comment/insertComment";
+
     // 1-取消订单
     public static final String cancelOrder = "order/cancelOrder";
+
+    // 1-积分首页
+    public static final String integralInfo = "integral/integralInfo";
+    //    1-积分任务列表
+    public static final String integralTask = "integral/integralTask";
+    //积分购买
+    public static final String integrlPay = "integral/integralPay";
+    //1-积分列表
+    public static final String integralData = "integral/integralData";
+
+    //1-我的资料
+    public static final String myMaterialData = "material/myMaterialData";
+    //1-我的课程列表
+    public static final String classData = "course/classData";
+
+    //1-1-我的课程详情
+    public static final String classInfo = "course/classInfo";
 }

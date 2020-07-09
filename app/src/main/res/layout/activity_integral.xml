@@ -17,26 +17,149 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="350dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/integral_bg" />
 
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="210dp"
+                android:background="@drawable/shape_integral_bg"
+                android:paddingLeft="30dp"
+                android:paddingTop="8dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前积分:"
+                    android:textColor="@color/cFCFFFD"
+                    android:textSize="@dimen/s_dp_13" />
+
+                <TextView
+                    android:id="@+id/tv_integral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200"
+                    android:textColor="@color/cFCFFFD"
+                    android:textSize="@dimen/s_dp_13" />
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout_t"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imageView"
+                android:layout_below="@id/linearLayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/shadow_home_item_bg"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="15dp"-->
+                <!--                    android:layerType="software"-->
+                <!--                    android:background="@drawable/line_stroke"/>-->
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/integral_icon" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="你已共计签到 2天"
+                            android:textColor="@color/c333333"
+                            android:textSize="@dimen/s_dp_15" />
+
+                        <TextView
+                            android:id="@+id/tv_mingxi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="9dp"
+                            android:text="查看明细 > "
+                            android:textColor="@color/c999999"
+                            android:textSize="@dimen/s_dp_12" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_sigin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_group_join"
+                        android:paddingLeft="24dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="24dp"
+                        android:paddingBottom="8dp"
+                        android:text="立即签到"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/s_dp_13" />
+                </LinearLayout>
 
 
             </LinearLayout>
 
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_task"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/linearLayout_t"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="@dimen/m_dp_15"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/shadow_home_item_bg"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="15dp"
+                android:paddingTop="60dp"
+                android:paddingRight="10dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayout_t"
+                android:layout_marginLeft="@dimen/m_dp_15"
+                android:layout_marginTop="@dimen/m_dp_33"
+                android:background="@drawable/intergral_renwu"
+                android:gravity="center"
+                android:text="积分任务"
+                android:textColor="@color/white"
+                android:textSize="@dimen/s_dp_17" />
 
         </RelativeLayout>
 
@@ -47,11 +170,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/transparent"
+        android:background="@android:color/transparent"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <ImageView
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -61,14 +185,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的积分" />
+            android:text="我的积分"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s_dp_18" />
 
         <TextView
+            android:id="@+id/tv_guize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="积分规则" />
+            android:background="@drawable/shape_integral_guize"
+            android:text="积分规则"
+            android:textColor="@color/cB81A0A"
+            android:textSize="@dimen/s_dp_11" />
     </RelativeLayout>
 
 

@@ -233,7 +233,7 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
                 classInfoFModel.regimentData(groupId);
                 break;
             case R.id.tv_guize:
-                startActivity(new Intent(getActivity(), GuiZeActivity.class).putExtra("webUrl", webUrl));
+                startActivity(new Intent(getActivity(), GuiZeActivity.class).putExtra("webUrl", webUrl).putExtra("title","拼团规则"));
                 break;
         }
     }

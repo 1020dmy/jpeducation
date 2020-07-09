@@ -32,10 +32,10 @@ import io.reactivex.ObservableOnSubscribe;
  */
 public class OrderConfirmRepository extends BaseRepository implements OrderConfirmContract.Repository {
 
-    @Override
-    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type) {
-        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type));
-    }
+//    @Override
+//    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type) {
+//        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type));
+//    }
 
     @Override
     public Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id) {

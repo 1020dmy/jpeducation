@@ -111,48 +111,7 @@
                 android:layout_marginTop="15dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/rv_huodong"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="9dp"-->
-            <!--                android:nestedScrollingEnabled="false"-->
-            <!--                android:paddingLeft="20dp"-->
-            <!--                android:paddingRight="20dp" />-->
 
-            <!--            <include layout="@layout/item_home_two" />-->
-
-
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/rv_item"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:nestedScrollingEnabled="false"-->
-            <!--                android:paddingLeft="20dp"-->
-            <!--                android:paddingRight="20dp" />-->
-
-            <!--            <include layout="@layout/item_home_four" />-->
-
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/rv_try"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:nestedScrollingEnabled="false"-->
-            <!--                android:paddingLeft="20dp"-->
-            <!--                android:paddingRight="20dp" />-->
-
-            <!--            <include layout="@layout/item_home_four" />-->
-
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/rv_ziliao"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginLeft="20dp"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:layout_marginRight="20dp"-->
-            <!--                android:layout_marginBottom="30dp"-->
-            <!--                android:background="@drawable/shadow_home_item_bg"-->
-            <!--                android:nestedScrollingEnabled="false" />-->
 
         </LinearLayout>
 

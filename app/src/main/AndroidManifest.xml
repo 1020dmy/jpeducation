@@ -22,8 +22,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.mine.IntegralActivity"
-            android:launchMode="singleTask"></activity>
+        <activity android:name=".activitys.mine.mclass.ClassPlayerActivity"></activity>
+        <activity android:name=".activitys.mine.MaterialActivity" />
+        <activity android:name=".activitys.mine.UpVersionActivity" />
+        <activity android:name=".activitys.mine.AboutUsActivity" />
+        <activity android:name=".activitys.mine.SettingActivity" />
+        <activity android:name=".activitys.mine.IntegralDetailsActivity" />
+        <activity
+            android:name=".activitys.mine.IntegralActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.mine.MineMessageActivity"
             android:launchMode="singleTask" />
@@ -31,7 +38,7 @@
             android:name=".activitys.mine.CommentClassActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activitys.mine.MyClassActivity"
+            android:name=".activitys.mine.mclass.MyClassActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activitys.mine.ShoppingCartActivity"

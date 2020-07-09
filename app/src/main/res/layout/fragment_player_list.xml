@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragment.mine.mclass.PlayerListFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/directory_teacher"
+                android:drawablePadding="10dp"
+                android:text="主讲名师："
+                android:textColor="@color/c666666"
+                android:textSize="@dimen/s_dp_15" />
+
+            <TextView
+                android:id="@+id/tv_teachers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="张老师   王老师"
+                android:textColor="@color/c666666"
+                android:textSize="@dimen/s_dp_15" />
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <TextView
+            android:id="@+id/tv_profession"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:paddingLeft="10dp"
+            android:drawableLeft="@drawable/directory_profession"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="2020方案设计作图 "
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_16" />
+
+        <include layout="@layout/line" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

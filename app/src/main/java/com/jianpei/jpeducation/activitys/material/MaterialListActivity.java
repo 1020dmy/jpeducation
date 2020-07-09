@@ -29,12 +29,12 @@ import com.jianpei.jpeducation.adapter.material.MyItemChildClickListener;
 import com.jianpei.jpeducation.adapter.material.MyItemClickListener;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.DownloadBean;
-import com.jianpei.jpeducation.bean.MaterialDataBean;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialDataBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialTitle;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.down.QueueListener;
-import com.jianpei.jpeducation.viewmodel.MaterialListModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
 import com.liulishuo.okdownload.DownloadTask;
 import java.util.ArrayList;
@@ -59,25 +59,20 @@ public class MaterialListActivity extends BaseNoStatusActivity {
     RecyclerView recyclerView;
     String catName;
 
-//    private MaterialAdapter materialAdapter;
 
-//    private ArrayList<BaseNode> baseNodes;
-
-    private MaterialListModel materialListModel;
-
+    //资料下载
     private MaterialModel materialModel;
+
 
 
     private String cat_id;
     private int pageIndex = 1, pageSize = 16;
 
-//    private MaterialDataBean.MaterialTitle materialTitle;
 
-//    private MaterialInfoBean materialInfoBean;
 
     private MaterialTitleAdapter materialTitleAdapter;
 
-    private ArrayList<MaterialDataBean.MaterialTitle> materialTitles;
+    private ArrayList<MaterialTitle> materialTitles;
 
     private int mPosition;//当前点击的title位置
 
@@ -111,12 +106,11 @@ public class MaterialListActivity extends BaseNoStatusActivity {
 
 
     protected void initResultListener() {
-        //资料下载，支付相关
+        //资料下载
         materialModel = new ViewModelProvider(this).get(MaterialModel.class);
 
-        materialListModel = new ViewModelProvider(this).get(MaterialListModel.class);
         //获取资料标题
-        materialListModel.getMaterialDataBean().observe(this, new Observer<MaterialDataBean>() {
+        materialModel.getMaterialDataBean().observe(this, new Observer<MaterialDataBean>() {
             @Override
             public void onChanged(MaterialDataBean materialDataBean) {
                 materialTitles.addAll(materialDataBean.getData());
@@ -124,7 +118,7 @@ public class MaterialListActivity extends BaseNoStatusActivity {
             }
         });
         //获取资料
-        materialListModel.getMaterialInfoBeans().observe(this, new Observer<ArrayList<MaterialInfoBean>>() {
+        materialModel.getMaterialInfoBeans().observe(this, new Observer<ArrayList<MaterialInfoBean>>() {
             @Override
             public void onChanged(ArrayList<MaterialInfoBean> materialInfoBeans) {
                 dismissLoading();
@@ -163,23 +157,7 @@ public class MaterialListActivity extends BaseNoStatusActivity {
 
             }
         });
-        //积分付款
-        materialModel.getIntegrlPayLiveData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                //支付车成功开始下载
 
-            }
-        });
-
-        materialModel.getErrData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String o) {
-                L.e("===============获取到下载的资料失败");
-                dismissLoading();
-                shortToast(o);
-            }
-        });
     }
 
 
@@ -193,7 +171,7 @@ public class MaterialListActivity extends BaseNoStatusActivity {
                 mPosition = position;
                 if (materialTitles.get(position).isUnfold() && materialTitles.get(position).getMaterialInfoBeans() == null) {
                     showLoading("");
-                    materialListModel.subMaterialData(cat_id, materialTitles.get(position).getId());
+                    materialModel.subMaterialData(cat_id, materialTitles.get(position).getId(),0);
                 }
             }
         });
@@ -218,7 +196,7 @@ public class MaterialListActivity extends BaseNoStatusActivity {
         recyclerView.setAdapter(materialTitleAdapter);
 
 
-        materialListModel.materialData(cat_id, pageIndex, pageSize);
+        materialModel.materialData(cat_id, pageIndex, pageSize);
     }
 
 
@@ -258,7 +236,7 @@ public class MaterialListActivity extends BaseNoStatusActivity {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 //确定积分支付
-                materialModel.integrlPay(intergral_price);
+//                materialModel.integrlPay(intergral_price);
             }
         });
 

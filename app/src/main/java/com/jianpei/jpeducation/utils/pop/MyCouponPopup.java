@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
+import com.jianpei.jpeducation.adapter.coupon.CouponAdapter;
 import com.jianpei.jpeducation.bean.CouponDataBean;
 
 import java.util.ArrayList;
@@ -36,10 +37,10 @@ public class MyCouponPopup extends PopupWindow {
     private ImageButton rmbCancel;
     private RecyclerView recyclerView;
     private ArrayList<CouponDataBean.CouponData> mCouponDatas;
-    private MyCouponReceiveListener myCouponReceiveListener;
+    private CouponAdapter.MyCouponReceiveListener myCouponReceiveListener;
 
 
-    public void setMyCouponReceiveListener(MyCouponReceiveListener myCouponReceiveListener) {
+    public void setMyCouponReceiveListener(CouponAdapter.MyCouponReceiveListener myCouponReceiveListener) {
         this.myCouponReceiveListener = myCouponReceiveListener;
     }
 
@@ -74,72 +75,72 @@ public class MyCouponPopup extends PopupWindow {
     public void setData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(14));
-        MyAdapter myAdapter = new MyAdapter();
-        recyclerView.setAdapter(myAdapter);
+//        MyAdapter myAdapter = new MyAdapter();/\
+//        recyclerView.setAdapter(myAdapter);
+
+        CouponAdapter couponAdapter = new CouponAdapter(mCouponDatas);
+        couponAdapter.setMyCouponReceiveListener(myCouponReceiveListener);
+        recyclerView.setAdapter(couponAdapter);
 
     }
 
 
-    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
-
-
-        @NonNull
-        @Override
-        public MyAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coupon, parent, false);
-            return new MyAdapter.MyHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull MyAdapter.MyHolder holder, int position) {
-            CouponDataBean.CouponData couponData = mCouponDatas.get(position);
-            if ("2".equals(couponData.getCoupon_type())) {
-                holder.tvMark.setVisibility(View.GONE);
-            }
-            holder.tvPrice.setText(couponData.getDescribe());
-            holder.tvTip.setText(couponData.getTitle());
-            holder.tvTime.setText("有效期至：" + couponData.getEnd_time_str());
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return mCouponDatas != null ? mCouponDatas.size() : 0;
-        }
-
-        class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            private TextView tvPrice, tvTip, tvTime, tvSubmit;
-
-            private TextView tvMark;
-
-            public MyHolder(@NonNull View itemView) {
-                super(itemView);
-                tvPrice = itemView.findViewById(R.id.tv_price);
-                tvTip = itemView.findViewById(R.id.tv_tip);
-                tvTime = itemView.findViewById(R.id.tv_time);
-                tvSubmit = itemView.findViewById(R.id.tv_submit);
-                tvMark = itemView.findViewById(R.id.tv_mark);
-                tvSubmit.setText("点击使用");
-
-                tvSubmit.setOnClickListener(this);
-
-            }
-
-            @Override
-            public void onClick(View v) {
-                if (myCouponReceiveListener != null) {
-                    myCouponReceiveListener.onClickCouponReceive(mCouponDatas.get(getLayoutPosition()).getId(), mCouponDatas.get(getLayoutPosition()).getTitle());
-                }
-
-            }
-        }
-    }
-
-    public interface MyCouponReceiveListener {
-        void onClickCouponReceive(String couponId, String title);
-    }
+//    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
+//
+//
+//        @NonNull
+//        @Override
+//        public MyAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coupon, parent, false);
+//            return new MyAdapter.MyHolder(view);
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull MyAdapter.MyHolder holder, int position) {
+//            CouponDataBean.CouponData couponData = mCouponDatas.get(position);
+//            if ("2".equals(couponData.getCoupon_type())) {
+//                holder.tvMark.setVisibility(View.GONE);
+//            }
+//            holder.tvPrice.setText(couponData.getDescribe());
+//            holder.tvTip.setText(couponData.getTitle());
+//            holder.tvTime.setText("有效期至：" + couponData.getEnd_time_str());
+//
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return mCouponDatas != null ? mCouponDatas.size() : 0;
+//        }
+//
+//        class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//
+//            private TextView tvPrice, tvTip, tvTime, tvSubmit;
+//
+//            private TextView tvMark;
+//
+//            public MyHolder(@NonNull View itemView) {
+//                super(itemView);
+//                tvPrice = itemView.findViewById(R.id.tv_price);
+//                tvTip = itemView.findViewById(R.id.tv_tip);
+//                tvTime = itemView.findViewById(R.id.tv_time);
+//                tvSubmit = itemView.findViewById(R.id.tv_submit);
+//                tvMark = itemView.findViewById(R.id.tv_mark);
+//                tvSubmit.setText("点击使用");
+//
+//                tvSubmit.setOnClickListener(this);
+//
+//            }
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (myCouponReceiveListener != null) {
+//                    myCouponReceiveListener.onClickCouponReceive(mCouponDatas.get(getLayoutPosition()).getId(), mCouponDatas.get(getLayoutPosition()).getTitle());
+//                }
+//
+//            }
+//        }
+//    }
 
 
 }

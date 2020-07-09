@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@drawable/shape_coupon_bg"
+    android:gravity="center"
+    android:layout_marginTop="15dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="96dp"
+        android:layout_height="78dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/home_icon_demo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="2020二级建造师无忧取证班二级建 造师无忧取证班"
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_14" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_kemu"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="市政工程+三门公共科目"-->
+<!--            android:textColor="@color/c888B96"-->
+<!--            android:textSize="@dimen/s_dp_11"-->
+<!--            android:visibility="gone" />-->
+
+        <TextView
+            android:id="@+id/tv_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/mine_class_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="999人正在学习"
+            android:textColor="@color/cD81E06"
+            android:textSize="@dimen/s_dp_10" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_student"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="已学23/154"
+                android:textColor="@color/cD81E06"
+                android:textSize="@dimen/s_dp_10" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="65dp"
+                android:layout_height="22dp"
+                android:background="@drawable/shape_group_join"
+                android:text="继续学习"
+                android:textColor="@color/white"
+                android:textSize="@dimen/s_dp_12" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

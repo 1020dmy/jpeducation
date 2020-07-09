@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * jpeducation
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 public class MaterialInfoAdapter extends RecyclerView.Adapter<MaterialInfoAdapter.MyHolder> {
 
-    private ArrayList<MaterialInfoBean> materialInfoBeans;
+    private List<MaterialInfoBean> materialInfoBeans;
 
     private MyItemChildClickListener myItemChildClickListener;
 
@@ -32,7 +33,7 @@ public class MaterialInfoAdapter extends RecyclerView.Adapter<MaterialInfoAdapte
         this.myItemChildClickListener = myItemChildClickListener;
     }
 
-    public MaterialInfoAdapter(ArrayList<MaterialInfoBean> materialInfoBeans) {
+    public MaterialInfoAdapter(List<MaterialInfoBean> materialInfoBeans) {
         this.materialInfoBeans = materialInfoBeans;
     }
 

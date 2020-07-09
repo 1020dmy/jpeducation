@@ -1,13 +1,17 @@
 package com.jianpei.jpeducation.room;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Flowable;
 
 /**
  * jpeducation
@@ -26,16 +30,27 @@ public interface MaterialInfoDao {
      * @param id
      * @return
      */
-    @Query("SELECT * FROM material Where materialid= :id LIMIT 1")
-    MaterialInfoBean getMaterialInfoBean(String id);
+    @Query("SELECT * FROM material Where materialid = :value LIMIT 1")
+    MaterialInfoBean getMaterialInfoBean(String value);
+
+
+    /**
+     * 根据cat_id查询
+     *
+     * @param
+     * @return
+     */
+    @Query("SELECT * FROM material Where class_id= :value ")
+    List<MaterialInfoBean> getMaterialInfoBeans(String value);
+
 
     /**
      * 获取全部下载的资料信息
      *
      * @return
      */
-//    @Query("SELECT * FROM material")
-//    ArrayList<MaterialInfoBean> getAllMaterialInfoBeans();
+    @Query("SELECT * FROM material")
+    LiveData<List<MaterialInfoBean>> getAllMaterialInfoBeans();
 
     @Insert
     void insertMaterialInfo(MaterialInfoBean materialInfoBean);

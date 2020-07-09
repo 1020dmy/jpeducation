@@ -11,11 +11,12 @@ package com.jianpei.jpeducation.contract;
 public interface MineContract {
 
 
-    interface Repository{
-
+    interface Repository {
+//        Observable<BaseEntity<HomeDataBean>> getHomeData(String catId);
     }
-
-    interface Model{
-
+    //
+//
+    interface Model {
+//        void getHomeData(String catId);
     }
 }

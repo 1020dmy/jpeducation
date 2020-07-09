@@ -32,6 +32,7 @@ public class GuiZeActivity extends BaseActivity {
     WebView webView;
 
     String url;
+    String title;
 
     @Override
     protected int setLayoutView() {
@@ -43,13 +44,14 @@ public class GuiZeActivity extends BaseActivity {
 
 
         url = getIntent().getStringExtra("webUrl");
+        title=getIntent().getStringExtra("title");
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings()
                     .setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.setWebViewClient(new WebViewClient());
-        tvTitle.setText("拼团规则");
+        tvTitle.setText(title);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,14 +21,12 @@ import com.jianpei.jpeducation.activitys.order.OrderResultActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.ShoppingCatAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.bean.shop.GroupBean;
-import com.jianpei.jpeducation.utils.pop.MyCouponPopup;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
 import com.jianpei.jpeducation.viewmodel.ShoppingCartModel;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -88,13 +87,13 @@ public class ShoppingCartActivity extends BaseActivity {
     private ShoppingCatAdapter shoppingCatAdapter;
     private List<GroupBean> groupBeans;
 
-    private ArrayList<CouponDataBean.CouponData> mCouponDatas;
+//    private ArrayList<CouponDataBean.CouponData> mCouponDatas;
 
     private ShoppingCartModel shoppingCartModel;
     private OrderConfirmModel orderConfirmModel;
 
 
-    private MyCouponPopup couponPopup;
+    //    private MyCouponPopup couponPopup;
     private String mCouponTitle;
     private ClassGenerateOrderBean mClassGenerateOrderBean;
     private IWXAPI msgApi;
@@ -149,17 +148,17 @@ public class ShoppingCartActivity extends BaseActivity {
                 shoppingCartModel.carInfo();
             }
         });
-        //优惠券列表
-        shoppingCartModel.getCouponDataBeanLiveData().observe(this, new Observer<CouponDataBean>() {
-            @Override
-            public void onChanged(CouponDataBean couponDataBean) {
-                dismissLoading();
-                if (mCouponDatas == null)
-                    mCouponDatas = new ArrayList<>();
-                mCouponDatas.addAll(couponDataBean.getData());
-                showPop();
-            }
-        });
+//        //优惠券列表
+//        shoppingCartModel.getCouponDataBeanLiveData().observe(this, new Observer<CouponDataBean>() {
+//            @Override
+//            public void onChanged(CouponDataBean couponDataBean) {
+//                dismissLoading();
+//                if (mCouponDatas == null)
+//                    mCouponDatas = new ArrayList<>();
+//                mCouponDatas.addAll(couponDataBean.getData());
+//                showPop();
+//            }
+//        });
         //订单支付相关
         orderConfirmModel.getErrData().observe(this, new Observer<String>() {
             @Override
@@ -173,9 +172,9 @@ public class ShoppingCartActivity extends BaseActivity {
             @Override
             public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
                 dismissLoading();
-                if (couponPopup != null) {
-                    couponPopup.dismiss();
-                }
+//                if (couponPopup != null) {
+//                    couponPopup.dismiss();
+//                }
                 mClassGenerateOrderBean = classGenerateOrderBean;
                 setData(classGenerateOrderBean);
             }
@@ -284,11 +283,12 @@ public class ShoppingCartActivity extends BaseActivity {
                 startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.ll_quan:
-                if (mCouponDatas == null || mCouponDatas.size() == 0) {
-                    shoppingCartModel.couponData(1, 10, 1);
-                } else {
-                    showPop();
-                }
+//                if (mCouponDatas == null || mCouponDatas.size() == 0) {
+//                    shoppingCartModel.couponData(1, 10, 1);
+//                } else {
+//                    showPop();
+//                }
+                startActivityForResult(new Intent(this, UserCouponActivity.class).putExtra("formActivity", 0), 101);
                 break;
             case R.id.ll_weixin_pay:
                 changeStatus(1);
@@ -318,6 +318,24 @@ public class ShoppingCartActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 选择优惠券后返回结果
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 101 && data != null) {
+            showLoading("");
+            mCouponTitle = data.getStringExtra("couponTitle");
+            String couponId = data.getStringExtra("couponId");
+            orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getOrder_info().getGroup_id(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void setData(ClassGenerateOrderBean carInfoBean) {
         if (carInfoBean == null) {
@@ -354,18 +372,18 @@ public class ShoppingCartActivity extends BaseActivity {
 
     }
 
-    protected void showPop() {
-        if (couponPopup == null) {
-            couponPopup = new MyCouponPopup(this, mCouponDatas);
-            couponPopup.setMyCouponReceiveListener(new MyCouponPopup.MyCouponReceiveListener() {
-                @Override
-                public void onClickCouponReceive(String couponId, String couponTitle) {
-                    showLoading("");
-                    mCouponTitle = couponTitle;
-                    orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getOrder_info().getGroup_id(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
-                }
-            });
-        }
-        couponPopup.showPop();
-    }
+//    protected void showPop() {
+//        if (couponPopup == null) {
+//            couponPopup = new MyCouponPopup(this, mCouponDatas);
+//            couponPopup.setMyCouponReceiveListener(new CouponAdapter.MyCouponReceiveListener() {
+//                @Override
+//                public void onClickCouponReceive(String couponId, String couponTitle) {
+//                    showLoading("");
+//                    mCouponTitle = couponTitle;
+//                    orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getOrder_info().getGroup_id(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
+//                }
+//            });
+//        }
+//        couponPopup.showPop();
+//    }
 }

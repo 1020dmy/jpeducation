@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_marginTop="15dp"
+    android:id="@+id/linearLayout"
     android:background="@drawable/user_coupon_used"
     android:gravity="center_vertical"
     android:paddingLeft="15dp"
@@ -21,8 +22,8 @@
         android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="50"
         android:layout_marginLeft="5dp"
+        android:text="50"
         android:textColor="@color/white"
         android:textSize="50dp"
         android:textStyle="bold" />
@@ -58,7 +59,7 @@
         android:id="@+id/ll_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/home_zhekou_bg"
+        android:background="@drawable/user_coupon_used_bg"
         android:gravity="center">
 
         <TextView
@@ -73,6 +74,22 @@
             android:textColor="@color/white"
             android:textSize="11dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_coupon_bg"
+        android:drawableRight="@drawable/coupon_jiantou"
+        android:drawablePadding="4dp"
+        android:paddingLeft="11dp"
+        android:paddingTop="6dp"
+        android:paddingRight="11dp"
+        android:paddingBottom="6dp"
+        android:text="点击领取"
+        android:textColor="@color/cFE0004"
+        android:textSize="12dp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

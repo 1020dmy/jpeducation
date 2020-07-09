@@ -16,8 +16,8 @@ import com.jianpei.jpeducation.bean.CommentBean;
 import com.jianpei.jpeducation.bean.CommentListBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
-import com.jianpei.jpeducation.viewmodel.CICommentModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+import com.jianpei.jpeducation.viewmodel.CommentModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,11 @@ public class CommentFragment extends BaseFragment {
 
     private List<CommentBean> mCommentBeans;
 
-    private CICommentModel ciCommentModel;
+    private CommentModel commentModel;//评价
+
     private ClassInfoModel classInfoModel;
+
+    private int page = 1, pageSize = 10;
 
 
     @Override
@@ -50,7 +53,7 @@ public class CommentFragment extends BaseFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ciCommentModel = new ViewModelProvider(getActivity()).get(CICommentModel.class);
+        commentModel = new ViewModelProvider(getActivity()).get(CommentModel.class);
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
 
 
@@ -61,7 +64,7 @@ public class CommentFragment extends BaseFragment {
         mCommentBeans = new ArrayList<>();
         commentAdapter = new CommentAdapter(mCommentBeans, getActivity());
         recyclerView.setAdapter(commentAdapter);
-        ciCommentModel.getCommentListBeanMutableLiveData().observe(getActivity(), new Observer<CommentListBean>() {
+        commentModel.getCommentListBeanLiveData().observe(getActivity(), new Observer<CommentListBean>() {
             @Override
             public void onChanged(CommentListBean commentListBean) {
                 dismissLoading();
@@ -69,7 +72,7 @@ public class CommentFragment extends BaseFragment {
                 commentAdapter.notifyDataSetChanged();
             }
         });
-        ciCommentModel.getErrData().observe(getActivity(), new Observer<String>() {
+        commentModel.getErrData().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
@@ -80,14 +83,14 @@ public class CommentFragment extends BaseFragment {
             @Override
             public void onChanged(GroupInfoBean groupInfoBean) {
                 showLoading("");
-                ciCommentModel.commentList(groupInfoBean.getId(), 1, 10);
+                commentModel.commentList("1", groupInfoBean.getId(), "", page, pageSize);
             }
         });
         classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
             @Override
             public void onChanged(RegimentInfoBean regimentInfoBean) {
-                ciCommentModel.commentList(regimentInfoBean.getPoint_id(), 1, 10);
-
+                showLoading("");
+                commentModel.commentList("1", regimentInfoBean.getPoint_id(), "", page, pageSize);
             }
         });
 

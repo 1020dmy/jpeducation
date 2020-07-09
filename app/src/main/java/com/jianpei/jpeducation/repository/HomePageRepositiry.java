@@ -5,7 +5,7 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.contract.HomePageContract;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
 import com.jianpei.jpeducation.utils.L;
@@ -35,10 +35,8 @@ public class HomePageRepositiry implements HomePageContract.Repository {
                 for (MaterialInfoBean materialInfoBean : homeDataBeanBaseEntity.getData().getMaterialData().getData()) {
                     //根据资料ID判断当前资料是和否已经下载完成
 
-                    L.e("====materialInfoBeanId==:" + materialInfoBean.getId());
                     MaterialInfoBean materialInfoBean1 = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId());
                     if (materialInfoBean1 != null) {
-                        L.e("======materialInfoBean1====" + materialInfoBean1.getId());
                         materialInfoBean.setStatus(materialInfoBean1.getStatus());
                         materialInfoBean.setProgress(materialInfoBean1.getProgress());
                         materialInfoBean.setPath(materialInfoBean1.getPath());

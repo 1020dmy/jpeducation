@@ -5,6 +5,7 @@
     android:layout_marginTop="15dp"
     android:background="@drawable/user_coupon_used"
     android:gravity="center_vertical"
+    android:id="@+id/linearLayout"
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
@@ -21,8 +22,9 @@
             android:gravity="center"
             android:text="8"
             android:textColor="@color/cFF0000"
-            android:textSize="50dp"
+            android:textSize="35dp"
             android:textStyle="bold" />
+
 
         <ImageView
             android:layout_width="wrap_content"
@@ -81,6 +83,22 @@
             android:textColor="@color/white"
             android:textSize="11dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_coupon_bg"
+        android:drawableRight="@drawable/coupon_jiantou"
+        android:drawablePadding="4dp"
+        android:paddingLeft="11dp"
+        android:paddingTop="6dp"
+        android:paddingRight="11dp"
+        android:paddingBottom="6dp"
+        android:text="点击领取"
+        android:textColor="@color/cFE0004"
+        android:textSize="12dp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

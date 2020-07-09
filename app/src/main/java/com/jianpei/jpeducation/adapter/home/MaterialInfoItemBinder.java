@@ -9,8 +9,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.adapter.material.MaterialTitleAdapter;
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.utils.listener.MaterialInfoItemOnClickListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,23 +32,6 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
 
     @Override
     public void convert(@NotNull MaterialInfoItemBinder.MyHolder holder, MaterialInfoBean materialInfoBean) {
-//
-//        if ("3".equals(materialInfoBean.getStatus())) {
-//            myHolder.tvDown.setText("下载失败");
-//        } else if ("1".equals(materialInfoBean.getStatus())) {
-//            myHolder.tvDown.setText("正在下载");
-//            myHolder.progressBar.setVisibility(View.VISIBLE);
-//        } else if ("2".equals(materialInfoBean.getStatus())) {
-//            myHolder.tvDown.setText("下载完成");
-//            myHolder.progressBar.setVisibility(View.VISIBLE);
-//            myHolder.tvDown.setEnabled(false);
-//        } else {
-//            myHolder.tvDown.setText("下载");
-//            myHolder.progressBar.setVisibility(View.INVISIBLE);
-//        }
-//        myHolder.progressBar.setProgress(materialInfoBean.getProgress());
-//        myHolder.tvTitle.setText(materialInfoBean.getTitle());
-//        myHolder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
 
         holder.tvTitle.setText(materialInfoBean.getTitle());
 

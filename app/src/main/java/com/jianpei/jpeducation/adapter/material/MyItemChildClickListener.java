@@ -1,6 +1,6 @@
 package com.jianpei.jpeducation.adapter.material;
 
-import com.jianpei.jpeducation.bean.homedata.MaterialInfoBean;
+import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 
 /**
  * jpeducation
