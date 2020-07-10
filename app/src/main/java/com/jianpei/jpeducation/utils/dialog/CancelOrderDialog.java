@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.utils.dialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Button;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,8 +15,13 @@ import com.jianpei.jpeducation.adapter.classinfo.CommentAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.CommentBean;
 import com.jianpei.jpeducation.bean.CommentListBean;
+import com.jianpei.jpeducation.utils.dialog.CommentDialog;
+import com.jianpei.jpeducation.utils.pop.CommentPopup;
 import com.jianpei.jpeducation.viewmodel.CommentModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +50,8 @@ public class PlayerCommentFragment extends BaseFragment {
 
     private int page = 1, pageSize = 10;
 
+    private CommentPopup commentPopup;
+
 
     public PlayerCommentFragment(String classId) {
         this.classId = classId;
@@ -58,6 +66,26 @@ public class PlayerCommentFragment extends BaseFragment {
     protected void initView(View view) {
         commentModel = new ViewModelProvider(this).get(CommentModel.class);
 
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                showLoading("");
+                commentModel.commentList("2", "", classId, page, pageSize);
+
+            }
+        });
+
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                showLoading("");
+                commentModel.commentList("2", "", classId, page, pageSize);
+
+            }
+        });
+
     }
 
     @Override
@@ -69,7 +97,12 @@ public class PlayerCommentFragment extends BaseFragment {
         commentModel.getCommentListBeanLiveData().observe(getActivity(), new Observer<CommentListBean>() {
             @Override
             public void onChanged(CommentListBean commentListBean) {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 dismissLoading();
+                if (page == 1) {
+                    mCommentBeans.clear();
+                }
                 mCommentBeans.addAll(commentListBean.getData());
                 commentAdapter.notifyDataSetChanged();
             }
@@ -77,6 +110,8 @@ public class PlayerCommentFragment extends BaseFragment {
         commentModel.getErrData().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String o) {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 dismissLoading();
                 shortToast(o);
             }
@@ -89,5 +124,10 @@ public class PlayerCommentFragment extends BaseFragment {
 
     @OnClick(R.id.button)
     public void onViewClicked() {
+        if (commentPopup == null) {
+            commentPopup = new CommentPopup(getActivity());
+        }
+        commentPopup.showPop();
+
     }
 }

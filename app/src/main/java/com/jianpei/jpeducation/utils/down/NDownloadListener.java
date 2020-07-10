@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
+import com.jianpei.jpeducation.utils.L;
 import com.liulishuo.okdownload.DownloadTask;
 import com.liulishuo.okdownload.core.cause.EndCause;
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause;
@@ -66,6 +67,8 @@ public class NDownloadListener extends DownloadListener1 {
 
     @Override
     public void connected(@NonNull DownloadTask task, int blockCount, long currentOffset, long totalLength) {//连接
+
+
         BaseViewHolder viewHolder = holderMap.get(task.getId());
         if (viewHolder != null) {
             ProgressUtil.calcProgressToViewAndMark(viewHolder.getView(R.id.progressBar), currentOffset, totalLength, false);
@@ -75,6 +78,7 @@ public class NDownloadListener extends DownloadListener1 {
 
     @Override
     public void progress(@NonNull DownloadTask task, long currentOffset, long totalLength) {//进度
+
         BaseViewHolder viewHolder = holderMap.get(task.getId());
         if (viewHolder != null)
             ProgressUtil.updateProgressToViewWithMark(viewHolder.getView(R.id.progressBar), currentOffset, false);
@@ -83,6 +87,10 @@ public class NDownloadListener extends DownloadListener1 {
 
     @Override
     public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause, @NonNull Listener1Assist.Listener1Model model) {//完成
+
+
+
+
         BaseViewHolder viewHolder = holderMap.get(task.getId());
         if (viewHolder != null && cause == EndCause.COMPLETED) {
             MaterialInfoBean materialInfoBean = dataMap.get(task.getId());

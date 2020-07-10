@@ -157,7 +157,12 @@ public class QueueListener extends DownloadListener1 {
                 //存入数据库
                 MaterialInfoBean materialInfoBean = ((MaterialInfoAdapter.MyHolder) viewHolder).getData();
                 materialInfoBean.setStatus("2");
-                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+                    }
+                }).start();
 
             } else if (viewHolder instanceof MaterialInfoItemBinder.MyHolder) {
                 ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.setProgress(((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.getMax());
@@ -165,7 +170,13 @@ public class QueueListener extends DownloadListener1 {
                 //存入数据库
                 MaterialInfoBean materialInfoBean = ((MaterialInfoItemBinder.MyHolder) viewHolder).getData();
                 materialInfoBean.setStatus("2");
-                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+                    }
+                }).start();
 
             }
 //                myHolder.progressBar.setProgress(myHolder.progressBar.getMax());
