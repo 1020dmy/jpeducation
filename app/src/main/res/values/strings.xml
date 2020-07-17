@@ -78,5 +78,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--quality-->
+    <string name="alivc_fd_definition">流畅</string>
+    <string name="alivc_ld_definition">标清</string>
+    <string name="alivc_sd_definition">高清</string>
+    <string name="alivc_hd_definition">超清</string>
+    <string name="alivc_k2_definition">2k</string>
+    <string name="alivc_k4_definition">4k</string>
+    <string name="alivc_od_definition">原画</string>
+
 
 </resources>

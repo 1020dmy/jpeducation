@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class PlayListChapterProvider extends BaseNodeProvider {
 
     @Override
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
-        MClassInfoBean.DirectorysBean directorysBean = (MClassInfoBean.DirectorysBean) baseNode;
+        DirectoryBean directorysBean = (DirectoryBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, directorysBean.getTitle());
         if (directorysBean.isExpanded()) {
             baseViewHolder.setImageResource(R.id.imageView, R.drawable.material_unfold);

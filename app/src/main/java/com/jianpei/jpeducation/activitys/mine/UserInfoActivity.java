@@ -85,7 +85,7 @@ public class UserInfoActivity extends BaseNoStatusActivity {
         switch (requestCode) {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
-                selectphotoUtils.cropPhoto(selectphotoUtils.imgUri, true);
+//                selectphotoUtils.cropPhoto(selectphotoUtils.imgUri, true);
                 break;
             case SelectphotoUtils.SCAN_OPEN_PHONE://相册返回
                 L.e("相册返回");

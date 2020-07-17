@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.contract.ClassPlayerContract;
 import com.jianpei.jpeducation.repository.ClassPlayerRepository;
@@ -25,6 +26,17 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
 
     public ClassPlayerModel() {
         classPlayerRepository = new ClassPlayerRepository();
+    }
+
+
+    ///
+    private MutableLiveData<VideoUrlBean> playUrlBean;
+
+    public MutableLiveData<VideoUrlBean> getPlayUrlBean() {
+        if (playUrlBean == null) {
+            playUrlBean = new MutableLiveData<>();
+        }
+        return playUrlBean;
     }
 
     /**
@@ -65,6 +77,48 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
                 }
             }
         });
+    }
 
+
+    private MutableLiveData<VideoUrlBean> videoUrlBeansLiveData;
+
+    public MutableLiveData<VideoUrlBean> getVideoUrlBeansLiveData() {
+        if (videoUrlBeansLiveData == null) {
+            videoUrlBeansLiveData = new MutableLiveData<>();
+        }
+        return videoUrlBeansLiveData;
+    }
+
+    /**
+     * 1-获取视频播放url
+     *
+     * @param video_id
+     * @param buy_id
+     */
+
+    @Override
+    public void videoUrl(String video_id, String buy_id) {
+        if (TextUtils.isEmpty(video_id)) {
+            return;
+        }
+        classPlayerRepository.videoUrl("normal", video_id, buy_id).compose(setThread()).subscribe(new BaseObserver<VideoUrlBean>() {
+            @Override
+            protected void onSuccees(BaseEntity<VideoUrlBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    videoUrlBeansLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getData());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
     }
 }

@@ -2,7 +2,9 @@ package com.jianpei.jpeducation.adapter.mclass;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,9 +24,9 @@ public class PlayListAdapter extends BaseNodeAdapter {
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {
         BaseNode baseNode=list.get(i);
 
-        if(baseNode instanceof MClassInfoBean.DirectorysBean){
+        if(baseNode instanceof DirectoryBean){
             return 0;
-        }else if(baseNode instanceof MClassInfoBean.DirectorysBean.ViodsBean){
+        }else if(baseNode instanceof ViodBean){
             return 1;
         }
         return -1;

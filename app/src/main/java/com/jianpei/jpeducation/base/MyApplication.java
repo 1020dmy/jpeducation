@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.L;
@@ -50,6 +51,9 @@ public class MyApplication extends Application {
         L.isDebug = true;//日志开关
         initUmeng();
         initWx();
+
+        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
+
     }
 
     public static MyApplication getInstance() {

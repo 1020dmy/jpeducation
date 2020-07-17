@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activitys.school.PostNewsActivity">
+
+
+    <include layout="@layout/base_title" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/et_content"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="200dp"-->
+        <!--            android:background="@null"-->
+        <!--            android:gravity="top"-->
+        <!--            android:hint="输入帖子正文…"-->
+        <!--            android:maxLength="800"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:textColorHint="@color/cA5A7B0"-->
+        <!--            android:textSize="@dimen/s_dp_13" />-->
+
+        <com.jianpei.jpeducation.view.ContentEditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="输入帖子正文…"
+            android:maxLength="800"
+            android:padding="10dp"
+            android:textColorHint="@color/cA5A7B0"
+            android:textSize="@dimen/s_dp_13" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:visibility="gone"
+            android:src="@drawable/post_new_icon" />
+
+        <ImageView
+            android:id="@+id/iv_huati"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:src="@drawable/post_new_huati" />
+
+        <ImageView
+            android:id="@+id/iv_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/post_new_people" />
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/post_new_image" />
+
+        <ImageView
+            android:id="@+id/iv_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/post_new_camera" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,11 +1,5 @@
 package com.jianpei.jpeducation.bean.mclass;
 
-import com.chad.library.adapter.base.entity.node.BaseExpandNode;
-import com.chad.library.adapter.base.entity.node.BaseNode;
-
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +19,7 @@ public class MClassInfoBean {
 
     private ViodInfoBean viod_info;
     private List<TeachersBean> teachers;
-    private List<DirectorysBean> directorys;
+    private List<DirectoryBean> directorys;
 
     public ViodInfoBean getViod_info() {
         return viod_info;
@@ -43,11 +37,11 @@ public class MClassInfoBean {
         this.teachers = teachers;
     }
 
-    public List<DirectorysBean> getDirectorys() {
+    public List<DirectoryBean> getDirectorys() {
         return directorys;
     }
 
-    public void setDirectorys(List<DirectorysBean> directorys) {
+    public void setDirectorys(List<DirectoryBean> directorys) {
         this.directorys = directorys;
     }
 
@@ -143,149 +137,5 @@ public class MClassInfoBean {
         }
     }
 
-    public static class DirectorysBean extends BaseExpandNode {
-        public DirectorysBean() {
-            setExpanded(false);
-        }
-
-        /**
-         * id : 236
-         * title : 冲刺预测班
-         * viods : [{"id":"1507","title":"冲刺预测01","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1508","title":"冲刺预测02","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1509","title":"冲刺预测03","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1510","title":"冲刺预测04","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1511","title":"冲刺预测05","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1512","title":"冲刺预测06","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1513","title":"冲刺预测07","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1514","title":"冲刺预测08","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1515","title":"冲刺预测09","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1516","title":"冲刺预测10","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1517","title":"冲刺预测11","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1518","title":"冲刺预测12","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1519","title":"冲刺预测13","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1520","title":"冲刺预测14","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1521","title":"冲刺预测15","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1522","title":"冲刺预测16","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1523","title":"冲刺预测17","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1524","title":"冲刺预测18","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1525","title":"冲刺预测19","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"},{"id":"1526","title":"冲刺预测20","isfree":"0","chapter_id":"236","dqtime":null,"totaltime":null,"is_last_read":"0"}]
-         * schedule : 0
-         */
-
-
-
-        private String id;
-        private String title;
-        private String schedule;
-        private List<ViodsBean> viods;
-        private List<BaseNode> baseNodes;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getSchedule() {
-            return schedule;
-        }
-
-        public void setSchedule(String schedule) {
-            this.schedule = schedule;
-        }
-
-        public List<ViodsBean> getViods() {
-            return viods;
-        }
-
-        public void setViods(List<ViodsBean> viods) {
-            this.viods = viods;
-        }
-
-        public static class ViodsBean extends BaseNode {
-            /**
-             * id : 1507
-             * title : 冲刺预测01
-             * isfree : 0
-             * chapter_id : 236
-             * dqtime : null
-             * totaltime : null
-             * is_last_read : 0
-             */
-
-            private String id;
-            private String title;
-            private String isfree;
-            private String chapter_id;
-            private Object dqtime;
-            private Object totaltime;
-            private String is_last_read;
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getTitle() {
-                return title;
-            }
-
-            public void setTitle(String title) {
-                this.title = title;
-            }
-
-            public String getIsfree() {
-                return isfree;
-            }
-
-            public void setIsfree(String isfree) {
-                this.isfree = isfree;
-            }
-
-            public String getChapter_id() {
-                return chapter_id;
-            }
-
-            public void setChapter_id(String chapter_id) {
-                this.chapter_id = chapter_id;
-            }
-
-            public Object getDqtime() {
-                return dqtime;
-            }
-
-            public void setDqtime(Object dqtime) {
-                this.dqtime = dqtime;
-            }
-
-            public Object getTotaltime() {
-                return totaltime;
-            }
-
-            public void setTotaltime(Object totaltime) {
-                this.totaltime = totaltime;
-            }
-
-            public String getIs_last_read() {
-                return is_last_read;
-            }
-
-            public void setIs_last_read(String is_last_read) {
-                this.is_last_read = is_last_read;
-            }
-
-            @Nullable
-            @Override
-            public List<BaseNode> getChildNode() {
-                return null;
-            }
-        }
-
-        @Nullable
-        @Override
-        public List<BaseNode> getChildNode() {
-            if (baseNodes == null) {
-                baseNodes = new ArrayList<>();
-                baseNodes.addAll(viods);
-            }
-            return baseNodes;
-        }
-    }
 
 }

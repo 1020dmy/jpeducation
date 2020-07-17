@@ -2050,7 +2050,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
     /**
      * 停止播放
      */
-    private void stop() {
+    private void  stop() {
         Boolean hasLoadedEnd = null;
         MediaInfo mediaInfo = null;
         if (mAliyunVodPlayer != null && hasLoadEnd != null) {

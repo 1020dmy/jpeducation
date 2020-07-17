@@ -57,7 +57,8 @@ public class InterceptorUtil {
                 Request request = chain.request();
                 String method = request.method();
                 TreeMap<String, Object> rootMap = new TreeMap<>();
-                if ("GET".equals(method)) {
+                if ("GET".equals(method) || "111".equals(request.header("upfile"))) {
+                    L.e("========没有加密");
                 } else {
                     RequestBody requestBody = request.body();
                     Buffer buffer = new Buffer();

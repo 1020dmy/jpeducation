@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.mclass.ClassPlayerActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
@@ -23,6 +25,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +92,11 @@ public class SignUpFragment extends BaseFragment {
             @Override
             public void onItemClick(int position, View view) {
                 startActivity(new Intent(getActivity(), ClassPlayerActivity.class).putExtra("myClassBean",list.get(position)));
+            }
+
+            @Override
+            public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+
             }
         });
         recyclerView.setAdapter(myClassAdapter);

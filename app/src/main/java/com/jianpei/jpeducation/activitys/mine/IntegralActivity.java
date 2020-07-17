@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
@@ -24,6 +26,8 @@ import com.jianpei.jpeducation.bean.integral.IntegralInfoBean;
 import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
 import com.jianpei.jpeducation.utils.dialog.SiginDialog;
 import com.jianpei.jpeducation.viewmodel.IntegralModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +167,11 @@ public class IntegralActivity extends BaseNoStatusActivity {
                     showLoading("");
                     integralModel.integrlPay(type, "0", list.get(position).getDate());
                 }
+
+            }
+
+            @Override
+            public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
             }
         });

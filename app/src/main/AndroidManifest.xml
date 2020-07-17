@@ -14,6 +14,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,12 +23,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.mine.mclass.ClassPlayerActivity"></activity>
-        <activity android:name=".activitys.mine.MaterialActivity" />
-        <activity android:name=".activitys.mine.UpVersionActivity" />
-        <activity android:name=".activitys.mine.AboutUsActivity" />
-        <activity android:name=".activitys.mine.SettingActivity" />
-        <activity android:name=".activitys.mine.IntegralDetailsActivity" />
+        <activity
+            android:name=".activitys.school.MineAttentionActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activitys.school.TopicListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.school.PostNewsActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activitys.mine.mclass.ClassDownloadActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.mclass.OfflineClassActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.mclass.ClassPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".activitys.mine.MaterialActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.UpVersionActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.AboutUsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.SettingActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.IntegralDetailsActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.mine.IntegralActivity"
             android:launchMode="singleTask" />
@@ -71,12 +102,12 @@
             android:name=".activitys.classinfo.GroupInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activitys.player.TryPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".activitys.material.MaterialListActivity"

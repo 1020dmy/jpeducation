@@ -122,4 +122,35 @@ public class UrlConfig {
 
     //1-1-我的课程详情
     public static final String classInfo = "course/classInfo";
+
+    //1-话题列表
+    public static final String topicData = "garden/topicData";
+    //1-1-我的关注用户列表
+    public static final String attentionData = "garden/attentionData";
+    //1-发布动态
+    public static final String insertGarden = "garden/insertGarden";
+
+    //1-广场帖子列表
+    public static final String threadData = "garden/threadData";
+
+    //1-1-关注/取消关注
+    public static final String attention = "garden/attention";
+
+    //1-点赞/取消点赞
+    public static final String gardenPraise = "garden/gardenPraise";
+
+    //1-动态详情
+    public static final String threadInfo = "garden/threadInfo";
+
+    //1-动态评价列表
+    public static final String evaluationData = "garden/evaluationData";
+    //1-回复列表
+    public static final String replyData = "garden/replyData";
+    //1-添加评论
+    public static final String insertEvaluation = "garden/insertEvaluation";
+    //1-删除评论
+    public static final String delEval = "garden/delEval";
+
+    //1-文件上传
+    public static final String uploadFile = "uploadFile";
 }

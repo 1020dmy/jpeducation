@@ -34,6 +34,7 @@ import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.integral.IntegralDataBean;
 import com.jianpei.jpeducation.bean.integral.IntegralInfoBean;
 import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
+import com.jianpei.jpeducation.bean.json.AttentionJson;
 import com.jianpei.jpeducation.bean.json.CancelOrderJson;
 import com.jianpei.jpeducation.bean.json.CarInfoJson;
 import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
@@ -41,10 +42,14 @@ import com.jianpei.jpeducation.bean.json.ClassDataJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
+import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
+import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.InsertCarJson;
 import com.jianpei.jpeducation.bean.json.InsertCommentJson;
+import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
+import com.jianpei.jpeducation.bean.json.InsertGardenJson;
 import com.jianpei.jpeducation.bean.json.IntegralDataJson;
 import com.jianpei.jpeducation.bean.json.MaterialDataJson;
 import com.jianpei.jpeducation.bean.json.OrderDataJson;
@@ -53,6 +58,10 @@ import com.jianpei.jpeducation.bean.json.OrderPaymentJson;
 import com.jianpei.jpeducation.bean.json.RegimentDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
+import com.jianpei.jpeducation.bean.json.ReplyDataJson;
+import com.jianpei.jpeducation.bean.json.ThreadDataJson;
+import com.jianpei.jpeducation.bean.json.TopicDataJson;
+import com.jianpei.jpeducation.bean.json.UploadFileJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.material.MaterialDataBean;
@@ -64,14 +73,27 @@ import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
+import com.jianpei.jpeducation.bean.school.AttentionDataBean;
+import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
+import com.jianpei.jpeducation.bean.school.ReplyDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadInfoBean;
+import com.jianpei.jpeducation.bean.school.TopicDataBean;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * jpeducation
@@ -163,13 +185,11 @@ public interface APIFunction {
     Observable<BaseEntity<CouponDataBean>> couponData(@Body CouponDataJson couponDataJson);
 
 
-
     /**
      * 首页公告
      */
     @POST(UrlConfig.noticeData)
     Observable<BaseEntity<ArrayList<NoticeDataBean>>> noticeData(@Body HomeInfoJson homeInfoJson);
-
 
 
     /**
@@ -307,6 +327,7 @@ public interface APIFunction {
      */
     @POST(UrlConfig.integralTask)
     Observable<BaseEntity<List<IntegralTaskBean>>> integralTask(@Body CarInfoJson carInfoJson);
+
     /**
      * 积分支付
      */
@@ -318,6 +339,7 @@ public interface APIFunction {
      */
     @POST(UrlConfig.integralData)
     Observable<BaseEntity<IntegralDataBean>> integralData(@Body IntegralDataJson integralDataJson);
+
     /**
      * 资料一级列表
      */
@@ -329,11 +351,13 @@ public interface APIFunction {
      */
     @POST(UrlConfig.subMaterialData)
     Observable<BaseEntity<ArrayList<MaterialInfoBean>>> subMaterialData(@Body SubMaterialDataJson subMaterialDataJson);
+
     /**
      * 资料下载
      */
     @POST(UrlConfig.getDownloadUrl)
     Observable<BaseEntity<DownloadBean>> getDownloadUrl(@Body DownloadJson downloadJson);
+
     /**
      * 1-我的资料
      */
@@ -351,6 +375,83 @@ public interface APIFunction {
      */
     @POST(UrlConfig.classInfo)
     Observable<BaseEntity<MClassInfoBean>> classInfo(@Body ClassInfoJson classInfoJson);
+
+    /**
+     * 话题列表
+     */
+    @POST(UrlConfig.topicData)
+    Observable<BaseEntity<TopicDataBean>> topicData(@Body TopicDataJson topicDataJson);
+
+    /**
+     * 我的关注用户列表
+     */
+    @POST(UrlConfig.attentionData)
+    Observable<BaseEntity<AttentionDataBean>> attentionData(@Body TopicDataJson topicDataJson);
+
+
+    /**
+     * 发布动态
+     */
+    @POST(UrlConfig.insertGarden)
+    Observable<BaseEntity<String>> insertGarden(@Body InsertGardenJson insertGardenJson);
+
+    /**
+     * 广场帖子列表
+     */
+    @POST(UrlConfig.threadData)
+    Observable<BaseEntity<List<ThreadDataBean>>> threadData(@Body ThreadDataJson threadDataJson);
+
+    /**
+     * 关注/取消关注
+     */
+    @POST(UrlConfig.attention)
+    Observable<BaseEntity<ThreadDataBean>> attention(@Body AttentionJson attentionJson);
+
+    /**
+     * 1-点赞/取消点赞
+     */
+    @POST(UrlConfig.gardenPraise)
+    Observable<BaseEntity<ThreadDataBean>> gardenPraise(@Body GardenPraiseJson gardenPraiseJson);
+
+
+    /**
+     * 1-动态详情
+     */
+    @POST(UrlConfig.threadInfo)
+    Observable<BaseEntity<ThreadInfoBean>> threadInfo(@Field("thread_id") String thread_id);
+
+    /**
+     * 1-动态评价列表
+     */
+    @POST(UrlConfig.evaluationData)
+    Observable<BaseEntity<List<EvaluationDataBean>>> evaluationData(@Body EvaluationDataJson evaluationDataJson);
+
+    /**
+     * 1-回复列表
+     */
+    @POST(UrlConfig.replyData)
+    Observable<BaseEntity<List<ReplyDataBean>>> replyData(@Body ReplyDataJson replyDataJson);
+
+    /**
+     * 1-添加评论
+     */
+    @POST(UrlConfig.insertEvaluation)
+    Observable<BaseEntity<String>> insertEvaluation(@Body InsertEvaluationJson insertEvaluationJson);
+
+    /**
+     * 1-删除评论
+     */
+    @POST(UrlConfig.delEval)
+    Observable<BaseEntity<String>> delEval(@Field("post_id") String post_id);
+    /**
+     * 文件上传
+     */
+    @POST("http://www.jianpei.com.cn/api/uploadFile")
+    @Headers({"upfile: 111"})
+    @Multipart
+    Observable<BaseEntity<List<String>>> uploadFile(@Part List<MultipartBody.Part> imgs);
+
+
     /**
      * 获取微信ACCESS_TOKEN
      *

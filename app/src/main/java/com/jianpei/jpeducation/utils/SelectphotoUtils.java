@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,7 +27,8 @@ import java.util.Locale;
  */
 public class SelectphotoUtils {
 
-    public Activity activity;
+
+    private WeakReference<Activity> weakReference;
 
 
     public static final int REQUEST_TAKE_PHOTO = 0;// 拍照
@@ -34,13 +36,14 @@ public class SelectphotoUtils {
     public static final int SCAN_OPEN_PHONE = 2;// 相册
 
 
-    public Uri imgUri; // 拍照时返回的uri
+//    public Uri imgUri; // 拍照时返回的uri
     public Uri mCutUri;// 图片裁剪时返回的uri
-    private File imgFile;// 拍照保存的图片文件
+    public File imgFile;// 拍照保存的图片文件
 
 
     public SelectphotoUtils(Activity activity) {
-        this.activity = activity;
+        weakReference = new WeakReference<>(activity);
+
     }
 
 
@@ -52,7 +55,8 @@ public class SelectphotoUtils {
         String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
         String fileName = "photo_" + time;
         // 创建一个文件夹
-        String path = Environment.getExternalStorageDirectory() + "/take_photo";
+        String path = weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/take_photo";
+
         File file = new File(path);
         if (!file.exists()) {
             file.mkdirs();
@@ -61,13 +65,13 @@ public class SelectphotoUtils {
         imgFile = new File(file, fileName + ".jpeg");
         // 将file转换成uri
         // 注意7.0及以上与之前获取的uri不一样了，返回的是provider路径
-        imgUri = getUri(imgFile);
+       Uri imgUri = getUri(imgFile);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 添加Uri读取权限
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         // 添加图片保存位置
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
-        activity.startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+        weakReference.get().startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
     /**
@@ -102,26 +106,36 @@ public class SelectphotoUtils {
         intent.putExtra("return-data", false);
 
         // 指定裁剪完成以后的图片所保存的位置,pic info显示有延时
-        if (fromCapture) {
-            // 如果是使用拍照，那么原先的uri和最终目标的uri一致,注意这里的uri必须是Uri.fromFile生成的
-            mCutUri = Uri.fromFile(imgFile);
-        } else { // 从相册中选择，那么裁剪的图片保存在take_photo中
-            String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
-            String fileName = "photo_" + time;
-            File mCutFile = new File(Environment.getExternalStorageDirectory() + "/take_photo", fileName + ".jpeg");
-            if (!mCutFile.getParentFile().exists()) {
-                mCutFile.getParentFile().mkdirs();
-            }
-            mCutUri = Uri.fromFile(mCutFile);
-        }
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCutUri);
-        Toast.makeText(activity, "剪裁图片", Toast.LENGTH_SHORT).show();
-        // 以广播方式刷新系统相册，以便能够在相册中找到刚刚所拍摄和裁剪的照片
-        Intent intentBc = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intentBc.setData(uri);
-        activity.sendBroadcast(intentBc);
+//        if (fromCapture) {
+//            // 如果是使用拍照，那么原先的uri和最终目标的uri一致,注意这里的uri必须是Uri.fromFile生成的
+//            mCutUri = Uri.fromFile(imgFile);
+//        } else { // 从相册中选择，那么裁剪的图片保存在take_photo中
+//            String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
+//            String fileName = "photo_" + time;
+//            File mCutFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "", fileName + ".jpeg");
+//
+//            if (!mCutFile.getParentFile().exists()) {
+//                mCutFile.getParentFile().mkdirs();
+//            }
+//            mCutUri = Uri.fromFile(mCutFile);
+//        }
+        String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
+        String fileName = "photo_" + time;
+        File mCutFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "", fileName + ".jpeg");
 
-        activity.startActivityForResult(intent, REQUEST_CROP); //设置裁剪参数显示图片至ImageVie
+        if (!mCutFile.getParentFile().exists()) {
+            mCutFile.getParentFile().mkdirs();
+        }
+        mCutUri = Uri.fromFile(mCutFile);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCutUri);
+        Toast.makeText(weakReference.get(), "剪裁图片", Toast.LENGTH_SHORT).show();
+        // 以广播方式刷新系统相册，以便能够在相册中找到刚刚所拍摄和裁剪的照片
+//        Intent intentBc = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        intentBc.setData(uri);
+//        weakReference.get().sendBroadcast(intentBc);
+
+        weakReference.get().startActivityForResult(intent, REQUEST_CROP); //设置裁剪参数显示图片至ImageVie
     }
 
     /**
@@ -130,7 +144,7 @@ public class SelectphotoUtils {
     public void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        activity.startActivityForResult(intent, SCAN_OPEN_PHONE);
+        weakReference.get().startActivityForResult(intent, SCAN_OPEN_PHONE);
     }
 
     public Uri getUri(File file) {
@@ -141,12 +155,12 @@ public class SelectphotoUtils {
              * 7.0 调用系统相机拍照不再允许使用Uri方式，应该替换为FileProvider
              * 并且这样可以解决MIUI系统上拍照返回size为0的情况
              */
-            return FileProvider.getUriForFile(activity, "com.jianpei.jpeducation.fileprovider", file);
+            return FileProvider.getUriForFile(weakReference.get(), "com.jianpei.jpeducation.fileprovider", file);
         }
     }
 
     public void Release() {
-        activity = null;
+        weakReference.clear();
     }
 
 }

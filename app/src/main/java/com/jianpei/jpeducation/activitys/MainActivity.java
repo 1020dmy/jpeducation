@@ -47,14 +47,16 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
-    @BindView(R.id.include_title)
-    LinearLayout llTitle;
+//    @BindView(R.id.include_title)
+//    LinearLayout llTitle;
     @BindView(R.id.tv_message)
     TextView tvMessage;
     @BindView(R.id.tv_setting)
     TextView tvSetting;
     @BindView(R.id.iv_statue)
     ImageView ivStatue;
+    @BindView(R.id.tv_search)
+    TextView tvSearch;
 
 
     private Fragment[] fragments;
@@ -174,18 +176,27 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         transaction.show(fragments[index]).commitAllowingStateLoss();
 
         if (index == 4) {
-            llTitle.setVisibility(View.VISIBLE);
             tvMessage.setVisibility(View.VISIBLE);
             tvSetting.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.GONE);
             btnTitle.setVisibility(View.GONE);
+            tvSearch.setVisibility(View.GONE);
+
+        } else if (index == 1) {
+
+            tvMessage.setVisibility(View.GONE);
+            tvSetting.setVisibility(View.GONE);
+            btnTitle.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            tvSearch.setVisibility(View.VISIBLE);
 
         } else {
-            llTitle.setVisibility(View.VISIBLE);
             tvMessage.setVisibility(View.GONE);
             tvSetting.setVisibility(View.GONE);
             btnTitle.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.VISIBLE);
+            tvSearch.setVisibility(View.GONE);
+
         }
     }
 

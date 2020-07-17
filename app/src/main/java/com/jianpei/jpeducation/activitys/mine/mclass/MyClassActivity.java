@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.mine.mclass;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,8 +36,6 @@ public class MyClassActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewPage)
     ViewPager2 viewPage;
-    @BindView(R.id.iv_right)
-    ImageView ivRight;
 
     private String[] tabTitle = {"已报名", "已过期"};
 
@@ -71,13 +70,14 @@ public class MyClassActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_right})
+    @OnClick({R.id.iv_back, R.id.tv_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_right:
+            case R.id.tv_right:
+                startActivity(new Intent(this, OfflineClassActivity.class));
                 break;
         }
     }
