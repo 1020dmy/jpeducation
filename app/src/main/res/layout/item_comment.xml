@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:layout_marginTop="10dp"
+    android:paddingRight="20dp">
+
+
+    <LinearLayout
+        android:id="@+id/ll_reply"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_head"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余欢欢"
+                android:textColor="@color/c888B96"
+                android:textSize="@dimen/s_dp_14" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2020-05-13  13：14：59"
+                android:textColor="@color/c888B96"
+                android:textSize="@dimen/s_dp_11" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_dianzan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/school_dianzan_icon" />
+
+        <TextView
+            android:id="@+id/tv_dianzan_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/c161820"
+        android:textSize="@dimen/s_dp_14" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="26dp"
+        android:background="@color/ce9e9e9"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="共105条回复"
+            android:textColor="@color/c2384C7" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/ce9e9e9" />
+</LinearLayout>

@@ -24,6 +24,11 @@ buildscript {
 
 allprojects {
     repositories {
+        // 支付宝 SDK AAR 包所需的配置
+        flatDir {
+            dirs 'libs'
+        }
+
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         google()

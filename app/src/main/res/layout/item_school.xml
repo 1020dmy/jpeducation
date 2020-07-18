@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:background="@drawable/shadow_home_item_bg"
+    android:id="@+id/linearLayout"
     android:orientation="vertical"
     android:padding="13dp">
 

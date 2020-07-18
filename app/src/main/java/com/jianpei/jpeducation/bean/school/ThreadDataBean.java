@@ -1,5 +1,9 @@
 package com.jianpei.jpeducation.bean.school;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +14,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class ThreadDataBean {
+public class ThreadDataBean implements Parcelable {
 
 
     /**
@@ -57,8 +61,24 @@ public class ThreadDataBean {
     private String is_post;
     private String is_attention;
 
+    private List<AttentionBean> users;
+    private List<TopicBean> topics;
 
+    public List<AttentionBean> getUsers() {
+        return users;
+    }
 
+    public void setUsers(List<AttentionBean> users) {
+        this.users = users;
+    }
+
+    public List<TopicBean> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<TopicBean> topics) {
+        this.topics = topics;
+    }
 
     private List<ImagesBean> images;
 
@@ -245,4 +265,83 @@ public class ThreadDataBean {
     public void setCreate_time_str(String create_time_str) {
         this.create_time_str = create_time_str;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.user_img);
+        dest.writeString(this.user_name);
+        dest.writeString(this.id);
+        dest.writeString(this.user_id);
+        dest.writeString(this.article_id);
+        dest.writeString(this.status);
+        dest.writeString(this.title);
+        dest.writeString(this.content);
+        dest.writeString(this.pic);
+        dest.writeString(this.is_hot);
+        dest.writeString(this.post_num);
+        dest.writeString(this.like_num);
+        dest.writeString(this.view_num);
+        dest.writeString(this.updated_at);
+        dest.writeString(this.created_at);
+        dest.writeString(this.is_del);
+        dest.writeString(this.remind_id);
+        dest.writeString(this.create_time_str);
+        dest.writeString(this.is_my_thread);
+        dest.writeString(this.is_praise);
+        dest.writeString(this.is_post);
+        dest.writeString(this.is_attention);
+        dest.writeTypedList(this.users);
+        dest.writeTypedList(this.topics);
+        dest.writeList(this.images);
+    }
+
+    public ThreadDataBean() {
+    }
+
+    protected ThreadDataBean(Parcel in) {
+        this.user_img = in.readString();
+        this.user_name = in.readString();
+        this.id = in.readString();
+        this.user_id = in.readString();
+        this.article_id = in.readString();
+        this.status = in.readString();
+        this.title = in.readString();
+        this.content = in.readString();
+        this.pic = in.readString();
+        this.is_hot = in.readString();
+        this.post_num = in.readString();
+        this.like_num = in.readString();
+        this.view_num = in.readString();
+        this.updated_at = in.readString();
+        this.created_at = in.readString();
+        this.is_del = in.readString();
+        this.remind_id = in.readString();
+        this.create_time_str = in.readString();
+        this.is_my_thread = in.readString();
+        this.is_praise = in.readString();
+        this.is_post = in.readString();
+        this.is_attention = in.readString();
+        this.users = in.createTypedArrayList(AttentionBean.CREATOR);
+        this.topics = in.createTypedArrayList(TopicBean.CREATOR);
+        this.images = new ArrayList<ImagesBean>();
+        in.readList(this.images, ImagesBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ThreadDataBean> CREATOR = new Parcelable.Creator<ThreadDataBean>() {
+        @Override
+        public ThreadDataBean createFromParcel(Parcel source) {
+            return new ThreadDataBean(source);
+        }
+
+        @Override
+        public ThreadDataBean[] newArray(int size) {
+            return new ThreadDataBean[size];
+        }
+    };
 }

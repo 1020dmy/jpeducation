@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.school;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.school;
  * <p>
  * Describe:
  */
-public class ImagesBean {
+public class ImagesBean implements Parcelable {
 
 
     /**
@@ -74,4 +77,44 @@ public class ImagesBean {
     public void setHeight(String height) {
         this.height = height;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.thread_id);
+        dest.writeString(this.url);
+        dest.writeString(this.sort_num);
+        dest.writeString(this.width);
+        dest.writeString(this.height);
+    }
+
+    public ImagesBean() {
+    }
+
+    protected ImagesBean(Parcel in) {
+        this.id = in.readString();
+        this.thread_id = in.readString();
+        this.url = in.readString();
+        this.sort_num = in.readString();
+        this.width = in.readString();
+        this.height = in.readString();
+    }
+
+    public static final Parcelable.Creator<ImagesBean> CREATOR = new Parcelable.Creator<ImagesBean>() {
+        @Override
+        public ImagesBean createFromParcel(Parcel source) {
+            return new ImagesBean(source);
+        }
+
+        @Override
+        public ImagesBean[] newArray(int size) {
+            return new ImagesBean[size];
+        }
+    };
 }

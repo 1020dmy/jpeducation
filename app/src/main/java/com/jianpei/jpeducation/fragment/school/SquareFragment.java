@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.school;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
@@ -55,7 +58,7 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     //点赞参数
     private String type = "2";
 
-    private int viewType;
+//    private int viewType;
 
     @Override
     protected int initLayout() {
@@ -127,19 +130,23 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 }
             }
         });
-        //关注/取消关注//点赞/取消点赞
+        //关注/取消关注
         schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
             @Override
             public void onChanged(ThreadDataBean threadDataBean) {
                 dismissLoading();
-                if (viewType == 0) {
-                    schoolAdapter.notifyDataSetChanged();
-                } else if (viewType == 1) {
-                    mThreadDataBeans.get(indexPosition).setIs_praise(threadDataBean.getIs_praise());
-                    mThreadDataBeans.get(indexPosition).setLike_num(threadDataBean.getLike_num());
-                    schoolAdapter.notifyItemChanged(indexPosition);
-                }
+                schoolAdapter.notifyDataSetChanged();
 
+            }
+        });
+        //点赞/取消点赞
+        schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
+            @Override
+            public void onChanged(GardenPraiseBean gardenPraiseBean) {
+                dismissLoading();
+                mThreadDataBeans.get(indexPosition).setIs_praise(gardenPraiseBean.getThread_info().getIs_praise());
+                mThreadDataBeans.get(indexPosition).setLike_num(gardenPraiseBean.getThread_info().getLike_num());
+                schoolAdapter.notifyItemChanged(indexPosition);
             }
         });
         schoolModel.getErrData().observe(this, new Observer<String>() {
@@ -174,17 +181,20 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
         switch (view.getId()) {
             case R.id.btn_status://关注/取消关注
                 showLoading("");
-                viewType = 0;
+//                viewType = 0;
                 schoolModel.attention(mThreadDataBeans.get(position).getUser_id(), "", mThreadDataBeans.get(position).getId(), mThreadDataBeans);
                 break;
             case R.id.iv_share://分享
                 break;
             case R.id.ll_dianzan://点赞/取消点赞
                 showLoading("");
-                viewType = 1;
+//                viewType = 1;
                 schoolModel.gardenPraise(type, mThreadDataBeans.get(position).getId(), "", "");
                 break;
             case R.id.tv_message://评论
+                break;
+            case R.id.linearLayout://详情
+                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
                 break;
         }
 

@@ -60,8 +60,8 @@ import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
 import com.jianpei.jpeducation.bean.json.ReplyDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadDataJson;
+import com.jianpei.jpeducation.bean.json.ThreadInfoJson;
 import com.jianpei.jpeducation.bean.json.TopicDataJson;
-import com.jianpei.jpeducation.bean.json.UploadFileJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.material.MaterialDataBean;
@@ -75,9 +75,9 @@ import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.school.AttentionDataBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
+import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
-import com.jianpei.jpeducation.bean.school.ThreadInfoBean;
 import com.jianpei.jpeducation.bean.school.TopicDataBean;
 
 
@@ -86,10 +86,8 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -411,14 +409,14 @@ public interface APIFunction {
      * 1-点赞/取消点赞
      */
     @POST(UrlConfig.gardenPraise)
-    Observable<BaseEntity<ThreadDataBean>> gardenPraise(@Body GardenPraiseJson gardenPraiseJson);
+    Observable<BaseEntity<GardenPraiseBean>> gardenPraise(@Body GardenPraiseJson gardenPraiseJson);
 
 
     /**
      * 1-动态详情
      */
     @POST(UrlConfig.threadInfo)
-    Observable<BaseEntity<ThreadInfoBean>> threadInfo(@Field("thread_id") String thread_id);
+    Observable<BaseEntity<ThreadDataBean>> threadInfo(@Body ThreadInfoJson threadInfoJson);
 
     /**
      * 1-动态评价列表
@@ -443,6 +441,7 @@ public interface APIFunction {
      */
     @POST(UrlConfig.delEval)
     Observable<BaseEntity<String>> delEval(@Field("post_id") String post_id);
+
     /**
      * 文件上传
      */

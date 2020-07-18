@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activitys.school.PostInfoActivity">
+
+    <include layout="@layout/base_title" />
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shadow_home_item_bg"
+                    android:orientation="vertical"
+                    android:padding="13dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/civ_head"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="余欢欢"
+                                android:textColor="@color/c161820"
+                                android:textSize="@dimen/s_dp_14" />
+
+                            <TextView
+                                android:id="@+id/tv_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2020-05-13  13：14：59"
+                                android:textColor="@color/c888B96"
+                                android:textSize="@dimen/s_dp_11" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btn_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:background="@drawable/shape_selectzhuanye_itemt"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:text="关注+"
+                            android:textColor="@color/cE73B30"
+                            android:textSize="@dimen/s_dp_14" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/c161820"
+                        android:textSize="@dimen/s_dp_13" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="精彩评论"
+                        android:textColor="@color/c161820"
+                        android:textSize="@dimen/s_dp_14" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_reply"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_reply_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <EditText
+            android:id="@+id/et_reply_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null" />
+
+        <TextView
+            android:id="@+id/tv_reply_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="发送"
+            android:textColor="@color/cFFA303" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_comment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <EditText
+            android:id="@+id/et_comment"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_edittext_bg"
+            android:gravity="center_vertical"
+            android:hint="我来说两句"
+            android:textColor="@color/cA5A7B0"
+            android:textSize="@dimen/s_dp_13" />
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="发送"
+            android:textColor="@color/cFFA303"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/iv_dianzan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/school_dianzan_icon" />
+
+        <TextView
+            android:id="@+id/tv_dianzan_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text=""
+            android:textColor="@color/cA5A7B0"
+            android:textSize="@dimen/s_dp_11" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/school_share_icon" />
+
+
+    </LinearLayout>
+</LinearLayout>

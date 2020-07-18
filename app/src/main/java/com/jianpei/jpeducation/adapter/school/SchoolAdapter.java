@@ -112,6 +112,8 @@ public class SchoolAdapter extends RecyclerView.Adapter<SchoolAdapter.MyHolder> 
         private ImageView iv_dianzan;
         private LinearLayout ll_dianzan;
 
+        private LinearLayout linearLayout;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             civ_head = itemView.findViewById(R.id.civ_head);
@@ -126,11 +128,13 @@ public class SchoolAdapter extends RecyclerView.Adapter<SchoolAdapter.MyHolder> 
 
             iv_dianzan = itemView.findViewById(R.id.iv_dianzan);
             ll_dianzan = itemView.findViewById(R.id.ll_dianzan);
+            linearLayout=itemView.findViewById(R.id.linearLayout);
 
             btn_status.setOnClickListener(this);
             iv_share.setOnClickListener(this);
             ll_dianzan.setOnClickListener(this);
             tv_message.setOnClickListener(this);
+            linearLayout.setOnClickListener(this);
         }
 
         @Override
