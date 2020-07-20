@@ -23,6 +23,34 @@ public class TopicBean implements Parcelable {
     private String title;
     private int type;
 
+    private String view_num;
+    private String post_num;
+    private String content;
+
+    public String getView_num() {
+        return view_num;
+    }
+
+    public void setView_num(String view_num) {
+        this.view_num = view_num;
+    }
+
+    public String getPost_num() {
+        return post_num;
+    }
+
+    public void setPost_num(String post_num) {
+        this.post_num = post_num;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     private boolean isSelect;
 
     public TopicBean() {

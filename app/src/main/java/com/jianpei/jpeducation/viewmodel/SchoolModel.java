@@ -11,6 +11,7 @@ import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.contract.SchoolContract;
 import com.jianpei.jpeducation.repository.SchoolRepository;
 
@@ -72,6 +73,48 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
                 }
             }
         });
+    }
+
+    /**
+     * 话题帖子列表
+     *
+     * @param start_id
+     * @param end_id
+     * @param follow
+     * @param topic_id
+     * @param is_hot
+     */
+    private MutableLiveData<ThreadFromTopicDataBean> threadFromTopicDataBeanLiveData;
+
+    public MutableLiveData<ThreadFromTopicDataBean> getThreadFromTopicDataBeanLiveData() {
+        if (threadFromTopicDataBeanLiveData == null)
+            threadFromTopicDataBeanLiveData = new MutableLiveData<>();
+        return threadFromTopicDataBeanLiveData;
+    }
+
+    @Override
+    public void threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot) {
+        schoolRepository.threadFromTopicData(start_id, end_id, follow, topic_id, is_hot).compose(setThread()).subscribe(new BaseObserver<ThreadFromTopicDataBean>() {
+            @Override
+            protected void onSuccees(BaseEntity<ThreadFromTopicDataBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    threadFromTopicDataBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
     }
 
     /**

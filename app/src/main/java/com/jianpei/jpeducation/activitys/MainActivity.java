@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
 import com.jianpei.jpeducation.activitys.mine.SettingActivity;
+import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
@@ -47,7 +48,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
-//    @BindView(R.id.include_title)
+    //    @BindView(R.id.include_title)
 //    LinearLayout llTitle;
     @BindView(R.id.tv_message)
     TextView tvMessage;
@@ -57,6 +58,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     ImageView ivStatue;
     @BindView(R.id.tv_search)
     TextView tvSearch;
+    @BindView(R.id.ib_shopping)
+    ImageButton ibShopping;
 
 
     private Fragment[] fragments;
@@ -181,6 +184,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             imageButton.setVisibility(View.GONE);
             btnTitle.setVisibility(View.GONE);
             tvSearch.setVisibility(View.GONE);
+            ibShopping.setVisibility(View.GONE);
+
 
         } else if (index == 1) {
 
@@ -188,20 +193,31 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             tvSetting.setVisibility(View.GONE);
             btnTitle.setVisibility(View.GONE);
             imageButton.setVisibility(View.GONE);
-            tvSearch.setVisibility(View.VISIBLE);
+//            tvSearch.setVisibility(View.VISIBLE);
+            ibShopping.setVisibility(View.GONE);
 
+
+        } else if (index == 2) {
+            tvMessage.setVisibility(View.GONE);
+            tvSetting.setVisibility(View.GONE);
+            btnTitle.setVisibility(View.VISIBLE);
+            imageButton.setVisibility(View.VISIBLE);
+            ibShopping.setVisibility(View.VISIBLE);
+            tvSearch.setVisibility(View.GONE);
         } else {
             tvMessage.setVisibility(View.GONE);
             tvSetting.setVisibility(View.GONE);
             btnTitle.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.VISIBLE);
             tvSearch.setVisibility(View.GONE);
+            ibShopping.setVisibility(View.GONE);
+
 
         }
     }
 
 
-    @OnClick({R.id.imageButton, R.id.btn_title, R.id.tv_message, R.id.tv_setting})
+    @OnClick({R.id.imageButton, R.id.btn_title, R.id.tv_message, R.id.tv_setting, R.id.ib_shopping})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
@@ -217,6 +233,9 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
                 break;
             case R.id.tv_setting:
                 startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.ib_shopping:
+                startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
 
         }

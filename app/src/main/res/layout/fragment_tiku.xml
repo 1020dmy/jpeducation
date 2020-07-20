@@ -1,14 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.tiku.TikuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="107dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/home_title_bg" />
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:indicator_marginBottom="13dp"
+                    app:indicator_normal_width="17dp"
+                    app:indicator_selected_color="@color/white" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_one"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_one"
+                    android:text="每日一练" />
+
+                <TextView
+                    android:id="@+id/tv_two"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_two"
+                    android:text="章节练习" />
+
+                <TextView
+                    android:id="@+id/tv_three"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_three"
+                    android:text="历年真题" />
+
+                <TextView
+                    android:id="@+id/tv_four"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_four"
+                    android:text="模拟试题" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_five"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_five"
+                    android:text="错题集" />
+
+                <TextView
+                    android:id="@+id/tv_six"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_six"
+                    android:text="题目收藏" />
+
+                <TextView
+                    android:id="@+id/tv_seven"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_seven"
+                    android:text="做题记录" />
+
+                <TextView
+                    android:id="@+id/tv_eight"
+                    style="@style/tiku_txt"
+                    android:drawableTop="@drawable/tiku_eight"
+                    android:text="题库答疑" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="| 相关课程推荐"
+                android:textColor="@color/c161820"
+                android:textSize="@dimen/s_dp_16" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="26dp"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

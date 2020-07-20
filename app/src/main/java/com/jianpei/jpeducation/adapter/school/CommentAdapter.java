@@ -111,6 +111,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyHolder
 
             ivDianzan.setOnClickListener(this);
             ll_reply.setOnClickListener(this);
+            linearLayout.setOnClickListener(this);
 
 
         }

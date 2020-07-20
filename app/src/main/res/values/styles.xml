@@ -168,4 +168,16 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">15dp</item>
-    </style></resources>
+    </style>
+
+
+    <style name="tiku_txt">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">9dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/c0A0C14</item>
+        <item name="android:textSize">@dimen/s_dp_13</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

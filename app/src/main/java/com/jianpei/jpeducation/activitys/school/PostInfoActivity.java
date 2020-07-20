@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.school;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewStructure;
 import android.view.inputmethod.InputMethodManager;
@@ -199,7 +200,6 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
         schoolModel.getEvaluationDataBeansLiveData().observe(this, new Observer<List<EvaluationDataBean>>() {
             @Override
             public void onChanged(List<EvaluationDataBean> evaluationDataBeans) {
-                L.e("size:====" + evaluationDataBeans.size());
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
@@ -356,6 +356,9 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 llReply.setVisibility(View.VISIBLE);
                 tvReplyName.setText("@" + mEvaluationDataBeans.get(position).getUser_name() + ":");
                 showInput(etReplyContent);
+                break;
+            case R.id.linearLayout:
+                startActivity(new Intent(this, ReplyListActivity.class).putExtra("evaluationDataBean",mEvaluationDataBeans.get(position)));
                 break;
         }
     }

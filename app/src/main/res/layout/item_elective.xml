@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="133dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/shape_integral_guize">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="111dp"
+        android:layout_height="127dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/home_icon_demo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020二级建造师无忧取证班"
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_14" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:text="双师资授课，个性化定制服务双师资授课，个性化定制服务"
+            android:textColor="@color/c888B96"
+            android:textSize="@dimen/s_dp_11" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/tv_tipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_directory_trylistener"
+                android:padding="4dp"
+                android:text="习题训练"
+                android:textColor="@color/cE73B30"
+                android:textSize="@dimen/s_dp_11" />
+
+            <TextView
+                android:id="@+id/tv_tipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shape_directory_trylistener"
+                android:padding="4dp"
+                android:text="历年真题"
+                android:textColor="@color/cE73B30"
+                android:textSize="@dimen/s_dp_11" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="255人报名"
+            android:textColor="@color/c888B96"
+            android:textSize="@dimen/s_dp_11" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="￥999-1265"
+                android:textColor="@color/cFF0000"
+                android:textSize="@dimen/s_dp_13" />
+
+            <TextView
+                android:id="@+id/tv_signup"
+                android:layout_width="90dp"
+                android:layout_height="27dp"
+                android:background="@drawable/shape_home_item_btn"
+                android:gravity="center"
+                android:text="报名试听"
+                android:textColor="@color/white"
+                android:textSize="@dimen/s_dp_13" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

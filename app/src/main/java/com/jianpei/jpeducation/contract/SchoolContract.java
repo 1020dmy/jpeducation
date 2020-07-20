@@ -5,6 +5,7 @@ import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public interface SchoolContract {
     interface Repository {
         //帖子列表
         Observable<BaseEntity<List<ThreadDataBean>>> threadData(String start_id, String end_id, String follow);
+
+        //话题帖子列表
+        Observable<BaseEntity<ThreadFromTopicDataBean>> threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot);
 
         //关注/取消关注
         Observable<BaseEntity<ThreadDataBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans);
@@ -51,6 +55,8 @@ public interface SchoolContract {
 
 
         void threadData(String start_id, String end_id, String follow);
+
+        void threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot);
 
         void attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans);
 

@@ -24,6 +24,7 @@ import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
+import com.jianpei.jpeducation.bean.elective.GroupHomeBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -78,7 +79,9 @@ import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.bean.school.TopicDataBean;
+import com.jianpei.jpeducation.bean.tiku.PaperHomeBean;
 
 
 import java.util.ArrayList;
@@ -400,6 +403,12 @@ public interface APIFunction {
     Observable<BaseEntity<List<ThreadDataBean>>> threadData(@Body ThreadDataJson threadDataJson);
 
     /**
+     * 话题帖子列表
+     */
+    @POST(UrlConfig.threadData)
+    Observable<BaseEntity<ThreadFromTopicDataBean>> threadFromTopicData(@Body ThreadDataJson threadDataJson);
+
+    /**
      * 关注/取消关注
      */
     @POST(UrlConfig.attention)
@@ -441,6 +450,17 @@ public interface APIFunction {
      */
     @POST(UrlConfig.delEval)
     Observable<BaseEntity<String>> delEval(@Field("post_id") String post_id);
+
+    /**
+     * 1-选课首页
+     */
+    @POST(UrlConfig.groupHome)
+    Observable<BaseEntity<GroupHomeBean>> groupHome(@Body HomeInfoJson homeInfoJson);
+    /**
+     * 1-1-题库首页
+     */
+    @POST(UrlConfig.paperHome)
+    Observable<BaseEntity<PaperHomeBean>> paperHome(@Body HomeInfoJson homeInfoJson);
 
     /**
      * 文件上传

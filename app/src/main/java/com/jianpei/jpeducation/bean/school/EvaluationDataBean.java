@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.school;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.school;
  * <p>
  * Describe:
  */
-public class EvaluationDataBean {
+public class EvaluationDataBean implements Parcelable {
 
 
     /**
@@ -164,4 +167,61 @@ public class EvaluationDataBean {
     public void setEvaluation_count(String evaluation_count) {
         this.evaluation_count = evaluation_count;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.thread_id);
+        dest.writeString(this.post_id);
+        dest.writeString(this.user_id);
+        dest.writeString(this.user_id_at);
+        dest.writeString(this.content);
+        dest.writeString(this.like_num);
+        dest.writeString(this.created_at);
+        dest.writeString(this.created_at_str);
+        dest.writeString(this.is_del);
+        dest.writeString(this.user_name);
+        dest.writeString(this.user_img);
+        dest.writeString(this.is_post);
+        dest.writeString(this.is_praise);
+        dest.writeString(this.evaluation_count);
+    }
+
+    public EvaluationDataBean() {
+    }
+
+    protected EvaluationDataBean(Parcel in) {
+        this.id = in.readString();
+        this.thread_id = in.readString();
+        this.post_id = in.readString();
+        this.user_id = in.readString();
+        this.user_id_at = in.readString();
+        this.content = in.readString();
+        this.like_num = in.readString();
+        this.created_at = in.readString();
+        this.created_at_str = in.readString();
+        this.is_del = in.readString();
+        this.user_name = in.readString();
+        this.user_img = in.readString();
+        this.is_post = in.readString();
+        this.is_praise = in.readString();
+        this.evaluation_count = in.readString();
+    }
+
+    public static final Parcelable.Creator<EvaluationDataBean> CREATOR = new Parcelable.Creator<EvaluationDataBean>() {
+        @Override
+        public EvaluationDataBean createFromParcel(Parcel source) {
+            return new EvaluationDataBean(source);
+        }
+
+        @Override
+        public EvaluationDataBean[] newArray(int size) {
+            return new EvaluationDataBean[size];
+        }
+    };
 }

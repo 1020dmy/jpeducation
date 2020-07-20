@@ -151,6 +151,12 @@ public class UrlConfig {
     //1-删除评论
     public static final String delEval = "garden/delEval";
 
+    //1-选课首页
+    public static final String groupHome = "group/groupHome";
+
+    //1-1-题库首页
+    public static final String paperHome = "paperHome";
+
     //1-文件上传
     public static final String uploadFile = "uploadFile";
 }

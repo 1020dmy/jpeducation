@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * <p>
  * Describe:
  */
-public class GroupInfoBean  implements Parcelable {
+public class GroupInfoBean implements Parcelable {
 
     /**
      * id : 5
@@ -37,7 +37,6 @@ public class GroupInfoBean  implements Parcelable {
      */
 
 
-
     private String id;
     private String cat_id;
     private String title;
@@ -56,6 +55,35 @@ public class GroupInfoBean  implements Parcelable {
     private String sort_num;
     private String buy_num;
     private String coupon_str;
+
+    private String real_ques_status;
+    private String simulate_ques_status;
+
+    private String price_str;
+
+    public String getPrice_str() {
+        return price_str;
+    }
+
+    public void setPrice_str(String price_str) {
+        this.price_str = price_str;
+    }
+
+    public String getReal_ques_status() {
+        return real_ques_status;
+    }
+
+    public void setReal_ques_status(String real_ques_status) {
+        this.real_ques_status = real_ques_status;
+    }
+
+    public String getSimulate_ques_status() {
+        return simulate_ques_status;
+    }
+
+    public void setSimulate_ques_status(String simulate_ques_status) {
+        this.simulate_ques_status = simulate_ques_status;
+    }
 
     public String getId() {
         return id;

@@ -8,19 +8,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
+import com.jianpei.jpeducation.activitys.school.TopicInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
+import com.jianpei.jpeducation.adapter.school.HotTopicAdapter;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.TopicBean;
+import com.jianpei.jpeducation.bean.school.TopicDataBean;
 import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.jianpei.jpeducation.viewmodel.TopicListModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -43,6 +49,8 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.rv_topic)
+    RecyclerView rvTopic;
 
     private SchoolAdapter schoolAdapter;
 
@@ -57,8 +65,11 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     private int indexPosition;
     //点赞参数
     private String type = "2";
-
-//    private int viewType;
+    //热点话题
+    private int page = 1, pageSize = 4;
+    private HotTopicAdapter hotTopicAdapter;
+    private List<TopicBean> topicBeans;
+    private TopicListModel topicListModel;
 
     @Override
     protected int initLayout() {
@@ -67,6 +78,7 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
 
     @Override
     protected void initView(View view) {
+        rvTopic.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         MyLayoutManager myLayoutManager = new MyLayoutManager(getActivity());
         myLayoutManager.setScrollEnabled(false);
@@ -110,6 +122,11 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
         schoolAdapter = new SchoolAdapter(mThreadDataBeans, getActivity());
         schoolAdapter.setMyItemOnClickListener(this);
         recyclerView.setAdapter(schoolAdapter);
+        //话题
+        topicBeans = new ArrayList<>();
+        hotTopicAdapter = new HotTopicAdapter(topicBeans);
+        hotTopicAdapter.setMyItemOnClickListener(this);
+        rvTopic.setAdapter(hotTopicAdapter);
 
 
         schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
@@ -158,7 +175,23 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 shortToast(o);
             }
         });
+        //话题
+        topicListModel = new ViewModelProvider(this).get(TopicListModel.class);
+        topicListModel.getTopicDataBeanLiveData().observe(this, new Observer<TopicDataBean>() {
+            @Override
+            public void onChanged(TopicDataBean topicDataBean) {
+                topicBeans.addAll(topicDataBean.getBase_list());
+                hotTopicAdapter.notifyDataSetChanged();
 
+            }
+        });
+        topicListModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                shortToast(o);
+            }
+        });
+        topicListModel.topicData(page, pageSize);
 
     }
 
@@ -195,6 +228,9 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 break;
             case R.id.linearLayout://详情
                 startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                break;
+            case R.id.ll_topic:
+                startActivity(new Intent(getActivity(), TopicInfoActivity.class).putExtra("topicBean",topicBeans.get(position)));
                 break;
         }
 

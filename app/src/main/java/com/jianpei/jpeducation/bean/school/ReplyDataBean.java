@@ -39,6 +39,17 @@ public class ReplyDataBean {
     private String user_img;
     private String created_at_str;
 
+    private String is_praise;
+
+
+    public String getIs_praise() {
+        return is_praise;
+    }
+
+    public void setIs_praise(String is_praise) {
+        this.is_praise = is_praise;
+    }
+
     public String getId() {
         return id;
     }

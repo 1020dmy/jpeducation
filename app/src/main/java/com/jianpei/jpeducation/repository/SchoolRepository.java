@@ -14,6 +14,7 @@ import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.contract.SchoolContract;
 
 import java.util.List;
@@ -31,11 +32,18 @@ import io.reactivex.functions.Function;
  */
 public class SchoolRepository extends BaseRepository implements SchoolContract.Repository {
 
+    //帖子列表
     @Override
     public Observable<BaseEntity<List<ThreadDataBean>>> threadData(String start_id, String end_id, String follow) {
         return RetrofitFactory.getInstance().API().threadData(new ThreadDataJson(start_id, end_id, follow));
     }
+    //话题列表
+    @Override
+    public Observable<BaseEntity<ThreadFromTopicDataBean>> threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot) {
+        return RetrofitFactory.getInstance().API().threadFromTopicData(new ThreadDataJson(start_id, end_id, follow, topic_id, is_hot));
+    }
 
+    //关注/取消关注
     @Override
     public Observable<BaseEntity<ThreadDataBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
         return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<ThreadDataBean>, BaseEntity<ThreadDataBean>>() {

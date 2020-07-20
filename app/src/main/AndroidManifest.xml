@@ -23,9 +23,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.school.PostInfoActivity"
+        <activity android:name=".activitys.school.TopicInfoActivity"></activity>
+        <activity
+            android:name=".activitys.school.ReplyListActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activitys.school.PostInfoActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activitys.school.MineAttentionActivity"
             android:launchMode="singleTask" />

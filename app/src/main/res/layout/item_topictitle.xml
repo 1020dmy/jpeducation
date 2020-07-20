@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_topic"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#"
+        android:textColor="@color/cE73B30"
+        android:textSize="@dimen/s_dp_13" />
+
+
+    <TextView
+        android:id="@+id/tv_topic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:text="建培常伴您左右"
+        android:textColor="@color/c161820"
+        android:textSize="@dimen/s_dp_13" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/topic_hot" />
+
+
+</LinearLayout>
