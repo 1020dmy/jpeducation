@@ -23,7 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.school.TopicInfoActivity"></activity>
+        <activity android:name=".activitys.tiku.AnswerResultActivity"></activity>
+        <activity android:name=".activitys.tiku.AnswerCardActivity" />
+        <activity android:name=".activitys.tiku.TodayAnswerActivity" />
+        <activity android:name=".activitys.tiku.TodayExerciseListActivity" />
+        <activity android:name=".activitys.school.TopicInfoActivity" />
         <activity
             android:name=".activitys.school.ReplyListActivity"
             android:launchMode="singleTask"

@@ -61,6 +61,16 @@ public class GroupInfoBean implements Parcelable {
 
     private String price_str;
 
+    private String min_price;
+
+    public String getMin_price() {
+        return min_price;
+    }
+
+    public void setMin_price(String min_price) {
+        this.min_price = min_price;
+    }
+
     public String getPrice_str() {
         return price_str;
     }

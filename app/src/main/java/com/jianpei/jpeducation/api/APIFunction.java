@@ -44,18 +44,25 @@ import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
+import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
+import com.jianpei.jpeducation.bean.json.GetQuestionJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.InsertCarJson;
 import com.jianpei.jpeducation.bean.json.InsertCommentJson;
 import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
 import com.jianpei.jpeducation.bean.json.InsertGardenJson;
+import com.jianpei.jpeducation.bean.json.InsertRecordJson;
 import com.jianpei.jpeducation.bean.json.IntegralDataJson;
 import com.jianpei.jpeducation.bean.json.MaterialDataJson;
 import com.jianpei.jpeducation.bean.json.OrderDataJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
 import com.jianpei.jpeducation.bean.json.OrderPaymentJson;
+import com.jianpei.jpeducation.bean.json.PaperCardJson;
+import com.jianpei.jpeducation.bean.json.PaperDataJson;
+import com.jianpei.jpeducation.bean.json.PaperEvaluationJson;
+import com.jianpei.jpeducation.bean.json.PaperInfoJson;
 import com.jianpei.jpeducation.bean.json.RegimentDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
@@ -81,7 +88,13 @@ import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.bean.school.TopicDataBean;
+import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
+import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
+import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
+import com.jianpei.jpeducation.bean.tiku.PaperDataBean;
+import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperHomeBean;
+import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
 
 
 import java.util.ArrayList;
@@ -456,11 +469,54 @@ public interface APIFunction {
      */
     @POST(UrlConfig.groupHome)
     Observable<BaseEntity<GroupHomeBean>> groupHome(@Body HomeInfoJson homeInfoJson);
+
     /**
      * 1-1-题库首页
      */
     @POST(UrlConfig.paperHome)
     Observable<BaseEntity<PaperHomeBean>> paperHome(@Body HomeInfoJson homeInfoJson);
+
+    /**
+     * 1-试卷列表
+     */
+    @POST(UrlConfig.paperData)
+    Observable<BaseEntity<PaperDataBean>> paperData(@Body PaperDataJson paperDataJson);
+
+    /**
+     * 1-获取问题（添加答题记录）
+     */
+    @POST(UrlConfig.getQuestion)
+    Observable<BaseEntity<GetQuestionBean>> getQuestion(@Body GetQuestionJson getQuestionJson);
+
+    /**
+     * 1-获取问题（添加答题记录）
+     */
+    @POST(UrlConfig.insertRecord)
+    Observable<BaseEntity<InsertRecordBean>> insertRecord(@Body InsertRecordJson insertRecordJson);
+
+    /**
+     * 1-试卷详情
+     */
+    @POST(UrlConfig.paperInfo)
+    Observable<BaseEntity<PaperInfoBean>> paperInfo(@Body PaperInfoJson paperInfoJson);
+
+    /**
+     * 1-答题卡
+     */
+    @POST(UrlConfig.paperCard)
+    Observable<BaseEntity<PaperCardBean>> paperCard(@Body PaperCardJson paperCardJson);
+
+    /**
+     * 1-问题收藏/取消收藏
+     */
+    @POST(UrlConfig.favorites)
+    Observable<BaseEntity<GetQuestionBean>> favorites(@Body FavoritesJson favoritesJson);
+
+    /**
+     * 1-交卷
+     */
+    @POST(UrlConfig.paperEvaluation)
+    Observable<BaseEntity<PaperEvaluationBean>> paperEvaluation(@Body PaperEvaluationJson paperEvaluationJson);
 
     /**
      * 文件上传

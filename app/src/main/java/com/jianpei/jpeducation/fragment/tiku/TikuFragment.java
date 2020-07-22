@@ -1,19 +1,43 @@
 package com.jianpei.jpeducation.fragment.tiku;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
+import com.jianpei.jpeducation.adapter.BannerMainAdapter;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
+import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
+import com.jianpei.jpeducation.bean.homedata.GroupDataBean;
+import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.tiku.PaperHomeBean;
+import com.jianpei.jpeducation.bean.tiku.RecommendClassBean;
+import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.TikuModel;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
+import com.youth.banner.indicator.RectangleIndicator;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -21,7 +45,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TikuFragment extends BaseFragment {
+public class TikuFragment extends BaseFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.banner)
@@ -44,8 +68,22 @@ public class TikuFragment extends BaseFragment {
     TextView tvEight;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private TikuModel tikuModel;
+
+    //    private List<RecommendClassBean> recommendClassBeans;
+    private RecommendClassAdapter recommendClassAdapter;
+
+    private List<GroupInfoBean> groupDataBeans;
+
+    //
+    private MainModel mainModel;
+
+    private String catId;
+    //banner
+    private ArrayList<BannerDataBean> bannerDataBeans;
 
 
     @Override
@@ -56,16 +94,60 @@ public class TikuFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         tikuModel = new ViewModelProvider(this).get(TikuModel.class);
+        mainModel = new ViewModelProvider(getActivity()).get(MainModel.class);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                showLoading("");
+                tikuModel.paperHome(catId);
+
+            }
+        });
 
 
     }
 
     @Override
     protected void initData(Context mContext) {
+        groupDataBeans = new ArrayList<>();
+        recommendClassAdapter = new RecommendClassAdapter(groupDataBeans, getActivity());
+        recommendClassAdapter.setMyItemOnClickListener(this);
+        recyclerView.setAdapter(recommendClassAdapter);
+        //
+        bannerDataBeans = new ArrayList<>();
+        banner.addBannerLifecycleObserver(this)
+                .setBannerRound(30)
+                .setAdapter(new BannerMainAdapter(bannerDataBeans, getActivity()))
+                .setIndicator(new RectangleIndicator(getActivity()));
+
+        //专业切换
+        mainModel.getCatId().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                showLoading("");
+                catId = s;
+                tikuModel.paperHome(s);
+
+            }
+        });
+        //题库首页数据
         tikuModel.getPaperHomeBeanLiveData().observe(this, new Observer<PaperHomeBean>() {
             @Override
             public void onChanged(PaperHomeBean paperHomeBean) {
+                refreshLayout.finishRefresh();
                 dismissLoading();
+                //
+                bannerDataBeans.clear();
+                bannerDataBeans.addAll(paperHomeBean.getBannerData());
+                banner.setDatas(bannerDataBeans);
+                //
+                groupDataBeans.clear();
+                groupDataBeans.addAll(paperHomeBean.getGroupData());
+                recommendClassAdapter.notifyDataSetChanged();
 
 
             }
@@ -73,11 +155,13 @@ public class TikuFragment extends BaseFragment {
         tikuModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
+                refreshLayout.finishRefresh();
                 dismissLoading();
                 shortToast(o);
 
             }
         });
+
 
     }
 
@@ -85,6 +169,7 @@ public class TikuFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_one:
+                startActivity(new Intent(getActivity(), TodayExerciseListActivity.class));
                 break;
             case R.id.tv_two:
                 break;
@@ -101,5 +186,16 @@ public class TikuFragment extends BaseFragment {
             case R.id.tv_eight:
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(int position, View view) {
+        startActivity(new Intent(getActivity(), ClassInfoActivity.class).putExtra("groupInfoBean", groupDataBeans.get(position)));
+
+    }
+
+    @Override
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+
     }
 }

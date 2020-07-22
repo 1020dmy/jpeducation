@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/refreshLayout"
     tools:context=".fragment.tiku.TikuFragment">
 
 
@@ -67,7 +68,7 @@
                     android:id="@+id/tv_four"
                     style="@style/tiku_txt"
                     android:drawableTop="@drawable/tiku_four"
-                    android:text="模拟试题" />
+                    android:text="模拟练习" />
 
             </LinearLayout>
 
@@ -114,9 +115,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="false" />
 
         </LinearLayout>

@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.bean.tiku;
 
 import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
+import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 
 import java.util.List;
 
@@ -16,7 +17,10 @@ public class PaperHomeBean {
 
     private List<BannerDataBean> bannerData;
 
-    private List<RecommendClassBean>  groupDaata;
+//    private List<RecommendClassBean>  groupData;
+
+    private List<GroupInfoBean> groupData;
+
 
 
     public List<BannerDataBean> getBannerData() {
@@ -27,11 +31,19 @@ public class PaperHomeBean {
         this.bannerData = bannerData;
     }
 
-    public List<RecommendClassBean> getGroupDaata() {
-        return groupDaata;
+    public List<GroupInfoBean> getGroupData() {
+        return groupData;
     }
 
-    public void setGroupDaata(List<RecommendClassBean> groupDaata) {
-        this.groupDaata = groupDaata;
+    public void setGroupData(List<GroupInfoBean> groupData) {
+        this.groupData = groupData;
     }
+
+//    public List<RecommendClassBean> getGroupData() {
+//        return groupData;
+//    }
+//
+//    public void setGroupData(List<RecommendClassBean> groupData) {
+//        this.groupData = groupData;
+//    }
 }

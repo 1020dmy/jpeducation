@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cF7F7F7"
+    android:orientation="vertical"
+    tools:context=".activitys.tiku.TodayAnswerActivity">
+
+    <include layout="@layout/base_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/today_answer_tip" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="每日一练"
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_16" />
+
+        <TextView
+            android:id="@+id/tv_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="@color/cE73B30"
+            android:textSize="@dimen/s_dp_24" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/10"
+            android:textColor="@color/cB7B7B7"
+            android:textSize="@dimen/s_dp_13" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:text="【单选题】    财务评价指标的高低是经营类项目取舍的主要条件，以下指标哪一个不属于财务评价指标（   ）" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="30dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_jiexi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_coupon_bg"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/tv_result"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/cE73B30"
+                        android:drawableLeft="@drawable/answer_result"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="回答错误"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/s_dp_13" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="正确答案"
+                            android:textColor="@color/c161820"
+                            android:textSize="@dimen/s_dp_13" />
+
+                        <TextView
+                            android:id="@+id/tv_correct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="C"
+                            android:textColor="@color/c15C262"
+                            android:textSize="@dimen/s_dp_16" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="32dp"
+                        android:background="@color/cDCDCDC" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="你的答案"
+                            android:textColor="@color/c161820"
+                            android:textSize="@dimen/s_dp_13" />
+
+                        <TextView
+                            android:id="@+id/tv_mine_answer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="C"
+                            android:textColor="@color/cE73B30"
+                            android:textSize="@dimen/s_dp_16" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cDCDCDC" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/answer_jiexi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="答案解析"
+                        android:textColor="@color/cE73B30"
+                        android:textSize="@dimen/s_dp_14" />
+
+
+                    <TextView
+                        android:id="@+id/tv_share"
+                        android:layout_width="86dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shape_testpaper_one"
+                        android:gravity="center"
+                        android:text="考考朋友"
+                        android:textColor="@color/cE73B30"
+                        android:textSize="@dimen/s_dp_14" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_jiexi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="财务评价指标的高低是经营类项目取舍的主要条件，以下指标哪一个不属于财务评价指标还款期。"
+                    android:textColor="@color/c161820"
+                    android:textSize="@dimen/s_dp_13" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shadow_main_bottom"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/answer_previous" />
+
+        <TextView
+            android:id="@+id/tv_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/answer_card"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="答题卡"
+            android:textColor="@color/c0A0C14"
+            android:textSize="@dimen/s_dp_11" />
+
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/answer_solution"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="查看答案"
+            android:textColor="@color/c0A0C14"
+            android:textSize="@dimen/s_dp_11" />
+
+        <TextView
+            android:id="@+id/tv_favorites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/answer_unfavorites"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="收藏"
+            android:textColor="@color/c0A0C14"
+            android:textSize="@dimen/s_dp_11"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/answer_next" />
+
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/answer_submit"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="交卷"
+            android:textColor="@color/cE73B30"
+            android:textSize="@dimen/s_dp_11"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

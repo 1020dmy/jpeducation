@@ -1,0 +1,80 @@
+package com.jianpei.jpeducation.repository;
+
+import com.jianpei.jpeducation.api.RetrofitFactory;
+import com.jianpei.jpeducation.api.base.BaseEntity;
+import com.jianpei.jpeducation.base.BaseRepository;
+import com.jianpei.jpeducation.bean.json.FavoritesJson;
+import com.jianpei.jpeducation.bean.json.GetQuestionJson;
+import com.jianpei.jpeducation.bean.json.InsertRecordJson;
+import com.jianpei.jpeducation.bean.json.PaperCardJson;
+import com.jianpei.jpeducation.bean.json.PaperEvaluationJson;
+import com.jianpei.jpeducation.bean.json.PaperInfoJson;
+import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
+import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
+import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
+import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
+import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+import com.jianpei.jpeducation.contract.AnswerContract;
+
+import io.reactivex.Observable;
+
+/**
+ * jpeducation
+ * <p>
+ * Created by sjl on 2020/7/21
+ * Copyright © 2020年 weibo. All rights reserved.
+ * <p>
+ * Describe:
+ */
+public class AnswerRepository extends BaseRepository implements AnswerContract.Repository {
+
+    @Override
+    public Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer) {
+        return RetrofitFactory.getInstance().API().getQuestion(new GetQuestionJson(source, index_type, question_id, record_id, answering_time, answer));
+    }
+
+    @Override
+    public Observable<BaseEntity<InsertRecordBean>> insertRecord(String paper_id, String record_id, String restart_type) {
+        return RetrofitFactory.getInstance().API().insertRecord(new InsertRecordJson(paper_id, record_id, restart_type));
+    }
+
+    @Override
+    public Observable<BaseEntity<PaperInfoBean>> paperInfo(String paper_id) {
+        return RetrofitFactory.getInstance().API().paperInfo(new PaperInfoJson(paper_id));
+    }
+
+    /**
+     * 答题卡
+     *
+     * @param record_id
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<PaperCardBean>> paperCard(String record_id) {
+        return RetrofitFactory.getInstance().API().paperCard(new PaperCardJson(record_id));
+    }
+
+    /**
+     * 1-问题收藏/取消收藏
+     *
+     * @param paper_id
+     * @param question_id
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<GetQuestionBean>> favorites(String paper_id, String question_id) {
+        return RetrofitFactory.getInstance().API().favorites(new FavoritesJson(paper_id, question_id));
+    }
+
+    /**
+     * 交卷
+     *
+     * @param record_id
+     * @param confirm_status
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<PaperEvaluationBean>> paperEvaluation(String record_id, String confirm_status) {
+        return RetrofitFactory.getInstance().API().paperEvaluation(new PaperEvaluationJson(record_id, confirm_status));
+    }
+}

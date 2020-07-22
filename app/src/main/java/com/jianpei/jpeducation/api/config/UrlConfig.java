@@ -157,6 +157,27 @@ public class UrlConfig {
     //1-1-题库首页
     public static final String paperHome = "paperHome";
 
+    //1-试卷列表
+    public static final String paperData = "paper/paperData";
+
+    //1-获取问题（添加答题记录）
+    public static final String getQuestion = "paper/getQuestion";
+
+    //1-添加答题记录（答题）
+    public static final String insertRecord = "paper/insertRecord";
+
+    //1-试卷详情
+    public static final String paperInfo = "paper/paperInfo";
+
+    //1-答题卡
+    public static final String paperCard = "paper/paperCard";
+
+    //1-问题收藏/取消收藏
+    public static final String favorites = "paper/favorites";
+
+    //1-交卷
+    public static final String paperEvaluation = "paper/paperEvaluation";
+
     //1-文件上传
     public static final String uploadFile = "uploadFile";
 }
