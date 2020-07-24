@@ -35,6 +35,7 @@ import com.jianpei.jpeducation.bean.WxLoginJson;
 import com.jianpei.jpeducation.bean.integral.IntegralDataBean;
 import com.jianpei.jpeducation.bean.integral.IntegralInfoBean;
 import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
+import com.jianpei.jpeducation.bean.json.AnswerScoreJson;
 import com.jianpei.jpeducation.bean.json.AttentionJson;
 import com.jianpei.jpeducation.bean.json.CancelOrderJson;
 import com.jianpei.jpeducation.bean.json.CarInfoJson;
@@ -43,6 +44,7 @@ import com.jianpei.jpeducation.bean.json.ClassDataJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
+import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
@@ -88,6 +90,7 @@ import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.bean.school.TopicDataBean;
+import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
@@ -517,6 +520,18 @@ public interface APIFunction {
      */
     @POST(UrlConfig.paperEvaluation)
     Observable<BaseEntity<PaperEvaluationBean>> paperEvaluation(@Body PaperEvaluationJson paperEvaluationJson);
+
+    /**
+     * 1-1-科目列表
+     */
+    @POST(UrlConfig.curriculumData)
+    Observable<BaseEntity<List<CurriculumDataBean>>> curriculumData(@Body CurriculumDataJson curriculumDataJson);
+
+    /**
+     * 1-解答题评分
+     */
+    @POST(UrlConfig.answerScore)
+    Observable<BaseEntity<GetQuestionBean>> answerScore(@Body AnswerScoreJson answerScoreJson);
 
     /**
      * 文件上传

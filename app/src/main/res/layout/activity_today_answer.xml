@@ -23,6 +23,7 @@
             android:src="@drawable/today_answer_tip" />
 
         <TextView
+            android:id="@+id/tv_paper_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

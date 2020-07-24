@@ -1,5 +1,9 @@
 package com.jianpei.jpeducation.bean.tiku;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +14,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-public class GetQuestionBean {
+public class GetQuestionBean implements Parcelable {
 
 
     /**
@@ -42,6 +46,16 @@ public class GetQuestionBean {
     private String question_score;
     private String question_index;
     private String is_favorites;
+
+    private int question_total_num;
+
+    public int getQuestion_total_num() {
+        return question_total_num;
+    }
+
+    public void setQuestion_total_num(int question_total_num) {
+        this.question_total_num = question_total_num;
+    }
 
     public String getIs_favorites() {
         return is_favorites;
@@ -164,4 +178,65 @@ public class GetQuestionBean {
     public void setQuestion_score(String question_score) {
         this.question_score = question_score;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.question_name);
+        dest.writeString(this.type);
+        dest.writeString(this.answer_total_num);
+        dest.writeString(this.answer_succ_num);
+        dest.writeString(this.explain);
+        dest.writeString(this.before_answer_id);
+        dest.writeString(this.current_answer_id);
+        dest.writeString(this.next_answer_id);
+        dest.writeString(this.succ_answer);
+        dest.writeString(this.my_answer);
+        dest.writeString(this.question_score);
+        dest.writeString(this.question_index);
+        dest.writeString(this.is_favorites);
+        dest.writeInt(this.question_total_num);
+        dest.writeList(this.answer_list);
+    }
+
+    public GetQuestionBean() {
+    }
+
+    protected GetQuestionBean(Parcel in) {
+        this.id = in.readString();
+        this.question_name = in.readString();
+        this.type = in.readString();
+        this.answer_total_num = in.readString();
+        this.answer_succ_num = in.readString();
+        this.explain = in.readString();
+        this.before_answer_id = in.readString();
+        this.current_answer_id = in.readString();
+        this.next_answer_id = in.readString();
+        this.succ_answer = in.readString();
+        this.my_answer = in.readString();
+        this.question_score = in.readString();
+        this.question_index = in.readString();
+        this.is_favorites = in.readString();
+        this.question_total_num = in.readInt();
+        this.answer_list = new ArrayList<AnswerBean>();
+        in.readList(this.answer_list, AnswerBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<GetQuestionBean> CREATOR = new Parcelable.Creator<GetQuestionBean>() {
+        @Override
+        public GetQuestionBean createFromParcel(Parcel source) {
+            return new GetQuestionBean(source);
+        }
+
+        @Override
+        public GetQuestionBean[] newArray(int size) {
+            return new GetQuestionBean[size];
+        }
+    };
 }

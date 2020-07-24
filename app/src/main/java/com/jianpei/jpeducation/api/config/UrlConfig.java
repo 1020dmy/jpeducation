@@ -178,6 +178,11 @@ public class UrlConfig {
     //1-交卷
     public static final String paperEvaluation = "paper/paperEvaluation";
 
+    //1-1-科目列表
+    public static final String curriculumData = "paper/curriculumData";
+    //1-解答题评分
+    public static final String answerScore = "paper/answerScore";
+
     //1-文件上传
     public static final String uploadFile = "uploadFile";
 }

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.tiku.OptionsAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
+import com.jianpei.jpeducation.bean.tiku.CardBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
@@ -71,7 +73,8 @@ public class TodayAnswerActivity extends BaseActivity {
     TextView tvFavorites;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
-    private TestPaperBean testPaperBean;
+    @BindView(R.id.tv_paper_name)
+    TextView tvPaperName;
 
     private OptionsAdapter optionsAdapter;
     private List<AnswerBean> answerBeans;
@@ -80,11 +83,13 @@ public class TodayAnswerActivity extends BaseActivity {
 
     private String recordId;
     private String questionId;
-//    private String before_answer_id, next_answer_id;
 
-    private String totalNum;//总题数
 
     private GetQuestionBean mGetQuestionBean;
+
+    private String source;//1正常答题，2收藏，4本卷错题，3错题集
+    private String paperId;//试卷id
+    private String restartType;//0添加新试卷，2重做，1继续答题
 
 
     @Override
@@ -95,7 +100,12 @@ public class TodayAnswerActivity extends BaseActivity {
     @Override
     protected void initView() {
         tvTitle.setText("每日一练");
-        testPaperBean = getIntent().getParcelableExtra("testPaperBean");
+//        testPaperBean = getIntent().getParcelableExtra("testPaperBean");
+        source = getIntent().getStringExtra("source");
+        recordId = getIntent().getStringExtra("recordId");
+        paperId = getIntent().getStringExtra("paperId");
+        restartType = getIntent().getStringExtra("restartType");
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         answerModel = new ViewModelProvider(this).get(AnswerModel.class);
@@ -106,6 +116,7 @@ public class TodayAnswerActivity extends BaseActivity {
     protected void initData() {
         answerBeans = new ArrayList<>();
         optionsAdapter = new OptionsAdapter(answerBeans, this);
+        optionsAdapter.setSource(source);
         recyclerView.setAdapter(optionsAdapter);
         //1-添加答题记录（答题）
         answerModel.getInsertRecordBeanLiveData().observe(this, new Observer<InsertRecordBean>() {
@@ -113,8 +124,7 @@ public class TodayAnswerActivity extends BaseActivity {
             public void onChanged(InsertRecordBean insertRecordBean) {
                 dismissLoading();
                 recordId = insertRecordBean.getRecord_info().getId();
-                totalNum = insertRecordBean.getRecord_info().getTotal_que_num();
-                tvTotal.setText("/" + totalNum);
+                tvTotal.setText("/" + insertRecordBean.getRecord_info().getTotal_que_num());
                 //
                 mGetQuestionBean = insertRecordBean.getAnswer_info();
                 setData();
@@ -125,6 +135,11 @@ public class TodayAnswerActivity extends BaseActivity {
         answerModel.getQuestionBeanLiveData().observe(this, new Observer<GetQuestionBean>() {
             @Override
             public void onChanged(GetQuestionBean getQuestionBean) {
+                tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
+                if (isSubmit) {//去交卷
+                    answerModel.paperEvaluation(recordId, "1");
+                    return;
+                }
                 dismissLoading();
                 mGetQuestionBean = getQuestionBean;
                 setData();
@@ -145,7 +160,10 @@ public class TodayAnswerActivity extends BaseActivity {
             @Override
             public void onChanged(PaperEvaluationBean paperEvaluationBean) {
                 dismissLoading();
-                startActivity(new Intent(TodayAnswerActivity.this, AnswerResultActivity.class));
+                startActivity(new Intent(TodayAnswerActivity.this, AnswerResultActivity.class)
+                        .putExtra("paperEvaluationBean", paperEvaluationBean)
+                        .putExtra("recordId", recordId)
+                        .putExtra("paperId", paperId));
                 finish();
             }
         });
@@ -157,7 +175,21 @@ public class TodayAnswerActivity extends BaseActivity {
             }
         });
         showLoading("");
-        answerModel.insertRecord(testPaperBean.getId(), testPaperBean.getUser_record_id(), testPaperBean.getUser_is_complete());
+        if ("1".equals(source)) {//正常答题
+            answerModel.insertRecord(paperId, recordId, restartType);
+        } else if ("4".equals(source)) {//本卷错题
+            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
+            llJiexi.setVisibility(View.VISIBLE);
+            tvAnswer.setVisibility(View.GONE);
+            tvFavorites.setVisibility(View.VISIBLE);
+
+        } else if ("5".equals(source)) {//全部解析
+            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
+            llJiexi.setVisibility(View.VISIBLE);
+            tvAnswer.setVisibility(View.GONE);
+            tvFavorites.setVisibility(View.VISIBLE);
+        }
+
     }
 
 
@@ -169,6 +201,7 @@ public class TodayAnswerActivity extends BaseActivity {
         optionsAdapter.setAnswerId("");
         //我的答案
         optionsAdapter.setMineAnswer("");
+        optionsAdapter.setLastPosition(-1);
         //1.单选，2多选，5简答
         optionsAdapter.setSingle(mGetQuestionBean.getType());
         answerBeans.addAll(mGetQuestionBean.getAnswer_list());
@@ -176,21 +209,26 @@ public class TodayAnswerActivity extends BaseActivity {
         //当前第几题
         tvCurrent.setText(mGetQuestionBean.getQuestion_index());
         //是否显示上一题
-        if ("1".equals(mGetQuestionBean.getQuestion_index())) {
+        if (TextUtils.isEmpty(mGetQuestionBean.getBefore_answer_id())) {
             ivPrevious.setVisibility(View.GONE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
+
         }
+
         //是否显示下一题
-        if (totalNum.equals(mGetQuestionBean.getQuestion_index())) {
+        if (TextUtils.isEmpty(mGetQuestionBean.getNext_answer_id())) {
             ivNext.setVisibility(View.GONE);
-            tvSubmit.setVisibility(View.VISIBLE);
+            if ("1".equals(source)) {
+                tvSubmit.setVisibility(View.VISIBLE);
+            }
         } else {
             ivNext.setVisibility(View.VISIBLE);
             tvSubmit.setVisibility(View.GONE);
         }
-        String type;
+
         //问题
+        String type;
         if ("1".equals(mGetQuestionBean.getType())) {
             type = "【单选题】";
         } else if ("2".equals(mGetQuestionBean.getType())) {
@@ -204,11 +242,11 @@ public class TodayAnswerActivity extends BaseActivity {
         Spanned spanned2 = Html.fromHtml(mGetQuestionBean.getExplain());
         tvJiexi.setText(Html.fromHtml(spanned2.toString()));
         tvCorrect.setText(mGetQuestionBean.getSucc_answer());
-        tvMineAnswer.setText(optionsAdapter.getMineAnswer());
-        if (TextUtils.isEmpty(optionsAdapter.getMineAnswer())) {
+        tvMineAnswer.setText(mGetQuestionBean.getMy_answer());
+        if (TextUtils.isEmpty(mGetQuestionBean.getMy_answer())) {
             tvResult.setText("未作答");
         } else {
-            if (optionsAdapter.getMineAnswer().equals(mGetQuestionBean.getSucc_answer())) {
+            if (mGetQuestionBean.getMy_answer().equals(mGetQuestionBean.getSucc_answer())) {
                 tvResult.setText("回答正确");
             } else {
                 tvResult.setText("回答错误");
@@ -253,6 +291,8 @@ public class TodayAnswerActivity extends BaseActivity {
     }
 
 
+    private boolean isSubmit = false;
+
     @OnClick({R.id.iv_back, R.id.iv_previous, R.id.tv_card, R.id.tv_answer, R.id.iv_next, R.id.tv_share, R.id.tv_favorites, R.id.tv_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -261,13 +301,18 @@ public class TodayAnswerActivity extends BaseActivity {
                 break;
             case R.id.iv_previous://上一题
                 showLoading("");
-                llJiexi.setVisibility(View.GONE);
-                tvFavorites.setVisibility(View.GONE);
-                tvAnswer.setVisibility(View.VISIBLE);
-                answerModel.getQuestion("1", "2", questionId, recordId, "", optionsAdapter.getAnswerId());
+                if ("1".equals(source)) {
+                    llJiexi.setVisibility(View.GONE);
+                    tvFavorites.setVisibility(View.GONE);
+                    tvAnswer.setVisibility(View.VISIBLE);
+                }
+                answerModel.getQuestion(source, "2", questionId, recordId, "", optionsAdapter.getAnswerId());
                 break;
             case R.id.tv_card://答题卡
-                startActivity(new Intent(this, AnswerCardActivity.class).putExtra("recordId", recordId));
+                startActivityForResult(new Intent(this, AnswerCardActivity.class)
+                        .putExtra("recordId", recordId)
+                        .putExtra("type", 0)
+                        .putExtra("paperName", tvPaperName.getText().toString()), 111);
                 break;
             case R.id.tv_answer://查看答案
                 answerResult();
@@ -277,23 +322,41 @@ public class TodayAnswerActivity extends BaseActivity {
                 break;
             case R.id.iv_next://下一题
                 showLoading("");
-                llJiexi.setVisibility(View.GONE);
-                tvFavorites.setVisibility(View.GONE);
-                tvAnswer.setVisibility(View.VISIBLE);
-                answerModel.getQuestion("1", "1", questionId, recordId, "", optionsAdapter.getAnswerId());
+                if ("1".equals(source)) {
+                    llJiexi.setVisibility(View.GONE);
+                    tvFavorites.setVisibility(View.GONE);
+                    tvAnswer.setVisibility(View.VISIBLE);
+                }
+                answerModel.getQuestion(source, "1", questionId, recordId, "", optionsAdapter.getAnswerId());
                 break;
             case R.id.tv_share:
                 break;
             case R.id.tv_favorites://收藏/取消收藏
                 showLoading("");
-                answerModel.favorites(testPaperBean.getId(), questionId);
+                answerModel.favorites(paperId, questionId);
                 break;
             case R.id.tv_submit://交卷
                 showLoading("");
-                answerModel.paperEvaluation(recordId, "1");
+                isSubmit = true;
+                answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
                 break;
         }
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+        switch (resultCode) {
+            case 111:
+                CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
+
+                answerModel.getQuestion("4", "0", cardBean.getQuestion_id(), cardBean.getRecord_id() + "", "", "");
+
+                break;
+        }
+
+    }
 }

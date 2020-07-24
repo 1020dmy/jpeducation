@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.tiku.CardBean;
 
 import java.util.List;
@@ -27,6 +28,12 @@ public class AnswerCardAdapter extends RecyclerView.Adapter<AnswerCardAdapter.My
 
     private List<CardBean> cardBeans;
     private Context context;
+
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
 
     public AnswerCardAdapter(List<CardBean> cardBeans, Context context) {
         this.cardBeans = cardBeans;
@@ -49,12 +56,13 @@ public class AnswerCardAdapter extends RecyclerView.Adapter<AnswerCardAdapter.My
             holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_three);
             holder.tv_num.setTextColor(context.getResources().getColor(R.color.c0A0C14));
         } else if (cardBean.getAnswer_status() == 1) {//已答
-
+            holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_four);
+            holder.tv_num.setTextColor(context.getResources().getColor(R.color.c0A0C14));
         } else if (cardBean.getAnswer_status() == 2) {//答错
-            holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_one);
+            holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_two);
             holder.tv_num.setTextColor(context.getResources().getColor(R.color.white));
         } else if (cardBean.getAnswer_status() == 3) {//答对
-            holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_two);
+            holder.linearLayout.setBackgroundResource(R.drawable.shape_answer_card_one);
             holder.tv_num.setTextColor(context.getResources().getColor(R.color.white));
         }
 
@@ -66,7 +74,7 @@ public class AnswerCardAdapter extends RecyclerView.Adapter<AnswerCardAdapter.My
         return cardBeans != null ? cardBeans.size() : 0;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private LinearLayout linearLayout;
         private TextView tv_num;
 
@@ -74,6 +82,15 @@ public class AnswerCardAdapter extends RecyclerView.Adapter<AnswerCardAdapter.My
             super(itemView);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             tv_num = itemView.findViewById(R.id.tv_num);
+            linearLayout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myItemOnClickListener != null)
+                myItemOnClickListener.onItemClick(getLayoutPosition(), v);
+
+
         }
     }
 }

@@ -3,18 +3,23 @@ package com.jianpei.jpeducation.repository;
 import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.base.BaseRepository;
+import com.jianpei.jpeducation.bean.json.AnswerScoreJson;
+import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GetQuestionJson;
 import com.jianpei.jpeducation.bean.json.InsertRecordJson;
 import com.jianpei.jpeducation.bean.json.PaperCardJson;
 import com.jianpei.jpeducation.bean.json.PaperEvaluationJson;
 import com.jianpei.jpeducation.bean.json.PaperInfoJson;
+import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
 import com.jianpei.jpeducation.contract.AnswerContract;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -38,6 +43,12 @@ public class AnswerRepository extends BaseRepository implements AnswerContract.R
         return RetrofitFactory.getInstance().API().insertRecord(new InsertRecordJson(paper_id, record_id, restart_type));
     }
 
+    /**
+     * 1-试卷详情
+     *
+     * @param paper_id
+     * @return
+     */
     @Override
     public Observable<BaseEntity<PaperInfoBean>> paperInfo(String paper_id) {
         return RetrofitFactory.getInstance().API().paperInfo(new PaperInfoJson(paper_id));
@@ -76,5 +87,32 @@ public class AnswerRepository extends BaseRepository implements AnswerContract.R
     @Override
     public Observable<BaseEntity<PaperEvaluationBean>> paperEvaluation(String record_id, String confirm_status) {
         return RetrofitFactory.getInstance().API().paperEvaluation(new PaperEvaluationJson(record_id, confirm_status));
+    }
+
+    /**
+     * 科目列表
+     *
+     * @param cat_id
+     * @param parent_id
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<List<CurriculumDataBean>>> curriculumData(String cat_id, String parent_id) {
+        return RetrofitFactory.getInstance().API().curriculumData(new CurriculumDataJson(cat_id, parent_id));
+    }
+
+    /**
+     * 解答题评分
+     *
+     * @param score
+     * @param questino_id
+     * @param record_id
+     * @param index_type
+     * @return
+     */
+
+    @Override
+    public Observable<BaseEntity<GetQuestionBean>> answerScore(String score, String questino_id, String record_id, String index_type) {
+        return RetrofitFactory.getInstance().API().answerScore(new AnswerScoreJson(score, questino_id, record_id, index_type));
     }
 }

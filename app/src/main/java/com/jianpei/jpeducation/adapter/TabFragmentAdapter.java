@@ -7,6 +7,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
+import java.util.List;
+
+
 /**
  * jpeducation
  * <p>
@@ -19,9 +22,16 @@ public class TabFragmentAdapter extends FragmentStateAdapter {
 
     private Fragment[] fragments;
 
+
     public TabFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Fragment[] fragments) {
         super(fragmentManager, lifecycle);
         this.fragments = fragments;
+    }
+
+    public TabFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<Fragment> fragmentList) {
+        super(fragmentManager, lifecycle);
+        if (fragmentList != null)
+            fragments = fragmentList.toArray(new Fragment[fragmentList.size()]);
     }
 
     @NonNull

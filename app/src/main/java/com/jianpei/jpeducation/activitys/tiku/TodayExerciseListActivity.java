@@ -74,7 +74,7 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 shortToast("");
                 page = 1;
-                todayExerciseListModel.paperData(page, pageSize, catId, paperType);
+                todayExerciseListModel.paperData(page, pageSize, catId, "", "", paperType);
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -82,7 +82,7 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 shortToast("");
                 page++;
-                todayExerciseListModel.paperData(page, pageSize, catId, paperType);
+                todayExerciseListModel.paperData(page, pageSize, catId, "", "", paperType);
             }
         });
 
@@ -119,7 +119,7 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
             }
         });
         shortToast("");
-        todayExerciseListModel.paperData(page, pageSize, catId, paperType);
+        todayExerciseListModel.paperData(page, pageSize, catId, "", "", paperType);
 
     }
 
@@ -131,7 +131,14 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
 
     @Override
     public void onItemClick(int position, View view) {
-        startActivity(new Intent(this, TodayAnswerActivity.class).putExtra("testPaperBean",mTestPaperBeans.get(position)));
+//        startActivity(new Intent(this, TodayAnswerActivity.class).putExtra("testPaperBean",mTestPaperBeans.get(position)).putExtra("source","1"));
+
+        startActivity(new Intent(this, TodayAnswerActivity.class)
+                .putExtra("paperId", mTestPaperBeans.get(position).getId())
+                .putExtra("source", "1")
+                .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id())
+                .putExtra("restartType", mTestPaperBeans.get(position).getUser_is_complete()));
+
     }
 
     @Override

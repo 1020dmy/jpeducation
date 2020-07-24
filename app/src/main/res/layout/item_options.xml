@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="42dp"
-    android:background="@drawable/select_options_color">
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_options_color"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/cF2F3F2" />
 
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/select_options"
-        android:button="@null"
-        android:enabled="false" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/select_options"
+            android:button="@null"
+            android:enabled="false" />
 
 
-    <TextView
-        android:id="@+id/tv_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/checkBox"
-        android:text="B"
-        android:textColor="@color/c161820"
-        android:textSize="@dimen/s_dp_13" />
+        <TextView
+            android:id="@+id/tv_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/checkBox"
+            android:text="B"
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_13" />
 
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tv_options"
-        android:text="折旧率"
-        android:textColor="@color/c161820"
-        android:textSize="@dimen/s_dp_13" />
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_options"
+            android:text="折旧率"
+            android:textColor="@color/c161820"
+            android:textSize="@dimen/s_dp_13" />
 
 
-</RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
 

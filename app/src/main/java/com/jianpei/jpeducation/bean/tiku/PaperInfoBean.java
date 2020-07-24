@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.tiku;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.tiku;
  * <p>
  * Describe:
  */
-public class PaperInfoBean {
+public class PaperInfoBean implements Parcelable {
 
 
     /**
@@ -50,6 +53,16 @@ public class PaperInfoBean {
     private String reply_des;
     private String reply_son_des;
     private int complete_status;
+
+    private String total_score;
+
+    public String getTotal_score() {
+        return total_score;
+    }
+
+    public void setTotal_score(String total_score) {
+        this.total_score = total_score;
+    }
 
     public String getId() {
         return id;
@@ -194,4 +207,70 @@ public class PaperInfoBean {
     public void setComplete_status(int complete_status) {
         this.complete_status = complete_status;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.paper_name);
+        dest.writeString(this.paper_type);
+        dest.writeString(this.status);
+        dest.writeString(this.answer_time);
+        dest.writeString(this.cat_id);
+        dest.writeString(this.class_id);
+        dest.writeString(this.chapter_id);
+        dest.writeString(this.true_topic_year);
+        dest.writeString(this.answer_number);
+        dest.writeString(this.paper_type_str);
+        dest.writeString(this.single_des);
+        dest.writeString(this.single_son_des);
+        dest.writeString(this.multiple_des);
+        dest.writeString(this.multiple_son_des);
+        dest.writeString(this.reply_des);
+        dest.writeString(this.reply_son_des);
+        dest.writeInt(this.complete_status);
+        dest.writeString(this.total_score);
+    }
+
+    public PaperInfoBean() {
+    }
+
+    protected PaperInfoBean(Parcel in) {
+        this.id = in.readString();
+        this.paper_name = in.readString();
+        this.paper_type = in.readString();
+        this.status = in.readString();
+        this.answer_time = in.readString();
+        this.cat_id = in.readString();
+        this.class_id = in.readString();
+        this.chapter_id = in.readString();
+        this.true_topic_year = in.readString();
+        this.answer_number = in.readString();
+        this.paper_type_str = in.readString();
+        this.single_des = in.readString();
+        this.single_son_des = in.readString();
+        this.multiple_des = in.readString();
+        this.multiple_son_des = in.readString();
+        this.reply_des = in.readString();
+        this.reply_son_des = in.readString();
+        this.complete_status = in.readInt();
+        this.total_score = in.readString();
+    }
+
+    public static final Parcelable.Creator<PaperInfoBean> CREATOR = new Parcelable.Creator<PaperInfoBean>() {
+        @Override
+        public PaperInfoBean createFromParcel(Parcel source) {
+            return new PaperInfoBean(source);
+        }
+
+        @Override
+        public PaperInfoBean[] newArray(int size) {
+            return new PaperInfoBean[size];
+        }
+    };
 }

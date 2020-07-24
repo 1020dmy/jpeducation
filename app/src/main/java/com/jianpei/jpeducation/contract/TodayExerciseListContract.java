@@ -16,10 +16,10 @@ import io.reactivex.Observable;
 public interface TodayExerciseListContract {
 
     interface Repository {
-        Observable<BaseEntity<PaperDataBean>> paperData(int pageIndex, int pageSize, String cat_id, String paper_type);
+        Observable<BaseEntity<PaperDataBean>> paperData(int pageIndex, int pageSize, String cat_id, String class_id, String chapter_id, String paper_type);
     }
 
     interface Model {
-        void paperData(int pageIndex, int pageSize, String cat_id, String paper_type);
+        void paperData(int pageIndex, int pageSize, String cat_id, String class_id, String chapter_id, String paper_type);
     }
 }

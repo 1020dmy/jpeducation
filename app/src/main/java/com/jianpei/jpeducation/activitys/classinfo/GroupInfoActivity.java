@@ -229,7 +229,7 @@ public class GroupInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.submit, R.id.rl_buy})
+    @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.submit, R.id.tv_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -260,7 +260,7 @@ public class GroupInfoActivity extends BaseActivity {
                     }
                 }
                 break;
-            case R.id.rl_buy:
+            case R.id.tv_buy:
                 goods_type = "1";
                 groupId = "";
                 if (mGroupClassBeans.size() != 0) {

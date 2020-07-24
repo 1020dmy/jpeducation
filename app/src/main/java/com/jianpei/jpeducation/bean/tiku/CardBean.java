@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.tiku;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.tiku;
  * <p>
  * Describe:
  */
-public class CardBean {
+public class CardBean implements Parcelable {
 
 
     /**
@@ -54,4 +57,40 @@ public class CardBean {
     public void setAnswer_status(int answer_status) {
         this.answer_status = answer_status;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.record_id);
+        dest.writeString(this.question_id);
+        dest.writeInt(this.is_complete);
+        dest.writeInt(this.answer_status);
+    }
+
+    public CardBean() {
+    }
+
+    protected CardBean(Parcel in) {
+        this.record_id = in.readInt();
+        this.question_id = in.readString();
+        this.is_complete = in.readInt();
+        this.answer_status = in.readInt();
+    }
+
+    public static final Parcelable.Creator<CardBean> CREATOR = new Parcelable.Creator<CardBean>() {
+        @Override
+        public CardBean createFromParcel(Parcel source) {
+            return new CardBean(source);
+        }
+
+        @Override
+        public CardBean[] newArray(int size) {
+            return new CardBean[size];
+        }
+    };
 }

@@ -20,7 +20,7 @@ import io.reactivex.Observable;
 public class TodayExerciseListRepository extends BaseRepository implements TodayExerciseListContract.Repository {
 
     @Override
-    public Observable<BaseEntity<PaperDataBean>> paperData(int pageIndex, int pageSize, String cat_id, String paper_type) {
-        return RetrofitFactory.getInstance().API().paperData(new PaperDataJson(pageIndex,pageSize,cat_id,paper_type));
+    public Observable<BaseEntity<PaperDataBean>> paperData(int pageIndex, int pageSize, String cat_id, String class_id, String chapter_id, String paper_type) {
+        return RetrofitFactory.getInstance().API().paperData(new PaperDataJson(pageIndex, pageSize, cat_id, class_id, chapter_id, paper_type));
     }
 }

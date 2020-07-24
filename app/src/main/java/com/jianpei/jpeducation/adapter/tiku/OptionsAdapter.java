@@ -1,21 +1,31 @@
 package com.jianpei.jpeducation.adapter.tiku;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.SimulationExerciseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.view.URLDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +51,20 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
 
     private String answerId;
 
-//    private List<String> mineAnswerIds;
-//    private List<String> mineAnswers;
+    private String source;
+
 
     public OptionsAdapter(List<AnswerBean> answerBeans, Context context) {
         this.answerBeans = answerBeans;
         this.context = context;
-//        mineAnswerIds = new ArrayList<>();
-//        mineAnswers = new ArrayList<>();
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setLastPosition(int lastPosition) {
+        this.lastPosition = lastPosition;
     }
 
     public void setSingle(String single) {
@@ -56,25 +72,14 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
         this.single = single;
     }
 
+
     public String getMineAnswer() {
         if ("2".equals(single))
             getMineAnswers();
         return mineAnswer;
     }
 
-    //    public void getMineAnswerIds() {
-//        if (mineAnswerIds.size() != 0) {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (String ansewerId : mineAnswerIds) {
-//                stringBuilder.append(ansewerId);
-//                stringBuilder.append(",");
-//            }
-//            stringBuilder.replace(stringBuilder.length() - 1, stringBuilder.length(), "");
-//            answerId = stringBuilder.toString();
-//            stringBuilder.replace(0, stringBuilder.length(), "");
-//            stringBuilder.reverse();
-//        }
-//    }
+    //获取选择的答案ID
     public void getMineAnswerIds() {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -94,19 +99,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
         stringBuilder.reverse();
     }
 
-    //    public void getMineAnswers() {
-//        if (mineAnswers.size() != 0) {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (String mineAnswer : mineAnswers) {
-//                stringBuilder.append(mineAnswer);
-//                stringBuilder.append("、");
-//            }
-//            stringBuilder.replace(stringBuilder.length() - 1, stringBuilder.length(), "");
-//            mineAnswer = stringBuilder.toString();
-//            stringBuilder.replace(0, stringBuilder.length(), "");
-//            stringBuilder.reverse();
-//        }
-//    }
+    //获取选择的答案
     public void getMineAnswers() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -128,7 +121,6 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
 
 
     public void setMineAnswer(String mineAnswer) {
-//        mineAnswers.clear();
         this.mineAnswer = mineAnswer;
     }
 
@@ -141,7 +133,6 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
     }
 
     public void setAnswerId(String answerId) {
-//        answerBeans.clear();
         this.answerId = answerId;
     }
 
@@ -156,18 +147,19 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         AnswerBean answerBean = answerBeans.get(position);
         holder.tv_options.setText(answerBean.getOptions_index());
-        Spanned spanned = Html.fromHtml(answerBean.getAnswers_info());
-        holder.tv_description.setText(Html.fromHtml(spanned.toString()));
+//        Spanned spanned = Html.fromHtml(answerBean.getAnswers_info());
+        holder.tv_description.setText(Html.fromHtml(answerBean.getAnswers_info(), getImageGetter(holder.tv_description), null));
+
 
         if ("1".equals(answerBean.getIs_selected())) {//已经选中
-            holder.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.cF7F7F7));
+            holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.cF7F7F7));
             holder.compatCheckBox.setChecked(true);
             lastPosition = position;
             mineAnswer = answerBean.getOptions_index();
             answerId = answerBean.getId();
 
         } else {//没有选中
-            holder.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.compatCheckBox.setChecked(false);
         }
 
@@ -183,19 +175,24 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
         private AppCompatCheckBox compatCheckBox;
         private TextView tv_options, tv_description;
 
-        private RelativeLayout relativeLayout;
+        private LinearLayout linearLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             compatCheckBox = itemView.findViewById(R.id.checkBox);
             tv_options = itemView.findViewById(R.id.tv_options);
             tv_description = itemView.findViewById(R.id.tv_description);
-            relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            relativeLayout.setOnClickListener(this);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+
+            if ("5".equals(source) || "4".equals(source)) {
+                return;
+            }
+
             AnswerBean answerBean = answerBeans.get(getLayoutPosition());
             if ("1".equals(single)) {//单选
                 if (!answerBean.isSelect() == true) {//未选中
@@ -210,16 +207,35 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
             } else {//多选
                 if ("0".equals(answerBean.getIs_selected())) {
                     answerBean.setIs_selected("1");
-//                    mineAnswerIds.add(answerBean.getId());
-//                    mineAnswers.add(answerBean.getOptions_index());
                 } else {
                     answerBean.setIs_selected("0");
-//                    mineAnswerIds.remove(answerBean.getId());
-//                    mineAnswers.remove(answerBean.getOptions_index());
-
                 }
                 notifyItemChanged(getLayoutPosition());
             }
         }
+    }
+
+    private Html.ImageGetter getImageGetter(TextView textView) {
+        return new Html.ImageGetter() {
+            @Override
+            public Drawable getDrawable(String source) {
+                L.e("======Source:" + source);
+                URLDrawable urlDrawable = new URLDrawable();
+                try {
+                    Glide.with(context).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            urlDrawable.bitmap = resource;
+                            urlDrawable.setBounds(0, 0, resource.getWidth(), resource.getHeight());
+                            textView.invalidate();
+                            textView.setText(textView.getText());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return urlDrawable;
+            }
+        };
     }
 }

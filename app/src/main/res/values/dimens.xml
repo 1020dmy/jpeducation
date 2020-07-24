@@ -17,10 +17,9 @@
     <dimen name="radius_size">15dp</dimen>
 
     <dimen name="shape_width">1dp</dimen>
-    
-    
-    <dimen name="dp_10">5dp</dimen>
 
+
+    <dimen name="dp_10">5dp</dimen>
 
 
     <!--text_size-->
@@ -38,9 +37,7 @@
     <dimen name="s_dp_14">14dp</dimen>
     <dimen name="s_dp_10">10dp</dimen>
     <dimen name="s_dp_24">24dp</dimen>
-
-
-
+    <dimen name="s_dp_44">44dp</dimen>
 
 
     <!--margin-->
@@ -49,8 +46,6 @@
 
     <dimen name="m_dp_18">18dp</dimen>
     <dimen name="m_dp_33">33dp</dimen>
-
-
 
 
 </resources>

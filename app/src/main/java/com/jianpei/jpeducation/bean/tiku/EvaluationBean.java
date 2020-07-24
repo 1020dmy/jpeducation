@@ -1,6 +1,11 @@
 package com.jianpei.jpeducation.bean.tiku;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -10,7 +15,7 @@ import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
  * <p>
  * Describe:
  */
-public class EvaluationBean {
+public class EvaluationBean implements Parcelable {
 
 
     /**
@@ -41,16 +46,28 @@ public class EvaluationBean {
     private String answer_time_str;
     private String score_assessment;
 
-    private GroupInfoBean recommend_info;
+    private List<GroupInfoBean> groupData;
 
-
-    public GroupInfoBean getRecommend_info() {
-        return recommend_info;
+    public List<GroupInfoBean> getGroupData() {
+        return groupData;
     }
 
-    public void setRecommend_info(GroupInfoBean recommend_info) {
-        this.recommend_info = recommend_info;
+    public void setGroupData(List<GroupInfoBean> groupData) {
+        this.groupData = groupData;
     }
+
+//    private GroupInfoBean recommend_info;
+
+
+
+
+//    public GroupInfoBean getRecommend_info() {
+//        return recommend_info;
+//    }
+//
+//    public void setRecommend_info(GroupInfoBean recommend_info) {
+//        this.recommend_info = recommend_info;
+//    }
 
     public int getUnsolved_num() {
         return unsolved_num;
@@ -147,4 +164,58 @@ public class EvaluationBean {
     public void setScore_assessment(String score_assessment) {
         this.score_assessment = score_assessment;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.unsolved_num);
+        dest.writeInt(this.fail_num);
+        dest.writeInt(this.success_num);
+        dest.writeInt(this.total_score);
+        dest.writeString(this.paper_score);
+        dest.writeInt(this.choose_score);
+        dest.writeInt(this.answer_score);
+        dest.writeString(this.paper_name);
+        dest.writeString(this.create_time_str);
+        dest.writeString(this.answering_time_str);
+        dest.writeString(this.answer_time_str);
+        dest.writeString(this.score_assessment);
+        dest.writeTypedList(this.groupData);
+    }
+
+    public EvaluationBean() {
+    }
+
+    protected EvaluationBean(Parcel in) {
+        this.unsolved_num = in.readInt();
+        this.fail_num = in.readInt();
+        this.success_num = in.readInt();
+        this.total_score = in.readInt();
+        this.paper_score = in.readString();
+        this.choose_score = in.readInt();
+        this.answer_score = in.readInt();
+        this.paper_name = in.readString();
+        this.create_time_str = in.readString();
+        this.answering_time_str = in.readString();
+        this.answer_time_str = in.readString();
+        this.score_assessment = in.readString();
+        this.groupData = in.createTypedArrayList(GroupInfoBean.CREATOR);
+    }
+
+    public static final Creator<EvaluationBean> CREATOR = new Creator<EvaluationBean>() {
+        @Override
+        public EvaluationBean createFromParcel(Parcel source) {
+            return new EvaluationBean(source);
+        }
+
+        @Override
+        public EvaluationBean[] newArray(int size) {
+            return new EvaluationBean[size];
+        }
+    };
 }

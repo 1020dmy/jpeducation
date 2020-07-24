@@ -1,11 +1,14 @@
 package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
+import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -38,6 +41,12 @@ public interface AnswerContract {
         //交卷
         Observable<BaseEntity<PaperEvaluationBean>> paperEvaluation(String record_id, String confirm_status);
 
+        //科目列表
+        Observable<BaseEntity<List<CurriculumDataBean>>> curriculumData(String cat_id, String parent_id);
+
+        //解答题评分
+        Observable<BaseEntity<GetQuestionBean>> answerScore(String score, String questino_id, String record_id, String index_type);
+
     }
 
     interface Model {
@@ -52,5 +61,9 @@ public interface AnswerContract {
         void favorites(String paper_id, String question_id);
 
         void paperEvaluation(String record_id, String confirm_status);
+
+        void curriculumData(String cat_id, String parent_id);
+
+        void answerScore(String score, String questino_id, String record_id, String index_type);
     }
 }

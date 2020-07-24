@@ -148,29 +148,31 @@
         <!--            android:textColor="@color/cE73B30"-->
         <!--            android:textSize="13dp" />-->
 
-        <RelativeLayout
-            android:id="@+id/rl_buy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="14dp"
-            android:layout_weight="2">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/rl_buy"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginLeft="14dp"-->
+<!--            android:layout_weight="2">-->
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_buy"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
-                android:background="@color/cFF0000"
+                android:background="@color/c80FF0000"
                 android:gravity="center"
                 android:text="单独购买"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/c80ffffff" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@color/c80ffffff" />-->
 
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
 
         <TextView

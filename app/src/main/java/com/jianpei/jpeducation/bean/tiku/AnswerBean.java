@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.tiku;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean.tiku;
  * <p>
  * Describe:
  */
-public class AnswerBean {
+public class AnswerBean implements Parcelable {
 
 
     /**
@@ -84,4 +87,46 @@ public class AnswerBean {
     public void setOptions_index(String options_index) {
         this.options_index = options_index;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.question_id);
+        dest.writeString(this.is_succ);
+        dest.writeString(this.answers_info);
+        dest.writeString(this.options_index);
+        dest.writeByte(this.isSelect ? (byte) 1 : (byte) 0);
+        dest.writeString(this.is_selected);
+    }
+
+    public AnswerBean() {
+    }
+
+    protected AnswerBean(Parcel in) {
+        this.id = in.readString();
+        this.question_id = in.readString();
+        this.is_succ = in.readString();
+        this.answers_info = in.readString();
+        this.options_index = in.readString();
+        this.isSelect = in.readByte() != 0;
+        this.is_selected = in.readString();
+    }
+
+    public static final Parcelable.Creator<AnswerBean> CREATOR = new Parcelable.Creator<AnswerBean>() {
+        @Override
+        public AnswerBean createFromParcel(Parcel source) {
+            return new AnswerBean(source);
+        }
+
+        @Override
+        public AnswerBean[] newArray(int size) {
+            return new AnswerBean[size];
+        }
+    };
 }

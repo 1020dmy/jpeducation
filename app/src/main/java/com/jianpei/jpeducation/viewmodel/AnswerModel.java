@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
@@ -14,7 +15,8 @@ import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
 import com.jianpei.jpeducation.contract.AnswerContract;
 import com.jianpei.jpeducation.repository.AnswerRepository;
-import com.jianpei.jpeducation.utils.L;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -52,10 +54,10 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
 
     @Override
     public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer) {
-        if (TextUtils.isEmpty(question_id)) {
-            errData.setValue("question_id不能为null");
-            return;
-        }
+//        if (TextUtils.isEmpty(question_id)) {
+//            errData.setValue("question_id不能为null");
+//            return;
+//        }
         answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answer).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
             @Override
             protected void onSuccees(BaseEntity<GetQuestionBean> t) throws Exception {
@@ -130,6 +132,15 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
      *
      * @param paper_id
      */
+
+    private MutableLiveData<PaperInfoBean> paperInfoBeanLiveData;
+
+    public MutableLiveData<PaperInfoBean> getPaperInfoBeanLiveData() {
+        if (paperInfoBeanLiveData == null)
+            paperInfoBeanLiveData = new MutableLiveData<>();
+        return paperInfoBeanLiveData;
+    }
+
     @Override
     public void paperInfo(String paper_id) {
         if (TextUtils.isEmpty(paper_id)) {
@@ -139,7 +150,11 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
         answerRepository.paperInfo(paper_id).compose(setThread()).subscribe(new BaseObserver<PaperInfoBean>() {
             @Override
             protected void onSuccees(BaseEntity<PaperInfoBean> t) throws Exception {
-
+                if (t.isSuccess()) {
+                    paperInfoBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
             }
 
             @Override
@@ -269,6 +284,78 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
                 } else {
                     errData.setValue(t.getMsg());
                 }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * 科目列表
+     *
+     * @param cat_id
+     * @param parent_id
+     */
+
+    private MutableLiveData<List<CurriculumDataBean>> curriculumDataBeans;
+
+    public MutableLiveData<List<CurriculumDataBean>> getCurriculumDataBeans() {
+        if (curriculumDataBeans == null)
+            curriculumDataBeans = new MutableLiveData<>();
+        return curriculumDataBeans;
+    }
+
+    @Override
+    public void curriculumData(String cat_id, String parent_id) {
+
+        answerRepository.curriculumData(cat_id, parent_id).compose(setThread()).subscribe(new BaseObserver<List<CurriculumDataBean>>() {
+            @Override
+            protected void onSuccees(BaseEntity<List<CurriculumDataBean>> t) throws Exception {
+                if (t.isSuccess()) {
+                    curriculumDataBeans.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * @param score
+     * @param questino_id
+     * @param record_id
+     * @param index_type
+     */
+    @Override
+    public void answerScore(String score, String questino_id, String record_id, String index_type) {
+
+        answerRepository.answerScore(score, questino_id, record_id, index_type).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<GetQuestionBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    questionBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+
+                }
+
             }
 
             @Override

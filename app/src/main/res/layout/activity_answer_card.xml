@@ -24,6 +24,7 @@
             android:src="@drawable/today_answer_tip" />
 
         <TextView
+            android:id="@+id/tv_paper_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -36,9 +37,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:paddingLeft="10dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingLeft="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +48,7 @@
         android:gravity="center">
 
         <LinearLayout
+            android:id="@+id/ll_correct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -67,6 +69,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="37dp"
@@ -88,6 +91,29 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="10dp"
+                android:background="@drawable/shape_answer_card_four" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="已做"
+                android:textColor="@color/c0A0C14"
+                android:textSize="@dimen/s_dp_13" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_uncomplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="37dp"

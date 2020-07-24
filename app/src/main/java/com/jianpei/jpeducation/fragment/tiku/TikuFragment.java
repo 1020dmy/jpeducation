@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.tiku.SimulationExerciseListActivity;
 import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
@@ -176,6 +177,7 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
             case R.id.tv_three:
                 break;
             case R.id.tv_four:
+                startActivity(new Intent(getActivity(), SimulationExerciseListActivity.class));
                 break;
             case R.id.tv_five:
                 break;
