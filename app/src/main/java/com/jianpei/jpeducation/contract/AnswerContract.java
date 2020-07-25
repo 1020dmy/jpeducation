@@ -7,6 +7,7 @@ import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 
 import java.util.List;
 
@@ -47,6 +48,9 @@ public interface AnswerContract {
         //解答题评分
         Observable<BaseEntity<GetQuestionBean>> answerScore(String score, String questino_id, String record_id, String index_type);
 
+
+        //收藏/错题列表
+        Observable<BaseEntity<QuestionDataBean>> questionData(String type, String class_id, int pageIndex, int pageSize);
     }
 
     interface Model {
@@ -65,5 +69,7 @@ public interface AnswerContract {
         void curriculumData(String cat_id, String parent_id);
 
         void answerScore(String score, String questino_id, String record_id, String index_type);
+
+        void questionData(String type, String class_id, int pageIndex, int pageSize);
     }
 }

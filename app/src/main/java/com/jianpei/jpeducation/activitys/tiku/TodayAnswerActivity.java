@@ -2,7 +2,9 @@ package com.jianpei.jpeducation.activitys.tiku;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -11,12 +13,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.tiku.OptionsAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -25,13 +31,15 @@ import com.jianpei.jpeducation.bean.tiku.CardBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
-import com.jianpei.jpeducation.bean.tiku.TestPaperBean;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TodayAnswerActivity extends BaseActivity {
@@ -76,6 +84,17 @@ public class TodayAnswerActivity extends BaseActivity {
     @BindView(R.id.tv_paper_name)
     TextView tvPaperName;
 
+    @BindView(R.id.et_answer)
+    TextView etAnswer;
+    @BindView(R.id.tv_parsing)
+    TextView tvParsing;
+    @BindView(R.id.ll_jd_jiexi)
+    LinearLayout llJdJiexi;
+    @BindView(R.id.tv_you_answer)
+    TextView tvYouAnswer;
+    @BindView(R.id.ll_jd_answer)
+    LinearLayout llJdAnswer;
+
     private OptionsAdapter optionsAdapter;
     private List<AnswerBean> answerBeans;
 
@@ -90,6 +109,7 @@ public class TodayAnswerActivity extends BaseActivity {
     private String source;//1正常答题，2收藏，4本卷错题，3错题集
     private String paperId;//试卷id
     private String restartType;//0添加新试卷，2重做，1继续答题
+    private String type;//题目类型1，单选，2多选，5简答
 
 
     @Override
@@ -160,10 +180,19 @@ public class TodayAnswerActivity extends BaseActivity {
             @Override
             public void onChanged(PaperEvaluationBean paperEvaluationBean) {
                 dismissLoading();
-                startActivity(new Intent(TodayAnswerActivity.this, AnswerResultActivity.class)
-                        .putExtra("paperEvaluationBean", paperEvaluationBean)
-                        .putExtra("recordId", recordId)
-                        .putExtra("paperId", paperId));
+                if (paperEvaluationBean.getQuestion_info() != null) {
+                    startActivity(new Intent(TodayAnswerActivity.this, AnswerTheScoreActivity.class)
+                            .putExtra("paperEvaluationBean", paperEvaluationBean)
+                            .putExtra("recordId", recordId)
+                            .putExtra("paperId", paperId)
+                            .putExtra("paperName", tvPaperName.getText().toString()));
+
+                } else {
+                    startActivity(new Intent(TodayAnswerActivity.this, AnswerResultActivity.class)
+                            .putExtra("paperEvaluationBean", paperEvaluationBean)
+                            .putExtra("recordId", recordId)
+                            .putExtra("paperId", paperId));
+                }
                 finish();
             }
         });
@@ -179,13 +208,13 @@ public class TodayAnswerActivity extends BaseActivity {
             answerModel.insertRecord(paperId, recordId, restartType);
         } else if ("4".equals(source)) {//本卷错题
             answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
-            llJiexi.setVisibility(View.VISIBLE);
+//            llJiexi.setVisibility(View.VISIBLE);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
 
         } else if ("5".equals(source)) {//全部解析
             answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
-            llJiexi.setVisibility(View.VISIBLE);
+//            llJiexi.setVisibility(View.VISIBLE);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
         }
@@ -202,10 +231,38 @@ public class TodayAnswerActivity extends BaseActivity {
         //我的答案
         optionsAdapter.setMineAnswer("");
         optionsAdapter.setLastPosition(-1);
+
+        type = mGetQuestionBean.getType();
+
         //1.单选，2多选，5简答
-        optionsAdapter.setSingle(mGetQuestionBean.getType());
-        answerBeans.addAll(mGetQuestionBean.getAnswer_list());
-        optionsAdapter.notifyDataSetChanged();
+        if (!"5".equals(mGetQuestionBean.getType())) {
+            etAnswer.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            optionsAdapter.setSingle(mGetQuestionBean.getType());
+            answerBeans.addAll(mGetQuestionBean.getAnswer_list());
+            optionsAdapter.notifyDataSetChanged();
+            //解析
+            tvJiexi.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
+            tvCorrect.setText(mGetQuestionBean.getSucc_answer());
+            tvMineAnswer.setText(mGetQuestionBean.getMy_answer());
+            if ("4".equals(source) || "5".equals(source)){
+                llJiexi.setVisibility(View.VISIBLE);
+                llJdJiexi.setVisibility(View.GONE);
+                llJdAnswer.setVisibility(View.GONE);
+            }
+
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            etAnswer.setVisibility(View.VISIBLE);
+            //解析
+            tvParsing.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
+            tvYouAnswer.setText(mGetQuestionBean.getMy_answer());
+            if ("4".equals(source) || "5".equals(source)){
+                llJiexi.setVisibility(View.GONE);
+                llJdJiexi.setVisibility(View.VISIBLE);
+                llJdAnswer.setVisibility(View.VISIBLE);
+            }
+        }
         //当前第几题
         tvCurrent.setText(mGetQuestionBean.getQuestion_index());
         //是否显示上一题
@@ -227,33 +284,10 @@ public class TodayAnswerActivity extends BaseActivity {
             tvSubmit.setVisibility(View.GONE);
         }
 
-        //问题
-        String type;
-        if ("1".equals(mGetQuestionBean.getType())) {
-            type = "【单选题】";
-        } else if ("2".equals(mGetQuestionBean.getType())) {
-            type = "【多选题】";
-        } else {
-            type = "【简单题】";
-        }
-        Spanned spanned = Html.fromHtml(mGetQuestionBean.getQuestion_name());
-        tvTopic.setText(type + Html.fromHtml(spanned.toString()));
-        //答案
-        Spanned spanned2 = Html.fromHtml(mGetQuestionBean.getExplain());
-        tvJiexi.setText(Html.fromHtml(spanned2.toString()));
-        tvCorrect.setText(mGetQuestionBean.getSucc_answer());
-        tvMineAnswer.setText(mGetQuestionBean.getMy_answer());
-        if (TextUtils.isEmpty(mGetQuestionBean.getMy_answer())) {
-            tvResult.setText("未作答");
-        } else {
-            if (mGetQuestionBean.getMy_answer().equals(mGetQuestionBean.getSucc_answer())) {
-                tvResult.setText("回答正确");
-            } else {
-                tvResult.setText("回答错误");
 
-            }
-        }
-        //
+        tvTopic.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
+
+
         setFavorites(mGetQuestionBean.getIs_favorites());
     }
 
@@ -270,6 +304,8 @@ public class TodayAnswerActivity extends BaseActivity {
             }
         }
     }
+
+
 
     //收藏
     protected void setFavorites(String isFavorites) {
@@ -302,6 +338,8 @@ public class TodayAnswerActivity extends BaseActivity {
             case R.id.iv_previous://上一题
                 showLoading("");
                 if ("1".equals(source)) {
+                    llJdJiexi.setVisibility(View.GONE);
+                    llJdAnswer.setVisibility(View.GONE);
                     llJiexi.setVisibility(View.GONE);
                     tvFavorites.setVisibility(View.GONE);
                     tvAnswer.setVisibility(View.VISIBLE);
@@ -315,14 +353,24 @@ public class TodayAnswerActivity extends BaseActivity {
                         .putExtra("paperName", tvPaperName.getText().toString()), 111);
                 break;
             case R.id.tv_answer://查看答案
-                answerResult();
-                llJiexi.setVisibility(View.VISIBLE);
+                if ("5".equals(type)) {
+                    llJiexi.setVisibility(View.GONE);
+                    llJdJiexi.setVisibility(View.VISIBLE);
+                    llJdAnswer.setVisibility(View.VISIBLE);
+                } else {
+                    answerResult();
+                    llJiexi.setVisibility(View.VISIBLE);
+                    llJdJiexi.setVisibility(View.GONE);
+                    llJdAnswer.setVisibility(View.GONE);
+                }
                 tvAnswer.setVisibility(View.GONE);
                 tvFavorites.setVisibility(View.VISIBLE);
                 break;
             case R.id.iv_next://下一题
                 showLoading("");
                 if ("1".equals(source)) {
+                    llJdJiexi.setVisibility(View.GONE);
+                    llJdAnswer.setVisibility(View.GONE);
                     llJiexi.setVisibility(View.GONE);
                     tvFavorites.setVisibility(View.GONE);
                     tvAnswer.setVisibility(View.VISIBLE);
@@ -359,4 +407,30 @@ public class TodayAnswerActivity extends BaseActivity {
         }
 
     }
+
+    private Html.ImageGetter getImageGetter() {
+        return new Html.ImageGetter() {
+            @Override
+            public Drawable getDrawable(String source) {
+                L.e("======Source:" + source);
+                URLDrawable urlDrawable = new URLDrawable();
+                try {
+                    Glide.with(TodayAnswerActivity.this).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            urlDrawable.bitmap = resource;
+                            urlDrawable.setBounds(0, 0, resource.getWidth(), resource.getHeight());
+                            tvTopic.invalidate();
+                            tvTopic.setText(tvTopic.getText());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return urlDrawable;
+            }
+        };
+    }
+
+
 }

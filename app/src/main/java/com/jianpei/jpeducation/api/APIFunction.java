@@ -25,6 +25,9 @@ import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.elective.GroupHomeBean;
+import com.jianpei.jpeducation.bean.gold.CashWithdrawalBean;
+import com.jianpei.jpeducation.bean.gold.VirtualCurrencyListBean;
+import com.jianpei.jpeducation.bean.gold.WithdrawalDataBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -39,6 +42,7 @@ import com.jianpei.jpeducation.bean.json.AnswerScoreJson;
 import com.jianpei.jpeducation.bean.json.AttentionJson;
 import com.jianpei.jpeducation.bean.json.CancelOrderJson;
 import com.jianpei.jpeducation.bean.json.CarInfoJson;
+import com.jianpei.jpeducation.bean.json.CashWithdrawalJson;
 import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
 import com.jianpei.jpeducation.bean.json.ClassDataJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
@@ -65,6 +69,7 @@ import com.jianpei.jpeducation.bean.json.PaperCardJson;
 import com.jianpei.jpeducation.bean.json.PaperDataJson;
 import com.jianpei.jpeducation.bean.json.PaperEvaluationJson;
 import com.jianpei.jpeducation.bean.json.PaperInfoJson;
+import com.jianpei.jpeducation.bean.json.QuestionDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentDataJson;
 import com.jianpei.jpeducation.bean.json.RegimentInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
@@ -98,6 +103,7 @@ import com.jianpei.jpeducation.bean.tiku.PaperDataBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperHomeBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 
 
 import java.util.ArrayList;
@@ -532,6 +538,28 @@ public interface APIFunction {
      */
     @POST(UrlConfig.answerScore)
     Observable<BaseEntity<GetQuestionBean>> answerScore(@Body AnswerScoreJson answerScoreJson);
+
+    /**
+     * 1-收藏/错题列表
+     */
+    @POST(UrlConfig.questionData)
+    Observable<BaseEntity<QuestionDataBean>> questionData(@Body QuestionDataJson questionDataJson);
+
+    /**
+     * 1金币列表
+     */
+    @POST(UrlConfig.virtualCurrencyList)
+    Observable<BaseEntity<VirtualCurrencyListBean>> virtualCurrencyList(@Body IntegralDataJson integralDataJson);
+    /**
+     * 提现列表
+     */
+    @POST(UrlConfig.withdrawalData)
+    Observable<BaseEntity<WithdrawalDataBean>> withdrawalData(@Body IntegralDataJson integralDataJson);
+    /**
+     * 申请提现
+     */
+    @POST(UrlConfig.cashWithdrawal)
+    Observable<BaseEntity<CashWithdrawalBean>> cashWithdrawal(@Body CashWithdrawalJson cashWithdrawalJson);
 
     /**
      * 文件上传

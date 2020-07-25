@@ -13,6 +13,7 @@ import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 import com.jianpei.jpeducation.contract.AnswerContract;
 import com.jianpei.jpeducation.repository.AnswerRepository;
 
@@ -354,6 +355,48 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
                 } else {
                     errData.setValue(t.getMsg());
 
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * -收藏/错题列表
+     *
+     * @param type
+     * @param class_id
+     * @param pageIndex
+     * @param pageSize
+     */
+    private MutableLiveData<QuestionDataBean> questionDataBeanLiveData;
+
+    public MutableLiveData<QuestionDataBean> getQuestionDataBeanLiveData() {
+        if (questionDataBeanLiveData==null)
+            questionDataBeanLiveData=new MutableLiveData<>();
+        return questionDataBeanLiveData;
+    }
+
+    @Override
+    public void questionData(String type, String class_id, int pageIndex, int pageSize) {
+
+        answerRepository.questionData(type, class_id, pageIndex, pageSize).compose(setThread()).subscribe(new BaseObserver<QuestionDataBean>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<QuestionDataBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    questionDataBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
                 }
 
             }

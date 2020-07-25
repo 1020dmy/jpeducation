@@ -76,6 +76,82 @@
                 android:nestedScrollingEnabled="false"
                 android:paddingTop="30dp" />
 
+            <EditText
+                android:id="@+id/et_answer"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_answer_card_three"
+                android:gravity="top"
+                android:hint="在此处作答"
+                android:padding="10dp"
+                android:textSize="@dimen/s_dp_11" />
+
+            <LinearLayout
+                android:id="@+id/ll_jd_jiexi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:background="@drawable/shape_coupon_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/answer_jiexi"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="答案解析"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_14" />
+
+                <TextView
+                    android:id="@+id/tv_parsing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_jd_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:background="@drawable/shape_coupon_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/mine_answer"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="你的答案"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_14" />
+
+                <TextView
+                    android:id="@+id/tv_you_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp" />
+            </LinearLayout>
+
+
             <LinearLayout
                 android:id="@+id/ll_jiexi"
                 android:layout_width="match_parent"

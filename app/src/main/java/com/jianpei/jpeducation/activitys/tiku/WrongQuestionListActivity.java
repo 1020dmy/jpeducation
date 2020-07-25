@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.tiku;
 
 
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.fragment.tiku.SimulationFragment;
+import com.jianpei.jpeducation.fragment.tiku.WrongAndCollectListFragment;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
@@ -24,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SimulationExerciseListActivity extends BaseActivity {
-
+public class WrongQuestionListActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -38,28 +40,27 @@ public class SimulationExerciseListActivity extends BaseActivity {
     @BindView(R.id.viewPage)
     ViewPager2 viewPage;
 
-
     private AnswerModel answerModel;
 
     private String catId;
 
     private List<Fragment> fragments;
 
-    private String paper_type;
+    private String type;
 
 
     @Override
     protected int setLayoutView() {
-        return R.layout.activity_simulation_exercise_list;
+        return R.layout.activity_wrong_question_list;
     }
 
     @Override
     protected void initView() {
-        paper_type=getIntent().getStringExtra("paper_type");
-        if ("1".equals(paper_type)){
-            tvTitle.setText("历年真题");
-        }else if ("2".equals(paper_type)){
-            tvTitle.setText("模拟练习");
+        type=getIntent().getStringExtra("type");
+        if ("1".equals(type)){
+            tvTitle.setText("收藏列表");
+        }else if ("2".equals(type)){
+            tvTitle.setText("错题集");
 
         }
         catId = SpUtils.getValue(SpUtils.catId);
@@ -76,7 +77,7 @@ public class SimulationExerciseListActivity extends BaseActivity {
                 dismissLoading();
                 if (curriculumDataBeans != null && curriculumDataBeans.size() > 0) {
                     for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                        fragments.add(new SimulationFragment(curriculumDataBean,paper_type));
+                        fragments.add(new WrongAndCollectListFragment(type,curriculumDataBean.getId()));
                     }
                     viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
                     new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -101,7 +102,6 @@ public class SimulationExerciseListActivity extends BaseActivity {
 
         showLoading("");
         answerModel.curriculumData(catId, "0");
-
     }
 
 
@@ -109,6 +109,4 @@ public class SimulationExerciseListActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
-
-
 }

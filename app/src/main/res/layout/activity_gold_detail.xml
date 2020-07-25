@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activitys.mine.gold.GoldDetailActivity">
+
+
+    <include layout="@layout/base_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/integral_details_bg"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="小鱼儿"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s_dp_15" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:drawableRight="@drawable/mine_jifen"
+            android:drawablePadding="13dp"
+            android:text="当前金币:"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s_dp_15" />
+
+        <TextView
+            android:id="@+id/tv_gold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:text="200"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s_dp_20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_exchange"
+            android:layout_width="60dp"
+            android:layout_height="19dp"
+            android:layout_marginRight="19dp"
+            android:background="@drawable/shape_gold"
+            android:gravity="center"
+            android:text="兑换"
+            android:textColor="@color/cF8E3D7"
+            android:textSize="@dimen/s_dp_12" />
+    </LinearLayout>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/shadow_home_item_bg">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

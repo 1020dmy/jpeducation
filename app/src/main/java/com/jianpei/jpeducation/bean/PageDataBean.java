@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * jpeducation
  * <p>
@@ -8,7 +11,7 @@ package com.jianpei.jpeducation.bean;
  * <p>
  * Describe:
  */
-public class PageDataBean {
+public class PageDataBean implements Parcelable {
 
 
     /**
@@ -44,4 +47,38 @@ public class PageDataBean {
     public void setTotal_page(int total_page) {
         this.total_page = total_page;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.page_index);
+        dest.writeInt(this.page_size);
+        dest.writeInt(this.total_page);
+    }
+
+    public PageDataBean() {
+    }
+
+    protected PageDataBean(Parcel in) {
+        this.page_index = in.readInt();
+        this.page_size = in.readInt();
+        this.total_page = in.readInt();
+    }
+
+    public static final Parcelable.Creator<PageDataBean> CREATOR = new Parcelable.Creator<PageDataBean>() {
+        @Override
+        public PageDataBean createFromParcel(Parcel source) {
+            return new PageDataBean(source);
+        }
+
+        @Override
+        public PageDataBean[] newArray(int size) {
+            return new PageDataBean[size];
+        }
+    };
 }

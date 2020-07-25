@@ -183,6 +183,19 @@ public class UrlConfig {
     //1-解答题评分
     public static final String answerScore = "paper/answerScore";
 
+    //1-收藏/错题列表
+    public static final String questionData = "paper/questionData";
+
+    //1-金币列表
+    public static final String virtualCurrencyList = "user/virtualCurrencyList";
+
+    //1-提现列表
+    public static final String withdrawalData = "user/withdrawalData";
+
+    //1-申请提现
+    public static final String cashWithdrawal = "user/cashWithdrawal";
+
+
     //1-文件上传
     public static final String uploadFile = "uploadFile";
 }

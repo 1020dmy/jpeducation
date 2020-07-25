@@ -18,6 +18,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.tiku.SimulationExerciseListActivity;
 import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
+import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;
@@ -175,13 +176,16 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
             case R.id.tv_two:
                 break;
             case R.id.tv_three:
+                startActivity(new Intent(getActivity(), SimulationExerciseListActivity.class).putExtra("paper_type", "1"));
                 break;
             case R.id.tv_four:
-                startActivity(new Intent(getActivity(), SimulationExerciseListActivity.class));
+                startActivity(new Intent(getActivity(), SimulationExerciseListActivity.class).putExtra("paper_type", "2"));
                 break;
             case R.id.tv_five:
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "2"));
                 break;
             case R.id.tv_six:
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "1"));
                 break;
             case R.id.tv_seven:
                 break;

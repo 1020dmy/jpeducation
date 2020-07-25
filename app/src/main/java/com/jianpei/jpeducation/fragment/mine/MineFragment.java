@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
 import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
+import com.jianpei.jpeducation.activitys.mine.gold.GoldDetailActivity;
 import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
@@ -58,6 +59,9 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.tv_signin)
     TextView tvSignin;
 
+    @BindView(R.id.tv_jinbi_num)
+    TextView tvJinbiNum;
+
     private CustomerServicePopup customerServicePopup;
 
 
@@ -79,7 +83,7 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.civ_head, R.id.tv_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin})
+    @OnClick({R.id.civ_head, R.id.tv_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin, R.id.tv_jinbi, R.id.tv_jinbi_num})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.civ_head://个人信息
@@ -120,6 +124,10 @@ public class MineFragment extends BaseFragment {
                     customerServicePopup = new CustomerServicePopup(getActivity(), "13121597264");
                 }
                 customerServicePopup.showPop();
+                break;
+            case R.id.tv_jinbi:
+            case R.id.tv_jinbi_num:
+                startActivity(new Intent(getActivity(), GoldDetailActivity.class));
                 break;
 
         }

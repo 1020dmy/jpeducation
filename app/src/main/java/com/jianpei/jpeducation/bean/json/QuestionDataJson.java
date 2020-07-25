@@ -3,34 +3,40 @@ package com.jianpei.jpeducation.bean.json;
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/7/7
+ * Created by sjl on 2020/7/25
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public class IntegralDataJson {
+public class QuestionDataJson {
 
-    private int type;
+    private String type;
+    private String class_id;
+
     private int pageIndex;
     private int pageSize;
 
-    public IntegralDataJson(int type, int pageIndex, int pageSize) {
+    public QuestionDataJson(String type, String class_id, int pageIndex, int pageSize) {
         this.type = type;
+        this.class_id = class_id;
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
     }
 
-    public IntegralDataJson(int pageIndex, int pageSize) {
-        this.pageIndex = pageIndex;
-        this.pageSize = pageSize;
-    }
-
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public String getClass_id() {
+        return class_id;
+    }
+
+    public void setClass_id(String class_id) {
+        this.class_id = class_id;
     }
 
     public int getPageIndex() {

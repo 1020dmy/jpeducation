@@ -50,10 +50,11 @@ public class SimulationFragment extends BaseFragment implements MyItemOnClickLis
     //
 
     private int page = 1, pageSize = 10;
-    private String catId, paperType = "2";
+    private String catId, paperType;
 
-    public SimulationFragment(CurriculumDataBean curriculumDataBean) {
+    public SimulationFragment(CurriculumDataBean curriculumDataBean, String paperType) {
         this.curriculumDataBean = curriculumDataBean;
+        this.paperType = paperType;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class SimulationFragment extends BaseFragment implements MyItemOnClickLis
     @Override
     public void onItemClick(int position, View view) {
 
-        startActivity(new Intent(getActivity(), TestPaperInfoActivity.class).putExtra("testPaperBean",mTestPaperBeans.get(position)));
+        startActivity(new Intent(getActivity(), TestPaperInfoActivity.class).putExtra("testPaperBean", mTestPaperBeans.get(position)));
     }
 
     @Override

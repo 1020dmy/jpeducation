@@ -23,7 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.tiku.AnswerTheScoreActivity"></activity>
+        <activity android:name=".activitys.mine.gold.GoldWithdrawDetailActivity"></activity>
+        <activity android:name=".activitys.mine.gold.GoldWithdrawActivity" />
+        <activity android:name=".activitys.mine.gold.GoldDetailActivity" />
+        <activity android:name=".activitys.tiku.WrongQuestionListActivity" />
+        <activity android:name=".activitys.tiku.AnswerTheScoreActivity" />
         <activity android:name=".activitys.tiku.TestPaperInfoActivity" />
         <activity android:name=".activitys.tiku.SimulationExerciseActivity" />
         <activity android:name=".activitys.tiku.SimulationExerciseListActivity" />

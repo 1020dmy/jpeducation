@@ -11,12 +11,14 @@ import com.jianpei.jpeducation.bean.json.InsertRecordJson;
 import com.jianpei.jpeducation.bean.json.PaperCardJson;
 import com.jianpei.jpeducation.bean.json.PaperEvaluationJson;
 import com.jianpei.jpeducation.bean.json.PaperInfoJson;
+import com.jianpei.jpeducation.bean.json.QuestionDataJson;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperCardBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
+import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 import com.jianpei.jpeducation.contract.AnswerContract;
 
 import java.util.List;
@@ -114,5 +116,18 @@ public class AnswerRepository extends BaseRepository implements AnswerContract.R
     @Override
     public Observable<BaseEntity<GetQuestionBean>> answerScore(String score, String questino_id, String record_id, String index_type) {
         return RetrofitFactory.getInstance().API().answerScore(new AnswerScoreJson(score, questino_id, record_id, index_type));
+    }
+
+    /**
+     * 收藏/错题列表
+     * @param type
+     * @param class_id
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<QuestionDataBean>> questionData(String type, String class_id, int pageIndex, int pageSize) {
+        return RetrofitFactory.getInstance().API().questionData(new QuestionDataJson(type, class_id, pageIndex, pageSize));
     }
 }
