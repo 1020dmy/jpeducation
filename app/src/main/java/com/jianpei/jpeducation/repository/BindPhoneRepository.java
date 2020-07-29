@@ -24,8 +24,8 @@ public class BindPhoneRepository implements BindPhoneContract.Repository {
         return RetrofitFactory.getInstance().API().bingPhone(new BindPhoneJson(uid,phone,code));
     }
 
-    @Override
-    public Observable<BaseEntity<String>> sendCode(String phone) {
-        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "other"));
-    }
+//    @Override
+//    public Observable<BaseEntity<String>> sendCode(String phone) {
+//        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "other"));
+//    }
 }

@@ -10,8 +10,10 @@ import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
 import com.jianpei.jpeducation.bean.json.ReplyDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadInfoJson;
+import com.jianpei.jpeducation.bean.json.TopicDataJson;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
+import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -37,6 +39,7 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
     public Observable<BaseEntity<List<ThreadDataBean>>> threadData(String start_id, String end_id, String follow) {
         return RetrofitFactory.getInstance().API().threadData(new ThreadDataJson(start_id, end_id, follow));
     }
+
     //话题列表
     @Override
     public Observable<BaseEntity<ThreadFromTopicDataBean>> threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot) {
@@ -94,5 +97,11 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
     @Override
     public Observable<BaseEntity<String>> insertEvaluation(String thread_id, String content, String post_id, String user_id_at) {
         return RetrofitFactory.getInstance().API().insertEvaluation(new InsertEvaluationJson(thread_id, content, post_id, user_id_at));
+    }
+
+    //我的动态
+    @Override
+    public Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize) {
+        return RetrofitFactory.getInstance().API().mThreadData(new TopicDataJson(pageIndex, pageSize));
     }
 }

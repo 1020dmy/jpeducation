@@ -19,10 +19,10 @@ import io.reactivex.Observable;
  */
 public class RegisteredRepository implements RegisteredContract.Repository {
 
-    @Override
-    public Observable<BaseEntity<String>> sendCode(String phone) {
-        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "regist"));
-    }
+//    @Override
+//    public Observable<BaseEntity<String>> sendCode(String phone) {
+//        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "regist"));
+//    }
 
     @Override
     public Observable<BaseEntity<UserInfoBean>> register(String phone, String code, String password, String passwordR) {

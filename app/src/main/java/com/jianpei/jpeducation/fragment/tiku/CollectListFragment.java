@@ -1,7 +1,7 @@
 package com.jianpei.jpeducation.fragment.tiku;
 
 import android.content.Context;
-import android.view.View;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,8 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.adapter.tiku.WrongAndCollectListAdapter;
+import com.jianpei.jpeducation.adapter.tiku.CollectListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.tiku.QuestionBean;
 import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
@@ -28,8 +32,9 @@ import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
  */
-public class WrongAndCollectListFragment extends BaseFragment {
+public class CollectListFragment extends BaseFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -38,21 +43,24 @@ public class WrongAndCollectListFragment extends BaseFragment {
 
     private AnswerModel answerModel;
 
+
     private String type;
     private String classId;
     private int page = 1, pageSize = 10;
 
     private List<QuestionBean> mQuestionBeans;
-    private WrongAndCollectListAdapter wrongAndCollectListAdapter;
 
-    public WrongAndCollectListFragment(String type, String classId) {
+    private CollectListAdapter collectListAdapter;
+
+
+    public CollectListFragment(String type, String classId) {
         this.type = type;
         this.classId = classId;
     }
 
     @Override
     protected int initLayout() {
-        return R.layout.fragment_wrong_and_collect_list;
+        return R.layout.fragment_collect_list;
     }
 
     @Override
@@ -84,8 +92,9 @@ public class WrongAndCollectListFragment extends BaseFragment {
     @Override
     protected void initData(Context mContext) {
         mQuestionBeans = new ArrayList<>();
-        wrongAndCollectListAdapter = new WrongAndCollectListAdapter(mQuestionBeans);
-        recyclerView.setAdapter(wrongAndCollectListAdapter);
+        collectListAdapter = new CollectListAdapter(mQuestionBeans);
+        recyclerView.setAdapter(collectListAdapter);
+
 
         answerModel.getQuestionDataBeanLiveData().observe(this, new Observer<QuestionDataBean>() {
             @Override
@@ -97,7 +106,7 @@ public class WrongAndCollectListFragment extends BaseFragment {
                     mQuestionBeans.clear();
                 }
                 mQuestionBeans.addAll(questionDataBean.getData());
-                wrongAndCollectListAdapter.notifyDataSetChanged();
+                collectListAdapter.notifyDataSetChanged();
 
             }
         });

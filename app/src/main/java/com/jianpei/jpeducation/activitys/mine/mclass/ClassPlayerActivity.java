@@ -42,12 +42,14 @@ import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MyClassBean;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
+import com.jianpei.jpeducation.utils.pop.DownloadClassPopup;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
 import java.io.File;
@@ -86,6 +88,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
     AlivcShowMoreDialog showMoreDialog;
 
+//    private DownloadClassPopup downloadClassPopup;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_class_player;
@@ -117,9 +121,11 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
                 dismissLoading();
-                if (aliyunPlayerView != null)
-                    aliyunPlayerView.onStop();
-                playVideo(videoUrlBean);
+                if (videoUrlBean.getType() == 0) {
+                    if (aliyunPlayerView != null)
+                        aliyunPlayerView.onStop();
+                    playVideo(videoUrlBean);
+                }
             }
         });
     }
@@ -366,10 +372,6 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
 
     /////下载相关
-
-
-
-
 
 
 }

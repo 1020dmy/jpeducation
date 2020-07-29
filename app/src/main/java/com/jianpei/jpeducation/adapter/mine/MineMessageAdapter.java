@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.adapter.mine;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.mine.MessageBean;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -23,22 +28,34 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MineMessageAdapter extends RecyclerView.Adapter<MineMessageAdapter.MyHolder> {
 
 
+    private List<MessageBean> messageBeans;
+    private Context context;
+
+    public MineMessageAdapter(List<MessageBean> messageBeans, Context context) {
+        this.messageBeans = messageBeans;
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
         return new MyHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        MessageBean messageBean = messageBeans.get(position);
+        Glide.with(context).load(messageBean.getImg()).placeholder(R.drawable.ic_launcher).into(holder.civHead);
+        holder.tvTime.setText(messageBean.getTime_str());
+        holder.tvContent.setText(messageBean.getContent());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return messageBeans != null ? messageBeans.size() : 0;
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

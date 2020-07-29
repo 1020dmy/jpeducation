@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activitys.mine.UserInfoActivity">
+    tools:context=".activitys.mine.userinfo.UserInfoActivity">
 
     <include layout="@layout/base_title" />
 
@@ -66,6 +66,7 @@
             android:text="昵称" />
 
         <TextView
+            android:id="@+id/tv_name"
             style="@style/userInfo_txt"
             android:text="小鱼儿"
             android:textColor="@color/c151820" />
@@ -95,6 +96,7 @@
             android:text="性别" />
 
         <TextView
+            android:id="@+id/tv_sex"
             style="@style/userInfo_txt"
             android:text="女"
             android:textColor="@color/c151820" />
@@ -110,9 +112,9 @@
     <include layout="@layout/line" />
 
     <LinearLayout
+        android:id="@+id/ll_birthday"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/ll_birthday"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
@@ -124,6 +126,7 @@
             android:text="生日" />
 
         <TextView
+            android:id="@+id/tv_birthday"
             style="@style/userInfo_txt"
             android:text="1990-5-1"
             android:textColor="@color/c151820" />
@@ -152,6 +155,7 @@
             android:text="手机号" />
 
         <TextView
+            android:id="@+id/tv_phone"
             style="@style/userInfo_txt"
             android:text="130****0000"
             android:textColor="@color/c151820" />
@@ -181,6 +185,7 @@
             android:text="微信号" />
 
         <TextView
+            android:id="@+id/tv_wx"
             style="@style/userInfo_txt"
             android:text="未绑定"
             android:textColor="@color/c151820" />

@@ -148,6 +148,8 @@ public class UrlConfig {
     public static final String replyData = "garden/replyData";
     //1-添加评论
     public static final String insertEvaluation = "garden/insertEvaluation";
+    //1-我的动态
+    public static final String mThreadData = "garden/mThreadData";
     //1-删除评论
     public static final String delEval = "garden/delEval";
 
@@ -194,6 +196,17 @@ public class UrlConfig {
 
     //1-申请提现
     public static final String cashWithdrawal = "user/cashWithdrawal";
+
+    //1-用户详情
+    public static final String userInfo = "user/userInfo";
+    //1-1-修改用户信息
+    public static final String editUser = "user/editUser";
+
+    //1-用户消息列表
+    public static final String messageData = "msg/messageData";
+
+    //1-1-修改消息状态
+    public static final String updateMessageStatus = "msg/updateMessageStatus";
 
 
     //1-文件上传

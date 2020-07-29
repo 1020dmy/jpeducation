@@ -1,19 +1,23 @@
 package com.jianpei.jpeducation.fragment.home;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseBinderAdapter;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.TryListenerListActivity;
+import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
+import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.home.GroupInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.GroupTitleItemBinder;
@@ -51,6 +55,7 @@ import com.youth.banner.indicator.RectangleIndicator;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class HomeFragment extends BaseFragment {
@@ -63,6 +68,17 @@ public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.tv_tryListener)
+    TextView tvTryListener;
+    @BindView(R.id.tv_recommend)
+    TextView tvRecommend;
+    @BindView(R.id.tv_exercise)
+    TextView tvExercise;
+    @BindView(R.id.tv_material)
+    TextView tvMaterial;
+
+    @BindView(R.id.refreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     //课程切换
     private MainModel mainModel;
     //获取资料url
@@ -97,6 +113,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+
+
         //获取首页数据
         homePageModel = new ViewModelProvider(this).get(HomePageModel.class);
         //获取专业切换
@@ -106,6 +124,17 @@ public class HomeFragment extends BaseFragment {
         //积分支付
         integralModel = new ViewModelProvider(this).get(IntegralModel.class);
         //
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String catId = SpUtils.getValue(SpUtils.catId);
+                homePageModel.getHomeData(catId);//获取首页数据
+                homePageModel.noticeData(catId);//获取通知数据
+                swipeRefreshLayout.setRefreshing(false);
+
+
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -140,7 +169,7 @@ public class HomeFragment extends BaseFragment {
         baseBinderAdapter.addItemBinder(HuoDongDataBean.class, new HuoDongItemBinder(getActivity()))
                 .addItemBinder(RegimentTitleBean.class, new RegimentTitleItemBinder())
                 .addItemBinder(RegimentInfoBean.class, new RegimentInfoItemBinder(getActivity()))
-                .addItemBinder(GroupTitleBean.class, new GroupTitleItemBinder())
+                .addItemBinder(GroupTitleBean.class, new GroupTitleItemBinder(getActivity()))
                 .addItemBinder(GroupInfoBean.class, new GroupInfoItemBinder(getActivity()))
                 .addItemBinder(MaterialTitleBean.class, new MaterialTitleItemBinder(getActivity()))
                 .addItemBinder(String.class, new MateriallTitleTItemBinder())
@@ -192,6 +221,7 @@ public class HomeFragment extends BaseFragment {
             public void onChanged(String s) {
                 homePageModel.getHomeData(s);//获取首页数据
                 homePageModel.noticeData(s);//获取通知数据
+
             }
         });
         //错误
@@ -273,5 +303,21 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-
+    @OnClick({R.id.tv_tryListener, R.id.tv_recommend, R.id.tv_exercise, R.id.tv_material})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_tryListener:
+                startActivity(new Intent(getActivity(), TryListenerListActivity.class));
+                break;
+            case R.id.tv_recommend:
+                mainModel.getChangeBottomLiveData().setValue(2);
+                break;
+            case R.id.tv_exercise:
+                startActivity(new Intent(getActivity(), TodayExerciseListActivity.class));
+                break;
+            case R.id.tv_material:
+                startActivity(new Intent(getActivity(), MaterialListActivity.class));
+                break;
+        }
+    }
 }

@@ -38,6 +38,8 @@
     <dimen name="s_dp_10">10dp</dimen>
     <dimen name="s_dp_24">24dp</dimen>
     <dimen name="s_dp_44">44dp</dimen>
+    <dimen name="s_dp_21">21dp</dimen>
+
 
 
     <!--margin-->

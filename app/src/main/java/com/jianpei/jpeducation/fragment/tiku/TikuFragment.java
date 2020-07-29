@@ -188,6 +188,7 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
                 startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "1"));
                 break;
             case R.id.tv_seven:
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "3"));
                 break;
             case R.id.tv_eight:
                 break;

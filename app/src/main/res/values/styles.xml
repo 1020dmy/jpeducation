@@ -180,4 +180,9 @@
         <item name="android:textSize">@dimen/s_dp_13</item>
         <item name="android:gravity">center</item>
     </style>
+
+
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/cFF0000</item>
+    </style>
 </resources>

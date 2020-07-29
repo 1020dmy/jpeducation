@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.tiku;
 
 
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +16,9 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
-import com.jianpei.jpeducation.fragment.tiku.SimulationFragment;
-import com.jianpei.jpeducation.fragment.tiku.WrongAndCollectListFragment;
+import com.jianpei.jpeducation.fragment.tiku.CollectListFragment;
+import com.jianpei.jpeducation.fragment.tiku.RecordListFragment;
+import com.jianpei.jpeducation.fragment.tiku.WrongListFragment;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WrongQuestionListActivity extends BaseActivity {
@@ -56,10 +55,10 @@ public class WrongQuestionListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        type=getIntent().getStringExtra("type");
-        if ("1".equals(type)){
+        type = getIntent().getStringExtra("type");
+        if ("1".equals(type)) {
             tvTitle.setText("收藏列表");
-        }else if ("2".equals(type)){
+        } else if ("2".equals(type)) {
             tvTitle.setText("错题集");
 
         }
@@ -77,7 +76,13 @@ public class WrongQuestionListActivity extends BaseActivity {
                 dismissLoading();
                 if (curriculumDataBeans != null && curriculumDataBeans.size() > 0) {
                     for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                        fragments.add(new WrongAndCollectListFragment(type,curriculumDataBean.getId()));
+                        if ("1".equals(type)) {
+                            fragments.add(new CollectListFragment(type, curriculumDataBean.getId()));
+                        } else if ("2".equals(type)){
+                            fragments.add(new WrongListFragment(type, curriculumDataBean.getId()));
+                        }else{
+                            fragments.add(new RecordListFragment(type, curriculumDataBean.getId()));
+                        }
                     }
                     viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
                     new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliyun.downloader.AliDownloaderFactory;
 import com.aliyun.downloader.AliMediaDownloader;
+import com.aliyun.player.bean.ErrorCode;
 import com.aliyun.player.bean.ErrorInfo;
 import com.aliyun.player.nativeclass.MediaInfo;
 import com.aliyun.player.nativeclass.TrackInfo;
@@ -38,6 +39,9 @@ import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.classdownload.AliyunDownloadInfoListener;
+import com.jianpei.jpeducation.utils.classdownload.AliyunDownloadMediaInfo;
+import com.jianpei.jpeducation.utils.classdownload.VideoDownloadManager;
 import com.jianpei.jpeducation.utils.pop.DownloadClassPopup;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
@@ -78,9 +82,10 @@ public class PlayerListFragment extends BaseFragment {
 
     private int type;
 
-    private AliyunDownloadManager downloadManager;
-    private DownloadDataProvider downloadDataProvider;
 
+    private DownloadClassPopup downloadClassPopup;
+
+    private VideoDownloadManager videoDownloadManager;
 
 
     public PlayerListFragment(String classId, String buyId) {
@@ -123,7 +128,8 @@ public class PlayerListFragment extends BaseFragment {
                         break;
                     case R.id.iv_download:
                         type = 1;
-                        classPlayerModel.videoUrl(viodBean.getId(), buyId);
+                        ViodBean viodBean1 = (ViodBean) data;
+                        classPlayerModel.videoUrl(viodBean1.getId(), buyId);
                         break;
 
                 }
@@ -137,6 +143,9 @@ public class PlayerListFragment extends BaseFragment {
         playListAdapter.addNodeProvider(new PlayListChapterProvider());
         playListAdapter.addNodeProvider(playListJIeProvider);
         recyclerView.setAdapter(playListAdapter);
+
+
+        initDownload();
 
     }
 
@@ -154,14 +163,13 @@ public class PlayerListFragment extends BaseFragment {
         classPlayerModel.getVideoUrlBeansLiveData().observe(this, new Observer<VideoUrlBean>() {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
+                dismissLoading();
+                videoUrlBean.setType(type);
                 if (type == 0) {
-                    dismissLoading();
                     classPlayerModel.getPlayUrlBean().setValue(videoUrlBean);
-
-                } else {//下载
-
+                } else {
+                    downloadVideo(videoUrlBean);//开始下载
                 }
-
 
             }
         });
@@ -176,6 +184,7 @@ public class PlayerListFragment extends BaseFragment {
         classPlayerModel.classInfo(classId);
 
     }
+
 
     protected void setData(MClassInfoBean mClassInfoBean) {
         if (mClassInfoBean == null)
@@ -198,40 +207,92 @@ public class PlayerListFragment extends BaseFragment {
     }
 
 
-    private Common commenUtils;
+    protected void initDownload() {
+        videoDownloadManager = VideoDownloadManager.getInstance(getActivity().getApplicationContext());
+        //设置同时下载个数
+        videoDownloadManager.setMaxNum(3);
 
-    private void copyAssets() {
-        commenUtils = Common.getInstance(getActivity().getApplicationContext()).copyAssetsToSD("encrypt", "aliyun");
-        commenUtils.setFileOperateCallback(
+        videoDownloadManager.setDownloadInfoListener(new MyVideoDownloadListener());
+    }
 
-                new Common.FileOperateCallback() {
-                    @Override
-                    public void onSuccess() {
-                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_save/");
-                        if (!file.exists()) {
-                            file.mkdir();
-                        }
+    //播放视频
+    protected void downloadVideo(VideoUrlBean videoUrlBean) {
+        if (videoUrlBean == null) {
+            shortToast("视频加载失败");
+            return;
+        }
+        VidAuth vidAuth = new VidAuth();
+        vidAuth.setPlayAuth(videoUrlBean.getAuth());
+        vidAuth.setVid(videoUrlBean.getVid());
+        vidAuth.setRegion("cn-shanghai");
+        videoDownloadManager.prepareDownload(vidAuth);
 
-                        // 获取AliyunDownloadManager对象
-                        downloadManager = AliyunDownloadManager.getInstance(getActivity().getApplicationContext());
-                        downloadManager.setEncryptFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/aliyun/encryptedApp.dat");
-                        PrivateService.initService(getActivity().getApplicationContext(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/aliyun/encryptedApp.dat");
-                        downloadManager.setDownloadDir(file.getAbsolutePath());
-                        //设置同时下载个数
-                        downloadManager.setMaxNum(3);
+    }
 
-                        downloadDataProvider = DownloadDataProvider.getSingleton(getActivity().getApplicationContext());
-                        // 更新sts回调
-//                        downloadManager.setRefreshStsCallback(new AliyunPlayerSkinActivity.MyRefreshStsCallback());
 
-                        // 视频下载的回调
-//                        downloadManager.setDownloadInfoListener(new AliyunPlayerSkinActivity.MyDownloadInfoListener(AliyunPlayerSkinActivity.this));
-//                        downloadViewSetting(downloadView);
-                    }
+    private class MyVideoDownloadListener implements AliyunDownloadInfoListener {
 
-                    @Override
-                    public void onFailed(String error) {
-                    }
-                });
+
+        public MyVideoDownloadListener() {
+        }
+
+        @Override
+        public void onPrepared(List<AliyunDownloadMediaInfo> infos) {
+            if (downloadClassPopup == null) {
+                downloadClassPopup = new DownloadClassPopup(getActivity(), infos);
+            }
+            downloadClassPopup.showPop();
+
+        }
+
+        @Override
+        public void onAdd(AliyunDownloadMediaInfo info) {
+
+        }
+
+        @Override
+        public void onStart(AliyunDownloadMediaInfo info) {
+
+        }
+
+        @Override
+        public void onProgress(AliyunDownloadMediaInfo info, int percent) {
+
+        }
+
+        @Override
+        public void onStop(AliyunDownloadMediaInfo info) {
+
+        }
+
+        @Override
+        public void onCompletion(AliyunDownloadMediaInfo info) {
+
+        }
+
+        @Override
+        public void onError(AliyunDownloadMediaInfo info, ErrorCode code, String msg, String requestId) {
+
+        }
+
+        @Override
+        public void onWait(AliyunDownloadMediaInfo outMediaInfo) {
+
+        }
+
+        @Override
+        public void onDelete(AliyunDownloadMediaInfo info) {
+
+        }
+
+        @Override
+        public void onDeleteAll() {
+
+        }
+
+        @Override
+        public void onFileProgress(AliyunDownloadMediaInfo info) {
+
+        }
     }
 }

@@ -17,7 +17,7 @@ public interface BindPhoneContract {
     interface Repository {
         Observable<BaseEntity<UserInfoBean>> bindPhone(String uid, String phone, String code);
 
-        Observable<BaseEntity<String>> sendCode(String phone);
+//        Observable<BaseEntity<String>> sendCode(String phone);
 
     }
 
@@ -25,7 +25,7 @@ public interface BindPhoneContract {
     interface Model {
         void bindPhone(String uid, String phone, String code);
 
-        void sendCode(String phone);
+//        void sendCode(String phone);
 
 
     }

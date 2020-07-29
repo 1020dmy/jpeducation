@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.contract;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
+import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -47,6 +48,8 @@ public interface SchoolContract {
         //添加评论
         Observable<BaseEntity<String>> insertEvaluation(String thread_id, String content, String post_id, String user_id_at);
 
+        //我的动态
+        Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize);
 
     }
 
@@ -69,5 +72,7 @@ public interface SchoolContract {
         void replyData(String thread_id, String post_id, String start_id, String end_id);
 
         void insertEvaluation(String thread_id, String content, String post_id, String user_id_at);
+
+        void mThreadData(int pageIndex, int pageSize);
     }
 }

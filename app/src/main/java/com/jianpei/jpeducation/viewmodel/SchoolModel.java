@@ -9,6 +9,7 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
+import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -373,5 +374,45 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
                 }
             }
         });
+    }
+
+    /**
+     * 我的动态
+     *
+     * @param pageIndex
+     * @param pageSize
+     */
+
+    private MutableLiveData<MThreadDataBean> mThreadDataBeanLiveData;
+
+    public MutableLiveData<MThreadDataBean> getmThreadDataBeanLiveData() {
+        if (mThreadDataBeanLiveData == null)
+            mThreadDataBeanLiveData = new MutableLiveData<>();
+        return mThreadDataBeanLiveData;
+    }
+
+    @Override
+    public void mThreadData(int pageIndex, int pageSize) {
+        schoolRepository.mThreadData(pageIndex, pageSize).compose(setThread()).subscribe(new BaseObserver<MThreadDataBean>() {
+            @Override
+            protected void onSuccees(BaseEntity<MThreadDataBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    mThreadDataBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
     }
 }

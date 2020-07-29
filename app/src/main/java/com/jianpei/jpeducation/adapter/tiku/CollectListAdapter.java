@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.adapter.tiku;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,16 +17,16 @@ import java.util.List;
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/7/25
+ * Created by sjl on 2020/7/28
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public class WrongAndCollectListAdapter extends RecyclerView.Adapter<WrongAndCollectListAdapter.MyHolder> {
+public class CollectListAdapter extends RecyclerView.Adapter<CollectListAdapter.MyHolder> {
 
     private List<QuestionBean> questionBeans;
 
-    public WrongAndCollectListAdapter(List<QuestionBean> questionBeans) {
+    public CollectListAdapter(List<QuestionBean> questionBeans) {
         this.questionBeans = questionBeans;
     }
 
@@ -39,8 +40,6 @@ public class WrongAndCollectListAdapter extends RecyclerView.Adapter<WrongAndCol
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        holder.tvName.setText(questionBeans.get(position).getQuestion_name());
-
     }
 
     @Override
@@ -48,12 +47,22 @@ public class WrongAndCollectListAdapter extends RecyclerView.Adapter<WrongAndCol
         return questionBeans != null ? questionBeans.size() : 0;
     }
 
+
     class MyHolder extends RecyclerView.ViewHolder {
         private TextView tvName;
+        private ImageButton imageButton;
+        private TextView tv_enter, tv_jiexi;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
+            imageButton = itemView.findViewById(R.id.imageButton);
+            tv_enter = itemView.findViewById(R.id.tv_enter);
+            tv_jiexi = itemView.findViewById(R.id.tv_jiexi);
+
+            tv_jiexi.setVisibility(View.GONE);
+            imageButton.setVisibility(View.VISIBLE);
+
         }
     }
 }

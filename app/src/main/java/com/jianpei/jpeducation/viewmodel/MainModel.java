@@ -18,7 +18,15 @@ public class MainModel extends BaseViewModel<String> {
     private MutableLiveData<String> liveDataCatId;//catid更新
 
 
-//    private MutableLiveData<String> customerServiceUrlLiveData;//客服地址
+    private MutableLiveData<Integer> changeBottomLiveData;
+
+    public MutableLiveData<Integer> getChangeBottomLiveData() {
+        if (changeBottomLiveData == null)
+            changeBottomLiveData = new MutableLiveData<>();
+        return changeBottomLiveData;
+    }
+
+    //    private MutableLiveData<String> customerServiceUrlLiveData;//客服地址
 
 //    public MutableLiveData<String> getCustomerServiceUrlLiveData() {
 //        if (customerServiceUrlLiveData == null) {

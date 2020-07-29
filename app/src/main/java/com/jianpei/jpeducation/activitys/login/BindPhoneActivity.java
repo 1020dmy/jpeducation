@@ -9,18 +9,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
-import com.jianpei.jpeducation.base.BaseModelActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.BindPhoneModel;
+import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class BindPhoneActivity extends BaseModelActivity<BindPhoneModel, String> {
+public class BindPhoneActivity extends BaseNoStatusActivity {
 
     @BindView(R.id.iv_back)
     ImageButton ivBack;
@@ -47,6 +51,11 @@ public class BindPhoneActivity extends BaseModelActivity<BindPhoneModel, String>
 
     private String uid;
 
+    private SendCodeModel sendCodeModel;
+
+    private BindPhoneModel bindPhoneModel;
+
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_bind_phone;
@@ -56,10 +65,11 @@ public class BindPhoneActivity extends BaseModelActivity<BindPhoneModel, String>
     protected void initView() {
         setTitleViewPadding(tvStatus);
         tvRegistered.setVisibility(View.GONE);
-
         etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
         etCode.addTextChangedListener(new MyTextWatcher(ivCodeCancle));
-        initViewModel();//初始化
+
+        sendCodeModel = new ViewModelProvider(this).get(SendCodeModel.class);
+        bindPhoneModel = new ViewModelProvider(this).get(BindPhoneModel.class);
 
 
     }
@@ -69,27 +79,43 @@ public class BindPhoneActivity extends BaseModelActivity<BindPhoneModel, String>
         countDownTimerUtils = new CountDownTimerUtils(tvSendCode, 60 * 1000, 1000);
         uid = SpUtils.getValue(SpUtils.ID);
 
+        sendCodeModel.getSuccessCodeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast(s);
+                countDownTimerUtils.start();
+                tvTip.setText("");
+            }
+        });
+        sendCodeModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                tvTip.setText(o);
+            }
+        });
+
+        bindPhoneModel.getScuucessData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvTip.setText("");
+                shortToast(s);
+                startActivity(new Intent(BindPhoneActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+        bindPhoneModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                tvTip.setText(s);
+            }
+        });
+
 
     }
 
-    @Override
-    protected void onError(String message) {
-        if ("sjl".equals(message)) {
-            shortToast("验证码发送成功");
-            countDownTimerUtils.start();
-            tvTip.setText("");
-        } else {
-            tvTip.setText(message);
-        }
-    }
-
-    @Override
-    protected void onSuccess(String data) {
-        tvTip.setText("");
-        shortToast(data);
-        startActivity(new Intent(BindPhoneActivity.this, MainActivity.class));
-        finish();
-    }
 
     @OnClick({R.id.iv_back, R.id.tv_registered, R.id.tv_sendCode, R.id.btn_next, R.id.iv_phone_cancle, R.id.iv_code_cancle})
     public void onViewClicked(View view) {
@@ -103,11 +129,11 @@ public class BindPhoneActivity extends BaseModelActivity<BindPhoneModel, String>
                 break;
             case R.id.tv_sendCode:
                 showLoading("");
-                mViewModel.sendCode(etPhone.getText().toString());
+                sendCodeModel.sendCode(etPhone.getText().toString(), "other");
                 break;
             case R.id.btn_next:
                 showLoading("");
-                mViewModel.bindPhone(uid, etPhone.getText().toString(), etCode.getText().toString());
+                bindPhoneModel.bindPhone(uid, etPhone.getText().toString(), etCode.getText().toString());
                 break;
             case R.id.iv_phone_cancle:
                 etPhone.setText("");

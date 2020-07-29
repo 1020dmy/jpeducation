@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 public interface RegisteredContract {
 
     interface Repository {
-        Observable<BaseEntity<String>> sendCode(String phone);
+//        Observable<BaseEntity<String>> sendCode(String phone);
 
         Observable<BaseEntity<UserInfoBean>> register(String phone, String code, String password, String passwordR);
 
@@ -24,7 +24,7 @@ public interface RegisteredContract {
 
 
     interface Model {
-        void sendCode(String phone);
+//        void sendCode(String phone);
 
         void register(String phone, String code, String password, String passwordR);
 

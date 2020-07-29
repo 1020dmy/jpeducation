@@ -17,7 +17,7 @@ public interface ForgetPwdContract {
 
 
     interface Repository {
-        Observable<BaseEntity<String>> sendCode(String phone);
+//        Observable<BaseEntity<String>> sendCode(String phone);
 
         Observable<BaseEntity<String>> changePwd(String phone, String code, String pwd, String pwdR);
 
@@ -27,7 +27,7 @@ public interface ForgetPwdContract {
     interface Model {
         void codeLogin(String phone, String code, String pwd, String pwdR);
 
-        void sendCode(String phone);
+//        void sendCode(String phone);
 
     }
 }

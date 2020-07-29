@@ -2,6 +2,7 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/refreshLayout"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
@@ -43,23 +44,27 @@
                 android:layout_marginTop="16dp">
 
                 <TextView
+                    android:id="@+id/tv_tryListener"
                     style="@style/home_btn_text"
                     android:drawableTop="@drawable/home_btn_one"
                     android:text="@string/home_btn_one" />
 
                 <TextView
+                    android:id="@+id/tv_recommend"
                     style="@style/home_btn_text"
                     android:drawableTop="@drawable/home_btn_two"
                     android:text="@string/home_btn_two" />
 
 
                 <TextView
+                    android:id="@+id/tv_exercise"
                     style="@style/home_btn_text"
                     android:drawableTop="@drawable/home_btn_three"
                     android:text="@string/home_btn_three" />
 
 
                 <TextView
+                    android:id="@+id/tv_material"
                     style="@style/home_btn_text"
                     android:drawableTop="@drawable/home_btn_four"
                     android:text="@string/home_btn_four" />
@@ -106,9 +111,9 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="30dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="30dp"
+                android:nestedScrollingEnabled="false"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 

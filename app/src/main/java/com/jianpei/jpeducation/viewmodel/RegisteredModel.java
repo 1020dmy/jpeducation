@@ -27,36 +27,36 @@ public class RegisteredModel extends BaseViewModel<String> implements Registered
         registeredRepository = new RegisteredRepository();
     }
 
-    @Override
-    public void sendCode(String mobile) {
-        if (TextUtils.isEmpty(mobile) || mobile.length() != 11) {
-            errData.setValue("手机号码格式错误！");
-            return;
-        }
-        registeredRepository.sendCode(mobile).compose(setThread()).subscribe(new BaseObserver<String>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<String> t) throws Exception {
-
-                if (t.isSuccess()) {
-                    errData.setValue("sjl");
-                } else {
-                    errData.setValue(t.getMsg());
-                }
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                if (isNetWorkError) {
-                    errData.setValue("网络异常！");
-                } else {
-                    errData.setValue(e.getMessage());
-                }
-            }
-        });
-
-
-    }
+//    @Override
+//    public void sendCode(String mobile) {
+//        if (TextUtils.isEmpty(mobile) || mobile.length() != 11) {
+//            errData.setValue("手机号码格式错误！");
+//            return;
+//        }
+//        registeredRepository.sendCode(mobile).compose(setThread()).subscribe(new BaseObserver<String>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<String> t) throws Exception {
+//
+//                if (t.isSuccess()) {
+//                    errData.setValue("sjl");
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络异常！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//
+//
+//    }
 
     @Override
     public void register(String mobile, String code, String password, String passwordR) {

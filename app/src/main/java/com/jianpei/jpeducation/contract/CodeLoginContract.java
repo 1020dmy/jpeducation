@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 public interface CodeLoginContract {
 
     interface Repository {
-        Observable<BaseEntity<String>> sendCode(String phone);
+//        Observable<BaseEntity<String>> sendCode(String phone);
 
         Observable<BaseEntity<UserInfoBean>> codeLogin(String phone, String code);
 
@@ -26,7 +26,7 @@ public interface CodeLoginContract {
     interface Model {
         void codeLogin(String phone, String code);
 
-        void sendCode(String phone);
+//        void sendCode(String phone);
 
     }
 }

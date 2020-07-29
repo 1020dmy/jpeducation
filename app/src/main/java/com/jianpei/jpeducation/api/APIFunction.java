@@ -77,12 +77,14 @@ import com.jianpei.jpeducation.bean.json.ReplyDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadInfoJson;
 import com.jianpei.jpeducation.bean.json.TopicDataJson;
+import com.jianpei.jpeducation.bean.json.UpdateMessageStatusJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.material.MaterialDataBean;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ClassDataBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mine.MessageDataBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
@@ -91,6 +93,7 @@ import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.school.AttentionDataBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
+import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ReplyDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -468,6 +471,12 @@ public interface APIFunction {
     Observable<BaseEntity<String>> insertEvaluation(@Body InsertEvaluationJson insertEvaluationJson);
 
     /**
+     * 1-我的动态
+     */
+    @POST(UrlConfig.mThreadData)
+    Observable<BaseEntity<MThreadDataBean>> mThreadData(@Body TopicDataJson topicDataJson);
+
+    /**
      * 1-删除评论
      */
     @POST(UrlConfig.delEval)
@@ -550,16 +559,42 @@ public interface APIFunction {
      */
     @POST(UrlConfig.virtualCurrencyList)
     Observable<BaseEntity<VirtualCurrencyListBean>> virtualCurrencyList(@Body IntegralDataJson integralDataJson);
+
     /**
      * 提现列表
      */
     @POST(UrlConfig.withdrawalData)
     Observable<BaseEntity<WithdrawalDataBean>> withdrawalData(@Body IntegralDataJson integralDataJson);
+
     /**
      * 申请提现
      */
     @POST(UrlConfig.cashWithdrawal)
     Observable<BaseEntity<CashWithdrawalBean>> cashWithdrawal(@Body CashWithdrawalJson cashWithdrawalJson);
+
+    /**
+     * 1-用户详情
+     */
+    @POST(UrlConfig.userInfo)
+    Observable<BaseEntity<UserInfoBean>> userInfo(@Body CarInfoJson carInfoJson);
+
+    /**
+     * 1-修改用户信息
+     */
+    @POST(UrlConfig.editUser)
+    Observable<BaseEntity<UserInfoBean>> editUser(@Body CarInfoJson carInfoJson);
+
+    /**
+     * 1-用户消息列表
+     */
+    @POST(UrlConfig.messageData)
+    Observable<BaseEntity<MessageDataBean>> messageData(@Body TopicDataJson topicDataJson);
+
+    /**
+     * 1-修改消息状态
+     */
+    @POST(UrlConfig.updateMessageStatus)
+    Observable<BaseEntity<String>> updateMessageStatus(@Body UpdateMessageStatusJson updateMessageStatusJson);
 
     /**
      * 文件上传

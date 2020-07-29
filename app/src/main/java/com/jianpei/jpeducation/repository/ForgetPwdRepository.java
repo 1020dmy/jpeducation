@@ -19,10 +19,10 @@ import io.reactivex.Observable;
 public class ForgetPwdRepository implements ForgetPwdContract.Repository {
 
 
-    @Override
-    public Observable<BaseEntity<String>> sendCode(String phone) {
-        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "reset_pwd"));
-    }
+//    @Override
+//    public Observable<BaseEntity<String>> sendCode(String phone) {
+//        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "reset_pwd"));
+//    }
 
     @Override
     public Observable<BaseEntity<String>> changePwd(String phone, String code, String pwd, String pwdR) {

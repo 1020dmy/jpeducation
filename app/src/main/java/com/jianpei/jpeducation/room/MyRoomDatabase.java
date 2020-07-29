@@ -15,6 +15,7 @@ import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
  * <p>
  * Describe:
  */
+
 @Database(entities = {MaterialInfoBean.class}, version = 1)
 public abstract class MyRoomDatabase extends RoomDatabase {
 

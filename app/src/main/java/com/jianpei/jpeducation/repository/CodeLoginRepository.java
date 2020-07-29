@@ -20,10 +20,10 @@ import io.reactivex.Observable;
  */
 public class CodeLoginRepository implements CodeLoginContract.Repository {
 
-    @Override
-    public Observable<BaseEntity<String>> sendCode(String phone) {
-        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "login"));
-    }
+//    @Override
+//    public Observable<BaseEntity<String>> sendCode(String phone) {
+//        return RetrofitFactory.getInstance().API().getCode(new SendCodeJson(phone, "login"));
+//    }
 
     @Override
     public Observable<BaseEntity<UserInfoBean>> codeLogin(String phone, String code) {

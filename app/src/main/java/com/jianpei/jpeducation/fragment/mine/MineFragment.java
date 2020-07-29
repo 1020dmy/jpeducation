@@ -7,17 +7,27 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.FeedbackActivity;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
+import com.jianpei.jpeducation.activitys.mine.InviteFriendsActivity;
 import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
+import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
+import com.jianpei.jpeducation.activitys.mine.MineTikuActivity;
 import com.jianpei.jpeducation.activitys.mine.gold.GoldDetailActivity;
 import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
-import com.jianpei.jpeducation.activitys.mine.UserInfoActivity;
+import com.jianpei.jpeducation.activitys.mine.userinfo.UserInfoActivity;
 import com.jianpei.jpeducation.activitys.mine.UserOrderListActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.utils.pop.CustomerServicePopup;
+import com.jianpei.jpeducation.viewmodel.UserInfoModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,6 +72,8 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.tv_jinbi_num)
     TextView tvJinbiNum;
 
+    private UserInfoModel userInfoModel;
+
     private CustomerServicePopup customerServicePopup;
 
 
@@ -76,10 +88,33 @@ public class MineFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
 
+        userInfoModel = new ViewModelProvider(this).get(UserInfoModel.class);
+
+
     }
 
     @Override
     protected void initData(Context mContext) {
+        userInfoModel.getUserInfoBeanLiveData().observe(this, new Observer<UserInfoBean>() {
+            @Override
+            public void onChanged(UserInfoBean userInfoBean) {
+                dismissLoading();
+                tvName.setText(userInfoBean.getUser_name());
+                Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(civHead);
+
+            }
+        });
+        userInfoModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+
+            }
+        });
+
+        showLoading("");
+        userInfoModel.userInfo();
 
     }
 
@@ -109,15 +144,19 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MyClassActivity.class));
                 break;
             case R.id.tv_my_tiku://我的题库
+                startActivity(new Intent(getActivity(), MineTikuActivity.class));
                 break;
             case R.id.tv_my_data://我的资料
                 startActivity(new Intent(getActivity(), MaterialActivity.class));
                 break;
             case R.id.tv_my_moving://我的动态
+                startActivity(new Intent(getActivity(), MineDynamicActivity.class));
                 break;
             case R.id.ll_share://邀请好友
+                startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
                 break;
             case R.id.tv_suggest://意见反馈
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
             case R.id.tv_service://客服中心
                 if (customerServicePopup == null) {

@@ -8,17 +8,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.RegisteredModel;
+import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RegisteredActivity extends BaseModelActivity<RegisteredModel, String> {
+public class RegisteredActivity extends BaseNoStatusActivity {
 
 
     @BindView(R.id.iv_back)
@@ -57,6 +62,9 @@ public class RegisteredActivity extends BaseModelActivity<RegisteredModel, Strin
     @BindView(R.id.iv_pwdr_cancle)
     ImageView ivPwdrCancle;
 
+    private RegisteredModel registeredModel;
+    private SendCodeModel sendCodeModel;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_registered;
@@ -67,7 +75,8 @@ public class RegisteredActivity extends BaseModelActivity<RegisteredModel, Strin
         setTitleViewPadding(tvStatus);
         tvTitle.setText(getResources().getString(R.string.reg_title));
         //
-        initViewModel();
+        sendCodeModel=new ViewModelProvider(this).get(SendCodeModel.class);
+        registeredModel=new ViewModelProvider(this).get(RegisteredModel.class);
 
     }
 
@@ -81,27 +90,47 @@ public class RegisteredActivity extends BaseModelActivity<RegisteredModel, Strin
         etPwdR.addTextChangedListener(new MyTextWatcher(ivPwdrCancle));
         etPwd.addTextChangedListener(new MyTextWatcher(ivPwdCancle));
 
+        sendCodeModel.getSuccessCodeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast(s);
+                countDownTimerUtils.start();
+                tvTip.setText("");
+            }
+        });
+        sendCodeModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                tvTip.setText(o);
+            }
+        });
+
+        registeredModel.getScuucessData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast(s);
+                tvTip.setText("");
+                startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
+        registeredModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                tvTip.setText(s);
+
+            }
+        });
+
 
     }
 
-    @Override
-    protected void onError(String message) {
-        if ("sjl".equals(message)) {
-            shortToast("验证码发送成功");
-            countDownTimerUtils.start();
-            tvTip.setText("");
-        } else {
-            tvTip.setText(message);
-        }
-    }
 
-    @Override
-    protected void onSuccess(String data) {
-        shortToast(data);
-        tvTip.setText("");
-        startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
-        finish();
-    }
 
     @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.tv_bottom_xieyi, R.id.iv_phone_cancle, R.id.iv_code_cancle, R.id.iv_pwd_cancle, R.id.iv_pwdr_cancle})
     public void onViewClicked(View view) {
@@ -111,11 +140,11 @@ public class RegisteredActivity extends BaseModelActivity<RegisteredModel, Strin
                 break;
             case R.id.tv_sendCode:
                 showLoading("");
-                mViewModel.sendCode(etPhone.getText().toString());
+                sendCodeModel.sendCode(etPhone.getText().toString(),"regist");
                 break;
             case R.id.btn_next:
                 showLoading("");
-                mViewModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
+                registeredModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
                 break;
             case R.id.tv_bottom_xieyi:
                 break;

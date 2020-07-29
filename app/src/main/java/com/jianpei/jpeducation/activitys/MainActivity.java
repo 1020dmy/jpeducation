@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
@@ -109,6 +110,19 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     @Override
     protected void initData() {
         mainModel = new ViewModelProvider(this).get(MainModel.class);
+
+        mainModel.getChangeBottomLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == 2) {
+                    radioGroup.check(R.id.rb_xuanke);
+//                    if (lastfragment != 2) {
+//                        switchFragment(lastfragment, 2);
+//                        lastfragment = 2;
+//                    }
+                }
+            }
+        });
 
     }
 

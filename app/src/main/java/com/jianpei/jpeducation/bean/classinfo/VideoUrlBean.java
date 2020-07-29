@@ -12,6 +12,16 @@ public class VideoUrlBean {
     private String auth;
     private String vid;
     private String record_time;
+    private int  type;//0.播放，1下载
+
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getImg() {
         return img;

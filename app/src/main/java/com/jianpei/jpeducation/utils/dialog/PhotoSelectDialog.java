@@ -29,10 +29,10 @@ public class PhotoSelectDialog extends AlertDialog implements View.OnClickListen
     private SelectphotoUtils selectphotoUtils;
 
 
-    public PhotoSelectDialog(@NonNull Context context,SelectphotoUtils selectphotoUtils) {
+    public PhotoSelectDialog(@NonNull Context context, SelectphotoUtils selectphotoUtils) {
         super(context);
         this.mContext = context;
-        this.selectphotoUtils=selectphotoUtils;
+        this.selectphotoUtils = selectphotoUtils;
         contentView = getLayoutInflater().inflate(R.layout.dialog_photo_camera, null);//获取自定义布局
         setView(contentView);
         takePhotoTV = contentView.findViewById(R.id.photograph);
@@ -49,12 +49,12 @@ public class PhotoSelectDialog extends AlertDialog implements View.OnClickListen
         switch (v.getId()) {
             case R.id.photograph:
                 if (selectphotoUtils != null)
-                    selectphotoUtils.openGallery();
+                    selectphotoUtils.takePhone();
                 dismiss();
                 break;
             case R.id.photo:
                 if (selectphotoUtils != null)
-                    selectphotoUtils.takePhone();
+                    selectphotoUtils.openGallery();
                 dismiss();
                 break;
             case R.id.cancel:

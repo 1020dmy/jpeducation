@@ -23,19 +23,62 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name=".activitys.mine.gold.GoldWithdrawDetailActivity"></activity>
-        <activity android:name=".activitys.mine.gold.GoldWithdrawActivity" />
-        <activity android:name=".activitys.mine.gold.GoldDetailActivity" />
-        <activity android:name=".activitys.tiku.WrongQuestionListActivity" />
-        <activity android:name=".activitys.tiku.AnswerTheScoreActivity" />
-        <activity android:name=".activitys.tiku.TestPaperInfoActivity" />
-        <activity android:name=".activitys.tiku.SimulationExerciseActivity" />
-        <activity android:name=".activitys.tiku.SimulationExerciseListActivity" />
-        <activity android:name=".activitys.tiku.AnswerResultActivity" />
-        <activity android:name=".activitys.tiku.AnswerCardActivity" />
-        <activity android:name=".activitys.tiku.TodayAnswerActivity" />
-        <activity android:name=".activitys.tiku.TodayExerciseListActivity" />
-        <activity android:name=".activitys.school.TopicInfoActivity" />
+        <activity android:name=".activitys.mine.InviteFriendsActivity"></activity>
+        <activity
+            android:name=".activitys.mine.FeedbackActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activitys.mine.MineDynamicActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.MineTikuActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.userinfo.MBindPhoneActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.userinfo.ChangePhoneActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.gold.GoldWithdrawDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.gold.GoldWithdrawActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.mine.gold.GoldDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.WrongQuestionListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.AnswerTheScoreActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.TestPaperInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.SimulationExerciseActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.SimulationExerciseListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.AnswerResultActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.AnswerCardActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.TodayAnswerActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.tiku.TodayExerciseListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activitys.school.TopicInfoActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activitys.school.ReplyListActivity"
             android:launchMode="singleTask"
@@ -154,7 +197,7 @@
             android:name=".activitys.pdf.PdfReaderActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activitys.mine.UserInfoActivity"
+            android:name=".activitys.mine.userinfo.UserInfoActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activitys.SelectDisciplineActivity"

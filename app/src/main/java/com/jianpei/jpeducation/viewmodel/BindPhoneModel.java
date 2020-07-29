@@ -77,34 +77,34 @@ public class BindPhoneModel extends BaseViewModel<String> implements BindPhoneCo
 
     }
 
-    @Override
-    public void sendCode(String phone) {
-        if (TextUtils.isEmpty(phone) || phone.length() != 11) {
-            errData.setValue("手机号输入有误！");
-            return;
-        }
-
-        bindPhoneRepository.sendCode(phone).compose(setThread()).subscribe(new BaseObserver<String>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<String> t) throws Exception {
-                if (t.isSuccess()) {
-                    errData.setValue("sjl");
-                } else {
-                    errData.setValue(t.getMsg());
-                }
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                if (isNetWorkError) {
-                    errData.setValue("网络异常！");
-                } else {
-                    errData.setValue(e.getMessage());
-                }
-            }
-        });
-
-    }
+//    @Override
+//    public void sendCode(String phone) {
+//        if (TextUtils.isEmpty(phone) || phone.length() != 11) {
+//            errData.setValue("手机号输入有误！");
+//            return;
+//        }
+//
+//        bindPhoneRepository.sendCode(phone).compose(setThread()).subscribe(new BaseObserver<String>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<String> t) throws Exception {
+//                if (t.isSuccess()) {
+//                    errData.setValue("sjl");
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络异常！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//
+//    }
 }

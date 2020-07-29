@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jianpei.jpeducation.R;
@@ -17,6 +18,7 @@ import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.CodeLoginModel;
+import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +39,7 @@ public class CodeLoginFragment extends BaseFragment {
     TextView tvTip;
 
     protected CodeLoginModel codeLoginModel;
+    private SendCodeModel sendCodeModel;
     protected CountDownTimerUtils countDownTimerUtils;
     @BindView(R.id.iv_phone_cancle)
     ImageView ivPhoneCancle;
@@ -52,7 +55,8 @@ public class CodeLoginFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
 
-        codeLoginModel = ViewModelProviders.of(this).get(CodeLoginModel.class);
+        codeLoginModel = new ViewModelProvider(this).get(CodeLoginModel.class);
+        sendCodeModel = new ViewModelProvider(this).get(SendCodeModel.class);
         countDownTimerUtils = new CountDownTimerUtils(tvSendCode, 60 * 1000, 1000);
 
         etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));
@@ -67,13 +71,7 @@ public class CodeLoginFragment extends BaseFragment {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
-                if ("sjl".equals(s)) {
-                    shortToast("验证码发送成功");
-                    countDownTimerUtils.start();
-                    tvTip.setText("");
-                } else {
-                    tvTip.setText(s);
-                }
+                tvTip.setText(s);
             }
         });
         codeLoginModel.getScuucessData().observe(getActivity(), new Observer<String>() {
@@ -87,16 +85,32 @@ public class CodeLoginFragment extends BaseFragment {
 
             }
         });
+        sendCodeModel.getSuccessCodeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast("验证码发送成功");
+                countDownTimerUtils.start();
+                tvTip.setText("");
+            }
+        });
+        sendCodeModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                tvTip.setText(o);
+            }
+        });
 
     }
 
-    @OnClick({R.id.tv_sendCode, R.id.btn_next,R.id.iv_phone_cancle, R.id.iv_code_cancle})
+    @OnClick({R.id.tv_sendCode, R.id.btn_next, R.id.iv_phone_cancle, R.id.iv_code_cancle})
     public void onViewClicked(View view) {
         tvTip.setText("");
         switch (view.getId()) {
             case R.id.tv_sendCode:
                 showLoading("");
-                codeLoginModel.sendCode(etPhone.getText().toString());
+                sendCodeModel.sendCode(etPhone.getText().toString(), "login");
                 break;
             case R.id.btn_next:
                 showLoading("");
