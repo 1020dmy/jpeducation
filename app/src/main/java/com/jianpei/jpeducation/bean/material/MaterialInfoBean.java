@@ -2,12 +2,16 @@ package com.jianpei.jpeducation.bean.material;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.aliyun.vodplayerview.utils.download.AliyunDownloadMediaInfo;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
 import org.jetbrains.annotations.Nullable;
@@ -49,29 +53,9 @@ public class MaterialInfoBean extends BaseNode implements Parcelable {
      */
 
 
-//    private String id;
-//    private String type_id;
-//    private String cat_id;
-//    private String class_id;
-//    private String title;
-//    private String file_type;
-//    private String file_size;
-//    private String oss_path;
-//    private String year_of;
-//    private String is_free;
-//    private String price;
-//    private String give_by_class;
-//    private String download;
-//    private String created_at;
-//    private String expired_at;
-//    private String chapter_id;
-//    private String sort;
-//    private String total;
-//    private String is_rec;
-
     @NonNull
     @PrimaryKey
-    @ColumnInfo(name = "materialid")
+    @ColumnInfo(name = "id")
     private String id;
     @ColumnInfo(name = "type_id")
     private String type_id;
@@ -110,12 +94,41 @@ public class MaterialInfoBean extends BaseNode implements Parcelable {
     @ColumnInfo(name = "is_rec")
     private String is_rec;
     @ColumnInfo(name = "status")
-    private String status = "下载";
+    private String status = "下载";//2下载完成，0为开始，1开始下载，3下载错误；
     @ColumnInfo(name = "path")
     private String path;
     @ColumnInfo(name = "progress")
     private int progress = 0;
 
+
+    private String downloadUrl;
+    //改变状态，进度
+//    private int tvDown;
+//    private int progressBar;
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+//    public int getTvDown() {
+//        return tvDown;
+//    }
+//
+//    public void setTvDown(int tvDown) {
+//        this.tvDown = tvDown;
+//    }
+//
+//    public int getProgressBar() {
+//        return progressBar;
+//    }
+//
+//    public void setProgressBar(int progressBar) {
+//        this.progressBar = progressBar;
+//    }
 
     public String getStatus() {
         return status;
@@ -370,4 +383,20 @@ public class MaterialInfoBean extends BaseNode implements Parcelable {
     public List<BaseNode> getChildNode() {
         return null;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MaterialInfoBean that = (MaterialInfoBean) o;
+        return id == that.id;
+    }
+
+
+
 }

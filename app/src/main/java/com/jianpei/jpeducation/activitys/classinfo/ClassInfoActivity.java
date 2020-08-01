@@ -24,6 +24,7 @@ import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
@@ -45,7 +46,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ClassInfoActivity extends BaseActivity {
+public class ClassInfoActivity extends BaseNoStatusActivity {
 
 
     @BindView(R.id.iv_back)
@@ -346,6 +347,7 @@ public class ClassInfoActivity extends BaseActivity {
         UMShareAPI.get(this).release();
 
     }
+
 
 
 }

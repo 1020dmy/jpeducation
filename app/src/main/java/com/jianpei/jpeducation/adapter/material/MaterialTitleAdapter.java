@@ -64,11 +64,11 @@ public class MaterialTitleAdapter extends RecyclerView.Adapter<MaterialTitleAdap
 
         holder.tvTitle.setText(materialTitle.getTitle());
 
-        if (materialTitle.getMaterialInfoBeans() != null) {
-            MaterialInfoAdapter materialInfoAdapter = new MaterialInfoAdapter(materialTitle.getMaterialInfoBeans());
-            materialInfoAdapter.setMyItemChildClickListener(myItemChildClickListener);
-            holder.recyclerView.setAdapter(materialInfoAdapter);
-        }
+//        if (materialTitle.getMaterialInfoBeans() != null) {
+//            MaterialInfoAdapter materialInfoAdapter = new MaterialInfoAdapter(materialTitle.getMaterialInfoBeans());
+//            materialInfoAdapter.setMyItemChildClickListener(myItemChildClickListener);
+//            holder.recyclerView.setAdapter(materialInfoAdapter);
+//        }
 
 
     }

@@ -7,7 +7,9 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.material.MaterialTitle;
+import com.jianpei.jpeducation.utils.L;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,11 +23,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MaterialTitleProvider extends BaseNodeProvider {
 
+    private MyItemOnClickListener myItemOnClickListener;
 
-    private MaterialTitleOnClickListener materialTitleOnClickListener;
-
-    public void setMaterialTitleOnClickListener(MaterialTitleOnClickListener materialTitleOnClickListener) {
-        this.materialTitleOnClickListener = materialTitleOnClickListener;
+    public MaterialTitleProvider(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
     }
 
     @Override
@@ -42,7 +43,6 @@ public class MaterialTitleProvider extends BaseNodeProvider {
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
         MaterialTitle materialTitle = (MaterialTitle) baseNode;
         baseViewHolder.setText(R.id.tv_title, materialTitle.getTitle());
-
         if (materialTitle.isExpanded()) {
             baseViewHolder.setImageResource(R.id.imageView, R.drawable.material_unfold);
         } else {
@@ -53,14 +53,12 @@ public class MaterialTitleProvider extends BaseNodeProvider {
     @Override
     public void onClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
         getAdapter().expandOrCollapse(position);
-        if (materialTitleOnClickListener != null) {
-            materialTitleOnClickListener.materialTitleOnClick(helper, view, data, position);
+        if (myItemOnClickListener != null) {
+            myItemOnClickListener.onItemClick(helper, view, data, position);
         }
 
+
     }
 
-    public interface MaterialTitleOnClickListener {
-        void materialTitleOnClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position);
-    }
 
 }

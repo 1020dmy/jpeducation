@@ -1,5 +1,10 @@
 package com.jianpei.jpeducation.bean.mclass;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.chad.library.adapter.base.entity.node.BaseExpandNode;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
@@ -16,13 +21,16 @@ import java.util.List;
  * <p>
  * Describe:
  */
+@Entity(tableName = "directory")
 public class DirectoryBean extends BaseExpandNode {
-
+    @NonNull
+    @PrimaryKey
     private String id;
     private String title;
     private String schedule;
-
+    @Ignore
     private List<ViodBean> viods;
+    @Ignore
     private List<BaseNode> baseNodes;
 
     public DirectoryBean() {
@@ -68,5 +76,6 @@ public class DirectoryBean extends BaseExpandNode {
             baseNodes = new ArrayList<>();
             baseNodes.addAll(viods);
         }
-        return baseNodes;    }
+        return baseNodes;
+    }
 }

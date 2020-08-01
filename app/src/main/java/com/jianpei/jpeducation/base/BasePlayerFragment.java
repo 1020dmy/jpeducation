@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -34,7 +35,7 @@ import butterknife.BindView;
  */
 public abstract class BasePlayerFragment extends BaseFragment {
     @BindView(R.id.aliyunPlayerView)
-   protected AliyunVodPlayerView aliyunPlayerView;
+    protected AliyunVodPlayerView aliyunPlayerView;
 
     AlivcShowMoreDialog showMoreDialog;
 
@@ -90,8 +91,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
         }
     }
 
-
-    protected void updatePlayerViewMode() {
+    public void updatePlayerViewMode() {
         if (aliyunPlayerView != null) {
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -105,7 +105,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
                 aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
                 //设置view的布局，宽高之类
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = ( RelativeLayout.LayoutParams) aliyunPlayerView
                         .getLayoutParams();
                 aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(getActivity()) * 9.0f / 16);
                 aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -113,7 +113,6 @@ public abstract class BasePlayerFragment extends BaseFragment {
                 //转到横屏了。
                 //隐藏状态栏
                 if (!isStrangePhone()) {
-
                     getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -124,7 +123,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
                 }
                 //设置view的布局，宽高
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = ( RelativeLayout.LayoutParams) aliyunPlayerView
                         .getLayoutParams();
                 aliVcVideoViewLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                 aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -231,5 +230,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
         lp.screenBrightness = brightness / 255.0f;
         window.setAttributes(lp);
     }
+
+
 
 }

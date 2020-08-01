@@ -19,6 +19,8 @@ package com.jianpei.jpeducation.utils.down;
 import android.os.Build;
 import android.widget.ProgressBar;
 
+import com.jianpei.jpeducation.utils.L;
+
 public class ProgressUtil {
 
     public static void updateProgressToViewWithMark(ProgressBar bar, long currentOffset) {
@@ -27,10 +29,30 @@ public class ProgressUtil {
 
     public static void updateProgressToViewWithMark(ProgressBar bar, long currentOffset,
                                                     boolean anim) {
-        if (bar.getTag() == null) return;
+
+
+        if (bar.getTag() == null) {
+            return;
+        }
 
         final int shrinkRate = (int) bar.getTag();
         final int progress = (int) ((currentOffset) / shrinkRate);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            bar.setProgress(progress, anim);
+        } else {
+            bar.setProgress(progress);
+        }
+    }
+
+    public static void updateProgressToView(ProgressBar bar, long currentOffset, long totalLength,
+                                            boolean anim) {
+
+
+        int progress = (int) (currentOffset * 100 / totalLength);
+
+        L.e("============progress:" + progress);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             bar.setProgress(progress, anim);

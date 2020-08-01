@@ -171,9 +171,9 @@ public class MaterialModel extends BaseViewModel implements MaterialContract.Mod
 
     }
 
-    private MutableLiveData<ArrayList<com.jianpei.jpeducation.bean.material.MaterialInfoBean>> materialInfoBeans;
+    private MutableLiveData<ArrayList<MaterialInfoBean>> materialInfoBeans;
 
-    public MutableLiveData<ArrayList<com.jianpei.jpeducation.bean.material.MaterialInfoBean>> getMaterialInfoBeans() {
+    public MutableLiveData<ArrayList<MaterialInfoBean>> getMaterialInfoBeans() {
         if (materialInfoBeans == null) {
             materialInfoBeans = new MutableLiveData<>();
         }
@@ -188,13 +188,13 @@ public class MaterialModel extends BaseViewModel implements MaterialContract.Mod
      */
 
     @Override
-    public void subMaterialData(String cat_id, String class_id,int type) {
+    public void subMaterialData(String cat_id, String class_id, int type) {
         if (TextUtils.isEmpty(cat_id) || TextUtils.isEmpty(class_id)) {
             return;
         }
 
 
-        materialRepository.subMaterialData(cat_id, class_id,type).compose(setThread()).subscribe(new BaseObserver<ArrayList<com.jianpei.jpeducation.bean.material.MaterialInfoBean>>() {
+        materialRepository.subMaterialData(cat_id, class_id, type).compose(setThread()).subscribe(new BaseObserver<ArrayList<com.jianpei.jpeducation.bean.material.MaterialInfoBean>>() {
 
             @Override
             protected void onSuccees(BaseEntity<ArrayList<MaterialInfoBean>> t) throws Exception {
@@ -246,6 +246,183 @@ public class MaterialModel extends BaseViewModel implements MaterialContract.Mod
             public void onNext(List<MaterialTitle> materialTitles) {
                 localMaterialLiveData.setValue(materialTitles);
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                errData.setValue(e.getMessage());
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 根据materialid数据库查询
+     *
+     * @param materialid
+     */
+    private MutableLiveData<MaterialInfoBean> inquireMaterialInfoBeanLiveData;
+
+    public MutableLiveData<MaterialInfoBean> getInquireMaterialInfoBeanLiveData() {
+        if (inquireMaterialInfoBeanLiveData == null)
+            inquireMaterialInfoBeanLiveData = new MutableLiveData<>();
+        return inquireMaterialInfoBeanLiveData;
+    }
+
+    @Override
+    public void getMaterialInfoBean(String materialid) {
+        materialRepository.getMaterialInfoBean(materialid).compose(setThread()).subscribe(new Observer<MaterialInfoBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(MaterialInfoBean materialInfoBean) {
+                inquireMaterialInfoBeanLiveData.setValue(materialInfoBean);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+
+    /**
+     * 根据cat_id查询
+     *
+     * @param class_id
+     */
+    private MutableLiveData<List<MaterialInfoBean>> inquireMaterialInfoBeansLiveData;
+
+    public MutableLiveData<List<MaterialInfoBean>> getInquireMaterialInfoBeansLiveData() {
+        if (inquireMaterialInfoBeansLiveData == null)
+            inquireMaterialInfoBeansLiveData = new MutableLiveData<>();
+        return inquireMaterialInfoBeansLiveData;
+    }
+
+    @Override
+    public void getMaterialInfoBeans(String class_id) {
+        materialRepository.getMaterialInfoBeans(class_id).compose(setThread()).subscribe(new Observer<List<MaterialInfoBean>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<MaterialInfoBean> materialInfoBeans) {
+                L.e("=========onNext:"+materialInfoBeans.size());
+                inquireMaterialInfoBeansLiveData.setValue(materialInfoBeans);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+
+    /**
+     * 插入数据库
+     *
+     * @param materialInfoBean
+     */
+    @Override
+    public void insertMaterialInfo(MaterialInfoBean materialInfoBean) {
+        materialRepository.insertMaterialInfo(materialInfoBean).compose(setThread()).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param materialInfoBean
+     */
+    @Override
+    public void delete(MaterialInfoBean materialInfoBean) {
+        materialRepository.delete(materialInfoBean).compose(setThread()).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+
+    /**
+     * 获取数据库中的资料标题
+     */
+    private MutableLiveData<List<MaterialTitle>> materialTitlesLiveData;
+
+    public MutableLiveData<List<MaterialTitle>> getMaterialTitlesLiveData() {
+        if (materialTitlesLiveData == null)
+            materialTitlesLiveData = new MutableLiveData<>();
+        return materialTitlesLiveData;
+    }
+    @Override
+    public void getMaterialTitles() {
+
+        materialRepository.getMaterialTitles().compose(setThread()).subscribe(new Observer<List<MaterialTitle>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<MaterialTitle> materialTitles) {
+                materialTitlesLiveData.setValue(materialTitles);
             }
 
             @Override

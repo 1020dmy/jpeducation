@@ -88,6 +88,8 @@ public class PlayerListFragment extends BaseFragment {
     private VideoDownloadManager videoDownloadManager;
 
 
+
+
     public PlayerListFragment(String classId, String buyId) {
         this.classId = classId;
         this.buyId = buyId;
@@ -144,7 +146,7 @@ public class PlayerListFragment extends BaseFragment {
         playListAdapter.addNodeProvider(playListJIeProvider);
         recyclerView.setAdapter(playListAdapter);
 
-
+        //下载初始化
         initDownload();
 
     }
@@ -208,10 +210,16 @@ public class PlayerListFragment extends BaseFragment {
 
 
     protected void initDownload() {
+        // 获取AliyunDownloadManager对象
         videoDownloadManager = VideoDownloadManager.getInstance(getActivity().getApplicationContext());
         //设置同时下载个数
         videoDownloadManager.setMaxNum(3);
 
+//        videoDownloadManager = DownloadDataProvider.getSingleton(getActivity().getApplicationContext());
+        // 更新sts回调
+//        videoDownloadManager.setRefreshStsCallback(new MyRefreshStsCallback());
+
+        // 视频下载的回调
         videoDownloadManager.setDownloadInfoListener(new MyVideoDownloadListener());
     }
 
@@ -230,23 +238,27 @@ public class PlayerListFragment extends BaseFragment {
     }
 
 
-    private class MyVideoDownloadListener implements AliyunDownloadInfoListener {
-
-
-        public MyVideoDownloadListener() {
-        }
+    class MyVideoDownloadListener implements AliyunDownloadInfoListener {
 
         @Override
-        public void onPrepared(List<AliyunDownloadMediaInfo> infos) {
+        public void onPrepared(List<AliyunDownloadMediaInfo> viodBeans) {
             if (downloadClassPopup == null) {
-                downloadClassPopup = new DownloadClassPopup(getActivity(), infos);
+                downloadClassPopup = new DownloadClassPopup(getActivity(), viodBeans);
+                downloadClassPopup.setMyClickListener(new DownloadClassPopup.MyClickListener() {
+                    @Override
+                    public void ClickListener(AliyunDownloadMediaInfo downLoadTag) {
+                        //点击了下载
+                        videoDownloadManager.startDownload(downLoadTag);
+
+                    }
+                });
             }
             downloadClassPopup.showPop();
-
         }
 
         @Override
         public void onAdd(AliyunDownloadMediaInfo info) {
+
 
         }
 

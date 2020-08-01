@@ -13,13 +13,19 @@ import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 public interface MaterialDownloadListener {
     void taskStart(MaterialInfoBean materialInfoBean);
 
+    void repeat(MaterialInfoBean materialInfoBean);
+
     void retry(MaterialInfoBean materialInfoBean);
 
     void connected(MaterialInfoBean materialInfoBean);
 
-    void progress(MaterialInfoBean materialInfoBean);
+    void progress(MaterialInfoBean materialInfoBean,long currentOffset, long totalLength);
 
-    void taskEnd(MaterialInfoBean materialInfoBean);
+//    void taskEnd(MaterialInfoBean materialInfoBean);
+
+    void onError(String errMsg);
+
+    void onSuccess(MaterialInfoBean materialInfoBean);
 
 
 }

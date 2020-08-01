@@ -131,8 +131,6 @@ public class HomeFragment extends BaseFragment {
                 homePageModel.getHomeData(catId);//获取首页数据
                 homePageModel.noticeData(catId);//获取通知数据
                 swipeRefreshLayout.setRefreshing(false);
-
-
             }
         });
 
@@ -151,9 +149,7 @@ public class HomeFragment extends BaseFragment {
             public void OnItemClick(MaterialInfoItemBinder.MyHolder myHolder, MaterialInfoBean materialInfoBean) {
 
                 if (materialInfoBean.getStatus().equals("2")) {
-
                     startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));
-
                 } else {
                     showLoading("");
                     mMyHolder = myHolder;

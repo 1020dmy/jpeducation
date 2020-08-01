@@ -1,11 +1,11 @@
 package com.jianpei.jpeducation.utils.down;
 
-import android.os.Environment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
+import com.jianpei.jpeducation.room.MyRoomDatabase;
+import com.jianpei.jpeducation.utils.L;
 import com.liulishuo.okdownload.DownloadTask;
 import com.liulishuo.okdownload.core.cause.EndCause;
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause;
@@ -13,6 +13,7 @@ import com.liulishuo.okdownload.core.listener.DownloadListener1;
 import com.liulishuo.okdownload.core.listener.assist.Listener1Assist;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 
 /**
@@ -27,7 +28,7 @@ public class MaterialDownloadManager {
 
     private static volatile MaterialDownloadManager mInstance = null;
 
-    private File downloadDir = Environment.getDownloadCacheDirectory();
+    private File downloadDir;
 
 
     private LinkedHashMap<DownloadTask, MaterialInfoBean> downloadInfos = new LinkedHashMap<>();
@@ -45,8 +46,12 @@ public class MaterialDownloadManager {
         @Override
         public void taskStart(@NonNull DownloadTask task, @NonNull Listener1Assist.Listener1Model model) {
             //开始下载
-            if (materialDownloadListener != null)
-                materialDownloadListener.taskStart(downloadInfos.get(task));
+            if (materialDownloadListener != null) {
+                MaterialInfoBean materialInfoBean = downloadInfos.get(task);
+                materialInfoBean.setStatus("1");
+                insert(materialInfoBean);//插入数据库
+                materialDownloadListener.taskStart(materialInfoBean);
+            }
 
         }
 
@@ -68,14 +73,25 @@ public class MaterialDownloadManager {
         public void progress(@NonNull DownloadTask task, long currentOffset, long totalLength) {
             //进度
             if (materialDownloadListener != null)
-                materialDownloadListener.progress(downloadInfos.get(task));
+                materialDownloadListener.progress(downloadInfos.get(task), currentOffset, totalLength);
         }
 
         @Override
         public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause, @NonNull Listener1Assist.Listener1Model model) {
             //完成
-            if (materialDownloadListener != null)
-                materialDownloadListener.taskEnd(downloadInfos.get(task));
+            MaterialInfoBean materialInfoBean = downloadInfos.get(task);
+
+            if (materialDownloadListener != null) {
+                if (cause == EndCause.COMPLETED) {//成功
+                    materialInfoBean.setStatus("2");
+                    materialDownloadListener.onSuccess(materialInfoBean);
+                } else {//失败
+                    L.e("==========onError:" + cause + "," + realCause.getMessage());
+                    materialInfoBean.setStatus("3");
+                    materialDownloadListener.onError(cause.name());
+                }
+            }
+            insert(materialInfoBean);
             downloadInfos.remove(task);
         }
     };
@@ -104,13 +120,36 @@ public class MaterialDownloadManager {
         this.downloadDir = downloadDir;
     }
 
-    public void startDownload(MaterialInfoBean materialInfoBean, String url) {
-        DownloadTask task = new DownloadTask.Builder(url, downloadDir)
+    public void startDownload(MaterialInfoBean materialInfoBean) {
+
+        Collection<MaterialInfoBean> materialInfoBeans = downloadInfos.values();
+        for (MaterialInfoBean materialInfoBean1 : materialInfoBeans) {
+            if (materialInfoBean.getId().equals(materialInfoBean1.getId())) {
+                if (materialDownloadListener != null) {
+                    materialDownloadListener.retry(materialInfoBean);
+                }
+                return;
+            }
+        }
+        DownloadTask task = new DownloadTask.Builder(materialInfoBean.getDownloadUrl(), downloadDir)
                 .setFilename(materialInfoBean.getTitle())
                 .setMinIntervalMillisCallbackProcess(30)
                 .setPassIfAlreadyCompleted(false)
                 .build();
-        task.enqueue(downloadListener1);
+        downloadInfos.put(task, materialInfoBean);//添加进队列
+        task.enqueue(downloadListener1);//开始下载
+    }
 
+    private void insert(MaterialInfoBean materialInfoBean) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+            }
+        }).start();
+    }
+
+    public void freed() {
+        materialDownloadListener = null;
     }
 }

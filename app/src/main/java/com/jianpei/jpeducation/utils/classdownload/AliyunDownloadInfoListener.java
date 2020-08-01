@@ -1,12 +1,13 @@
 package com.jianpei.jpeducation.utils.classdownload;
 
 import com.aliyun.player.bean.ErrorCode;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 import java.util.List;
 
 public interface AliyunDownloadInfoListener {
 
-    public void onPrepared(/*String vid, String quality*/List<AliyunDownloadMediaInfo> infos);
+    public void onPrepared(/*String vid, String quality*/List<AliyunDownloadMediaInfo> viodBeans);
 
     public void onAdd(AliyunDownloadMediaInfo info);
 

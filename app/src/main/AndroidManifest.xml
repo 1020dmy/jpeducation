@@ -107,7 +107,8 @@
             android:name=".activitys.mine.mclass.ClassPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activitys.mine.MaterialActivity"
             android:launchMode="singleTask" />
@@ -166,12 +167,12 @@
             android:name=".activitys.classinfo.GroupInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".activitys.player.TryPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="unspecified"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".activitys.material.MaterialListActivity"
@@ -206,7 +207,8 @@
             android:name=".activitys.classinfo.ClassInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            />
         <activity
             android:name=".activitys.login.LoginActivity"
             android:launchMode="singleTask">

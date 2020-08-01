@@ -38,6 +38,24 @@ public interface MaterialContract {
         //获取数据库中已经下载的资料
 
         Observable<List<MaterialTitle>> getDownloadCompleteMaterial(List<MaterialTitle> materialTitles);
+
+        //根据materialid数据库查询
+        Observable<MaterialInfoBean> getMaterialInfoBean(String materialid);
+
+        //根据cat_id查询
+        Observable<List<MaterialInfoBean>> getMaterialInfoBeans(String class_id);
+
+        //插入数据库
+        Observable<String> insertMaterialInfo(MaterialInfoBean materialInfoBean);
+
+        //删除
+        Observable<String> delete(MaterialInfoBean materialInfoBean);
+
+        //根据materialTitle数据库查询
+        Observable<List<MaterialTitle>> getMaterialTitles();
+
+
+
     }
 
 
@@ -48,8 +66,19 @@ public interface MaterialContract {
 
         void materialData(String cat_id, int pageIndex, int pageSize);
 
-        void subMaterialData(String cat_id, String class_id,int type);
+        void subMaterialData(String cat_id, String class_id, int type);
 
         void getDownloadCompleteMaterial(List<MaterialTitle> materialTitles);
+
+        void getMaterialInfoBean(String materialid);
+
+        void getMaterialInfoBeans(String class_id);
+
+        void insertMaterialInfo(MaterialInfoBean materialInfoBean);
+
+        void delete(MaterialInfoBean materialInfoBean);
+
+
+        void getMaterialTitles();
     }
 }

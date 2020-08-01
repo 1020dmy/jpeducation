@@ -2,6 +2,11 @@ package com.jianpei.jpeducation.utils.classdownload;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.aliyun.player.bean.ErrorCode;
 import com.aliyun.player.nativeclass.TrackInfo;
 import com.aliyun.player.source.VidAuth;
@@ -24,6 +29,7 @@ import java.util.List;
  */
 public class AliyunDownloadMediaInfo {
 
+
     private static final String TAG = AliyunDownloadMediaInfo.class.getSimpleName();
     private String mVid;
     private String mQuality;
@@ -38,7 +44,6 @@ public class AliyunDownloadMediaInfo {
     private int mDownloadIndex = 0;
     private int isEncripted = 0;
     private TrackInfo mTrackInfo;
-//    private VidSts mVidSts;
     private VidAuth vidAuth;
     private ErrorCode errorCode;
     private String errorMsg;

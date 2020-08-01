@@ -3,6 +3,9 @@ package com.jianpei.jpeducation.fragment.mine.mclass;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +18,8 @@ import com.jianpei.jpeducation.adapter.classinfo.CommentAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.CommentBean;
 import com.jianpei.jpeducation.bean.CommentListBean;
-import com.jianpei.jpeducation.utils.dialog.CommentDialog;
+import com.jianpei.jpeducation.utils.keyboard.OnSoftKeyBoardChangeListener;
+import com.jianpei.jpeducation.utils.keyboard.SoftKeyBoardListener;
 import com.jianpei.jpeducation.utils.pop.CommentPopup;
 import com.jianpei.jpeducation.viewmodel.CommentModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -107,6 +111,13 @@ public class PlayerCommentFragment extends BaseFragment {
                 commentAdapter.notifyDataSetChanged();
             }
         });
+        commentModel.getCommentSuccessLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast(s);
+            }
+        });
         commentModel.getErrData().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String o) {
@@ -126,8 +137,18 @@ public class PlayerCommentFragment extends BaseFragment {
     public void onViewClicked() {
         if (commentPopup == null) {
             commentPopup = new CommentPopup(getActivity());
+            commentPopup.setMyOnClickListener(new CommentPopup.MyOnClickListener() {
+                @Override
+                public void OnClick(String message) {
+                    commentPopup.dismiss();
+                    showLoading("");
+                    commentModel.insertComment(classId, message);
+                }
+            });
         }
         commentPopup.showPop();
 
     }
+
+
 }

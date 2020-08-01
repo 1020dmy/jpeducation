@@ -341,4 +341,5 @@ public class ClassInfoFragment extends BasePlayerFragment {
     }
 
 
+
 }

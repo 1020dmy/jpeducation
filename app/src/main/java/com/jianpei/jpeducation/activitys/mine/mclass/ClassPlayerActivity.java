@@ -3,12 +3,7 @@ package com.jianpei.jpeducation.activitys.mine.mclass;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Message;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -22,19 +17,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.aliyun.player.bean.ErrorCode;
 import com.aliyun.player.source.VidAuth;
-import com.aliyun.private_service.PrivateService;
-import com.aliyun.utils.VcPlayerLog;
-import com.aliyun.vodplayerview.activity.AliyunPlayerSkinActivity;
-import com.aliyun.vodplayerview.utils.Common;
-import com.aliyun.vodplayerview.utils.ScreenUtils;
-import com.aliyun.vodplayerview.utils.download.AliyunDownloadInfoListener;
+
 import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
-import com.aliyun.vodplayerview.utils.download.AliyunDownloadMediaInfo;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.view.control.ControlView;
-import com.aliyun.vodplayerview.view.download.DownloadDataProvider;
 import com.aliyun.vodplayerview.view.more.AliyunShowMoreValue;
 import com.aliyun.vodplayerview.view.more.ShowMoreView;
 import com.aliyun.vodplayerview.view.more.SpeedValue;
@@ -42,21 +29,15 @@ import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MyClassBean;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
-import com.jianpei.jpeducation.utils.pop.DownloadClassPopup;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -88,7 +69,9 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
     AlivcShowMoreDialog showMoreDialog;
 
-//    private DownloadClassPopup downloadClassPopup;
+    private AliyunDownloadManager downloadManager;
+
+
 
     @Override
     protected int setLayoutView() {
@@ -208,7 +191,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             tabLayout.setVisibility(View.VISIBLE);
             viewPage.setVisibility(View.VISIBLE);
         }
-        updatePlayerViewMode();
+        updatePlayerViewMode(aliyunPlayerView);
 
     }
 
@@ -316,62 +299,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         getWindow().setAttributes(lp);
     }
 
-    protected void updatePlayerViewMode() {
-        if (aliyunPlayerView != null) {
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                //转为竖屏了。
-                //显示状态栏
-                //                if (!isStrangePhone()) {
-                //                    getSupportActionBar().show();
-                //                }
 
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-
-                //设置view的布局，宽高之类
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
-                        .getLayoutParams();
-                aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(this) * 9.0f / 16);
-                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                //转到横屏了。
-                //隐藏状态栏
-                if (!isStrangePhone()) {
-
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-                }
-                //设置view的布局，宽高
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
-                        .getLayoutParams();
-                aliVcVideoViewLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            }
-        }
-    }
-
-    protected boolean isStrangePhone() {
-        boolean strangePhone = "mx5".equalsIgnoreCase(Build.DEVICE)
-                || "Redmi Note2".equalsIgnoreCase(Build.DEVICE)
-                || "Z00A_1".equalsIgnoreCase(Build.DEVICE)
-                || "hwH60-L02".equalsIgnoreCase(Build.DEVICE)
-                || "hermes".equalsIgnoreCase(Build.DEVICE)
-                || ("V4".equalsIgnoreCase(Build.DEVICE) && "Meitu".equalsIgnoreCase(Build.MANUFACTURER))
-                || ("m1metal".equalsIgnoreCase(Build.DEVICE) && "Meizu".equalsIgnoreCase(Build.MANUFACTURER));
-
-        VcPlayerLog.e("lfj1115 ", " Build.Device = " + Build.DEVICE + " , isStrange = " + strangePhone);
-        return strangePhone;
-    }
-
-
-    /////下载相关
 
 
 }

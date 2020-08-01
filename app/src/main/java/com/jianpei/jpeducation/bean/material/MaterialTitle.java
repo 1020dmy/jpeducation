@@ -1,5 +1,10 @@
 package com.jianpei.jpeducation.bean.material;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.chad.library.adapter.base.entity.node.BaseExpandNode;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
@@ -17,13 +22,16 @@ import java.util.List;
  * <p>
  * Describe:
  */
+@Entity(tableName = "materialtitle")
 public class MaterialTitle extends BaseExpandNode {
 
-
-    private String title;
+    @NonNull
+    @PrimaryKey
     private String id;
     private String cat_id;
+    private String title;
 
+    @Ignore
     private boolean isUnfold;
 
 
@@ -39,15 +47,15 @@ public class MaterialTitle extends BaseExpandNode {
         isUnfold = unfold;
     }
 
-    private List<MaterialInfoBean> materialInfoBeans;
-
-    public List<MaterialInfoBean> getMaterialInfoBeans() {
-        return materialInfoBeans;
-    }
-
-    public void setMaterialInfoBeans(List<MaterialInfoBean> materialInfoBeans) {
-        this.materialInfoBeans = materialInfoBeans;
-    }
+//    private List<MaterialInfoBean> materialInfoBeans;
+//
+//    public List<MaterialInfoBean> getMaterialInfoBeans() {
+//        return materialInfoBeans;
+//    }
+//
+//    public void setMaterialInfoBeans(List<MaterialInfoBean> materialInfoBeans) {
+//        this.materialInfoBeans = materialInfoBeans;
+//    }
 
     public String getTitle() {
         return title;
@@ -73,10 +81,12 @@ public class MaterialTitle extends BaseExpandNode {
         this.cat_id = cat_id;
     }
 
-
+    @Ignore
     private List<BaseNode> list;
 
     public List<BaseNode> getList() {
+        if (list == null)
+            list = new ArrayList<>();
         return list;
     }
 
@@ -87,8 +97,6 @@ public class MaterialTitle extends BaseExpandNode {
     @Nullable
     @Override
     public List<BaseNode> getChildNode() {
-        if (list == null)
-            list = new ArrayList<>();
         return list;
     }
 }

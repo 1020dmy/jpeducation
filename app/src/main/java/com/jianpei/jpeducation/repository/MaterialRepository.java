@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 
@@ -52,8 +54,21 @@ public class MaterialRepository implements MaterialContract.Repository {
      * @return
      */
     @Override
-    public Observable<BaseEntity<com.jianpei.jpeducation.bean.material.MaterialDataBean>> myMaterialData(int pageIndex, int pageSize) {
-        return RetrofitFactory.getInstance().API().myMaterialData(new MaterialDataJson(pageIndex, pageSize));
+    public Observable<BaseEntity<MaterialDataBean>> myMaterialData(int pageIndex, int pageSize) {
+        return RetrofitFactory.getInstance().API().myMaterialData(new MaterialDataJson(pageIndex, pageSize)).map(new Function<BaseEntity<MaterialDataBean>, BaseEntity<MaterialDataBean>>() {
+            @Override
+            public BaseEntity<MaterialDataBean> apply(BaseEntity<MaterialDataBean> materialDataBeanBaseEntity) throws Exception {
+
+                if (materialDataBeanBaseEntity.getData() != null) {
+                    List<MaterialTitle> materialTitles = materialDataBeanBaseEntity.getData().getData();
+                    if (materialTitles != null && materialTitles.size() > 0) {
+                        MyRoomDatabase.getInstance().materialTitleDao().insertMaterialTitle(materialTitles);
+                    }
+                }
+
+                return materialDataBeanBaseEntity;
+            }
+        });
     }
 
     /**
@@ -87,7 +102,7 @@ public class MaterialRepository implements MaterialContract.Repository {
                     for (MaterialInfoBean materialInfoBean : arrayListBaseEntity.getData()) {
                         MaterialInfoBean materialInfoBean1 = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId());
                         if (materialInfoBean1 != null) {
-                            materialInfoBean.setStatus("2");
+                            materialInfoBean.setStatus(materialInfoBean1.getStatus());
                         }
                     }
                     return arrayListBaseEntity;
@@ -137,5 +152,92 @@ public class MaterialRepository implements MaterialContract.Repository {
                 observer.onNext(materialTitles);
             }
         };
+    }
+
+    /**
+     * 根据materialid数据库查询
+     *
+     * @param materialid
+     * @return
+     */
+    @Override
+    public Observable<MaterialInfoBean> getMaterialInfoBean(String materialid) {
+        return Observable.create(new ObservableOnSubscribe<MaterialInfoBean>() {
+            @Override
+            public void subscribe(ObservableEmitter<MaterialInfoBean> emitter) throws Exception {
+                MaterialInfoBean materialInfoBean = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialid);
+                emitter.onNext(materialInfoBean);
+            }
+        });
+    }
+
+    /**
+     * 根据cat_id查询
+     *
+     * @param class_id
+     * @return
+     */
+    @Override
+    public Observable<List<MaterialInfoBean>> getMaterialInfoBeans(String class_id) {
+        return Observable.create(new ObservableOnSubscribe<List<MaterialInfoBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<MaterialInfoBean>> emitter) throws Exception {
+                List<MaterialInfoBean> materialInfoBeans = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBeans(class_id);
+                L.e("=========subscribe:"+materialInfoBeans.size());
+                emitter.onNext(materialInfoBeans);
+                emitter.onComplete();
+            }
+        });
+    }
+
+    /**
+     * 插入数据库
+     *
+     * @param materialInfoBean
+     * @return
+     */
+    @Override
+    public Observable<String> insertMaterialInfo(MaterialInfoBean materialInfoBean) {
+        return Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                MyRoomDatabase.getInstance().materialInfoDao().insertMaterialInfo(materialInfoBean);
+                emitter.onComplete();
+            }
+        });
+    }
+
+    /**
+     * 删除
+     *
+     * @param materialInfoBean
+     * @return
+     */
+    @Override
+    public Observable<String> delete(MaterialInfoBean materialInfoBean) {
+        return Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                MyRoomDatabase.getInstance().materialInfoDao().delete(materialInfoBean);
+                emitter.onComplete();
+            }
+        });
+    }
+
+    /**
+     * 获取数据库中的资料标题
+     *
+     * @return
+     */
+    @Override
+    public Observable<List<MaterialTitle>> getMaterialTitles() {
+        return Observable.create(new ObservableOnSubscribe<List<MaterialTitle>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<MaterialTitle>> emitter) throws Exception {
+                List<MaterialTitle> materialTitles = MyRoomDatabase.getInstance().materialTitleDao().getAllMaterialTitles();
+                emitter.onNext(materialTitles);
+                emitter.onComplete();
+            }
+        });
     }
 }

@@ -3,13 +3,24 @@ package com.jianpei.jpeducation.base;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.aliyun.utils.VcPlayerLog;
+import com.aliyun.vodplayerview.utils.ScreenUtils;
+import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
+import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.utils.LoadingDialog;
 import com.jianpei.jpeducation.utils.StatusBarUtil;
@@ -42,6 +53,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     private Dialog dialog;
+
+
 
 
     @Override
@@ -254,5 +267,60 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         }
     }
+
+    protected boolean isStrangePhone() {
+        boolean strangePhone = "mx5".equalsIgnoreCase(Build.DEVICE)
+                || "Redmi Note2".equalsIgnoreCase(Build.DEVICE)
+                || "Z00A_1".equalsIgnoreCase(Build.DEVICE)
+                || "hwH60-L02".equalsIgnoreCase(Build.DEVICE)
+                || "hermes".equalsIgnoreCase(Build.DEVICE)
+                || ("V4".equalsIgnoreCase(Build.DEVICE) && "Meitu".equalsIgnoreCase(Build.MANUFACTURER))
+                || ("m1metal".equalsIgnoreCase(Build.DEVICE) && "Meizu".equalsIgnoreCase(Build.MANUFACTURER));
+
+        VcPlayerLog.e("lfj1115 ", " Build.Device = " + Build.DEVICE + " , isStrange = " + strangePhone);
+        return strangePhone;
+    }
+
+    protected void updatePlayerViewMode(AliyunVodPlayerView aliyunPlayerView) {
+        if (aliyunPlayerView != null) {
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                //转为竖屏了。
+                //显示状态栏
+                //                if (!isStrangePhone()) {
+                //                    getSupportActionBar().show();
+                //                }
+
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+
+                //设置view的布局，宽高之类
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
+                        .getLayoutParams();
+                aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(this) * 9.0f / 16);
+                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                //转到横屏了。
+                //隐藏状态栏
+                if (!isStrangePhone()) {
+
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                }
+                //设置view的布局，宽高
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
+                        .getLayoutParams();
+                aliVcVideoViewLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+        }
+    }
+
 
 }

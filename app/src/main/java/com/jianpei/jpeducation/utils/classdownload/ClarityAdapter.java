@@ -46,12 +46,18 @@ public class ClarityAdapter extends RecyclerView.Adapter<ClarityAdapter.MyHolder
         return aliyunDownloadMediaInfos != null ? aliyunDownloadMediaInfos.size() : 0;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvClarity;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             tvClarity = itemView.findViewById(R.id.tv_clarity);
+            tvClarity.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 }

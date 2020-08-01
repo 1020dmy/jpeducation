@@ -20,13 +20,20 @@ import java.util.List;
  */
 public class PlayListAdapter extends BaseNodeAdapter {
 
+
+    public PlayListAdapter() {
+        super();
+        addNodeProvider(new PlayListChapterProvider());
+        addNodeProvider(new PlayListJIeProvider());
+    }
+
     @Override
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {
-        BaseNode baseNode=list.get(i);
+        BaseNode baseNode = list.get(i);
 
-        if(baseNode instanceof DirectoryBean){
+        if (baseNode instanceof DirectoryBean) {
             return 0;
-        }else if(baseNode instanceof ViodBean){
+        } else if (baseNode instanceof ViodBean) {
             return 1;
         }
         return -1;
