@@ -7,7 +7,7 @@ import com.aliyun.vodplayerview.utils.download.StorageUtil;
 
 public class DownloadUtils {
 
-    public static boolean isStorageAlarm(Context context, AliyunDownloadMediaInfo downloadMediaInfo) {
+    public static boolean isStorageAlarm(Context context, DownloadMediaInfo downloadMediaInfo) {
         long availablekb = 0L;
         if (StorageUtil.isExternalMemoryPath(getSaveDir(context))) {
             availablekb = StorageUtil.getAvailableExternalMemorySize();

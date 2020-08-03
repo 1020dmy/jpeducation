@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.utils.classdownload;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -10,7 +11,6 @@ import androidx.room.PrimaryKey;
 import com.aliyun.player.bean.ErrorCode;
 import com.aliyun.player.nativeclass.TrackInfo;
 import com.aliyun.player.source.VidAuth;
-import com.aliyun.player.source.VidSts;
 import com.aliyun.utils.JsonUtil;
 import com.aliyun.utils.VcPlayerLog;
 
@@ -25,32 +25,70 @@ import java.util.List;
 
 /**
  * 下载信息封装类
+ *
  * @author hanyu
  */
-public class AliyunDownloadMediaInfo {
+@Entity(tableName = "downloadmediainfo")
+public class DownloadMediaInfo {
+
+    @Ignore
+    private static final String TAG = DownloadMediaInfo.class.getSimpleName();
 
 
-    private static final String TAG = AliyunDownloadMediaInfo.class.getSimpleName();
+    @NonNull
+    @PrimaryKey
+    private String id;
+    private String dTitle;
+    private String chapter_id;
+    @ColumnInfo(name = "mvid")
     private String mVid;
+    @ColumnInfo(name = "mquality")
     private String mQuality;
+    @ColumnInfo(name = "mprogress")
     private int mProgress = 0;
     private String mSavePath = null;
     private String mTitle;
     private String mCoverUrl;
     private long mDuration;
-    private AliyunDownloadMediaInfo.Status mStatus;
+    @Ignore
+    private DownloadMediaInfo.Status mStatus;
+    @ColumnInfo(name = "dstatus")
+    private int dStatus;
     private long mSize;
     private String mFormat;
     private int mDownloadIndex = 0;
     private int isEncripted = 0;
+    @Ignore
     private TrackInfo mTrackInfo;
+    @Ignore
     private VidAuth vidAuth;
+    @Ignore
     private ErrorCode errorCode;
+    @Ignore
     private String errorMsg;
+    @Ignore
     private int mFileHandleProgress = 0;
+    @Ignore
     private int mQualityIndex;
 
-    public AliyunDownloadMediaInfo() {
+    public DownloadMediaInfo() {
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public String getChapter_id() {
+        return chapter_id;
+    }
+
+    public void setChapter_id(String chapter_id) {
+        this.chapter_id = chapter_id;
     }
 
     public int getQualityIndex() {
@@ -117,6 +155,14 @@ public class AliyunDownloadMediaInfo {
         this.mTitle = title;
     }
 
+    public String getdTitle() {
+        return dTitle;
+    }
+
+    public void setdTitle(String dTitle) {
+        this.dTitle = dTitle;
+    }
+
     public String getCoverUrl() {
         return this.mCoverUrl;
     }
@@ -133,11 +179,19 @@ public class AliyunDownloadMediaInfo {
         this.mDuration = duration;
     }
 
-    public AliyunDownloadMediaInfo.Status getStatus() {
+    public int getdStatus() {
+        return dStatus;
+    }
+
+    public void setdStatus(int dStatus) {
+        this.dStatus = dStatus;
+    }
+
+    public DownloadMediaInfo.Status getStatus() {
         return this.mStatus;
     }
 
-    public void setStatus(AliyunDownloadMediaInfo.Status mStatus) {
+    public void setStatus(DownloadMediaInfo.Status mStatus) {
         this.mStatus = mStatus;
     }
 
@@ -211,13 +265,13 @@ public class AliyunDownloadMediaInfo {
         this.errorMsg = errorMsg;
     }
 
-    public static String getJsonFromInfos(List<AliyunDownloadMediaInfo> infos) {
+    public static String getJsonFromInfos(List<DownloadMediaInfo> infos) {
         JSONArray jsonArray = new JSONArray();
         if (infos != null && !infos.isEmpty()) {
             Iterator var2 = infos.iterator();
 
             while (var2.hasNext()) {
-                AliyunDownloadMediaInfo info = (AliyunDownloadMediaInfo) var2.next();
+                DownloadMediaInfo info = (DownloadMediaInfo) var2.next();
                 JSONObject infoJsonobject = formatInfoToJsonobj(info);
                 if (infoJsonobject != null) {
                     jsonArray.put(infoJsonobject);
@@ -230,7 +284,7 @@ public class AliyunDownloadMediaInfo {
         }
     }
 
-    private static JSONObject formatInfoToJsonobj(AliyunDownloadMediaInfo info) {
+    private static JSONObject formatInfoToJsonobj(DownloadMediaInfo info) {
         if (info == null) {
             return null;
         } else {
@@ -257,7 +311,7 @@ public class AliyunDownloadMediaInfo {
         }
     }
 
-    public static List<AliyunDownloadMediaInfo> getInfosFromJson(String infoContent) {
+    public static List<DownloadMediaInfo> getInfosFromJson(String infoContent) {
         if (TextUtils.isEmpty(infoContent)) {
             return null;
         } else {
@@ -272,13 +326,13 @@ public class AliyunDownloadMediaInfo {
             if (jsonArray == null) {
                 return null;
             } else {
-                List<AliyunDownloadMediaInfo> infos = new ArrayList();
+                List<DownloadMediaInfo> infos = new ArrayList();
                 int size = jsonArray.length();
 
                 for (int i = 0; i < size; ++i) {
                     try {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        AliyunDownloadMediaInfo info = getInfoFromJson(jsonObject);
+                        DownloadMediaInfo info = getInfoFromJson(jsonObject);
                         infos.add(info);
                     } catch (JSONException var7) {
                         VcPlayerLog.d(TAG, " e..." + var7);
@@ -290,8 +344,8 @@ public class AliyunDownloadMediaInfo {
         }
     }
 
-    private static AliyunDownloadMediaInfo getInfoFromJson(JSONObject jsonObject) {
-        AliyunDownloadMediaInfo info = new AliyunDownloadMediaInfo();
+    private static DownloadMediaInfo getInfoFromJson(JSONObject jsonObject) {
+        DownloadMediaInfo info = new DownloadMediaInfo();
         info.setVid(JsonUtil.getString(jsonObject, new String[]{"vid"}));
         info.setTitle(JsonUtil.getString(jsonObject, new String[]{"title"}));
         info.setQuality(JsonUtil.getString(jsonObject, new String[]{"quality"}));
@@ -299,13 +353,14 @@ public class AliyunDownloadMediaInfo {
         info.setCoverUrl(JsonUtil.getString(jsonObject, new String[]{"coverUrl"}));
         info.setDuration((long) JsonUtil.getInt(jsonObject, new String[]{"duration"}));
         info.setSavePath(JsonUtil.getString(jsonObject, new String[]{"savePath"}));
-        info.setStatus(AliyunDownloadMediaInfo.Status.valueOf(JsonUtil.getString(jsonObject, new String[]{"status"})));
+//        info.setStatus(DownloadMediaInfo.Status.valueOf(JsonUtil.getString(jsonObject, new String[]{"status"})));
         info.setSize((long) JsonUtil.getInt(jsonObject, new String[]{"size"}));
         info.setProgress(JsonUtil.getInt(jsonObject, new String[]{"progress"}));
         info.setDownloadIndex(JsonUtil.getInt(jsonObject, new String[]{"dIndex"}));
         info.setEncripted(JsonUtil.getInt(jsonObject, new String[]{"encript"}));
         return info;
     }
+
 
     public static enum Status {
         /**
@@ -357,7 +412,7 @@ public class AliyunDownloadMediaInfo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AliyunDownloadMediaInfo that = (AliyunDownloadMediaInfo) o;
+        DownloadMediaInfo that = (DownloadMediaInfo) o;
         return mVid == that.mVid && mQuality == that.mQuality;
     }
 

@@ -52,7 +52,7 @@ public class MyApplication extends Application {
         initUmeng();
         initWx();
 
-        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
+//        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
 
     }
 

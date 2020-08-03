@@ -1,8 +1,6 @@
 package com.jianpei.jpeducation.utils.pop;
 
 import android.content.Context;
-import android.telephony.RadioAccessSpecifier;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,22 +14,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.aliyun.player.nativeclass.MediaInfo;
+import com.aliyun.vodplayerview.listener.QualityValue;
 import com.aliyun.vodplayerview.utils.DensityUtil;
-import com.aliyun.vodplayerview.utils.FixedToastUtils;
-import com.aliyun.vodplayerview.utils.ImageLoader;
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.utils.classdownload.AliyunDownloadMediaInfo;
-import com.jianpei.jpeducation.utils.classdownload.ClarityAdapter;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * jpeducation
@@ -50,23 +45,23 @@ public class DownloadClassPopup extends PopupWindow {
     private ImageView ivCancel;
     private ImageView imageView;
     private TextView tv_title, tv_size;
-//    private RecyclerView recyclerView;
 
     private Button button;
-    private List<AliyunDownloadMediaInfo> aliyunDownloadMediaInfos;
 
     private RadioGroup rg_quality_list;
-    private AliyunDownloadMediaInfo downLoadTag;
+    private DownloadMediaInfo downLoadTag;
 
     private MyClickListener myClickListener;
+    private Map<String, String> qualityList = new HashMap<>();
+
 
     public void setMyClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
 
-    public DownloadClassPopup(Context context, List<AliyunDownloadMediaInfo> aliyunDownloadMediaInfos) {
-        this.aliyunDownloadMediaInfos = aliyunDownloadMediaInfos;
+    public DownloadClassPopup(Context context) {
         this.mContext = context;
+        initQuality();
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setOutsideTouchable(true);
@@ -82,8 +77,6 @@ public class DownloadClassPopup extends PopupWindow {
         button = contentView.findViewById(R.id.button);
         rg_quality_list = contentView.findViewById(R.id.rg_quality_list);
 
-//        recyclerView = contentView.findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         ivCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,69 +94,47 @@ public class DownloadClassPopup extends PopupWindow {
             }
         });
 
-//        setData();
-
-        showAllDownloadItems();
-
-
     }
 
-//    protected void setData() {
-//        if (aliyunDownloadMediaInfos != null && aliyunDownloadMediaInfos.size() > 0) {
-////            AliyunDownloadMediaInfo aliyunDownloadMediaInfo = aliyunDownloadMediaInfos.get(0);
-////
-////            tv_title.setText(aliyunDownloadMediaInfo.getTitle());
-////            tv_size.setText(aliyunDownloadMediaInfo.getSizeStr());
-////
-////            recyclerView.setAdapter(new ClarityAdapter(aliyunDownloadMediaInfos));
-//
-//        }
-//    }
-
-    private void showAllDownloadItems() {
-        if (aliyunDownloadMediaInfos == null || aliyunDownloadMediaInfos.isEmpty()) {
+    public void showAllDownloadItems(List<DownloadMediaInfo> downloadMediaInfos) {
+        if (downloadMediaInfos == null || downloadMediaInfos.isEmpty()) {
             return;
         }
+        rg_quality_list.removeAllViews();
 
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, 1f);
         layoutParams.setMargins(0, 0, DensityUtil.px2dip(mContext, 16), 0);
-//        int infoSize = list.size();
-        Iterator<AliyunDownloadMediaInfo> iterator = aliyunDownloadMediaInfos.iterator();
-        int i = 0;
+        Iterator<DownloadMediaInfo> iterator = downloadMediaInfos.iterator();
         while (iterator.hasNext()) {
-            AliyunDownloadMediaInfo info = iterator.next();
-//            String encript = info.isEncripted() == 1 ? mContext.getString(com.aliyun.vodplayer.R.string.encrypted)
-//                    : mContext.getString(R.string.encrypted_no);
+            DownloadMediaInfo info = iterator.next();
+            L.e("========清晰度：" + info.getQuality());
             RadioButton item = (RadioButton) LayoutInflater.from(mContext).inflate(com.aliyun.vodplayer.R.layout.view_item_quality,
                     new FrameLayout(mContext), false);
 
             item.setLayoutParams(layoutParams);
-            item.setText(info.getQuality());
+            item.setText(qualityList.get(info.getQuality()));
             item.setTag(info);
             ////设置id，供自动化测试用
-//            int id = com.aliyun.vodplayer.R.id.custom_id_min + i;
-//            item.setId(R.id.custom_id_min);
             rg_quality_list.addView(item);
-//            i++;
         }
 
         if (rg_quality_list.getChildCount() > 0) {
             int checkId = rg_quality_list.getChildAt(0).getId();
             rg_quality_list.check(checkId);
-            downLoadTag = (AliyunDownloadMediaInfo) rg_quality_list.findViewById(checkId).getTag();
+            downLoadTag = (DownloadMediaInfo) rg_quality_list.findViewById(checkId).getTag();
         }
         rg_quality_list.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rbChecked = contentView.findViewById(checkedId);
-                downLoadTag = (AliyunDownloadMediaInfo) rbChecked.getTag();
+                downLoadTag = (DownloadMediaInfo) rbChecked.getTag();
                 tv_size.setText(formatSizeDecimal(downLoadTag.getSize()));
             }
         });
-        Glide.with(mContext).load(aliyunDownloadMediaInfos.get(0).getCoverUrl()).into(imageView);
-        tv_title.setText(aliyunDownloadMediaInfos.get(0).getTitle());
-        tv_size.setText(formatSizeDecimal(aliyunDownloadMediaInfos.get(0).getSize()));
+        Glide.with(mContext).load(downloadMediaInfos.get(0).getCoverUrl()).into(imageView);
+        tv_title.setText(downloadMediaInfos.get(0).getTitle());
+        tv_size.setText(formatSizeDecimal(downloadMediaInfos.get(0).getSize()));
 
     }
 
@@ -189,7 +160,26 @@ public class DownloadClassPopup extends PopupWindow {
 
 
     public interface MyClickListener {
-        void ClickListener(AliyunDownloadMediaInfo downLoadTag);
+        void ClickListener(DownloadMediaInfo downLoadTag);
     }
 
+
+    private void initQuality() {
+        qualityList.put(QualityValue.QUALITY_FLUENT,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_fd_definition));
+        qualityList.put(QualityValue.QUALITY_LOW,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_ld_definition));
+        qualityList.put(QualityValue.QUALITY_STAND,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_sd_definition));
+        qualityList.put(QualityValue.QUALITY_HIGH,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_hd_definition));
+        qualityList.put(QualityValue.QUALITY_2K, mContext.getString(com.aliyun.vodplayer.R.string.alivc_k2_definition));
+        qualityList.put(QualityValue.QUALITY_4K, mContext.getString(com.aliyun.vodplayer.R.string.alivc_k4_definition));
+        qualityList.put(QualityValue.QUALITY_ORIGINAL,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_od_definition));
+        qualityList.put(QualityValue.QUALITY_SQ,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_sq_definition));
+        qualityList.put(QualityValue.QUALITY_HQ,
+                mContext.getString(com.aliyun.vodplayer.R.string.alivc_hq_definition));
+    }
 }

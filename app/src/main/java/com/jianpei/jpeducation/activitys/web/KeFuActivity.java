@@ -31,7 +31,7 @@ public class KeFuActivity extends BaseActivity {
     @BindView(R.id.webView)
     WebView webView;
 
-    private String url;
+    private String url = "http://dev_api.jianpei.com.cn/app/Public/customerService";
 
     @Override
     protected int setLayoutView() {
@@ -42,7 +42,7 @@ public class KeFuActivity extends BaseActivity {
     protected void initView() {
 
 
-        url = SpUtils.getValue("customerServiceUrl");
+//        url = SpUtils.getValue("customerServiceUrl");
 
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

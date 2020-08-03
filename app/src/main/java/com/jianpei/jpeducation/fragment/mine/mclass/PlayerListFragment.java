@@ -1,11 +1,10 @@
 package com.jianpei.jpeducation.fragment.mine.mclass;
 
 import android.content.Context;
-import android.os.Environment;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,21 +12,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aliyun.downloader.AliDownloaderFactory;
-import com.aliyun.downloader.AliMediaDownloader;
 import com.aliyun.player.bean.ErrorCode;
-import com.aliyun.player.bean.ErrorInfo;
-import com.aliyun.player.nativeclass.MediaInfo;
-import com.aliyun.player.nativeclass.TrackInfo;
+
 import com.aliyun.player.source.VidAuth;
-import com.aliyun.private_service.PrivateService;
-import com.aliyun.vodplayerview.activity.AliyunPlayerSkinActivity;
-import com.aliyun.vodplayerview.utils.Common;
-import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
-import com.aliyun.vodplayerview.view.download.DownloadDataProvider;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import com.chad.library.adapter.base.entity.node.BaseNode;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
@@ -39,15 +28,15 @@ import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.classdownload.AliyunDownloadInfoListener;
-import com.jianpei.jpeducation.utils.classdownload.AliyunDownloadMediaInfo;
+import com.jianpei.jpeducation.utils.classdownload.ClassDownloadListener;
+import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 import com.jianpei.jpeducation.utils.classdownload.VideoDownloadManager;
 import com.jianpei.jpeducation.utils.pop.DownloadClassPopup;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,7 +67,7 @@ public class PlayerListFragment extends BaseFragment {
 
     private int nPosition = -1;
 
-    private ViodBean viodBean;
+    private ViodBean viodBean, dViodBean;
 
     private int type;
 
@@ -87,7 +76,8 @@ public class PlayerListFragment extends BaseFragment {
 
     private VideoDownloadManager videoDownloadManager;
 
-
+    private LinkedHashMap<DownloadMediaInfo, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
+    private BaseViewHolder mBaseViewHolder;
 
 
     public PlayerListFragment(String classId, String buyId) {
@@ -129,9 +119,11 @@ public class PlayerListFragment extends BaseFragment {
                         }
                         break;
                     case R.id.iv_download:
+                        showLoading("");
+                        mBaseViewHolder = helper;
                         type = 1;
-                        ViodBean viodBean1 = (ViodBean) data;
-                        classPlayerModel.videoUrl(viodBean1.getId(), buyId);
+                        dViodBean = (ViodBean) data;
+                        classPlayerModel.videoUrl(dViodBean.getId(), buyId);
                         break;
 
                 }
@@ -165,9 +157,9 @@ public class PlayerListFragment extends BaseFragment {
         classPlayerModel.getVideoUrlBeansLiveData().observe(this, new Observer<VideoUrlBean>() {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
-                dismissLoading();
                 videoUrlBean.setType(type);
                 if (type == 0) {
+                    dismissLoading();
                     classPlayerModel.getPlayUrlBean().setValue(videoUrlBean);
                 } else {
                     downloadVideo(videoUrlBean);//开始下载
@@ -233,67 +225,77 @@ public class PlayerListFragment extends BaseFragment {
         vidAuth.setPlayAuth(videoUrlBean.getAuth());
         vidAuth.setVid(videoUrlBean.getVid());
         vidAuth.setRegion("cn-shanghai");
-        videoDownloadManager.prepareDownload(vidAuth);
+        videoDownloadManager.prepareDownload(vidAuth, dViodBean);
 
     }
 
 
-    class MyVideoDownloadListener implements AliyunDownloadInfoListener {
+    class MyVideoDownloadListener implements ClassDownloadListener {
 
         @Override
-        public void onPrepared(List<AliyunDownloadMediaInfo> viodBeans) {
+        public void onPrepared(List<DownloadMediaInfo> viodBeans) {
+            dismissLoading();
             if (downloadClassPopup == null) {
-                downloadClassPopup = new DownloadClassPopup(getActivity(), viodBeans);
+                downloadClassPopup = new DownloadClassPopup(getActivity());
                 downloadClassPopup.setMyClickListener(new DownloadClassPopup.MyClickListener() {
                     @Override
-                    public void ClickListener(AliyunDownloadMediaInfo downLoadTag) {
+                    public void ClickListener(DownloadMediaInfo downLoadTag) {
                         //点击了下载
                         videoDownloadManager.startDownload(downLoadTag);
 
                     }
                 });
             }
+            downloadClassPopup.showAllDownloadItems(viodBeans);
             downloadClassPopup.showPop();
         }
 
         @Override
-        public void onAdd(AliyunDownloadMediaInfo info) {
+        public void onAdd(DownloadMediaInfo info) {
 
 
         }
 
         @Override
-        public void onStart(AliyunDownloadMediaInfo info) {
+        public void onStart(DownloadMediaInfo info) {
+            ImageView imageView = mBaseViewHolder.getView(R.id.iv_download);
+            imageView.setImageResource(R.drawable.download_progress_o);
+            mBaseViewHolder.getView(R.id.tv_progress).setVisibility(View.VISIBLE);
+            downloadingInfos.put(info, mBaseViewHolder);
+        }
+
+        @Override
+        public void onProgress(DownloadMediaInfo info, int percent) {
+
+            L.e("======onProgress:" + percent);
+            ;
+            setProgress(downloadingInfos.get(info).getView(R.id.tv_progress), percent);
 
         }
 
         @Override
-        public void onProgress(AliyunDownloadMediaInfo info, int percent) {
+        public void onStop(DownloadMediaInfo info) {
 
         }
 
         @Override
-        public void onStop(AliyunDownloadMediaInfo info) {
+        public void onCompletion(DownloadMediaInfo info) {
 
         }
 
         @Override
-        public void onCompletion(AliyunDownloadMediaInfo info) {
+        public void onError(DownloadMediaInfo info, ErrorCode code, String msg, String requestId) {
+            dismissLoading();
 
         }
 
         @Override
-        public void onError(AliyunDownloadMediaInfo info, ErrorCode code, String msg, String requestId) {
+        public void onWait(DownloadMediaInfo outMediaInfo) {
 
         }
 
         @Override
-        public void onWait(AliyunDownloadMediaInfo outMediaInfo) {
-
-        }
-
-        @Override
-        public void onDelete(AliyunDownloadMediaInfo info) {
+        public void onDelete(DownloadMediaInfo info) {
 
         }
 
@@ -303,8 +305,13 @@ public class PlayerListFragment extends BaseFragment {
         }
 
         @Override
-        public void onFileProgress(AliyunDownloadMediaInfo info) {
+        public void onFileProgress(DownloadMediaInfo info) {
 
         }
+    }
+
+    protected void setProgress(TextView tv_progress, int progress) {
+        tv_progress.setText(progress + "%");
+
     }
 }
