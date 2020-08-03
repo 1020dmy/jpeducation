@@ -39,6 +39,15 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
         return playUrlBean;
     }
 
+    //本地播放地址
+    private MutableLiveData<String> playLocationUrl;
+
+    public MutableLiveData<String> getPlayLocationUrl() {
+        if (playLocationUrl == null)
+            playLocationUrl = new MutableLiveData<>();
+        return playLocationUrl;
+    }
+
     /**
      * 课程详情
      *
@@ -120,5 +129,16 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
                 }
             }
         });
+    }
+
+    /**
+     * 通知更新下载数量
+     */
+    private MutableLiveData<String> stringMutableLiveData;
+
+    public MutableLiveData<String> getStringMutableLiveData() {
+        if (stringMutableLiveData == null)
+            stringMutableLiveData = new MutableLiveData<>();
+        return stringMutableLiveData;
     }
 }

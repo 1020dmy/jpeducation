@@ -8,7 +8,6 @@ import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.material.MaterialTitle;
 import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
-import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 /**
@@ -20,7 +19,7 @@ import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
  * Describe:
  */
 
-@Database(entities = {MaterialInfoBean.class, MaterialTitle.class, DirectoryBean.class, ViodBean.class, DownloadMediaInfo.class}, version = 1)
+@Database(entities = {MaterialInfoBean.class, MaterialTitle.class, DirectoryBean.class, DownloadMediaInfo.class}, version = 2)
 public abstract class MyRoomDatabase extends RoomDatabase {
 
     private static volatile MyRoomDatabase INSTANCE;
@@ -35,7 +34,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
     public abstract DirectoryDao directoryDao();
 
     //视频
-    public abstract ViodBeanDao viodBeanDao();
+//    public abstract ViodBeanDao viodBeanDao();
 
     //下载
     public abstract DownloadMediaInfoDao downloadMediaInfoDao();

@@ -21,6 +21,11 @@ public interface ClassPlayerContract {
         Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id);
 
 
+
+
+
+
+
     }
 
 

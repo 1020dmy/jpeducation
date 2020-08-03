@@ -9,20 +9,17 @@ import android.widget.Toast;
 import com.aliyun.downloader.AliDownloaderFactory;
 import com.aliyun.downloader.AliMediaDownloader;
 import com.aliyun.player.bean.ErrorCode;
-
 import com.aliyun.player.bean.ErrorInfo;
 import com.aliyun.player.nativeclass.MediaInfo;
 import com.aliyun.player.nativeclass.TrackInfo;
 import com.aliyun.player.source.VidAuth;
 import com.aliyun.vodplayerview.listener.RefreshStsCallback;
-import com.jianpei.jpeducation.bean.mclass.ViodBean;
+import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
-import com.jianpei.jpeducation.utils.L;
 
 
 import java.io.File;
 import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -59,10 +56,10 @@ public class VideoDownloadManager {
      * 下载路径
      */
     private String downloadDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AliPlayerDemoDownload";
-    /**
-     * 加密文件路径
-     */
-    private String encryptFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/aliyunPlayer/encryptedApp.dat";
+//    /**
+//     * 加密文件路径
+//     */
+//    private String encryptFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/aliyunPlayer/encryptedApp.dat";
 
     /**
      * AliyunDownloadManager 单例
@@ -70,7 +67,7 @@ public class VideoDownloadManager {
     private static volatile VideoDownloadManager mInstance = null;
 
     /**
-     * AliyunDownloadMediaInfo和JniDownloader 一一 对应
+     * DownloadMediaInfo和JniDownloader 一一 对应
      */
     private LinkedHashMap<DownloadMediaInfo, AliMediaDownloader> downloadInfos = new LinkedHashMap<>();
 
@@ -139,13 +136,13 @@ public class VideoDownloadManager {
             ThreadUtils.runOnSubThread(new Runnable() {
                 @Override
                 public void run() {
-//                    prepareMediaInfo(info);
-//                    List<AliyunDownloadMediaInfo> downloadMediaInfos = mDatabaseManager.selectAll();
-//                    if (downloadMediaInfos.contains(info)) {
-//                        mDatabaseManager.update(info);
-//                    } else {
-//                        mDatabaseManager.insert(info);
-//                    }
+                    prepareMediaInfo(info);
+                    List<DownloadMediaInfo> downloadMediaInfos = MyRoomDatabase.getInstance().downloadMediaInfoDao().getAllViodBeans();
+                    if (downloadMediaInfos.contains(info)) {
+                        MyRoomDatabase.getInstance().downloadMediaInfoDao().upDateViodBean(info);
+                    } else {
+                        MyRoomDatabase.getInstance().downloadMediaInfoDao().insertViodBean(info);
+                    }
 
                 }
             });
@@ -157,11 +154,11 @@ public class VideoDownloadManager {
                     }
                 }
             });
-
         }
 
         @Override
         public void onStart(final DownloadMediaInfo info) {
+            info.setSstatus(3);
             startMediaInfo(info);
             //在子线程中更新数据库
             ThreadUtils.runOnSubThread(new Runnable() {
@@ -202,7 +199,7 @@ public class VideoDownloadManager {
                 public void run() {
                     if (freshStorageSizeTime == 0 || ((new Date()).getTime() - freshStorageSizeTime) > 2 * 1000) {
                         MyRoomDatabase.getInstance().downloadMediaInfoDao().upDateViodBean(info);
-                        if (DownloadUtils.isStorageAlarm(mContext)) {
+                        if (com.aliyun.vodplayerview.utils.download.DownloadUtils.isStorageAlarm(mContext)) {
                             ThreadUtils.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -247,31 +244,31 @@ public class VideoDownloadManager {
 
         @Override
         public void onDelete(final DownloadMediaInfo info) {
-//            deleteMediaInfo(info);
-//            mDatabaseManager.delete(info);
-//            ThreadUtils.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    for (AliyunDownloadInfoListener aliyunDownloadInfoListener : outListenerList) {
-//                        aliyunDownloadInfoListener.onDelete(info);
-//                    }
-//                }
-//            });
+            deleteMediaInfo(info);
+            MyRoomDatabase.getInstance().downloadMediaInfoDao().delete(info);
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
+                        aliyunDownloadInfoListener.onDelete(info);
+                    }
+                }
+            });
 
         }
 
         @Override
         public void onDeleteAll() {
-//            deleteAllMediaInfo();
-//            mDatabaseManager.deleteAll();
-//            ThreadUtils.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    for (AliyunDownloadInfoListener aliyunDownloadInfoListener : outListenerList) {
-//                        aliyunDownloadInfoListener.onDeleteAll();
-//                    }
-//                }
-//            });
+            deleteAllMediaInfo();
+//            MyRoomDatabase.getInstance().downloadMediaInfoDao().deleteAll();
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
+                        aliyunDownloadInfoListener.onDeleteAll();
+                    }
+                }
+            });
 
         }
 
@@ -290,33 +287,39 @@ public class VideoDownloadManager {
 
         @Override
         public void onStop(final DownloadMediaInfo info) {
-//            stopMediaInfo(info);
-//            ThreadUtils.runOnSubThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mDatabaseManager.update(info);
-//                }
-//            });
-//            ThreadUtils.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    for (AliyunDownloadInfoListener aliyunDownloadInfoListener : outListenerList) {
-//                        aliyunDownloadInfoListener.onStop(info);
-//                    }
-//                }
-//            });
+            stopMediaInfo(info);
+            ThreadUtils.runOnSubThread(new Runnable() {
+                @Override
+                public void run() {
+                    MyRoomDatabase.getInstance().downloadMediaInfoDao().upDateViodBean(info);
+                }
+            });
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
+                        aliyunDownloadInfoListener.onStop(info);
+                    }
+                }
+            });
 
         }
 
         @Override
         public void onCompletion(final DownloadMediaInfo info) {
+            info.setSstatus(5);
             completedMediaInfo(info);
             AliMediaDownloader jniDownloader = downloadInfos.get(info);
             if (jniDownloader == null) {
                 return;
             }
             info.setSavePath(jniDownloader.getFilePath());
-            MyRoomDatabase.getInstance().downloadMediaInfoDao().upDateViodBean(info);
+            ThreadUtils.runOnSubThread(new Runnable() {
+                @Override
+                public void run() {
+                    MyRoomDatabase.getInstance().downloadMediaInfoDao().upDateViodBean(info);
+                }
+            });
             for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
                 aliyunDownloadInfoListener.onCompletion(info);
             }
@@ -337,14 +340,8 @@ public class VideoDownloadManager {
 
     };
 
-    /**
-     * 构造
-     *
-     * @param context
-     */
-
-    private VideoDownloadManager(Context context) {
-        this.mContext = context;
+    private VideoDownloadManager() {
+        this.mContext = MyApplication.getInstance();
 //        mDatabaseManager = DatabaseManager.getInstance();
         if (!TextUtils.isEmpty(downloadDir)) {
             File file = new File(downloadDir);
@@ -354,17 +351,11 @@ public class VideoDownloadManager {
         }
     }
 
-    /**
-     * 单利
-     *
-     * @param context
-     * @return
-     */
-    public static VideoDownloadManager getInstance(Context context) {
+    public static VideoDownloadManager getInstance() {
         if (mInstance == null) {
             synchronized (VideoDownloadManager.class) {
                 if (mInstance == null) {
-                    mInstance = new VideoDownloadManager(context);
+                    mInstance = new VideoDownloadManager();
                 }
             }
         }
@@ -434,16 +425,16 @@ public class VideoDownloadManager {
         this.downloadDir = downloadDir;
     }
 
-    public String getEncryptFilePath() {
-        return encryptFilePath;
-    }
-
-    public void setEncryptFilePath(String encryptFilePath) {
-        if (TextUtils.isEmpty(encryptFilePath)) {
-            return;
-        }
-        this.encryptFilePath = encryptFilePath;
-    }
+//    public String getEncryptFilePath() {
+//        return encryptFilePath;
+//    }
+//
+//    public void setEncryptFilePath(String encryptFilePath) {
+//        if (TextUtils.isEmpty(encryptFilePath)) {
+//            return;
+//        }
+//        this.encryptFilePath = encryptFilePath;
+//    }
 
     /**
      * 准备下载项
@@ -471,7 +462,7 @@ public class VideoDownloadManager {
                         for (TrackInfo trackInfo : trackInfos) {
                             if (trackInfo != null &&
                                     trackInfo.getVodDefinition().equals(aliyunDownloadMediaInfo.getQuality())) {
-                                //AliyunDownloadMediaInfo 与 AliMediaDownloader 相对应
+                                //DownloadMediaInfo 与 AliMediaDownloader 相对应
                                 aliyunDownloadMediaInfo.setTrackInfo(trackInfo);
                                 downloadInfos.put(aliyunDownloadMediaInfo, jniDownloader);
                             }
@@ -532,11 +523,10 @@ public class VideoDownloadManager {
     /**
      * 准备下载项目
      */
-    public void prepareDownload(final VidAuth vidAuth, ViodBean viodBean) {
+    public void prepareDownload(final VidAuth vidAuth, String id) {
         if (vidAuth == null || TextUtils.isEmpty(vidAuth.getVid())) {
             return;
         }
-        L.e("======vidAuth:" + vidAuth.getVid());
         final List<DownloadMediaInfo> downloadMediaInfos = new ArrayList<>();
         final AliMediaDownloader jniDownloader = AliDownloaderFactory.create(mContext);
         //调用prepared监听,获取该vid下所有的清晰度
@@ -549,8 +539,7 @@ public class VideoDownloadManager {
                     if (type == TrackInfo.Type.TYPE_VOD) {
 //                        //一个JniDownloader 对应多个 AliyunDownloaderMediaInfo(同一Vid,不同清晰度)
                         final DownloadMediaInfo downloadMediaInfo = new DownloadMediaInfo();
-                        downloadMediaInfo.setId(viodBean.getId());
-                        downloadMediaInfo.setdTitle(viodBean.getTitle());
+                        downloadMediaInfo.setId(id);
                         downloadMediaInfo.setVid(vidAuth.getVid());
                         downloadMediaInfo.setQuality(trackInfo.getVodDefinition());
                         downloadMediaInfo.setTitle(mediaInfo.getTitle());
@@ -699,38 +688,38 @@ public class VideoDownloadManager {
         }
 
         //如果没有sts，则是恢复数据的操作，需要重新请求sts
-        if (downloadMediaInfo.getVidAuth() == null) {
+//        if (downloadMediaInfo.getVidAuth() == null) {
 //            getVidSts(downloadMediaInfo, INTENT_STATE_START);
-        } else {
-            //直接开始下载
-            //判断磁盘空间是否足够
-            if (DownloadUtils.isStorageAlarm(mContext, downloadMediaInfo)) {
-                //判断要下载的mediaInfo的当前状态
-                if (downloadingList.size() <= mMaxNum) {
-                    TrackInfo trackInfo = downloadMediaInfo.getTrackInfo();
-                    AliMediaDownloader jniDownloader = downloadInfos.get(downloadMediaInfo);
-                    if (jniDownloader == null || trackInfo == null) {
-                        if (innerDownloadInfoListener != null) {
-                            innerDownloadInfoListener.onError(downloadMediaInfo, ErrorCode.ERROR_UNKNOWN_ERROR, mContext.getResources().getString(com.aliyun.vodplayer.R.string.alivc_player_redownload), null);
-                        }
-                        return;
+//        } else {
+        //直接开始下载
+        //判断磁盘空间是否足够
+        if (DownloadUtils.isStorageAlarm(mContext, downloadMediaInfo)) {
+            //判断要下载的mediaInfo的当前状态
+            if (downloadingList.size() <= mMaxNum) {
+                TrackInfo trackInfo = downloadMediaInfo.getTrackInfo();
+                AliMediaDownloader jniDownloader = downloadInfos.get(downloadMediaInfo);
+                if (jniDownloader == null || trackInfo == null) {
+                    if (innerDownloadInfoListener != null) {
+                        innerDownloadInfoListener.onError(downloadMediaInfo, ErrorCode.ERROR_UNKNOWN_ERROR, mContext.getResources().getString(com.aliyun.vodplayer.R.string.alivc_player_redownload), null);
                     }
-                    jniDownloader.selectItem(trackInfo.getIndex());
-                    setListener(downloadMediaInfo, jniDownloader);
-                    jniDownloader.updateSource(downloadMediaInfo.getVidAuth());
-                    jniDownloader.start();
-                } else {
-                    //防止重复添加
-                    if (!waitedList.contains(downloadMediaInfo) && innerDownloadInfoListener != null) {
-                        innerDownloadInfoListener.onWait(downloadMediaInfo);
-                    }
+                    return;
                 }
+                jniDownloader.selectItem(trackInfo.getIndex());
+                setListener(downloadMediaInfo, jniDownloader);
+                jniDownloader.updateSource(downloadMediaInfo.getVidAuth());
+                jniDownloader.start();
             } else {
-                if (innerDownloadInfoListener != null) {
-                    innerDownloadInfoListener.onError(downloadMediaInfo, ErrorCode.ERROR_UNKNOWN_ERROR, MEMORY_LESS_MSG, null);
+                //防止重复添加
+                if (!waitedList.contains(downloadMediaInfo) && innerDownloadInfoListener != null) {
+                    innerDownloadInfoListener.onWait(downloadMediaInfo);
                 }
             }
+        } else {
+            if (innerDownloadInfoListener != null) {
+                innerDownloadInfoListener.onError(downloadMediaInfo, ErrorCode.ERROR_UNKNOWN_ERROR, MEMORY_LESS_MSG, null);
+            }
         }
+//        }
     }
 
     /**
@@ -839,11 +828,11 @@ public class VideoDownloadManager {
     /**
      * 获取sts信息
      */
-//    private void getVidSts(final AliyunDownloadMediaInfo downloadMediaInfo, final int intentState) {
+//    private void getVidSts(final DownloadMediaInfo downloadMediaInfo, final int intentState) {
 //        VidStsUtil.getVidSts(PlayParameter.PLAY_PARAM_VID, new VidStsUtil.OnStsResultListener() {
 //            @Override
 //            public void onSuccess(String vid, String akid, String akSecret, String token) {
-//                VidAuth vidSts = new VidAuth();
+//                VidSts vidSts = new VidSts();
 //                vidSts.setVid(downloadMediaInfo.getVid());
 //                vidSts.setRegion("cn-shanghai");
 //                vidSts.setAccessKeyId(akid);
@@ -897,7 +886,7 @@ public class VideoDownloadManager {
     /**
      * 设置监听
      */
-    private void setListener(DownloadMediaInfo downloadMediaInfo, final AliMediaDownloader jniDownloader) {
+    private void setListener(final DownloadMediaInfo downloadMediaInfo, final AliMediaDownloader jniDownloader) {
         jniDownloader.setOnProgressListener(new AliMediaDownloader.OnProgressListener() {
 
             @Override
@@ -1098,53 +1087,52 @@ public class VideoDownloadManager {
      * 从数据库查询数据
      */
 //    public void findDatasByDb(final VidSts vidSts, final LoadDbDatasListener listener) {
-//        if (mDatabaseManager != null) {
-//            ThreadUtils.runOnSubThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    //查询所有准备完成状态的数据,用于展示
-//                    List<AliyunDownloadMediaInfo> selectPreparedList = mDatabaseManager.selectPreparedList();
-//                    //查询所有等待状态的数据,用于展示
-//                    final List<AliyunDownloadMediaInfo> selectStopedList = mDatabaseManager.selectStopedList();
-//                    //查询所有完成状态的数据,用于展示
-//                    final List<AliyunDownloadMediaInfo> selectCompletedList = mDatabaseManager.selectCompletedList();
-//                    //查询所有下载状态中的数据
-//                    final List<AliyunDownloadMediaInfo> selectDownloadingList = mDatabaseManager.selectDownloadingList();
-//                    final List<AliyunDownloadMediaInfo> dataList = new ArrayList<>();
-//                    dataList.addAll(selectCompletedList);
-//                    dataList.addAll(selectStopedList);
-//                    dataList.addAll(selectPreparedList);
-//                    for (AliyunDownloadMediaInfo mediaInfo : selectPreparedList) {
-//                        mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Stop);
-//                    }
-//                    for (AliyunDownloadMediaInfo mediaInfo : selectDownloadingList) {
-//                        mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Stop);
-//                    }
-//                    dataList.addAll(selectDownloadingList);
-//                    if (stopedList != null) {
-//                        stopedList.addAll(selectDownloadingList);
-//                        stopedList.addAll(selectStopedList);
-//                        stopedList.addAll(selectPreparedList);
-//                    }
-//                    if (completedList != null) {
-//                        completedList.addAll(selectCompletedList);
-//                    }
-//                    /*
-//                     * 这里不需要将从数据库查询的下载中状态的数据进行内存缓存,在prepareDownload这些数据的时候,
-//                     * 会全部置为等待状态,需要手动点击开始下载
-//                     */
-//                    ThreadUtils.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            prepareDownload(vidSts, dataList);
-//                            if (listener != null) {
-//                                listener.onLoadSuccess(dataList);
-//                            }
-//                        }
-//                    });
+//        ThreadUtils.runOnSubThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //查询所有准备完成状态的数据,用于展示
+//                List<DownloadMediaInfo> selectPreparedList = mDatabaseManager.selectPreparedList();
+//                //查询所有等待状态的数据,用于展示
+//                final List<DownloadMediaInfo> selectStopedList = mDatabaseManager.selectStopedList();
+//                //查询所有完成状态的数据,用于展示
+//                final List<DownloadMediaInfo> selectCompletedList = mDatabaseManager.selectCompletedList();
+//                //查询所有下载状态中的数据
+//                final List<DownloadMediaInfo> selectDownloadingList = mDatabaseManager.selectDownloadingList();
+//                final List<DownloadMediaInfo> dataList = new ArrayList<>();
+//                dataList.addAll(selectCompletedList);
+//                dataList.addAll(selectStopedList);
+//                dataList.addAll(selectPreparedList);
+//                for (DownloadMediaInfo mediaInfo : selectPreparedList) {
+//                    mediaInfo.setStatus(DownloadMediaInfo.Status.Stop);
 //                }
-//            });
-//        }
+//                for (DownloadMediaInfo mediaInfo : selectDownloadingList) {
+//                    mediaInfo.setStatus(DownloadMediaInfo.Status.Stop);
+//                }
+//                dataList.addAll(selectDownloadingList);
+//                if (stopedList != null) {
+//                    stopedList.addAll(selectDownloadingList);
+//                    stopedList.addAll(selectStopedList);
+//                    stopedList.addAll(selectPreparedList);
+//                }
+//                if (completedList != null) {
+//                    completedList.addAll(selectCompletedList);
+//                }
+//                /*
+//                 * 这里不需要将从数据库查询的下载中状态的数据进行内存缓存,在prepareDownload这些数据的时候,
+//                 * 会全部置为等待状态,需要手动点击开始下载
+//                 */
+//                ThreadUtils.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        prepareDownload(vidSts, dataList);
+//                        if (listener != null) {
+//                            listener.onLoadSuccess(dataList);
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
 //    }
 
     /**
@@ -1156,32 +1144,32 @@ public class VideoDownloadManager {
 //                @Override
 //                public void run() {
 //                    //查询所有准备完成状态的数据,用于展示
-//                    List<AliyunDownloadMediaInfo> selectPreparedList = mDatabaseManager.selectPreparedList();
+//                    List<DownloadMediaInfo> selectPreparedList = mDatabaseManager.selectPreparedList();
 //                    //查询所有等待状态的数据,用于展示
-//                    final List<AliyunDownloadMediaInfo> selectStopedList = mDatabaseManager.selectStopedList();
+//                    final List<DownloadMediaInfo> selectStopedList = mDatabaseManager.selectStopedList();
 //                    //查询所有完成状态的数据,用于展示
-//                    final List<AliyunDownloadMediaInfo> selectCompletedList = mDatabaseManager.selectCompletedList();
+//                    final List<DownloadMediaInfo> selectCompletedList = mDatabaseManager.selectCompletedList();
 //                    //查询所有下载状态中的数据
-//                    final List<AliyunDownloadMediaInfo> selectDownloadingList = mDatabaseManager.selectDownloadingList();
-//                    final List<AliyunDownloadMediaInfo> dataList = new ArrayList<>();
+//                    final List<DownloadMediaInfo> selectDownloadingList = mDatabaseManager.selectDownloadingList();
+//                    final List<DownloadMediaInfo> dataList = new ArrayList<>();
 //                    if (selectPreparedList != null) {
-//                        for (AliyunDownloadMediaInfo mediaInfo : selectPreparedList) {
-//                            mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Stop);
+//                        for (DownloadMediaInfo mediaInfo : selectPreparedList) {
+//                            mediaInfo.setStatus(DownloadMediaInfo.Status.Stop);
 //                        }
 //                    }
 //
 //                    if (selectDownloadingList != null) {
-//                        Iterator<AliyunDownloadMediaInfo> iterator = selectDownloadingList.iterator();
-//                        while(iterator.hasNext()){
-//                            AliyunDownloadMediaInfo mediaInfo = iterator.next();
-//                            if(mediaInfo.getProgress() == 100){
-//                                mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Complete);
+//                        Iterator<DownloadMediaInfo> iterator = selectDownloadingList.iterator();
+//                        while (iterator.hasNext()) {
+//                            DownloadMediaInfo mediaInfo = iterator.next();
+//                            if (mediaInfo.getProgress() == 100) {
+//                                mediaInfo.setStatus(DownloadMediaInfo.Status.Complete);
 //                                iterator.remove();
-//                                if(selectCompletedList != null){
+//                                if (selectCompletedList != null) {
 //                                    selectCompletedList.add(mediaInfo);
 //                                }
-//                            }else{
-//                                mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Stop);
+//                            } else {
+//                                mediaInfo.setStatus(DownloadMediaInfo.Status.Stop);
 //                            }
 //                        }
 //                        dataList.addAll(selectDownloadingList);
@@ -1193,7 +1181,7 @@ public class VideoDownloadManager {
 //                    if (selectPreparedList != null) {
 //                        dataList.addAll(selectPreparedList);
 //                    }
-//                    if(selectCompletedList != null){
+//                    if (selectCompletedList != null) {
 //                        dataList.addAll(selectCompletedList);
 //                    }
 //
@@ -1215,13 +1203,13 @@ public class VideoDownloadManager {
 //                    }
 //
 //                    //增加本地文件判断,如果文件手动删除,则从数据库中删除
-//                    Iterator<AliyunDownloadMediaInfo> iterator = dataList.iterator();
-//                    while(iterator.hasNext()){
-//                        AliyunDownloadMediaInfo nextDownloadMediaInfo = iterator.next();
+//                    Iterator<DownloadMediaInfo> iterator = dataList.iterator();
+//                    while (iterator.hasNext()) {
+//                        DownloadMediaInfo nextDownloadMediaInfo = iterator.next();
 //                        String savePath = nextDownloadMediaInfo.getSavePath();
-//                        if(!TextUtils.isEmpty(savePath)){
+//                        if (!TextUtils.isEmpty(savePath)) {
 //                            File file = new File(savePath);
-//                            if(!file.exists() && nextDownloadMediaInfo.getStatus() == AliyunDownloadMediaInfo.Status.Complete){
+//                            if (!file.exists() && nextDownloadMediaInfo.getStatus() == DownloadMediaInfo.Status.Complete) {
 //                                iterator.remove();
 //                                mDatabaseManager.delete(nextDownloadMediaInfo);
 //                            }
@@ -1306,4 +1294,6 @@ public class VideoDownloadManager {
     public void setRefreshStsCallback(final RefreshStsCallback refreshStsCallback) {
 
     }
+
+
 }

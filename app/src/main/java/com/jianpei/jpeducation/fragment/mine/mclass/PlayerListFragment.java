@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.mine.mclass;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,7 +68,8 @@ public class PlayerListFragment extends BaseFragment {
 
     private int nPosition = -1;
 
-    private ViodBean viodBean, dViodBean;
+    private ViodBean viodBean;
+    private String viodBeanId;
 
     private int type;
 
@@ -115,15 +117,21 @@ public class PlayerListFragment extends BaseFragment {
                                 playListAdapter.notifyItemChanged(nPosition);
                             playListAdapter.notifyItemChanged(position);
                             nPosition = position;
-                            classPlayerModel.videoUrl(viodBean.getId(), buyId);
+                            if (TextUtils.isEmpty(viodBean.getmSavePath())){
+                                classPlayerModel.videoUrl(viodBean.getId(), buyId);
+                            }else{
+                                dismissLoading();
+                                classPlayerModel.getPlayLocationUrl().setValue(viodBean.getmSavePath());
+                            }
                         }
                         break;
                     case R.id.iv_download:
                         showLoading("");
                         mBaseViewHolder = helper;
                         type = 1;
-                        dViodBean = (ViodBean) data;
-                        classPlayerModel.videoUrl(dViodBean.getId(), buyId);
+                        ViodBean viodBean1 = (ViodBean) data;
+                        viodBeanId = viodBean1.getId();
+                        classPlayerModel.videoUrl(viodBeanId, buyId);
                         break;
 
                 }
@@ -172,6 +180,7 @@ public class PlayerListFragment extends BaseFragment {
             public void onChanged(String o) {
                 dismissLoading();
                 shortToast(o);
+                L.e("=========errData:"+o);
             }
         });
         showLoading("");
@@ -203,7 +212,7 @@ public class PlayerListFragment extends BaseFragment {
 
     protected void initDownload() {
         // 获取AliyunDownloadManager对象
-        videoDownloadManager = VideoDownloadManager.getInstance(getActivity().getApplicationContext());
+        videoDownloadManager = VideoDownloadManager.getInstance();
         //设置同时下载个数
         videoDownloadManager.setMaxNum(3);
 
@@ -225,7 +234,7 @@ public class PlayerListFragment extends BaseFragment {
         vidAuth.setPlayAuth(videoUrlBean.getAuth());
         vidAuth.setVid(videoUrlBean.getVid());
         vidAuth.setRegion("cn-shanghai");
-        videoDownloadManager.prepareDownload(vidAuth, dViodBean);
+        videoDownloadManager.prepareDownload(vidAuth, viodBeanId);
 
     }
 
@@ -262,14 +271,17 @@ public class PlayerListFragment extends BaseFragment {
             imageView.setImageResource(R.drawable.download_progress_o);
             mBaseViewHolder.getView(R.id.tv_progress).setVisibility(View.VISIBLE);
             downloadingInfos.put(info, mBaseViewHolder);
+            //通知更新下载数量
+            classPlayerModel.getStringMutableLiveData()
+                    .setValue("");
         }
 
         @Override
         public void onProgress(DownloadMediaInfo info, int percent) {
 
             L.e("======onProgress:" + percent);
-            ;
-            setProgress(downloadingInfos.get(info).getView(R.id.tv_progress), percent);
+            if (downloadingInfos.get(info) != null)
+                setProgress(downloadingInfos.get(info).getView(R.id.tv_progress), percent);
 
         }
 

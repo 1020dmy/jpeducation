@@ -59,6 +59,26 @@ public class PlayListJIeProvider extends BaseNodeProvider {
             baseViewHolder.setTextColorRes(R.id.tv_play_progress, R.color.c999999);
             baseViewHolder.setImageResource(R.id.iv_play_progress, R.drawable.palyer_progerss_t);
         }
+        //1.准备，3.下载状态，4.停止，5.完成
+        if (viodsBean.getStatus() == 1) {
+
+        } else if (viodsBean.getStatus() == 3) {
+            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
+            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
+
+        } else if (viodsBean.getStatus() == 4) {
+            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
+            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
+
+        } else if (viodsBean.getStatus() == 5) {
+//            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
+            baseViewHolder.setGone(R.id.iv_download, true);
+            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
+
+        }
     }
 
 

@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 
+
 import com.chad.library.adapter.base.entity.node.BaseNode;
 
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,6 @@ import java.util.List;
  * Describe:
  */
 
-@Entity(tableName = "viod")
 public class ViodBean extends BaseNode {
 
 
@@ -34,8 +34,7 @@ public class ViodBean extends BaseNode {
      * is_last_read : 0
      * schedule : 0.00
      */
-    @NonNull
-    @PrimaryKey
+
     private String id;
     private String title;
     private String isfree;
@@ -45,7 +44,33 @@ public class ViodBean extends BaseNode {
     private String is_last_read;
     private String schedule;
 
+    private int status;
+    private int progress;
+    private String mSavePath;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public String getmSavePath() {
+        return mSavePath;
+    }
+
+    public void setmSavePath(String mSavePath) {
+        this.mSavePath = mSavePath;
+    }
 
     public String getId() {
         return id;
@@ -110,6 +135,8 @@ public class ViodBean extends BaseNode {
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
+
+
 
 
     @Nullable

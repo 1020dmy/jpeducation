@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,9 +26,12 @@ import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.offlineclass.OfflineClassContentBean;
 import com.jianpei.jpeducation.bean.offlineclass.OfflineClassTitleBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
+import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,6 +55,8 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
 
     private List<OfflineClassTitleBean> offlineClassTitleBeans;
 
+    private OfflineClassRoomModel offlineClassRoomModel;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_offline_class;
@@ -67,6 +74,9 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initData() {
+
+        offlineClassRoomModel = new ViewModelProvider(this).get(OfflineClassRoomModel.class);
+
         offlineClassTitleBeans = new ArrayList<>();
         offlieClassAdapter = new OfflieClassAdapter();
         offlieClassAdapter.getDraggableModule().setSwipeEnabled(true);
@@ -79,6 +89,28 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
         offlieClassAdapter.addData(offlineClassTitleBeans);
 
         offlieClassAdapter.notifyDataSetChanged();
+
+
+        offlineClassRoomModel.getCompleteDataLiveData().observe(this, new Observer<List<DownloadMediaInfo>>() {
+            @Override
+            public void onChanged(List<DownloadMediaInfo> downloadMediaInfos) {
+                dismissLoading();
+                if (downloadMediaInfos != null) {
+                    L.e("======sieze:" + downloadMediaInfos.size());
+                } else {
+                    L.e("======sieze:null");
+                }
+            }
+        });
+        offlineClassRoomModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+            }
+        });
+
+        offlineClassRoomModel.getCompleteData(5);
 
 
     }
@@ -132,8 +164,6 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
     }
 
     ;
-
-
 
 
 }

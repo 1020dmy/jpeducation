@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.room;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
+@Dao
 public interface DownloadMediaInfoDao {
 
     /**
@@ -30,13 +32,33 @@ public interface DownloadMediaInfoDao {
 
 
     /**
-     * 查询当前章节下的视频数量
+     * 根据章ID查询
      *
      * @param
      * @return
      */
     @Query("SELECT * FROM downloadmediainfo Where chapter_id= :value ")
     List<DownloadMediaInfo> getViodBeans(String value);
+
+
+    /**
+     * 根据下载状态查询
+     *
+     * @param
+     * @return
+     */
+    @Query("SELECT * FROM downloadmediainfo Where sstatus= :value ")
+    List<DownloadMediaInfo> getViodBeans(int value);
+
+
+//    /**
+//     * 查询当前章节下的视频数量
+//     *
+//     * @param
+//     * @return
+//     */
+//    @Query("SELECT * FROM downloadmediainfo Where chapter_id= :value ")
+//    List<DownloadMediaInfo> getViodBeans(String value);
 
 
     /**
@@ -66,10 +88,10 @@ public interface DownloadMediaInfoDao {
 
     /**
      * 删除视频
-     *
      */
     @Delete
     void delete(DownloadMediaInfo downloadMediaInfo);
+
 
     /**
      * "

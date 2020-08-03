@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.aliyun.player.source.UrlSource;
 import com.aliyun.player.source.VidAuth;
 
 import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
@@ -35,9 +36,13 @@ import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MyClassBean;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
+import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
 
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,6 +66,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     ViewPager2 viewPage;
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
+    @BindView(R.id.tv_down_num)
+    TextView tvDownNum;
     private MyClassBean myClassBean;
 
     private String[] tabTitle = {"目录", "评价"};
@@ -69,8 +76,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
     AlivcShowMoreDialog showMoreDialog;
 
-    private AliyunDownloadManager downloadManager;
-
+    private OfflineClassRoomModel classRoomModel;
 
 
     @Override
@@ -99,7 +105,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     @Override
     protected void initData() {
         classPlayerModel = new ViewModelProvider(this).get(ClassPlayerModel.class);
-
+        classRoomModel = new ViewModelProvider(this).get(OfflineClassRoomModel.class);
+        //网络点播
         classPlayerModel.getPlayUrlBean().observe(this, new Observer<VideoUrlBean>() {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
@@ -111,6 +118,52 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
                 }
             }
         });
+        //本地播放
+        classPlayerModel.getPlayLocationUrl().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                L.e("播放本地的资源文件");
+                dismissLoading();
+                if (aliyunPlayerView != null)
+                    aliyunPlayerView.onStop();
+                changePlayLocalSource(s, "");
+            }
+        });
+        //查询数量结果
+        classRoomModel.getDownloadMedialInfosLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer downloadMediaInfos) {
+                if (downloadMediaInfos != null) {
+                    if (downloadMediaInfos == 0) {
+                        tvDownNum.setVisibility(View.GONE);
+                    } else {
+                        tvDownNum.setVisibility(View.VISIBLE);
+                        tvDownNum.setText(downloadMediaInfos + "");
+                    }
+                }
+
+            }
+        });
+        //错误
+        classRoomModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+
+                shortToast(o);
+
+            }
+        });
+        //更新下载数量
+        classPlayerModel.getStringMutableLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+                classRoomModel.getDownloadMedialInfos(3);
+
+            }
+        });
+
+
     }
 
     //播放视频
@@ -126,6 +179,16 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         vidAuth.setRegion("cn-shanghai");
         aliyunPlayerView.setAuthInfo(vidAuth);
 
+    }
+
+    /**
+     * 播放本地资源
+     */
+    private void changePlayLocalSource(String url, String title) {
+        UrlSource urlSource = new UrlSource();
+        urlSource.setUri(url);
+        urlSource.setTitle(title);
+        aliyunPlayerView.setLocalSource(urlSource);
     }
 
     @OnClick({R.id.iv_back, R.id.iv_download, R.id.iv_share})
@@ -298,8 +361,6 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         lp.screenBrightness = brightness / 255.0f;
         getWindow().setAttributes(lp);
     }
-
-
 
 
 }
