@@ -154,7 +154,7 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
                 classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
-                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "");//获取试看视频
+                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "",classInfoBean.getId());//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
         });

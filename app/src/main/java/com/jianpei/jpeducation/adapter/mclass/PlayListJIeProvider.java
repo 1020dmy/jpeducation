@@ -13,6 +13,8 @@ import com.jianpei.jpeducation.utils.L;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
+
 /**
  * jpeducation
  * <p>
@@ -25,6 +27,13 @@ public class PlayListJIeProvider extends BaseNodeProvider {
 
 
     public MyItemOnClickListener myItemOnClickListener;
+
+
+    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
+
+    public PlayListJIeProvider(LinkedHashMap<String, BaseViewHolder> downloadingInfos) {
+        this.downloadingInfos = downloadingInfos;
+    }
 
     public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
         this.myItemOnClickListener = myItemOnClickListener;
@@ -61,21 +70,23 @@ public class PlayListJIeProvider extends BaseNodeProvider {
         }
         //1.准备，3.下载状态，4.停止，5.完成
         if (viodsBean.getStatus() == 1) {
-
+            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
+            baseViewHolder.setVisible(R.id.tv_progress, true);
+            baseViewHolder.setText(R.id.tv_progress, "0%");
         } else if (viodsBean.getStatus() == 3) {
+            L.e("==========下载中：" + viodsBean.getTitle());
+            downloadingInfos.put(viodsBean.getId(), baseViewHolder);
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
-            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setVisible(R.id.tv_progress, true);
             baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
-
         } else if (viodsBean.getStatus() == 4) {
-            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
-            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_t);
+            baseViewHolder.setVisible(R.id.tv_progress, true);
             baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
 
         } else if (viodsBean.getStatus() == 5) {
-//            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
             baseViewHolder.setGone(R.id.iv_download, true);
-            baseViewHolder.setVisible(R.id.tv_progress,true);
+            baseViewHolder.setVisible(R.id.tv_progress, true);
             baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
 
         }

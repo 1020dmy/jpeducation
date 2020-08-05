@@ -50,6 +50,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
         aliyunPlayerView.setCirclePlay(false);//是否循环播放
         aliyunPlayerView.setAutoPlay(false);//是否自动播放
 
+
         aliyunPlayerView.setOnShowMoreClickListener(new ControlView.OnShowMoreClickListener() {
             @Override
             public void showMore() {

@@ -63,6 +63,8 @@ public class UserInfoActivity extends BaseNoStatusActivity {
     TextView tvPhone;
     @BindView(R.id.tv_wx)
     TextView tvWx;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
 
 
     private SelectphotoUtils selectphotoUtils;
@@ -88,7 +90,8 @@ public class UserInfoActivity extends BaseNoStatusActivity {
     @Override
     protected void initView() {
         tvTitle.setText("个人信息");
-
+        tvStatus.setVisibility(View.VISIBLE);
+        setTitleViewPadding(tvStatus);
         userInfoModel = new ViewModelProvider(this).get(UserInfoModel.class);
 
     }

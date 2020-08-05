@@ -29,7 +29,7 @@
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -71,7 +71,7 @@
                 <ImageView
                     android:id="@+id/iv_black_back"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"

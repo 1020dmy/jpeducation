@@ -21,11 +21,6 @@ import java.util.List;
 public class PlayListAdapter extends BaseNodeAdapter {
 
 
-    public PlayListAdapter() {
-        super();
-        addNodeProvider(new PlayListChapterProvider());
-        addNodeProvider(new PlayListJIeProvider());
-    }
 
     @Override
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {

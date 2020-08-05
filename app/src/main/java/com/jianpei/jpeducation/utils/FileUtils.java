@@ -33,13 +33,11 @@ public class FileUtils {
 //    public static String headPath = "";
 
 
-
     private Context context;
 
     public FileUtils(Context context) {
         this.context = context;
     }
-
 
 
     public static File creatHeadPath(String fileName) throws Exception {
@@ -55,6 +53,25 @@ public class FileUtils {
         file.createNewFile();
 //        headPath = file.getAbsolutePath();
         return file;
+    }
+
+
+    //删除文件夹和文件夹里面的文件
+    public static void deleteDirWihtFile(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory())
+            return;
+        for (File file : dir.listFiles()) {
+            if (file.isFile())
+                file.delete(); // 删除所有文件
+            else if (file.isDirectory())
+                deleteDirWihtFile(file); // 递规的方式删除文件夹
+        }
+        dir.delete();// 删除目录本身
+    }
+
+    //删除文件夹和文件夹里面的文件
+    public static void deleteFile(File dir) {
+        dir.delete();
     }
 
 
@@ -151,10 +168,6 @@ public class FileUtils {
         }
         return (freeSpace);
     }
-
-
-
-
 
 
     public String getFilePathByUri(Uri uri) {

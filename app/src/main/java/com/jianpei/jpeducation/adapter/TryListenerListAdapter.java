@@ -32,6 +32,12 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
     private List<GroupInfoBean> groupInfoBeans;
     private Context context;
 
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
+
     public TryListenerListAdapter(List<GroupInfoBean> groupInfoBeans, Context context) {
         this.groupInfoBeans = groupInfoBeans;
         this.context = context;
@@ -63,7 +69,7 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
         return groupInfoBeans != null ? groupInfoBeans.size() : 0;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView tvTitle, tvZhekou, tvNums, tvSubmit;
         private LinearLayout llZhekou;
@@ -76,6 +82,15 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
             tvNums = itemView.findViewById(R.id.tv_nums);
             tvSubmit = itemView.findViewById(R.id.tv_submit);
             llZhekou = itemView.findViewById(R.id.ll_zhekou);
+            tvSubmit.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myItemOnClickListener != null) {
+                myItemOnClickListener.onItemClick(getLayoutPosition(), v);
+            }
+
         }
     }
 }

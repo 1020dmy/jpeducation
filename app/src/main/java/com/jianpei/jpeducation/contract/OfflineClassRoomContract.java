@@ -2,7 +2,9 @@ package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 import java.util.List;
@@ -21,11 +23,19 @@ import io.reactivex.Observable;
 public interface OfflineClassRoomContract {
 
     interface Repository {
-        //获取正在下载中的数据
-        Observable<Integer> getDownloadMedialInfos(int status);
+        //根据状态查询数据
+        Observable<List<ViodBean>> getRoomViodBean(int status);
 
-        //获取离线数据
-        Observable<List<DownloadMediaInfo>> getCompleteData(int status);
+//        //获取离线数据
+//        Observable<List<DownloadMediaInfo>> getCompleteData(int status);
+
+        //获取下载完成的章节
+        Observable<List<DirectoryBean>> getOfflineCompleteData();
+
+        //获取未下载完成的章节数据
+        Observable<List<DirectoryBean>> getUndone();
+
+        Observable<String> deleteViodBean(ViodBean viodBean);
 
 
 //        //获取下载中的数据
@@ -40,9 +50,17 @@ public interface OfflineClassRoomContract {
     interface Model {
 
 
-        void getDownloadMedialInfos(int status);
+        void getRoomViodBean(int status);
 
-        void getCompleteData(int status);
+//        void getCompleteData(int status);
+
+
+        void getOfflineCompleteData();
+
+
+        void getUndone();
+
+        void deleteViodBean(ViodBean viodBean);
     }
 
 }

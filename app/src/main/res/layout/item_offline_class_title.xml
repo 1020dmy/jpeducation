@@ -35,13 +35,13 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="75dp"
-        android:layout_height="match_parent"
-        android:background="@color/cFF0000"
-        android:gravity="center"
-        android:text="删除"
-        android:textColor="@color/white"
-        android:textSize="15dp" />
+<!--    <TextView-->
+<!--        android:layout_width="75dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/cFF0000"-->
+<!--        android:gravity="center"-->
+<!--        android:text="删除"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15dp" />-->
 
 </LinearLayout>

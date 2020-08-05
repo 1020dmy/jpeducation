@@ -41,21 +41,45 @@ public class ClassPlayerRepository extends BaseRepository implements ClassPlayer
                 MyRoomDatabase.getInstance().directoryDao().insertDirectoryBean(directoryBeans);
                 //
 
-                List<DownloadMediaInfo> downloadMediaInfos = MyRoomDatabase.getInstance().downloadMediaInfoDao().getAllViodBeans();
+                List<ViodBean> viodBeans = MyRoomDatabase.getInstance().viodBeanDao().getAllViodBeans();
 
-                for (DownloadMediaInfo downloadMediaInfo : downloadMediaInfos) {
+                for (ViodBean viodBean : viodBeans) {
                     for (DirectoryBean directoryBean : directoryBeans) {
+                        for (ViodBean viodBean1 : directoryBean.getViods()) {
+                            if (viodBean.getId().equals(viodBean1.getId())) {
+                                viodBean1.setStatus(viodBean.getStatus());
+                                viodBean1.setProgress(viodBean.getProgress());
+                                viodBean1.setSavePath(viodBean.getSavePath());
+                                viodBean1.setVid(viodBean.getVid());
+                                viodBean1.setQuality(viodBean.getQuality());
+                                viodBean1.setMtitle(viodBean.getMtitle());
+                                viodBean1.setCoverUrl(viodBean.getCoverUrl());
+                                viodBean1.setDuration(viodBean.getDuration());
+                                viodBean1.setSize(viodBean.getSize());
+                                viodBean1.setFormat(viodBean.getFormat());
+                                viodBean1.setQualityIndex(viodBean.getQualityIndex());
 
-                        for (ViodBean viodBean : directoryBean.getViods()) {
 
-                            if (viodBean.getId().equals(downloadMediaInfo.getId())) {
-                                viodBean.setStatus(downloadMediaInfo.getSstatus());
-                                viodBean.setProgress(downloadMediaInfo.getProgress());
-                                viodBean.setmSavePath(downloadMediaInfo.getSavePath());
                             }
                         }
                     }
                 }
+
+//                List<DownloadMediaInfo> downloadMediaInfos = MyRoomDatabase.getInstance().downloadMediaInfoDao().getAllViodBeans();
+//
+//                for (DownloadMediaInfo downloadMediaInfo : downloadMediaInfos) {
+//                    for (DirectoryBean directoryBean : directoryBeans) {
+//
+//                        for (ViodBean viodBean : directoryBean.getViods()) {
+//
+//                            if (viodBean.getId().equals(downloadMediaInfo.getId())) {
+//                                viodBean.setStatus(downloadMediaInfo.getSstatus());
+//                                viodBean.setProgress(downloadMediaInfo.getProgress());
+//                                viodBean.setSavePath(downloadMediaInfo.getSavePath());
+//                            }
+//                        }
+//                    }
+//                }
 
 
                 return mClassInfoBeanBaseEntity;
@@ -64,7 +88,7 @@ public class ClassPlayerRepository extends BaseRepository implements ClassPlayer
     }
 
     @Override
-    public Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id) {
-        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type, video_id, buy_id));
+    public Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id) {
+        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type, video_id, buy_id, group_id));
     }
 }

@@ -12,6 +12,7 @@
         android:background="@color/cE73B30" />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -20,6 +21,7 @@
         android:textSize="@dimen/s_dp_16" />
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/material_shrink" />

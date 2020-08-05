@@ -18,7 +18,7 @@ public interface ClassPlayerContract {
     interface Repository {
         Observable<BaseEntity<MClassInfoBean>> classInfo(String class_id);
 
-        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id);
+        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id);
 
 
 
@@ -32,7 +32,7 @@ public interface ClassPlayerContract {
     interface Model {
         void classInfo(String class_id);
 
-        void videoUrl(String video_id, String buy_id);
+        void videoUrl(String video_id, String buy_id,String group_id);
 
     }
 }

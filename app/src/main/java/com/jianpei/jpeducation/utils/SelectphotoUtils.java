@@ -36,7 +36,7 @@ public class SelectphotoUtils {
     public static final int SCAN_OPEN_PHONE = 2;// 相册
 
 
-//    public Uri imgUri; // 拍照时返回的uri
+    //    public Uri imgUri; // 拍照时返回的uri
     public Uri mCutUri;// 图片裁剪时返回的uri
     public File imgFile;// 拍照保存的图片文件
 
@@ -65,7 +65,7 @@ public class SelectphotoUtils {
         imgFile = new File(file, fileName + ".jpeg");
         // 将file转换成uri
         // 注意7.0及以上与之前获取的uri不一样了，返回的是provider路径
-       Uri imgUri = getUri(imgFile);
+        Uri imgUri = getUri(imgFile);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 添加Uri读取权限
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);

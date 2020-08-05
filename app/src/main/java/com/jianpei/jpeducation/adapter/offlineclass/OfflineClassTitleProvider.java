@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.offlineclass.OfflineClassTitleBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,10 +33,11 @@ public class OfflineClassTitleProvider extends BaseNodeProvider {
 
     @Override
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
-        OfflineClassTitleBean offlineClassTitleBean = (OfflineClassTitleBean) baseNode;
+//        OfflineClassTitleBean offlineClassTitleBean = (OfflineClassTitleBean) baseNode;
+        DirectoryBean directoryBean = (DirectoryBean) baseNode;
 
-        baseViewHolder.setText(R.id.tv_title, offlineClassTitleBean.getTitle());
-        if (offlineClassTitleBean.isExpanded()) {
+        baseViewHolder.setText(R.id.tv_title, directoryBean.getTitle());
+        if (directoryBean.isExpanded()) {
             baseViewHolder.setImageResource(R.id.imageView, R.drawable.material_unfold);
         } else {
             baseViewHolder.setImageResource(R.id.imageView, R.drawable.material_shrink);

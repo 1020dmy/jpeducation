@@ -25,9 +25,9 @@
                 android:id="@+id/tv_tryListener"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
-                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:background="@drawable/shape_try_listener"
+                android:gravity="center"
                 android:text="试听"
                 android:textColor="@color/white"
                 android:textSize="15dp" />

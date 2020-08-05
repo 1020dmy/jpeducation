@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -43,6 +44,7 @@ import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 
 import java.io.File;
@@ -61,20 +63,15 @@ public class TryPlayerActivity extends AppCompatActivity {
     private DirectorySectionBean directorySectionBean;
 
     private ClassInfoFModel classInfoFModel;
+    private String localUrl;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_try_player);
         ButterKnife.bind(this);
-
         classInfoFModel = new ViewModelProvider(this).get(ClassInfoFModel.class);
-        directorySectionBean = getIntent().getParcelableExtra("directorySectionBean");
-
-
-        classInfoFModel.videoUrl(directorySectionBean.getId(), "");
-
-
         classInfoFModel.getVideoUrlBeansLiveData().observe(this, new Observer<VideoUrlBean>() {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
@@ -85,6 +82,16 @@ public class TryPlayerActivity extends AppCompatActivity {
 
             }
         });
+        localUrl = getIntent().getStringExtra("localUrl");
+        title = getIntent().getStringExtra("title");
+        if (!TextUtils.isEmpty(localUrl)) {
+            initAliyunPlayerView();
+            changePlayLocalSource(localUrl, title);
+
+        } else {
+            directorySectionBean = getIntent().getParcelableExtra("directorySectionBean");
+            classInfoFModel.videoUrl(directorySectionBean.getId(), "","0");
+        }
 
 
     }
@@ -116,6 +123,16 @@ public class TryPlayerActivity extends AppCompatActivity {
 
         //TODO
         aliyunPlayerView.enableNativeLog();
+    }
+
+    /**
+     * 播放本地资源
+     */
+    private void changePlayLocalSource(String url, String title) {
+        UrlSource urlSource = new UrlSource();
+        urlSource.setUri(url);
+        urlSource.setTitle(title);
+        aliyunPlayerView.setLocalSource(urlSource);
     }
 
 

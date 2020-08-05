@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.jianpei.jpeducation.R;
 
 import java.util.List;
@@ -37,6 +38,8 @@ public class ExplanationAdapter extends RecyclerView.Adapter<ExplanationAdapter.
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
         Glide.with(context).load(imageUrls.get(position)).into(holder.imageView);
+//        Glide.with(context).load(imageUrls.get(position)).downloadOnly();
+
 
     }
 

@@ -61,6 +61,7 @@ public class MClassInfoBean {
         private String url;
         private String video_id;
         private String chapter_id;
+        private String group_id;
 
         public String getId() {
             return id;
@@ -108,6 +109,14 @@ public class MClassInfoBean {
 
         public void setChapter_id(String chapter_id) {
             this.chapter_id = chapter_id;
+        }
+
+        public String getGroup_id() {
+            return group_id;
+        }
+
+        public void setGroup_id(String group_id) {
+            this.group_id = group_id;
         }
     }
 

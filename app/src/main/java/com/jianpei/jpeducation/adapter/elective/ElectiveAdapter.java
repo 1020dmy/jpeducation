@@ -1,10 +1,12 @@
 package com.jianpei.jpeducation.adapter.elective;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,12 +57,18 @@ public class ElectiveAdapter extends RecyclerView.Adapter<ElectiveAdapter.MyHold
         GroupInfoBean groupDataBean = groupDataBeans.get(position);
         Glide.with(context).load(groupDataBean.getImg()).into(holder.imageView);
         holder.tv_title.setText(groupDataBean.getTitle());
+        if (TextUtils.isEmpty(groupDataBean.getSub_title())) {
+            holder.tv_description.setVisibility(View.GONE);
+        }
         holder.tv_description.setText(groupDataBean.getSub_title());
         if ("0".equals(groupDataBean.getReal_ques_status())) {
             holder.tv_tipt.setVisibility(View.GONE);
         }
         if ("0".equals(groupDataBean.getSimulate_ques_status())) {
             holder.tv_tipo.setVisibility(View.GONE);
+        }
+        if ("0".equals(groupDataBean.getSimulate_ques_status()) && "0".equals(groupDataBean.getReal_ques_status())) {
+            holder.ll_tip.setVisibility(View.GONE);
         }
 
         holder.tv_num.setText(groupDataBean.getBuy_num() + "人报名");
@@ -78,6 +86,8 @@ public class ElectiveAdapter extends RecyclerView.Adapter<ElectiveAdapter.MyHold
         private ImageView imageView;
         private TextView tv_title, tv_description, tv_tipo, tv_tipt, tv_num, tv_price, tv_signup;
 
+        private LinearLayout ll_tip;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -88,6 +98,7 @@ public class ElectiveAdapter extends RecyclerView.Adapter<ElectiveAdapter.MyHold
             tv_num = itemView.findViewById(R.id.tv_num);
             tv_price = itemView.findViewById(R.id.tv_price);
             tv_signup = itemView.findViewById(R.id.tv_signup);
+            ll_tip = itemView.findViewById(R.id.ll_tip);
             tv_signup.setOnClickListener(this);
         }
 

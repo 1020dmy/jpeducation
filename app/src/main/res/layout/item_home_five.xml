@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginBottom="10dp"
-    android:layout_height="120dp">
+    android:layout_height="120dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,6 +33,14 @@
                 android:text="2020二级建造师无忧取证班"
                 android:textColor="@color/c161820"
                 android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥999-1265"
+                android:textColor="@color/cFF0000"
+                android:textSize="@dimen/s_dp_13" />
 
 
             <LinearLayout

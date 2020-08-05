@@ -1,37 +1,37 @@
 package com.jianpei.jpeducation.activitys.mine.mclass;
 
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.util.Log;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.dragswipe.DragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
-import com.chad.library.adapter.base.module.BaseDraggableModule;
+import com.aliyun.downloader.AliDownloaderFactory;
+import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.player.TryPlayerActivity;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.offlineclass.OfflieClassAdapter;
+import com.jianpei.jpeducation.adapter.offlineclass.OfflineClassContentProvider;
+import com.jianpei.jpeducation.adapter.offlineclass.OfflineClassTitleProvider;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
-import com.jianpei.jpeducation.bean.offlineclass.OfflineClassContentBean;
-import com.jianpei.jpeducation.bean.offlineclass.OfflineClassTitleBean;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
+
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
+import com.jianpei.jpeducation.view.SlideRecyclerView;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,15 +47,14 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
     @BindView(R.id.imageButton)
     ImageButton imageButton;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    SlideRecyclerView recyclerView;
     @BindView(R.id.iv_statue)
     ImageView ivStatue;
 
     private OfflieClassAdapter offlieClassAdapter;
-
-    private List<OfflineClassTitleBean> offlineClassTitleBeans;
-
+    private OfflineClassContentProvider offlineClassContentProvider;
     private OfflineClassRoomModel offlineClassRoomModel;
+
 
     @Override
     protected int setLayoutView() {
@@ -74,34 +73,54 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initData() {
-
         offlineClassRoomModel = new ViewModelProvider(this).get(OfflineClassRoomModel.class);
 
-        offlineClassTitleBeans = new ArrayList<>();
-        offlieClassAdapter = new OfflieClassAdapter();
-        offlieClassAdapter.getDraggableModule().setSwipeEnabled(true);
-        offlieClassAdapter.getDraggableModule().setOnItemSwipeListener(onItemSwipeListener);
-        offlieClassAdapter.getDraggableModule().getItemTouchHelperCallback().setSwipeMoveFlags(ItemTouchHelper.LEFT);
-
-        recyclerView.setAdapter(offlieClassAdapter);
-        setData();
-
-        offlieClassAdapter.addData(offlineClassTitleBeans);
-
-        offlieClassAdapter.notifyDataSetChanged();
-
-
-        offlineClassRoomModel.getCompleteDataLiveData().observe(this, new Observer<List<DownloadMediaInfo>>() {
+        offlineClassContentProvider = new OfflineClassContentProvider();
+        offlineClassContentProvider.addChildClickViewIds(R.id.tv_title, R.id.tv_delete);
+        offlineClassContentProvider.setMyItemOnClickListener(new MyItemOnClickListener() {
             @Override
-            public void onChanged(List<DownloadMediaInfo> downloadMediaInfos) {
-                dismissLoading();
-                if (downloadMediaInfos != null) {
-                    L.e("======sieze:" + downloadMediaInfos.size());
-                } else {
-                    L.e("======sieze:null");
+            public void onItemClick(int position, View view) {
+
+            }
+
+            @Override
+            public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+                ViodBean viodBean = (ViodBean) data;
+                switch (view.getId()) {
+                    case R.id.tv_title:
+                        startActivity(new Intent(OfflineClassActivity.this, TryPlayerActivity.class).putExtra("localUrl", viodBean.getSavePath()).putExtra("title", viodBean.getTitle()));
+                        break;
+                    case R.id.tv_delete:
+                        showLoading("");
+                        offlineClassRoomModel.deleteViodBean(viodBean);
+                        break;
                 }
             }
         });
+        offlieClassAdapter = new OfflieClassAdapter();
+        offlieClassAdapter.addNodeProvider(new OfflineClassTitleProvider());
+        offlieClassAdapter.addNodeProvider(offlineClassContentProvider);
+
+        recyclerView.setAdapter(offlieClassAdapter);
+
+        //获取离线数据
+        offlineClassRoomModel.getDirectoryBeansLiveData().observe(this, new Observer<List<DirectoryBean>>() {
+            @Override
+            public void onChanged(List<DirectoryBean> directoryBeans) {
+                dismissLoading();
+                offlieClassAdapter.setList(directoryBeans);
+            }
+        });
+        //删除结果
+        offlineClassRoomModel.getDeleteResultLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                L.e("==========s:"+s);
+                offlineClassRoomModel.getOfflineCompleteData();
+            }
+        });
+
+
         offlineClassRoomModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
@@ -110,60 +129,17 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
             }
         });
 
-        offlineClassRoomModel.getCompleteData(5);
+        shortToast("");
+        offlineClassRoomModel.getOfflineCompleteData();
 
 
     }
-
-    // 侧滑监听
-    OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
-        @Override
-        public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-            Log.d(TAG, "view swiped start: " + pos);
-            BaseViewHolder holder = ((BaseViewHolder) viewHolder);
-        }
-
-        @Override
-        public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-            Log.d(TAG, "View reset: " + pos);
-            BaseViewHolder holder = ((BaseViewHolder) viewHolder);
-        }
-
-        @Override
-        public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-            Log.d(TAG, "View Swiped: " + pos);
-        }
-
-
-        @Override
-        public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-            canvas.drawColor(getResources().getColor(R.color.cFF0000));
-        }
-    };
 
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         finish();
     }
-
-
-    private void setData() {
-
-        for (int i = 0; i < 5; i++) {
-            OfflineClassTitleBean offlineClassTitleBean = new OfflineClassTitleBean("测试title" + i, "");
-            for (int j = 0; j < 10; j++) {
-                OfflineClassContentBean offlineClassContentBean = new OfflineClassContentBean("测试content" + j, "");
-                offlineClassTitleBean.getBaseNodes().add(offlineClassContentBean);
-            }
-            offlineClassTitleBeans.add(offlineClassTitleBean);
-
-        }
-
-
-    }
-
-    ;
 
 
 }

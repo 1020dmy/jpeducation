@@ -30,7 +30,7 @@ public interface ClassInfoFContract {
         Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(String catId);
 
 
-        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id);
+        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id);
 
         Observable<BaseEntity<String>> couponReceive(String couponId, String shareUserId);
 
@@ -49,7 +49,7 @@ public interface ClassInfoFContract {
 
         void groupCoupon(String catId);
 
-        void videoUrl(String video_id, String buy_id);
+        void videoUrl(String video_id, String buy_id,String group_id);
 
         void couponReceive(String couponId, String shareUserId);
 

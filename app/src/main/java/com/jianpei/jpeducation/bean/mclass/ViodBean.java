@@ -1,15 +1,20 @@
 package com.jianpei.jpeducation.bean.mclass;
 
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-
-
+import com.aliyun.player.bean.ErrorCode;
+import com.aliyun.player.nativeclass.TrackInfo;
+import com.aliyun.player.source.VidAuth;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,7 +25,7 @@ import java.util.List;
  * <p>
  * Describe:
  */
-
+@Entity(tableName = "ViodBean")
 public class ViodBean extends BaseNode {
 
 
@@ -34,7 +39,8 @@ public class ViodBean extends BaseNode {
      * is_last_read : 0
      * schedule : 0.00
      */
-
+    @NonNull
+    @PrimaryKey
     private String id;
     private String title;
     private String isfree;
@@ -43,10 +49,37 @@ public class ViodBean extends BaseNode {
     private String totaltime;
     private String is_last_read;
     private String schedule;
-
-    private int status;
+    //
+    private int status;   //1.准备，3.下载状态，4.停止，5.完成
     private int progress;
-    private String mSavePath;
+    private String savePath;
+    //
+    private String vid;
+    private String quality;
+    private String mtitle;
+    private String coverUrl;
+    private long duration;
+    private long size;
+    private String format;
+    private int qualityIndex;
+    //需要忽略的
+    @Ignore
+    private DownloadMediaInfo.Status mStatus;
+    @Ignore
+    private int mDownloadIndex = 0;
+    @Ignore
+    private int isEncripted = 0;
+    @Ignore
+    private TrackInfo mTrackInfo;
+    @Ignore
+    private VidAuth vidAuth;
+    @Ignore
+    private ErrorCode errorCode;
+    @Ignore
+    private String errorMsg;
+    @Ignore
+    private int mFileHandleProgress = 0;
+
 
     public int getStatus() {
         return status;
@@ -64,12 +97,12 @@ public class ViodBean extends BaseNode {
         this.progress = progress;
     }
 
-    public String getmSavePath() {
-        return mSavePath;
+    public String getSavePath() {
+        return savePath;
     }
 
-    public void setmSavePath(String mSavePath) {
-        this.mSavePath = mSavePath;
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
     }
 
     public String getId() {
@@ -136,8 +169,133 @@ public class ViodBean extends BaseNode {
         this.schedule = schedule;
     }
 
+    public String getVid() {
+        return vid;
+    }
 
+    public void setVid(String vid) {
+        this.vid = vid;
+    }
 
+    public String getQuality() {
+        return quality;
+    }
+
+    public void setQuality(String quality) {
+        this.quality = quality;
+    }
+
+    public String getMtitle() {
+        return mtitle;
+    }
+
+    public void setMtitle(String mtitle) {
+        this.mtitle = mtitle;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public int getQualityIndex() {
+        return qualityIndex;
+    }
+
+    public void setQualityIndex(int qualityIndex) {
+        this.qualityIndex = qualityIndex;
+    }
+
+    public DownloadMediaInfo.Status getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(DownloadMediaInfo.Status mStatus) {
+        this.mStatus = mStatus;
+    }
+
+    public int getmDownloadIndex() {
+        return mDownloadIndex;
+    }
+
+    public void setmDownloadIndex(int mDownloadIndex) {
+        this.mDownloadIndex = mDownloadIndex;
+    }
+
+    public int getIsEncripted() {
+        return isEncripted;
+    }
+
+    public void setIsEncripted(int isEncripted) {
+        this.isEncripted = isEncripted;
+    }
+
+    public TrackInfo getmTrackInfo() {
+        return mTrackInfo;
+    }
+
+    public void setmTrackInfo(TrackInfo mTrackInfo) {
+        this.mTrackInfo = mTrackInfo;
+    }
+
+    public VidAuth getVidAuth() {
+        return vidAuth;
+    }
+
+    public void setVidAuth(VidAuth vidAuth) {
+        this.vidAuth = vidAuth;
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public int getmFileHandleProgress() {
+        return mFileHandleProgress;
+    }
+
+    public void setmFileHandleProgress(int mFileHandleProgress) {
+        this.mFileHandleProgress = mFileHandleProgress;
+    }
 
     @Nullable
     @Override
@@ -146,4 +304,21 @@ public class ViodBean extends BaseNode {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ViodBean that = (ViodBean) o;
+        return id == that.id && quality == that.quality;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Arrays.hashCode(new String[]{id});
+    }
 }

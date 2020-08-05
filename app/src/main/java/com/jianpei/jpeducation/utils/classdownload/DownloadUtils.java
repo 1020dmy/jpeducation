@@ -4,10 +4,11 @@ import android.content.Context;
 
 import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
 import com.aliyun.vodplayerview.utils.download.StorageUtil;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 public class DownloadUtils {
 
-    public static boolean isStorageAlarm(Context context, DownloadMediaInfo downloadMediaInfo) {
+    public static boolean isStorageAlarm(Context context, ViodBean downloadMediaInfo) {
         long availablekb = 0L;
         if (StorageUtil.isExternalMemoryPath(getSaveDir(context))) {
             availablekb = StorageUtil.getAvailableExternalMemorySize();

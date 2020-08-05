@@ -3,11 +3,10 @@ package com.jianpei.jpeducation.adapter.offlineclass;
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.module.DraggableModule;
-import com.jianpei.jpeducation.bean.offlineclass.OfflineClassContentBean;
-import com.jianpei.jpeducation.bean.offlineclass.OfflineClassTitleBean;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -23,19 +22,13 @@ public class OfflieClassAdapter extends BaseNodeAdapter implements DraggableModu
 
 
 
-    public OfflieClassAdapter() {
-        super();
-        addNodeProvider(new OfflineClassTitleProvider());
-        addNodeProvider(new OfflineClassContentProvider());
-
-    }
 
     @Override
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {
         BaseNode baseNode = list.get(i);
-        if (baseNode instanceof OfflineClassTitleBean) {
+        if (baseNode instanceof DirectoryBean) {
             return 0;
-        } else if (baseNode instanceof OfflineClassContentBean) {
+        } else if (baseNode instanceof ViodBean) {
             return 1;
         }
         return -1;

@@ -3,9 +3,10 @@ package com.jianpei.jpeducation.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.OfflineClassRoomContract;
 import com.jianpei.jpeducation.repository.OfflineClassRoomRepository;
-import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 import java.util.List;
 
@@ -30,26 +31,26 @@ public class OfflineClassRoomModel extends BaseViewModel implements OfflineClass
 
 
     //获取下载中的数据
-    private MutableLiveData<Integer> downloadMedialInfosLiveData;
+    private MutableLiveData<List<ViodBean>> viodBeanLiveData;
 
-    public MutableLiveData<Integer> getDownloadMedialInfosLiveData() {
-        if (downloadMedialInfosLiveData == null)
-            downloadMedialInfosLiveData = new MutableLiveData<>();
-        return downloadMedialInfosLiveData;
+    public MutableLiveData<List<ViodBean>> getViodBeanLiveData() {
+        if (viodBeanLiveData == null)
+            viodBeanLiveData = new MutableLiveData<>();
+        return viodBeanLiveData;
     }
 
     @Override
-    public void getDownloadMedialInfos(int status) {
+    public void getRoomViodBean(int status) {
 
-        repository.getDownloadMedialInfos(status).compose(setThread()).subscribe(new Observer<Integer>() {
+        repository.getRoomViodBean(status).compose(setThread()).subscribe(new Observer<List<ViodBean>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(Integer downloadMediaInfos) {
-                downloadMedialInfosLiveData.setValue(downloadMediaInfos);
+            public void onNext(List<ViodBean> viodBeans) {
+                viodBeanLiveData.setValue(viodBeans);
             }
 
             @Override
@@ -67,32 +68,102 @@ public class OfflineClassRoomModel extends BaseViewModel implements OfflineClass
     }
 
     /**
-     * 获取下载完成的数据
-     *
-     * @param status
+     * 获取下载完成的章节和视频
      */
+    private MutableLiveData<List<DirectoryBean>> directoryBeansLiveData;
 
-    private MutableLiveData<List<DownloadMediaInfo>> completeDataLiveData;
-
-
-    public MutableLiveData<List<DownloadMediaInfo>> getCompleteDataLiveData() {
-        if (completeDataLiveData == null)
-            completeDataLiveData = new MutableLiveData<>();
-        return completeDataLiveData;
+    public MutableLiveData<List<DirectoryBean>> getDirectoryBeansLiveData() {
+        if (directoryBeansLiveData == null)
+            directoryBeansLiveData = new MutableLiveData<>();
+        return directoryBeansLiveData;
     }
 
     @Override
-    public void getCompleteData(int status) {
+    public void getOfflineCompleteData() {
 
-        repository.getCompleteData(status).compose(setThread()).subscribe(new Observer<List<DownloadMediaInfo>>() {
+        repository.getOfflineCompleteData().compose(setThread()).subscribe(new Observer<List<DirectoryBean>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(List<DownloadMediaInfo> downloadMediaInfos) {
-                completeDataLiveData.setValue(downloadMediaInfos);
+            public void onNext(List<DirectoryBean> directoryBeans) {
+
+                directoryBeansLiveData.setValue(directoryBeans);
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                errData.setValue(e.getMessage());
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 获取未下载完成的章节信息
+     */
+    @Override
+    public void getUndone() {
+        repository.getUndone().compose(setThread()).subscribe(new Observer<List<DirectoryBean>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<DirectoryBean> directoryBeans) {
+                directoryBeansLiveData.setValue(directoryBeans);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                errData.setValue(e.getMessage());
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 删除操作
+     *
+     * @param viodBean
+     */
+
+    private MutableLiveData<String> deleteResultLiveData;
+
+    public MutableLiveData<String> getDeleteResultLiveData() {
+        if (deleteResultLiveData == null)
+            deleteResultLiveData = new MutableLiveData<>();
+        return deleteResultLiveData;
+    }
+
+    @Override
+    public void deleteViodBean(ViodBean viodBean) {
+        repository.deleteViodBean(viodBean).compose(setThread()).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                deleteResultLiveData.setValue(s);
+
+
             }
 
             @Override

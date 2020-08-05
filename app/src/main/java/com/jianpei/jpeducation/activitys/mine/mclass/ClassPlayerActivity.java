@@ -20,7 +20,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.aliyun.player.source.UrlSource;
 import com.aliyun.player.source.VidAuth;
 
-import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.view.control.ControlView;
 import com.aliyun.vodplayerview.view.more.AliyunShowMoreValue;
@@ -34,15 +33,15 @@ import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MyClassBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -130,15 +129,15 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             }
         });
         //查询数量结果
-        classRoomModel.getDownloadMedialInfosLiveData().observe(this, new Observer<Integer>() {
+        classRoomModel.getViodBeanLiveData().observe(this, new Observer<List<ViodBean>>() {
             @Override
-            public void onChanged(Integer downloadMediaInfos) {
-                if (downloadMediaInfos != null) {
-                    if (downloadMediaInfos == 0) {
+            public void onChanged(List<ViodBean> viodBeans) {
+                if (viodBeans != null) {
+                    if (viodBeans.size() == 0) {
                         tvDownNum.setVisibility(View.GONE);
                     } else {
                         tvDownNum.setVisibility(View.VISIBLE);
-                        tvDownNum.setText(downloadMediaInfos + "");
+                        tvDownNum.setText(viodBeans.size() + "");
                     }
                 }
 
@@ -158,7 +157,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(String s) {
 
-                classRoomModel.getDownloadMedialInfos(3);
+                classRoomModel.getRoomViodBean(3);
 
             }
         });

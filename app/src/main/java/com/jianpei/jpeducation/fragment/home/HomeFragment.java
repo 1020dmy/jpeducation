@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +49,10 @@ import com.jianpei.jpeducation.viewmodel.IntegralModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
 import com.liulishuo.okdownload.DownloadTask;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -78,7 +83,7 @@ public class HomeFragment extends BaseFragment {
     TextView tvMaterial;
 
     @BindView(R.id.refreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    SmartRefreshLayout swipeRefreshLayout;
     //课程切换
     private MainModel mainModel;
     //获取资料url
@@ -124,16 +129,22 @@ public class HomeFragment extends BaseFragment {
         //积分支付
         integralModel = new ViewModelProvider(this).get(IntegralModel.class);
         //
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 String catId = SpUtils.getValue(SpUtils.catId);
                 homePageModel.getHomeData(catId);//获取首页数据
                 homePageModel.noticeData(catId);//获取通知数据
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.finishRefresh();
             }
         });
-
+        swipeRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                swipeRefreshLayout.finishLoadMore(2000);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         bannerDataBeans = new ArrayList<>();

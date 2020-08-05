@@ -41,8 +41,8 @@ public class ClassInfoFRepository extends BaseRepository implements ClassInfoFCo
     }
 
     @Override
-    public Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id) {
-        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type, video_id, buy_id));
+    public Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id) {
+        return RetrofitFactory.getInstance().API().videoUrl(new VideoUrlJson(type, video_id, buy_id,group_id));
     }
 
     @Override

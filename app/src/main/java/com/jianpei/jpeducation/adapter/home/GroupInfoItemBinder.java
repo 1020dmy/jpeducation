@@ -46,6 +46,7 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
             myHolder.tvZhekou.setText(groupInfoBean.getCoupon_str());
         }
         myHolder.tvNums.setText(groupInfoBean.getBuy_num() + "人报名");
+        myHolder.tv_price.setText(groupInfoBean.getPrice_str());
     }
 
     @NotNull
@@ -60,6 +61,8 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
         private TextView tvTitle, tvZhekou, tvNums, tvSubmit;
         private LinearLayout llZhekou;
 
+        private TextView tv_price;
+
         public MyHolder(@NotNull View view) {
             super(view);
             imageView = view.findViewById(R.id.imageView);
@@ -68,6 +71,7 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
             tvNums = view.findViewById(R.id.tv_nums);
             tvSubmit = view.findViewById(R.id.tv_submit);
             llZhekou = view.findViewById(R.id.ll_zhekou);
+            tv_price = view.findViewById(R.id.tv_price);
             addChildClickViewIds(R.id.tv_submit);
 
         }

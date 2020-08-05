@@ -28,6 +28,7 @@ import com.jianpei.jpeducation.bean.elective.GroupHomeBean;
 import com.jianpei.jpeducation.bean.gold.CashWithdrawalBean;
 import com.jianpei.jpeducation.bean.gold.VirtualCurrencyListBean;
 import com.jianpei.jpeducation.bean.gold.WithdrawalDataBean;
+import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.HomeDataBean;
 import com.jianpei.jpeducation.bean.HomeInfoJson;
 import com.jianpei.jpeducation.bean.LauncherBean;
@@ -53,6 +54,7 @@ import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
 import com.jianpei.jpeducation.bean.json.GetQuestionJson;
+import com.jianpei.jpeducation.bean.json.GroupDataJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
 import com.jianpei.jpeducation.bean.json.InsertCarJson;
@@ -595,6 +597,13 @@ public interface APIFunction {
      */
     @POST(UrlConfig.updateMessageStatus)
     Observable<BaseEntity<String>> updateMessageStatus(@Body UpdateMessageStatusJson updateMessageStatusJson);
+
+
+    /**
+     * 1-课程列表
+     */
+    @POST(UrlConfig.groupData)
+    Observable<BaseEntity<List<GroupInfoBean>>> groupData(@Body GroupDataJson groupDataJson);
 
     /**
      * 文件上传

@@ -106,11 +106,11 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
      */
 
     @Override
-    public void videoUrl(String video_id, String buy_id) {
+    public void videoUrl(String video_id, String buy_id,String group_id) {
         if (TextUtils.isEmpty(video_id)) {
             return;
         }
-        classPlayerRepository.videoUrl("normal", video_id, buy_id).compose(setThread()).subscribe(new BaseObserver<VideoUrlBean>() {
+        classPlayerRepository.videoUrl("normal", video_id, buy_id,group_id).compose(setThread()).subscribe(new BaseObserver<VideoUrlBean>() {
             @Override
             protected void onSuccees(BaseEntity<VideoUrlBean> t) throws Exception {
                 if (t.isSuccess()) {

@@ -25,14 +25,15 @@
         android:layout_height="50dp"
         android:layout_below="@id/tv_status"
         android:background="@color/transparents"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/info_back" />
 
         <RelativeLayout
@@ -56,10 +57,10 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/shape_round_sign"
                 android:gravity="center"
-                android:visibility="gone"
                 android:text="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/s_dp_10" />
+                android:textSize="@dimen/s_dp_10"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

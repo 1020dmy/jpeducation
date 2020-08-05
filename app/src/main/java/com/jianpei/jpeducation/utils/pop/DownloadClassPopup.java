@@ -18,6 +18,7 @@ import com.aliyun.vodplayerview.listener.QualityValue;
 import com.aliyun.vodplayerview.utils.DensityUtil;
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
@@ -49,7 +50,7 @@ public class DownloadClassPopup extends PopupWindow {
     private Button button;
 
     private RadioGroup rg_quality_list;
-    private DownloadMediaInfo downLoadTag;
+    private ViodBean downLoadTag;
 
     private MyClickListener myClickListener;
     private Map<String, String> qualityList = new HashMap<>();
@@ -96,7 +97,7 @@ public class DownloadClassPopup extends PopupWindow {
 
     }
 
-    public void showAllDownloadItems(List<DownloadMediaInfo> downloadMediaInfos) {
+    public void showAllDownloadItems(List<ViodBean> downloadMediaInfos) {
         if (downloadMediaInfos == null || downloadMediaInfos.isEmpty()) {
             return;
         }
@@ -105,9 +106,9 @@ public class DownloadClassPopup extends PopupWindow {
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, 1f);
         layoutParams.setMargins(0, 0, DensityUtil.px2dip(mContext, 16), 0);
-        Iterator<DownloadMediaInfo> iterator = downloadMediaInfos.iterator();
+        Iterator<ViodBean> iterator = downloadMediaInfos.iterator();
         while (iterator.hasNext()) {
-            DownloadMediaInfo info = iterator.next();
+            ViodBean info = iterator.next();
             L.e("========清晰度：" + info.getQuality());
             RadioButton item = (RadioButton) LayoutInflater.from(mContext).inflate(com.aliyun.vodplayer.R.layout.view_item_quality,
                     new FrameLayout(mContext), false);
@@ -122,13 +123,13 @@ public class DownloadClassPopup extends PopupWindow {
         if (rg_quality_list.getChildCount() > 0) {
             int checkId = rg_quality_list.getChildAt(0).getId();
             rg_quality_list.check(checkId);
-            downLoadTag = (DownloadMediaInfo) rg_quality_list.findViewById(checkId).getTag();
+            downLoadTag = (ViodBean) rg_quality_list.findViewById(checkId).getTag();
         }
         rg_quality_list.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rbChecked = contentView.findViewById(checkedId);
-                downLoadTag = (DownloadMediaInfo) rbChecked.getTag();
+                downLoadTag = (ViodBean) rbChecked.getTag();
                 tv_size.setText(formatSizeDecimal(downLoadTag.getSize()));
             }
         });
@@ -160,7 +161,7 @@ public class DownloadClassPopup extends PopupWindow {
 
 
     public interface MyClickListener {
-        void ClickListener(DownloadMediaInfo downLoadTag);
+        void ClickListener(ViodBean downLoadTag);
     }
 
 
