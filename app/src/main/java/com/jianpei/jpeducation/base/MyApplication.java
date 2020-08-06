@@ -6,6 +6,7 @@ import android.content.Context;
 import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.MaterialHeader;
@@ -51,6 +52,8 @@ public class MyApplication extends Application {
         L.isDebug = true;//日志开关
         initUmeng();
         initWx();
+
+        DisplayUtil.getWindowSize();
 
 //        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
 

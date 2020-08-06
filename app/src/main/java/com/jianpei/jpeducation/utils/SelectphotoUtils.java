@@ -37,8 +37,9 @@ public class SelectphotoUtils {
 
 
     //    public Uri imgUri; // 拍照时返回的uri
-    public Uri mCutUri;// 图片裁剪时返回的uri
+//    public Uri mCutUri;// 图片裁剪时返回的uri
     public File imgFile;// 拍照保存的图片文件
+    public File mCutFile;
 
 
     public SelectphotoUtils(Activity activity) {
@@ -55,7 +56,10 @@ public class SelectphotoUtils {
         String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
         String fileName = "photo_" + time;
         // 创建一个文件夹
-        String path = weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/take_photo";
+//        String path = weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/take_photo";
+
+        String path = getPhotoPath();
+
 
         File file = new File(path);
         if (!file.exists()) {
@@ -121,12 +125,12 @@ public class SelectphotoUtils {
 //        }
         String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
         String fileName = "photo_" + time;
-        File mCutFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "", fileName + ".jpeg");
+        mCutFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "", fileName + ".jpeg");
 
         if (!mCutFile.getParentFile().exists()) {
             mCutFile.getParentFile().mkdirs();
         }
-        mCutUri = Uri.fromFile(mCutFile);
+        Uri mCutUri = Uri.fromFile(mCutFile);
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCutUri);
         Toast.makeText(weakReference.get(), "剪裁图片", Toast.LENGTH_SHORT).show();
@@ -138,14 +142,27 @@ public class SelectphotoUtils {
         weakReference.get().startActivityForResult(intent, REQUEST_CROP); //设置裁剪参数显示图片至ImageVie
     }
 
+
     /**
      * 打开相册
      */
     public void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        weakReference.get().startActivityForResult(intent, SCAN_OPEN_PHONE);
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//        weakReference.get().startActivityForResult(intent, SCAN_OPEN_PHONE);
+
+
+        Intent intentFromGallery;
+//        当sdk版本低于19时使用此方法
+        if (Build.VERSION.SDK_INT < 19) {
+            intentFromGallery = new Intent(Intent.ACTION_GET_CONTENT);
+            intentFromGallery.setType("image/*");
+        } else {
+            intentFromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        }
+        weakReference.get().startActivityForResult(intentFromGallery, SCAN_OPEN_PHONE);
     }
+
 
     public Uri getUri(File file) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
@@ -161,6 +178,15 @@ public class SelectphotoUtils {
 
     public void Release() {
         weakReference.clear();
+    }
+
+    /**
+     * 获得照片路径
+     *
+     * @return
+     */
+    private String getPhotoPath() {
+        return Environment.getExternalStorageDirectory() + "/DCIM/";
     }
 
 }

@@ -22,6 +22,8 @@ import com.aliyun.vodplayerview.view.more.SpeedValue;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
+import com.jianpei.jpeducation.utils.DisplayUtil;
+import com.jianpei.jpeducation.utils.L;
 
 import butterknife.BindView;
 
@@ -42,6 +44,12 @@ public abstract class BasePlayerFragment extends BaseFragment {
 
     //初始化阿里云播放器
     protected void initAliyunPlayerView() {
+
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        layoutParams.height = DisplayUtil.screenWidthPx / 16 * 9;
+//        L.e("width:"+DisplayUtil.screenWidthPx +",height:"+DisplayUtil.screenWidthPx / 16 * 9);
+//        aliyunPlayerView.setLayoutParams(layoutParams);
+
         aliyunPlayerView.setTitleBarCanShow(false);
         aliyunPlayerView.setControlBarCanShow(false);
         //保持屏幕敞亮
@@ -106,7 +114,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
                 aliyunPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
                 //设置view的布局，宽高之类
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = ( RelativeLayout.LayoutParams) aliyunPlayerView
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
                         .getLayoutParams();
                 aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(getActivity()) * 9.0f / 16);
                 aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -124,7 +132,7 @@ public abstract class BasePlayerFragment extends BaseFragment {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
                 }
                 //设置view的布局，宽高
-                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = ( RelativeLayout.LayoutParams) aliyunPlayerView
+                RelativeLayout.LayoutParams aliVcVideoViewLayoutParams = (RelativeLayout.LayoutParams) aliyunPlayerView
                         .getLayoutParams();
                 aliVcVideoViewLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                 aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -231,7 +239,6 @@ public abstract class BasePlayerFragment extends BaseFragment {
         lp.screenBrightness = brightness / 255.0f;
         window.setAttributes(lp);
     }
-
 
 
 }

@@ -1,8 +1,15 @@
 package com.jianpei.jpeducation.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.jianpei.jpeducation.base.MyApplication;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 /**
  * jpeducation
@@ -14,10 +21,18 @@ import com.jianpei.jpeducation.base.MyApplication;
  */
 public class DisplayUtil {
 
-//    public static int screenWidthPx; //屏幕宽 px
-//    public static int screenhightPx; //屏幕高 px
+    public static int screenWidthPx; //屏幕宽 px
+    public static int screenhightPx; //屏幕高 px
 //    public static float density;//屏幕密度
 //    public static int densityDPI;//屏幕密度
+
+
+    public static void getWindowSize() {
+        Resources resources = MyApplication.getInstance().getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        screenWidthPx = displayMetrics.widthPixels;//当前屏幕宽
+        screenhightPx = displayMetrics.heightPixels;//当前屏幕高
+    }
 
 
     /**

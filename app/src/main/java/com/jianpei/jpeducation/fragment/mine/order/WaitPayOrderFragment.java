@@ -103,6 +103,15 @@ public class WaitPayOrderFragment extends BaseFragment implements MyOrderListIte
                 L.e("====size:" + mOrderDataBeans.size());
             }
         });
+        orderListModel.getCancleOrderLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+//                dismissLoading();
+//                shortToast(s);
+                page = 1;
+                orderListModel.orderData(2, page, 10);
+            }
+        });
         //发起支付选择价格
         orderListModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
             @Override
@@ -121,6 +130,7 @@ public class WaitPayOrderFragment extends BaseFragment implements MyOrderListIte
                 shortToast(o);
             }
         });
+
         showLoading("");
         orderListModel.orderData(2, page, 10);
     }
@@ -134,6 +144,8 @@ public class WaitPayOrderFragment extends BaseFragment implements MyOrderListIte
                         @Override
                         public void onClick(View v) {
                             cancelOrderDialog.dismiss();
+                            showLoading("");
+                            orderListModel.cancelOrder(mOrderDataBeans.get(position).getId());
                         }
                     });
                 }

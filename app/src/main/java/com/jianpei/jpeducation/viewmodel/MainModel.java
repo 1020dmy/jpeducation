@@ -65,7 +65,18 @@ public class MainModel extends BaseViewModel<String> {
 
     }
 
-//    @Override
+
+    //消息监听
+
+    private MutableLiveData<Integer> messageNumLiveData;
+
+    public MutableLiveData<Integer> getMessageNumLiveData() {
+        if (messageNumLiveData == null)
+            messageNumLiveData = new MutableLiveData<>();
+        return messageNumLiveData;
+    }
+
+    //    @Override
 //    public void getHomeData(String catId) {
 //        if (TextUtils.isEmpty(catId)) {
 //            return;

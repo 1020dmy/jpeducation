@@ -17,10 +17,15 @@ import io.reactivex.Observable;
 public interface UserInfoContract {
     interface Repository {
         Observable<BaseEntity<UserInfoBean>> userInfo();
+
+        Observable<BaseEntity<UserInfoBean>> editUser(String avatar, String user_name, String sex, String birthday);
     }
 
     interface Model {
+
         void userInfo();
+
+        void editUser(String avatar, String user_name, String sex, String birthday);
 
     }
 

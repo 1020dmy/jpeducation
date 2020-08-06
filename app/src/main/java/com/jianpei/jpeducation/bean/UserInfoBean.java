@@ -92,6 +92,75 @@ public class UserInfoBean implements Parcelable {
     private String last_time_str;
     private String total_time_str;
 
+    private String birthday;
+
+    private String openid;
+
+    private String ji_fen;
+
+    private String virtual_currency;
+
+    private int is_sign_in;
+
+    private int unpaid_num;
+    private int message_num;
+
+    public int getUnpaid_num() {
+        return unpaid_num;
+    }
+
+    public void setUnpaid_num(int unpaid_num) {
+        this.unpaid_num = unpaid_num;
+    }
+
+    public int getMessage_num() {
+        return message_num;
+    }
+
+    public void setMessage_num(int message_num) {
+        this.message_num = message_num;
+    }
+
+    public int getIs_sign_in() {
+        return is_sign_in;
+    }
+
+    public void setIs_sign_in(int is_sign_in) {
+        this.is_sign_in = is_sign_in;
+    }
+
+    public String getVirtual_currency() {
+        return virtual_currency;
+    }
+
+    public void setVirtual_currency(String virtual_currency) {
+        this.virtual_currency = virtual_currency;
+    }
+
+    public String getJi_fen() {
+        return ji_fen;
+    }
+
+    public void setJi_fen(String ji_fen) {
+        this.ji_fen = ji_fen;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
     public String getId() {
         return id;
     }

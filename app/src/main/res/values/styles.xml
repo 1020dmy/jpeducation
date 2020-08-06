@@ -139,7 +139,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/c15171F</item>
-        <item name="android:drawablePadding">15dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
         <item name="android:textSize">13dp</item>
     </style>
 

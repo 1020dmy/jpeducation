@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
 
 import java.util.List;
@@ -29,6 +30,13 @@ public class IntegralTaskAdapter extends RecyclerView.Adapter<IntegralTaskAdapte
 
     private List<IntegralTaskBean> list;
     private Context context;
+
+
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
 
     public IntegralTaskAdapter(List<IntegralTaskBean> list, Context context) {
         this.list = list;
@@ -56,7 +64,7 @@ public class IntegralTaskAdapter extends RecyclerView.Adapter<IntegralTaskAdapte
             holder.tvSubmit.setText("已完成");
         }
 
-        if(position==list.size()-1){
+        if (position == list.size() - 1) {
             holder.line.setVisibility(View.GONE);
         }
 
@@ -68,7 +76,7 @@ public class IntegralTaskAdapter extends RecyclerView.Adapter<IntegralTaskAdapte
         return list != null ? list.size() : 0;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView tvTitle, tvTip, tvPrice;
         private TextView tvSubmit, line;
@@ -82,6 +90,16 @@ public class IntegralTaskAdapter extends RecyclerView.Adapter<IntegralTaskAdapte
             tvPrice = itemView.findViewById(R.id.tv_price);
             tvSubmit = itemView.findViewById(R.id.tv_submit);
             line = itemView.findViewById(R.id.line);
+//            tvSubmit.setEnabled(false);
+            tvSubmit.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myItemOnClickListener != null) {
+                myItemOnClickListener.onItemClick(getLayoutPosition(), v);
+            }
 
         }
     }

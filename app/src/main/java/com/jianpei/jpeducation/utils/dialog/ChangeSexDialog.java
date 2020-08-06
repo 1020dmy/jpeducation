@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.utils.pop.CommentPopup;
 
 /**
  * jpeducation
@@ -25,7 +26,13 @@ public class ChangeSexDialog extends AlertDialog implements View.OnClickListener
     private LinearLayout llBoy, llGirl;
     private ImageView ivBoy, ivGirl;
 
-    public ChangeSexDialog(@NonNull Context context) {
+    private MyOnItemClickListener myOnItemClickListener;
+
+    public void setMyOnItemClickListener(MyOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
+    }
+
+    public ChangeSexDialog(@NonNull Context context, String sexType) {
         super(context);
         contentView = getLayoutInflater().inflate(R.layout.dialog_userinf_changesex, null);//获取自定义布局
         setView(contentView);
@@ -36,6 +43,22 @@ public class ChangeSexDialog extends AlertDialog implements View.OnClickListener
 
         llBoy.setOnClickListener(this);
         llGirl.setOnClickListener(this);
+
+        setSex(sexType);
+    }
+
+    public void setSex(String sexType) {
+        if ("1".equals(sexType)) {
+            llBoy.setEnabled(false);
+            llGirl.setEnabled(true);
+            ivBoy.setEnabled(false);
+            ivGirl.setEnabled(true);
+        } else {
+            llBoy.setEnabled(true);
+            llGirl.setEnabled(false);
+            ivBoy.setEnabled(true);
+            ivGirl.setEnabled(false);
+        }
     }
 
     @Override
@@ -47,14 +70,24 @@ public class ChangeSexDialog extends AlertDialog implements View.OnClickListener
                 llGirl.setEnabled(true);
                 ivBoy.setEnabled(false);
                 ivGirl.setEnabled(true);
+                if (myOnItemClickListener != null) {
+                    myOnItemClickListener.onChangeSex("1");
+                }
                 break;
             case R.id.ll_girl:
                 llBoy.setEnabled(true);
                 llGirl.setEnabled(false);
                 ivBoy.setEnabled(true);
                 ivGirl.setEnabled(false);
+                if (myOnItemClickListener != null) {
+                    myOnItemClickListener.onChangeSex("2");
+                }
                 break;
         }
         dismiss();
+    }
+
+    public interface MyOnItemClickListener {
+        void onChangeSex(String sexType);
     }
 }

@@ -52,6 +52,7 @@ public class IntegralDetailsActivity extends BaseActivity {
     protected void initView() {
         tvTitle.setText("积分明细");
 
+        viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
         viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
 

@@ -9,4 +9,5 @@ package com.jianpei.jpeducation.bean.json;
  * Describe:
  */
 public class CarInfoJson {
+
 }

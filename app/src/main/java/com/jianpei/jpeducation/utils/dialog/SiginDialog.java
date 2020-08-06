@@ -39,7 +39,6 @@ public class SiginDialog extends AlertDialog {
                 dismiss();
             }
         });
-        setData(type);
     }
 
     public void setData(int type) {

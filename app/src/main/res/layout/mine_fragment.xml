@@ -61,6 +61,7 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tv_jifen_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name"
@@ -116,11 +117,51 @@
                 style="@style/mineLinebg"
                 android:layout_marginTop="14dp">
 
-                <TextView
-                    android:id="@+id/tv_wait_pay"
-                    style="@style/mineText"
-                    android:drawableTop="@drawable/mine_wait_pay"
-                    android:text="待支付" />
+                <RelativeLayout
+                    android:id="@+id/rl_wait_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_wait_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/mine_wait_pay" />
+
+                    <TextView
+                        android:id="@+id/tv_wait_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_wait_pay"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="待支付"
+                        android:textColor="@color/c15171F"
+                        android:textSize="@dimen/s_dp_13" />
+
+                    <TextView
+                        android:id="@+id/tv_wait_pay_num"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_toRightOf="@id/iv_wait_pay"
+                        android:background="@drawable/shape_round_sign"
+                        android:gravity="center"
+                        android:text="1"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/s_dp_10"
+                        android:translationX="-5dp" />
+
+                </RelativeLayout>
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_wait_pay"-->
+                <!--                    style="@style/mineText"-->
+                <!--                    android:drawableTop="@drawable/mine_wait_pay"-->
+                <!--                    android:text="待支付" />-->
 
                 <TextView
                     android:id="@+id/tv_pay"

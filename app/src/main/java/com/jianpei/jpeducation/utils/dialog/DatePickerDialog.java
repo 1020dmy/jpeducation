@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.utils.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.Calendar;
 
@@ -32,24 +34,18 @@ public class DatePickerDialog extends AlertDialog {
     private DatePicker datePicker;
     private TextView tvSet;
 
+    private MyOnItemClickListener myOnItemClickListener;
+
+    //    private String birthday;
+    private int year, monthOfYear, dayOfMonth;
+
+    public void setMyOnItemClickListener(MyOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
+    }
 
     public DatePickerDialog(@NonNull Context context) {
         this(context, 0, Calendar.getInstance(), -1, -1, -1);
     }
-
-//    public DatePickerDialog(@NonNull Context context, @StyleRes int themeResId) {
-//        this(context, themeResId, Calendar.getInstance(), -1, -1, -1);
-//    }
-//
-//    public DatePickerDialog(@NonNull Context context,
-//                            int year, int month, int dayOfMonth) {
-//        this(context, 0, year, month, dayOfMonth);
-//    }
-
-//    public DatePickerDialog(@NonNull Context context, @StyleRes int themeResId,
-//                            int year, int monthOfYear, int dayOfMonth) {
-//        this(context, themeResId, null, year, monthOfYear, dayOfMonth);
-//    }
 
     private DatePickerDialog(@NonNull Context context, @StyleRes int themeResId, @Nullable Calendar calendar, int year,
                              int monthOfYear, int dayOfMonth) {
@@ -63,18 +59,45 @@ public class DatePickerDialog extends AlertDialog {
         tvSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (myOnItemClickListener != null) {
+                    myOnItemClickListener.onChangeBirthday(datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth());
+                }
                 dismiss();
             }
         });
-        if (calendar != null) {
-            year = calendar.get(Calendar.YEAR);
-            monthOfYear = calendar.get(Calendar.MONTH);
-            dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        }
-        datePicker.init(year, monthOfYear, dayOfMonth, null);
+//        if (calendar != null) {
+//            year = calendar.get(Calendar.YEAR);
+//            monthOfYear = calendar.get(Calendar.MONTH);
+//            dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+//        }
+
+
         getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
+    public void setBirthday(String birthday) {
+        if (!TextUtils.isEmpty(birthday)) {
+            String[] date = birthday.split("-");
+            year = Integer.parseInt(date[0]);
+            monthOfYear = Integer.parseInt(date[1])-1;
+            dayOfMonth = Integer.parseInt(date[2]);
+        } else {
+            year = Calendar.getInstance().get(Calendar.YEAR);
+            monthOfYear = Calendar.getInstance().get(Calendar.MONTH);
+            dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        }
+        datePicker.init(year, monthOfYear, dayOfMonth, null);
 
+    }
+
+    @Override
+    public void show() {
+        super.show();
+    }
+
+
+    public interface MyOnItemClickListener {
+        void onChangeBirthday(String date);
+    }
 }

@@ -249,7 +249,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         @Override
         public void onResult(SHARE_MEDIA platform) {
 
-
             if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
                     && platform != SHARE_MEDIA.EMAIL
                     && platform != SHARE_MEDIA.FLICKR

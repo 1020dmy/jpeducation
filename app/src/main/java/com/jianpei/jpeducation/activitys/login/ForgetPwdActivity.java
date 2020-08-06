@@ -64,6 +64,7 @@ public class ForgetPwdActivity extends BaseNoStatusActivity {
     @Override
     protected void initView() {
         setTitleViewPadding(tvStatus);
+        tvStatus.setVisibility(View.VISIBLE);
 
         tvTitle.setText(getResources().getString(R.string.forget_title));
         etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));

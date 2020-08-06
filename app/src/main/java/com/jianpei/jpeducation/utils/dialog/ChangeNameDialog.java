@@ -28,7 +28,13 @@ public class ChangeNameDialog extends AlertDialog implements View.OnClickListene
     private ImageView ivCancel;
     private Button btnSave;
 
-    public ChangeNameDialog(@NonNull Context context) {
+    private MyOnItemClickListener myOnItemClickListener;
+
+    public void setMyOnItemClickListener(MyOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
+    }
+
+    public ChangeNameDialog(@NonNull Context context, String name) {
         super(context);
         this.mContext = context;
         contentView = getLayoutInflater().inflate(R.layout.pop_userinfo_changename, null);//获取自定义布局
@@ -38,6 +44,7 @@ public class ChangeNameDialog extends AlertDialog implements View.OnClickListene
         btnSave = contentView.findViewById(R.id.btn_save);
         ivCancel.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        etName.setText(name);
 
     }
 
@@ -49,9 +56,14 @@ public class ChangeNameDialog extends AlertDialog implements View.OnClickListene
                 etName.setText("");
                 break;
             case R.id.btn_save:
-                dismiss();
+                if (myOnItemClickListener != null) {
+                    myOnItemClickListener.onSaveClick(etName.getText().toString());
+                }
                 break;
         }
+    }
 
+    public interface MyOnItemClickListener {
+        void onSaveClick(String name);
     }
 }

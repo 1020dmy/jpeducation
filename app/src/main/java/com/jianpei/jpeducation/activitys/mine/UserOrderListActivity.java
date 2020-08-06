@@ -51,6 +51,7 @@ public class UserOrderListActivity extends BaseActivity {
         tvTitle.setText("我的订单");
         type = getIntent().getIntExtra("type", 0);
 
+        viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
         tabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
 
@@ -64,9 +65,9 @@ public class UserOrderListActivity extends BaseActivity {
             }
         }).attach();
 
-        if(type==0){
+        if (type == 0) {
             viewPage.setCurrentItem(1);
-        }else{
+        } else {
             viewPage.setCurrentItem(2);
         }
 

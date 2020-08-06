@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<ExplanationAdapter.
 
     @Override
     public int getItemCount() {
+        L.e("========imageurls:"+imageUrls.size());
         return imageUrls != null ? imageUrls.size() : 0;
     }
 

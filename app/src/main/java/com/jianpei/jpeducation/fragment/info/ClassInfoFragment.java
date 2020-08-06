@@ -147,7 +147,7 @@ public class ClassInfoFragment extends BasePlayerFragment {
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
                 classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
-                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "",classInfoBean.getId());//获取试看视频
+                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "", classInfoBean.getId());//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
         });
@@ -199,9 +199,16 @@ public class ClassInfoFragment extends BasePlayerFragment {
             }
         });
 
-        rvExplanation.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rvExplanation.setLayoutManager(linearLayoutManager);
+        rvExplanation.setHasFixedSize(true);
+        rvExplanation.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.addItemDecoration(new ItemOffsetDecoration(10));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -339,7 +346,6 @@ public class ClassInfoFragment extends BasePlayerFragment {
         }
         updatePlayerViewMode();
     }
-
 
 
 }

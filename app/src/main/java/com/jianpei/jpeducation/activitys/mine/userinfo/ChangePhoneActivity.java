@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.mine.userinfo;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
+import com.jianpei.jpeducation.utils.MyTextWatcher;
 import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 
 import butterknife.BindView;
@@ -42,9 +44,9 @@ public class ChangePhoneActivity extends BaseActivity {
 
     protected CountDownTimerUtils countDownTimerUtils;
 
-
-
     private String phone;
+
+    private String code = "";
 
     @Override
     protected int setLayoutView() {
@@ -70,6 +72,7 @@ public class ChangePhoneActivity extends BaseActivity {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
+                code = s;
                 countDownTimerUtils.start();
 
             }
@@ -81,7 +84,7 @@ public class ChangePhoneActivity extends BaseActivity {
                 shortToast(o);
             }
         });
-
+        etCode.addTextChangedListener(new MyTextWatcher(ivCodeCancle));
     }
 
 
@@ -99,7 +102,13 @@ public class ChangePhoneActivity extends BaseActivity {
                 sendCodeModel.sendCode(phone, "other");
                 break;
             case R.id.btn_next:
+                if (code.equals(etCode.getText().toString())) {
+                    startActivity(new Intent(this, MBindPhoneActivity.class));
+                } else {
+                    tvTip.setText("验证码输入有误");
+                }
                 break;
         }
     }
+
 }

@@ -48,8 +48,10 @@ public class PhotoSelectDialog extends AlertDialog implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.photograph:
-                if (selectphotoUtils != null)
-                    selectphotoUtils.takePhone();
+                if (selectphotoUtils != null){
+
+                }
+                selectphotoUtils.takePhone();
                 dismiss();
                 break;
             case R.id.photo:
@@ -65,7 +67,7 @@ public class PhotoSelectDialog extends AlertDialog implements View.OnClickListen
 
     @Override
     public void dismiss() {
-        selectphotoUtils = null;
         super.dismiss();
     }
+
 }

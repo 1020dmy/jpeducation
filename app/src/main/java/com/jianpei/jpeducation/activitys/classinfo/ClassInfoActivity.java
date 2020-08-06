@@ -348,5 +348,4 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
     }
 
 
-
 }

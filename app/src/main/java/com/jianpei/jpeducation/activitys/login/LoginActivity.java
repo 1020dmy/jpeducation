@@ -141,8 +141,6 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
 
     public void aaa() {
         UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
-
-
     }
 
     UMAuthListener umAuthListener = new UMAuthListener() {

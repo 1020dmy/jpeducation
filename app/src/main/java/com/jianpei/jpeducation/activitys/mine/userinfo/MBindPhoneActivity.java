@@ -93,6 +93,7 @@ public class MBindPhoneActivity extends BaseActivity {
             public void onChanged(String s) {
                 tvTip.setText("");
                 shortToast(s);
+                startActivity(new Intent(MBindPhoneActivity.this, UserInfoActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
             }
         });

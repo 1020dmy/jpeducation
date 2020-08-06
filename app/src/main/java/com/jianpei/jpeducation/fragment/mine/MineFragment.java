@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -18,15 +19,16 @@ import com.jianpei.jpeducation.activitys.mine.InviteFriendsActivity;
 import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
 import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
 import com.jianpei.jpeducation.activitys.mine.MineTikuActivity;
-import com.jianpei.jpeducation.activitys.mine.gold.GoldDetailActivity;
-import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
-import com.jianpei.jpeducation.activitys.mine.userinfo.UserInfoActivity;
 import com.jianpei.jpeducation.activitys.mine.UserOrderListActivity;
+import com.jianpei.jpeducation.activitys.mine.gold.GoldDetailActivity;
+import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
+import com.jianpei.jpeducation.activitys.mine.userinfo.UserInfoActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.utils.pop.CustomerServicePopup;
+import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.UserInfoModel;
 
 import butterknife.BindView;
@@ -71,10 +73,18 @@ public class MineFragment extends BaseFragment {
 
     @BindView(R.id.tv_jinbi_num)
     TextView tvJinbiNum;
+    @BindView(R.id.tv_jifen_num)
+    TextView tvJifenNum;
+    @BindView(R.id.tv_wait_pay_num)
+    TextView tvWaitPayNum;
+    @BindView(R.id.rl_wait_pay)
+    RelativeLayout rlWaitPay;
 
     private UserInfoModel userInfoModel;
 
     private CustomerServicePopup customerServicePopup;
+
+    private MainModel mainModel;//为了传递未读消息数量
 
 
 //    @BindView(R.id.btn_info)
@@ -89,6 +99,7 @@ public class MineFragment extends BaseFragment {
     protected void initView(View view) {
 
         userInfoModel = new ViewModelProvider(this).get(UserInfoModel.class);
+        mainModel = new ViewModelProvider(getActivity()).get(MainModel.class);
 
 
     }
@@ -99,8 +110,9 @@ public class MineFragment extends BaseFragment {
             @Override
             public void onChanged(UserInfoBean userInfoBean) {
                 dismissLoading();
-                tvName.setText(userInfoBean.getUser_name());
-                Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(civHead);
+
+                setData(userInfoBean);
+
 
             }
         });
@@ -118,13 +130,42 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.civ_head, R.id.tv_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin, R.id.tv_jinbi, R.id.tv_jinbi_num})
+
+    protected void setData(UserInfoBean userInfoBean) {
+        if (userInfoBean == null)
+            return;
+        tvName.setText(userInfoBean.getUser_name());
+        Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(civHead);
+        tvJifenNum.setText(userInfoBean.getJi_fen());
+        tvJinbiNum.setText(userInfoBean.getVirtual_currency());
+        if (userInfoBean.getIs_sign_in() == 0) {//未签到
+            tvSignin.setText("未签到");
+        } else {//已经签到
+            tvSignin.setText("已签到");
+        }
+        //待支付数量
+        if (userInfoBean.getUnpaid_num() > 0) {
+            tvWaitPayNum.setVisibility(View.VISIBLE);
+            tvWaitPayNum.setText(userInfoBean.getUnpaid_num() + "");
+        } else {
+            tvWaitPayNum.setVisibility(View.GONE);
+        }
+        //发送未读消息数量
+        mainModel.getMessageNumLiveData().setValue(userInfoBean.getMessage_num());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @OnClick({R.id.civ_head, R.id.rl_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin, R.id.tv_jinbi, R.id.tv_jinbi_num})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.civ_head://个人信息
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
-            case R.id.tv_wait_pay://未支付
+            case R.id.rl_wait_pay://未支付
                 startActivity(new Intent(getActivity(), UserOrderListActivity.class).putExtra("type", 0));
                 break;
             case R.id.tv_pay://已支付
@@ -173,8 +214,4 @@ public class MineFragment extends BaseFragment {
     }
 
 
-//    @OnClick(R.id.btn_info)
-//    public void onViewClicked() {
-//        startActivity(new Intent(getActivity(), UserInfoActivity.class));
-//    }
 }

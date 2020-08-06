@@ -9,12 +9,18 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/sigin_tip_bq" />
+        android:src="@drawable/sigin_tip" />
+
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="70dp"
+        android:background="@color/white" />
 
     <ImageView
         android:id="@+id/iv_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:src="@drawable/sigin_close" />
 
 </LinearLayout>

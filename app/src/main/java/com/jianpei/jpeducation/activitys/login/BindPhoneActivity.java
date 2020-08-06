@@ -63,6 +63,7 @@ public class BindPhoneActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initView() {
+        tvStatus.setVisibility(View.VISIBLE);
         setTitleViewPadding(tvStatus);
         tvRegistered.setVisibility(View.GONE);
         etPhone.addTextChangedListener(new MyTextWatcher(ivPhoneCancle));

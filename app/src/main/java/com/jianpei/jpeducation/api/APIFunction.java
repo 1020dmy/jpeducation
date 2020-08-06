@@ -50,6 +50,7 @@ import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
+import com.jianpei.jpeducation.bean.json.EditUserJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
@@ -584,7 +585,7 @@ public interface APIFunction {
      * 1-修改用户信息
      */
     @POST(UrlConfig.editUser)
-    Observable<BaseEntity<UserInfoBean>> editUser(@Body CarInfoJson carInfoJson);
+    Observable<BaseEntity<UserInfoBean>> editUser(@Body EditUserJson editUserJson);
 
     /**
      * 1-用户消息列表

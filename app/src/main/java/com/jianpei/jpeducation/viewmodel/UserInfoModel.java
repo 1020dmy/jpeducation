@@ -58,6 +58,39 @@ public class UserInfoModel extends BaseViewModel implements UserInfoContract.Mod
                 }
             }
         });
+    }
 
+    /**
+     * 修改用户信息
+     *
+     * @param avatar
+     * @param user_name
+     * @param sex
+     * @param birthday
+     */
+
+
+    @Override
+    public void editUser(String avatar, String user_name, String sex, String birthday) {
+        userInfoRepository.editUser(avatar, user_name, sex, birthday).compose(setThread()).subscribe(new BaseObserver<UserInfoBean>() {
+            @Override
+            protected void onSuccees(BaseEntity<UserInfoBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    userInfoBeanLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
     }
 }

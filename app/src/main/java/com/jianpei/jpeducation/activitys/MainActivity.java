@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,6 +27,7 @@ import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
 import com.jianpei.jpeducation.fragment.school.SchoolFragment;
 import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 
@@ -103,7 +105,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             }
         });
 
-
     }
 
 
@@ -120,6 +121,25 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                        switchFragment(lastfragment, 2);
 //                        lastfragment = 2;
 //                    }
+                }
+            }
+        });
+        //未读消息数量
+        mainModel.getMessageNumLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer != null && integer > 0) {
+                    Drawable drawable = getResources().getDrawable(
+                            R.drawable.mine_message);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+                            drawable.getMinimumHeight());
+                    tvMessage.setCompoundDrawables(null, drawable, null, null);
+                } else {
+                    Drawable drawable = getResources().getDrawable(
+                            R.drawable.mine_unmessage);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+                            drawable.getMinimumHeight());
+                    tvMessage.setCompoundDrawables(null, drawable, null, null);
                 }
             }
         });
@@ -256,5 +276,12 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     }
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        L.e("=====onNewIntent=====");
+        if (intent!=null && "IntegralActivity".equals(intent.getStringExtra("from"))) {
+            radioGroup.check(R.id.rb_tiku);
+        }
+        super.onNewIntent(intent);
+    }
 }
