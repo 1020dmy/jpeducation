@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.mine.userinfo;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -212,19 +213,19 @@ public class UserInfoActivity extends BaseNoStatusActivity {
         switch (requestCode) {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
-                if (data != null) {
+                if (resultCode != Activity.RESULT_CANCELED)
                     selectphotoUtils.cropPhoto(selectphotoUtils.getUri(selectphotoUtils.imgFile), true);
-                }
                 break;
             case SelectphotoUtils.SCAN_OPEN_PHONE://相册返回
                 L.e("相册返回");
-                if (data != null) {
+                if (resultCode != Activity.RESULT_CANCELED) {
                     selectphotoUtils.cropPhoto(data.getData(), false);
                 }
                 break;
             case SelectphotoUtils.REQUEST_CROP://裁剪返回
                 L.e("裁剪返回");
-                if (selectphotoUtils.mCutFile != null) {
+
+                if (resultCode != Activity.RESULT_CANCELED) {
                     showLoading("");
                     Glide.with(this).load(selectphotoUtils.mCutFile).placeholder(R.mipmap.ic_launcher).into(imageView);
                     List<File> files = new ArrayList<>();

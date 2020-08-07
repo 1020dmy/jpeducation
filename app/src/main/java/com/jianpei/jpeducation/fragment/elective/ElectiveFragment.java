@@ -23,7 +23,6 @@ import com.jianpei.jpeducation.bean.elective.GroupDataBean;
 import com.jianpei.jpeducation.bean.elective.GroupHomeBean;
 import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.ElectiveModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -124,7 +123,8 @@ public class ElectiveFragment extends BaseFragment implements MyItemOnClickListe
     }
 
     @OnClick(R.id.ib_kefu)
-    public void onViewClicked() {
+    public void onViewClicked()
+    {
         startActivity(new Intent(getActivity(), KeFuActivity.class));
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.base.MyApplication;
+import com.jianpei.jpeducation.utils.SpUtils;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -37,6 +38,7 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
         onRequestEnd();
         try {
             if (tBaseEntity.isLogin()) {
+                SpUtils.remove(SpUtils.ID);
                 MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), LoginActivity.class).setFlags(FLAG_ACTIVITY_NEW_TASK));
                 onComplete();
                 return;

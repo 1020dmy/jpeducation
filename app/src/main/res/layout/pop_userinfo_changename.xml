@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:src="@drawable/userinfo_cancle" />
+                android:src="@drawable/login_cancle" />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center"
         android:orientation="horizontal" />
 
@@ -31,18 +30,19 @@
         android:textColor="@color/white" />
 
     <Button
-        android:visibility="gone"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/guide_shape_jump"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/guide_shape_jump2"
         android:paddingLeft="30dp"
         android:paddingTop="10dp"
         android:paddingRight="30dp"
         android:paddingBottom="10dp"
         android:text="立即体验"
-        android:textColor="@color/white" />
+        android:textColor="@color/cBD566A"
+        android:textSize="@dimen/s_dp_15"
+        android:visibility="gone" />
 </RelativeLayout>

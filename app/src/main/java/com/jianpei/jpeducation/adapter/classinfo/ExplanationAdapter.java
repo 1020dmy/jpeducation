@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.L;
 

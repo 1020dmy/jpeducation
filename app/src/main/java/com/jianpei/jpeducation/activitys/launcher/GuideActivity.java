@@ -104,7 +104,9 @@ public class GuideActivity extends BaseNoStatusActivity {
         for (String url : imageUrls) {
             ImageView point = new ImageView(this);
             point.setImageResource(R.drawable.yuandian_gray);
-            point.setLayoutParams(new LinearLayout.LayoutParams(DisplayUtil.dp2px(25), DisplayUtil.dp2px(25)));
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(DisplayUtil.dp2px(29), DisplayUtil.dp2px(11));
+            layoutParams.setMargins(DisplayUtil.dp2px(14),0,0,0);
+            point.setLayoutParams(layoutParams);
             points.add(point);
             llPoint.addView(point);
         }

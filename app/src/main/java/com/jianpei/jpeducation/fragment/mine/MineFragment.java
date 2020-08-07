@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.fragment.mine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.FeedbackActivity;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
 import com.jianpei.jpeducation.activitys.mine.InviteFriendsActivity;
@@ -27,6 +29,7 @@ import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.mine.userinfo.UserInfoActivity;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.UserInfoBean;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.pop.CustomerServicePopup;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.UserInfoModel;
@@ -110,10 +113,7 @@ public class MineFragment extends BaseFragment {
             @Override
             public void onChanged(UserInfoBean userInfoBean) {
                 dismissLoading();
-
                 setData(userInfoBean);
-
-
             }
         });
         userInfoModel.getErrData().observe(this, new Observer<String>() {
@@ -125,15 +125,14 @@ public class MineFragment extends BaseFragment {
             }
         });
 
-        showLoading("");
-        userInfoModel.userInfo();
 
     }
 
 
     protected void setData(UserInfoBean userInfoBean) {
-        if (userInfoBean == null)
+        if (userInfoBean == null) {
             return;
+        }
         tvName.setText(userInfoBean.getUser_name());
         Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(civHead);
         tvJifenNum.setText(userInfoBean.getJi_fen());
@@ -157,10 +156,24 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+            userInfoModel.userInfo();
+        } else {
+            tvName.setText("登录/注册");
+            tvJinbiNum.setText("0");
+            tvJifenNum.setText("0");
+            tvSignin.setText("未签到");
+        }
     }
 
     @OnClick({R.id.civ_head, R.id.rl_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin, R.id.tv_jinbi, R.id.tv_jinbi_num})
     public void onViewClicked(View view) {
+        if (view.getId() != R.id.tv_service) {//除客服中心和设置，其他需要判断登陆状态
+            if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                return;
+            }
+        }
         switch (view.getId()) {
             case R.id.civ_head://个人信息
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
@@ -210,6 +223,14 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), GoldDetailActivity.class));
                 break;
 
+        }
+    }
+
+
+    protected void isLogin() {
+        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            return;
         }
     }
 

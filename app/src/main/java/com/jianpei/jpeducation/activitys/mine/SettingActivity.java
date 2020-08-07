@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys.mine;
 
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -43,6 +44,11 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initView() {
         tvTitle.setText("设置");
+        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+            btnSignout.setVisibility(View.GONE);
+        } else {
+            btnSignout.setVisibility(View.VISIBLE);
+        }
 
     }
 

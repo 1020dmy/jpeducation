@@ -30,9 +30,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/civ_head"
-                android:text="小鱼儿"
+                android:text="登录/注册"
                 android:textColor="@color/white"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_jifen"
@@ -68,7 +69,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/tv_jifen"
-                android:text="222"
+                android:text="0"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -80,7 +81,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/tv_jinbi"
-                android:text="222"
+                android:text="0"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -150,10 +151,10 @@
                         android:background="@drawable/shape_round_sign"
                         android:gravity="center"
                         android:text="1"
-                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:textSize="@dimen/s_dp_10"
-                        android:translationX="-5dp" />
+                        android:translationX="-5dp"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 

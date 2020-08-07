@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activitys.launcher.LauncherActivity">
 
 
@@ -11,6 +12,22 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
 
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/shape_selectzhuanye_itemt"
+        android:gravity="center"
+        android:text="5秒"
+        android:textColor="@color/cE73E2F"
+        android:textSize="@dimen/s_dp_14" />
+
+
+</RelativeLayout>

@@ -2,9 +2,11 @@ package com.jianpei.jpeducation.activitys.launcher;
 
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
@@ -24,8 +26,12 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
     private int isfirst;
     @BindView(R.id.imageView)
     ImageView imageView;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
 
     private String catId;
+
+    private CountDownTimer countDownTimer;
 
     @Override
     protected int setLayoutView() {
@@ -57,9 +63,16 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
     }
 
     public void start(ArrayList<String> images) {
-        new Handler().postDelayed(new Runnable() {
+
+        countDownTimer = new CountDownTimer(5000, 1000) {
             @Override
-            public void run() {
+            public void onTick(long millisUntilFinished) {
+                tvTime.setText(millisUntilFinished / 1000 + "秒");
+
+            }
+
+            @Override
+            public void onFinish() {
                 if (isfirst == 0) {
                     startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
                 } else {
@@ -70,7 +83,31 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
                     }
                 }
                 finish();
+
             }
-        }, 2000);
+        }.start();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (isfirst == 0) {
+//                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
+//                } else {
+//                    if (TextUtils.isEmpty(catId)) {
+//                        startActivity(new Intent(LauncherActivity.this, SelectDisciplineActivity.class));
+//                    } else {
+//                        startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+//                    }
+//                }
+//                finish();
+//            }
+//        }, 2000);
+    }
+
+    @Override
+    protected void onStop() {
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+        countDownTimer = null;
+        super.onStop();
     }
 }

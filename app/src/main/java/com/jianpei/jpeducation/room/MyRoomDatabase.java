@@ -21,7 +21,7 @@ import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
  */
 
 @Database(entities = {MaterialInfoBean.class, MaterialTitle.class, DirectoryBean.class, ViodBean.class, DownloadMediaInfo.class}, version = 2)
-public abstract   class MyRoomDatabase extends RoomDatabase {
+public abstract class MyRoomDatabase extends RoomDatabase {
 
     private static volatile MyRoomDatabase INSTANCE;
 

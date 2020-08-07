@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
 import com.jianpei.jpeducation.activitys.mine.SettingActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
@@ -263,13 +264,19 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                inActivity();
                 break;
             case R.id.tv_message:
-                startActivity(new Intent(this, MineMessageActivity.class));
+                if (isLogin())
+                    startActivity(new Intent(this, MineMessageActivity.class));
+                else
+                    startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.tv_setting:
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.ib_shopping:
-                startActivity(new Intent(this, ShoppingCartActivity.class));
+                if (isLogin())
+                    startActivity(new Intent(this, ShoppingCartActivity.class));
+                else
+                    startActivity(new Intent(this, LoginActivity.class));
                 break;
 
         }
@@ -279,7 +286,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     @Override
     protected void onNewIntent(Intent intent) {
         L.e("=====onNewIntent=====");
-        if (intent!=null && "IntegralActivity".equals(intent.getStringExtra("from"))) {
+        if (intent != null && "IntegralActivity".equals(intent.getStringExtra("from"))) {
             radioGroup.check(R.id.rb_tiku);
         }
         super.onNewIntent(intent);

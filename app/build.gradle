@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.jianpei.jpeducation"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -24,6 +24,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+//    configurations {
+//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
 
 
     buildTypes {
@@ -65,6 +69,7 @@ dependencies {
     //网络框架
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.1'
+    //和客服使用同一个
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
     //json解析
@@ -115,17 +120,23 @@ dependencies {
     implementation project(path: ':umeng')
     //支付宝支付
     implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+    //螳螂
+//    implementation(name: 'mantis_im_sdk', ext: 'aar')
+//    configurations {
+//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
 
     //刷新/加载
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
     implementation 'com.scwang.smart:refresh-header-material:2.0.1'    //谷歌刷新头
     implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'//经典加载
     //表情
-    implementation 'androidx.emoji:emoji-appcompat:1.1.0'
+//    implementation 'androidx.emoji:emoji-appcompat:1.1.0'
     //图片压缩
     implementation 'top.zibin:Luban:1.1.8'
 
     //长图加载
-    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+//    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+
 
 }

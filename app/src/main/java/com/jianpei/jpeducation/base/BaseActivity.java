@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -23,6 +24,7 @@ import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.utils.LoadingDialog;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.StatusBarUtil;
 import com.jianpei.umeng.ShareActivity;
 import com.umeng.socialize.ShareAction;
@@ -53,8 +55,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     private Dialog dialog;
-
-
 
 
     @Override
@@ -319,6 +319,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                 aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             }
         }
+    }
+
+
+    protected boolean isLogin() {
+
+        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
 

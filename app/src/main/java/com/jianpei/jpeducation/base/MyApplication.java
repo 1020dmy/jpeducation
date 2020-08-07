@@ -3,7 +3,6 @@ package com.jianpei.jpeducation.base;
 import android.app.Application;
 import android.content.Context;
 
-import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.DisplayUtil;
@@ -54,6 +53,8 @@ public class MyApplication extends Application {
         initWx();
 
         DisplayUtil.getWindowSize();
+        //螳螂
+
 
 //        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
 
