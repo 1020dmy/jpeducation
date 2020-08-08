@@ -51,6 +51,9 @@ public interface SchoolContract {
         //我的动态
         Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize);
 
+
+        //删除动态
+        Observable<BaseEntity<String>> delThread(String thread_id);
     }
 
 
@@ -74,5 +77,8 @@ public interface SchoolContract {
         void insertEvaluation(String thread_id, String content, String post_id, String user_id_at);
 
         void mThreadData(int pageIndex, int pageSize);
+
+
+        void delThread(String thread_id);
     }
 }

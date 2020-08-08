@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="13dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_head"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/ic_launcher" />
+
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/civ_head"
+        android:text="张三"
+        android:textColor="@color/c888B96"
+        android:textSize="@dimen/s_dp_12" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/civ_head"
+        android:text="3wrewrew"
+        android:textColor="@color/c888B96"
+        android:textSize="@dimen/s_dp_11" />
+
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/transparents"
+        android:src="@drawable/shopping_cat_delete" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/civ_head"
+        android:layout_marginTop="15dp"
+        android:text="sdfdsfdsfsdfdsfafad打算发多发的疯狂事发房间开打飞机的房间里都放假啦放假"
+        android:textColor="@color/c161820"
+        android:textSize="@dimen/s_dp_13" />
+
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/school_share_icon" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@drawable/school_message_icon"
+        android:drawablePadding="5dp"
+        android:text="99+"
+        android:textColor="@color/cA5A7B0"
+        android:textSize="@dimen/s_dp_11" />
+
+    <ImageView
+        android:id="@+id/iv_dianzan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@id/tv_dianzan"
+        android:src="@drawable/school_dianzan_icon" />
+
+    <TextView
+        android:id="@+id/tv_dianzan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/cA5A7B0"
+        android:textSize="@dimen/s_dp_11" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/iv_share"
+        android:layout_marginTop="15dp"
+        android:background="@color/ce9e9e9" />
+
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="16dp"-->
+    <!--        android:orientation="vertical">-->
+
+
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="30dp"-->
+    <!--            android:layout_marginTop="8dp">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_share"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:src="@drawable/school_share_icon" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_message"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_centerInParent="true"-->
+    <!--                android:drawableLeft="@drawable/school_message_icon"-->
+    <!--                android:drawablePadding="5dp"-->
+    <!--                android:text="99+"-->
+    <!--                android:textColor="@color/cA5A7B0"-->
+    <!--                android:textSize="@dimen/s_dp_11" />-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/ll_dianzan"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true">-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/iv_dianzan"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:src="@drawable/school_dianzan_icon" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/tv_dianzan"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginLeft="5dp"-->
+    <!--                    android:textColor="@color/cA5A7B0"-->
+    <!--                    android:textSize="@dimen/s_dp_11" />-->
+    <!--            </LinearLayout>-->
+
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="1dp"-->
+    <!--            android:layout_marginTop="15dp"-->
+    <!--            android:background="@color/ce9e9e9" />-->
+    <!--    </LinearLayout>-->
+
+
+</RelativeLayout>

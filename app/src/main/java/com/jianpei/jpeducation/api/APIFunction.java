@@ -50,6 +50,7 @@ import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
+import com.jianpei.jpeducation.bean.json.DelThreadJson;
 import com.jianpei.jpeducation.bean.json.EditUserJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
@@ -484,6 +485,12 @@ public interface APIFunction {
      */
     @POST(UrlConfig.delEval)
     Observable<BaseEntity<String>> delEval(@Field("post_id") String post_id);
+
+    /**
+     * 1-删除动态
+     */
+    @POST(UrlConfig.delThread)
+    Observable<BaseEntity<String>> delThread(@Body DelThreadJson delThreadJson);
 
     /**
      * 1-选课首页

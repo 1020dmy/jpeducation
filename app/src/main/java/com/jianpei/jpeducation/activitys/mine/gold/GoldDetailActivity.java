@@ -38,8 +38,8 @@ public class GoldDetailActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
-    @BindView(R.id.tv_name)
-    TextView tvName;
+//    @BindView(R.id.tv_name)
+//    TextView tvName;
     @BindView(R.id.tv_gold)
     TextView tvGold;
     @BindView(R.id.tv_exchange)
@@ -57,6 +57,8 @@ public class GoldDetailActivity extends BaseActivity {
 
     private List<GoldBean> goldBeans;
 
+    private String totalGold;
+
 
     @Override
     protected int setLayoutView() {
@@ -68,7 +70,10 @@ public class GoldDetailActivity extends BaseActivity {
 
         tvTitle.setText("金币明细");
         tvRight.setText("兑换记录");
-        tvRight.setVisibility(View.VISIBLE);
+//        tvRight.setVisibility(View.VISIBLE);
+
+        totalGold=getIntent().getStringExtra("totalGold");
+        tvGold.setText(totalGold);
 
         goldModel = new ViewModelProvider(this).get(GoldModel.class);
 

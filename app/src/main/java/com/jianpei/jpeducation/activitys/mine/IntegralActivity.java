@@ -29,6 +29,7 @@ import com.jianpei.jpeducation.adapter.mine.SigninAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.integral.IntegralInfoBean;
 import com.jianpei.jpeducation.bean.integral.IntegralTaskBean;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.dialog.SiginDialog;
 import com.jianpei.jpeducation.utils.dialog.SiginSupplementDialog;
 import com.jianpei.jpeducation.viewmodel.IntegralModel;
@@ -91,6 +92,7 @@ public class IntegralActivity extends BaseNoStatusActivity {
 
     private int type;//4签到，5补签
     private String dayTime;
+    private int mPosition;//补签的位置
 
 
     @Override
@@ -166,6 +168,7 @@ public class IntegralActivity extends BaseNoStatusActivity {
         signinAdapter.setMyItemOnClickListener(new MyItemOnClickListener() {
             @Override
             public void onItemClick(int position, View view) {
+                mPosition = position;
                 if (list.get(position).getIs_sign() == 1) {
                     shortToast("请勿重复签到");
                 } else if (list.get(position).getIs_sign() == 2) {
@@ -176,7 +179,7 @@ public class IntegralActivity extends BaseNoStatusActivity {
                             public void onSubmitClick() {
                                 type = 5;
                                 showLoading("");
-                                integralModel.integrlPay(type, list.get(position).getIntegral_price(), list.get(position).getDate());
+                                integralModel.integrlPay(type, list.get(mPosition).getIntegral_price(), list.get(mPosition).getDate());
                             }
                         });
                     }
@@ -301,4 +304,5 @@ public class IntegralActivity extends BaseNoStatusActivity {
         integralModel.integralTask();
 
     }
+
 }

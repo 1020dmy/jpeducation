@@ -28,7 +28,7 @@ import com.jianpei.jpeducation.utils.SelectphotoUtils;
 import com.jianpei.jpeducation.utils.dialog.PostNewsResultDialog;
 import com.jianpei.jpeducation.utils.keyboard.OnSoftKeyBoardChangeListener;
 import com.jianpei.jpeducation.utils.keyboard.SoftKeyBoardListener;
-import com.jianpei.jpeducation.view.ContentEditText;
+import com.jianpei.jpeducation.view.contentedittext.ContentEditText;
 import com.jianpei.jpeducation.viewmodel.PostNewsModel;
 import com.jianpei.jpeducation.viewmodel.UploadFileModel;
 

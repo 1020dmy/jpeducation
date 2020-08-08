@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,8 +27,8 @@ public class IntegralDetailsActivity extends BaseActivity {
     ImageView ivBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.tv_name)
-    TextView tvName;
+//    @BindView(R.id.tv_name)
+//    TextView tvName;
     @BindView(R.id.tv_price)
     TextView tvPrice;
     @BindView(R.id.tabLayout)
@@ -70,8 +69,8 @@ public class IntegralDetailsActivity extends BaseActivity {
     protected void initData() {
         String price = getIntent().getStringExtra("integral");
         tvPrice.setText(price);
-        String name = SpUtils.getValue(SpUtils.USERNAME);
-        tvName.setText(name);
+//        String name = SpUtils.getValue(SpUtils.USERNAME);
+//        tvName.setText(name);
     }
 
 

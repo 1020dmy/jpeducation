@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.aliyun.downloader.AliDownloaderFactory;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
@@ -26,7 +24,7 @@ import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.view.SlideRecyclerView;
+import com.jianpei.jpeducation.view.slid.SlideRecyclerView;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
 import org.jetbrains.annotations.NotNull;

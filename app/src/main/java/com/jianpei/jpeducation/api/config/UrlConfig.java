@@ -153,6 +153,10 @@ public class UrlConfig {
     //1-删除评论
     public static final String delEval = "garden/delEval";
 
+    //1-1-删除动态
+    public static final String delThread = "garden/delThread";
+
+
     //1-选课首页
     public static final String groupHome = "group/groupHome";
 

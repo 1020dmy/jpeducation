@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.school;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewStructure;
@@ -33,6 +34,8 @@ import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.utils.keyboard.OnSoftKeyBoardChangeListener;
 import com.jianpei.jpeducation.utils.keyboard.SoftKeyBoardListener;
+import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageView;
+import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageViewAdapter;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -65,8 +68,8 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     Button btnStatus;
     @BindView(R.id.tv_content)
     TextView tvContent;
-    @BindView(R.id.rv_images)
-    RecyclerView rvImages;
+    //    @BindView(R.id.rv_images)
+//    RecyclerView rvImages;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
@@ -92,10 +95,14 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     TextView tvReplySend;
     @BindView(R.id.ll_reply)
     LinearLayout llReply;
+    //
+    @BindView(R.id.nineGridImageView)
+    NineGridImageView<ImagesBean> nineGridImageView;
+
 
     private SchoolModel schoolModel;
-    private ImageListAdapter imageListAdapter;
-    private List<ImagesBean> imagesBeans;
+//    private ImageListAdapter imageListAdapter;
+//    private List<ImagesBean> imagesBeans;
 
     //评论
     private CommentAdapter commentAdapter;
@@ -121,6 +128,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
 //        user_id = getIntent().getStringExtra("user_id");
         threadDataBean = getIntent().getParcelableExtra("threadDataBean");
         schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
+        //软键盘显示/隐藏
         SoftKeyBoardListener.setListener(this, new OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow() {
@@ -175,10 +183,8 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     @Override
     protected void initData() {
 
-        imagesBeans = new ArrayList<>();
-        imageListAdapter = new ImageListAdapter(imagesBeans, this);
-        rvImages.setLayoutManager(new GridLayoutManager(this, 3));
-        rvImages.setAdapter(imageListAdapter);
+//        imagesBeans = new ArrayList<>();
+//        imageListAdapter = new ImageListAdapter(imagesBeans, this);
         //评论
         mEvaluationDataBeans = new ArrayList<>();
         commentAdapter = new CommentAdapter(mEvaluationDataBeans, this);
@@ -278,7 +284,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             return;
         Glide.with(this).load(threadInfoBean.getUser_img()).into(civHead);
         tvName.setText(threadInfoBean.getUser_name());
-        tvTime.setText(threadInfoBean.getCreate_time_str());
+        tvTime.setText(threadInfoBean.getCreated_at_str());
         if ("1".equals(threadInfoBean.getIs_my_thread())) {//是否我的帖子1是，0否
             btnStatus.setVisibility(View.GONE);
         }
@@ -302,9 +308,17 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             tvDianzanNum.setText(threadInfoBean.getLike_num());
         }
         tvContent.setText(threadInfoBean.getContent());
-        if (imagesBeans != null && imagesBeans.size() == 0) {
-            imagesBeans.addAll(threadInfoBean.getImages());
-            imageListAdapter.notifyDataSetChanged();
+        if (threadInfoBean.getImages() != null && threadInfoBean.getImages().size() != 0) {//判断有没有图片
+            NineGridImageViewAdapter<ImagesBean> adapter = new NineGridImageViewAdapter<ImagesBean>() {
+                @Override
+                protected void onDisplayImage(Context context, ImageView imageView, ImagesBean imagesBean) {
+                    Glide.with(PostInfoActivity.this).load(imagesBean.getUrl()).placeholder(R.drawable.feedback_add_pict).into(imageView);
+                }
+            };
+            nineGridImageView.setAdapter(adapter);
+            nineGridImageView.setImagesData(threadInfoBean.getImages());
+        }else{
+            nineGridImageView.setVisibility(View.GONE);
         }
     }
 
@@ -358,7 +372,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 showInput(etReplyContent);
                 break;
             case R.id.linearLayout:
-                startActivity(new Intent(this, ReplyListActivity.class).putExtra("evaluationDataBean",mEvaluationDataBeans.get(position)));
+                startActivity(new Intent(this, ReplyListActivity.class).putExtra("evaluationDataBean", mEvaluationDataBeans.get(position)));
                 break;
         }
     }

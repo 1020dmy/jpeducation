@@ -8,7 +8,7 @@
 
     <include layout="@layout/base_title_status" />
 
-    <com.jianpei.jpeducation.view.SlideRecyclerView
+    <com.jianpei.jpeducation.view.slid.SlideRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

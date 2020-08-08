@@ -415,4 +415,44 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
         });
 
     }
+
+    /**
+     * 删除动态
+     *
+     * @param thread_id
+     */
+    private MutableLiveData<String> delThreadLiveData;
+
+    public MutableLiveData<String> getDelThreadLiveData() {
+        if (delThreadLiveData == null)
+            delThreadLiveData = new MutableLiveData<>();
+        return delThreadLiveData;
+    }
+
+    @Override
+    public void delThread(String thread_id) {
+        if (TextUtils.isEmpty(thread_id)) {
+            return;
+        }
+        schoolRepository.delThread(thread_id).compose(setThread()).subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+                if (t.isSuccess()) {
+                    delThreadLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
 }

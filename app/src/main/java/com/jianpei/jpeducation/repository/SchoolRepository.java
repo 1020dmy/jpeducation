@@ -4,6 +4,7 @@ import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.base.BaseRepository;
 import com.jianpei.jpeducation.bean.json.AttentionJson;
+import com.jianpei.jpeducation.bean.json.DelThreadJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
 import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
@@ -103,5 +104,10 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
     @Override
     public Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize) {
         return RetrofitFactory.getInstance().API().mThreadData(new TopicDataJson(pageIndex, pageSize));
+    }
+    //删除动态
+    @Override
+    public Observable<BaseEntity<String>> delThread(String thread_id) {
+        return RetrofitFactory.getInstance().API().delThread(new DelThreadJson(thread_id));
     }
 }

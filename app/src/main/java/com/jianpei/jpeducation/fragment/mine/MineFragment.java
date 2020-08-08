@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -82,12 +83,18 @@ public class MineFragment extends BaseFragment {
     TextView tvWaitPayNum;
     @BindView(R.id.rl_wait_pay)
     RelativeLayout rlWaitPay;
+    @BindView(R.id.iv_sex)
+    ImageView iv_sex;
 
     private UserInfoModel userInfoModel;
 
     private CustomerServicePopup customerServicePopup;
 
     private MainModel mainModel;//为了传递未读消息数量
+
+//    private String totalGold;
+
+    private UserInfoBean mUserInfoBean;
 
 
 //    @BindView(R.id.btn_info)
@@ -133,9 +140,13 @@ public class MineFragment extends BaseFragment {
         if (userInfoBean == null) {
             return;
         }
+        mUserInfoBean=userInfoBean;
+//        totalGold = userInfoBean.getVirtual_currency();
+
         tvName.setText(userInfoBean.getUser_name());
-        Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(civHead);
+        Glide.with(getActivity()).load(userInfoBean.getImg()).placeholder(R.drawable.head_icon).into(civHead);
         tvJifenNum.setText(userInfoBean.getJi_fen());
+        //金币
         tvJinbiNum.setText(userInfoBean.getVirtual_currency());
         if (userInfoBean.getIs_sign_in() == 0) {//未签到
             tvSignin.setText("未签到");
@@ -148,6 +159,12 @@ public class MineFragment extends BaseFragment {
             tvWaitPayNum.setText(userInfoBean.getUnpaid_num() + "");
         } else {
             tvWaitPayNum.setVisibility(View.GONE);
+        }
+        iv_sex.setVisibility(View.VISIBLE);
+        if ("1".equals(userInfoBean.getSex())) {
+            iv_sex.setImageResource(R.drawable.sex_boy);
+        } else {
+            iv_sex.setImageResource(R.drawable.sex_gril);
         }
         //发送未读消息数量
         mainModel.getMessageNumLiveData().setValue(userInfoBean.getMessage_num());
@@ -163,6 +180,7 @@ public class MineFragment extends BaseFragment {
             tvJinbiNum.setText("0");
             tvJifenNum.setText("0");
             tvSignin.setText("未签到");
+            iv_sex.setVisibility(View.GONE);
         }
     }
 
@@ -204,7 +222,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MaterialActivity.class));
                 break;
             case R.id.tv_my_moving://我的动态
-                startActivity(new Intent(getActivity(), MineDynamicActivity.class));
+                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("mUserInfoBean",mUserInfoBean));
                 break;
             case R.id.ll_share://邀请好友
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
@@ -218,9 +236,9 @@ public class MineFragment extends BaseFragment {
                 }
                 customerServicePopup.showPop();
                 break;
-            case R.id.tv_jinbi:
+            case R.id.tv_jinbi://金币
             case R.id.tv_jinbi_num:
-                startActivity(new Intent(getActivity(), GoldDetailActivity.class));
+                startActivity(new Intent(getActivity(), GoldDetailActivity.class).putExtra("totalGold", mUserInfoBean.getVirtual_currency()));
                 break;
 
         }

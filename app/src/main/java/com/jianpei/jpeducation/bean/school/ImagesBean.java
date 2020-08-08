@@ -1,7 +1,11 @@
 package com.jianpei.jpeducation.bean.school;
 
+import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.Nullable;
+
 
 /**
  * jpeducation
@@ -29,6 +33,9 @@ public class ImagesBean implements Parcelable {
     private String sort_num;
     private String width;
     private String height;
+
+//    private Rect mBounds; // 记录坐标
+
 
     public String getId() {
         return id;
@@ -117,4 +124,19 @@ public class ImagesBean implements Parcelable {
             return new ImagesBean[size];
         }
     };
+
+//    public void setmBounds(Rect mBounds) {
+//        this.mBounds = mBounds;
+//    }
+
+//    @Override
+//    public Rect getBounds() {
+//        return mBounds;
+//    }
+//
+//    @Nullable
+//    @Override
+//    public String getVideoUrl() {
+//        return url;
+//    }
 }

@@ -54,7 +54,7 @@ public class ThreadDataBean implements Parcelable {
     private String created_at;
     private String is_del;
     private String remind_id;
-    private String create_time_str;
+    private String created_at_str;
 
     private String is_my_thread;
     private String is_praise;
@@ -258,14 +258,22 @@ public class ThreadDataBean implements Parcelable {
         this.remind_id = remind_id;
     }
 
-    public String getCreate_time_str() {
-        return create_time_str;
+//    public String getCreate_time_str() {
+//        return created_at_str;
+//    }
+
+//    public void setCreate_time_str(String create_time_str) {
+//        this.created_at_str = create_time_str;
+//    }
+
+
+    public String getCreated_at_str() {
+        return created_at_str;
     }
 
-    public void setCreate_time_str(String create_time_str) {
-        this.create_time_str = create_time_str;
+    public void setCreated_at_str(String created_at_str) {
+        this.created_at_str = created_at_str;
     }
-
 
     @Override
     public int describeContents() {
@@ -291,7 +299,7 @@ public class ThreadDataBean implements Parcelable {
         dest.writeString(this.created_at);
         dest.writeString(this.is_del);
         dest.writeString(this.remind_id);
-        dest.writeString(this.create_time_str);
+        dest.writeString(this.created_at_str);
         dest.writeString(this.is_my_thread);
         dest.writeString(this.is_praise);
         dest.writeString(this.is_post);
@@ -322,7 +330,7 @@ public class ThreadDataBean implements Parcelable {
         this.created_at = in.readString();
         this.is_del = in.readString();
         this.remind_id = in.readString();
-        this.create_time_str = in.readString();
+        this.created_at_str = in.readString();
         this.is_my_thread = in.readString();
         this.is_praise = in.readString();
         this.is_post = in.readString();

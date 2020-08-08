@@ -182,14 +182,14 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.iv_share://分享
                 break;
-            case R.id.ll_dianzan://点赞/取消点赞
+            case R.id.tv_dianzan:
+            case R.id.iv_dianzan:
                 showLoading("");
 //                viewType = 1;
                 schoolModel.gardenPraise(type, mThreadDataBeans.get(position).getId(), "", "");
                 break;
             case R.id.tv_message://评论
-                break;
-            case R.id.linearLayout://详情
+            case R.id.relativeLayout://详情
                 startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
                 break;
         }

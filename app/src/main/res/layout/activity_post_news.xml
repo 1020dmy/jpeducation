@@ -32,7 +32,7 @@
         <!--            android:textColorHint="@color/cA5A7B0"-->
         <!--            android:textSize="@dimen/s_dp_13" />-->
 
-        <com.jianpei.jpeducation.view.ContentEditText
+        <com.jianpei.jpeducation.view.contentedittext.ContentEditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="200dp"
