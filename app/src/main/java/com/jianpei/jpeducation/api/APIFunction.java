@@ -82,6 +82,7 @@ import com.jianpei.jpeducation.bean.json.ThreadDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadInfoJson;
 import com.jianpei.jpeducation.bean.json.TopicDataJson;
 import com.jianpei.jpeducation.bean.json.UpdateMessageStatusJson;
+import com.jianpei.jpeducation.bean.json.UpdateScheduleJson;
 import com.jianpei.jpeducation.bean.json.VideoUrlJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
 import com.jianpei.jpeducation.bean.material.MaterialDataBean;
@@ -407,6 +408,12 @@ public interface APIFunction {
     Observable<BaseEntity<MClassInfoBean>> classInfo(@Body ClassInfoJson classInfoJson);
 
     /**
+     * 1-1-更新看课记录
+     */
+    @POST(UrlConfig.updateSchedule)
+    Observable<BaseEntity<String>> updateSchedule(@Body UpdateScheduleJson updateScheduleJson);
+
+    /**
      * 话题列表
      */
     @POST(UrlConfig.topicData)
@@ -620,6 +627,9 @@ public interface APIFunction {
     @Headers({"upfile: 111"})
     @Multipart
     Observable<BaseEntity<List<String>>> uploadFile(@Part List<MultipartBody.Part> imgs);
+
+
+
 
 
     /**

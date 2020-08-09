@@ -16,14 +16,14 @@ import io.reactivex.Observable;
  */
 public interface ClassPlayerContract {
     interface Repository {
+        //课程详情
         Observable<BaseEntity<MClassInfoBean>> classInfo(String class_id);
 
-        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id);
+        //获取视频播放地址
+        Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id, String group_id);
 
-
-
-
-
+        //更新视频观看记录
+        Observable<BaseEntity<String>> updateSchedule(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id);
 
 
     }
@@ -32,7 +32,9 @@ public interface ClassPlayerContract {
     interface Model {
         void classInfo(String class_id);
 
-        void videoUrl(String video_id, String buy_id,String group_id);
+        void videoUrl(String video_id, String buy_id, String group_id);
 
+
+        void updateSchedule(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id);
     }
 }

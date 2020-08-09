@@ -106,11 +106,11 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
      */
 
     @Override
-    public void videoUrl(String video_id, String buy_id,String group_id) {
+    public void videoUrl(String video_id, String buy_id, String group_id) {
         if (TextUtils.isEmpty(video_id)) {
             return;
         }
-        classPlayerRepository.videoUrl("normal", video_id, buy_id,group_id).compose(setThread()).subscribe(new BaseObserver<VideoUrlBean>() {
+        classPlayerRepository.videoUrl("normal", video_id, buy_id, group_id).compose(setThread()).subscribe(new BaseObserver<VideoUrlBean>() {
             @Override
             protected void onSuccees(BaseEntity<VideoUrlBean> t) throws Exception {
                 if (t.isSuccess()) {
@@ -140,5 +140,50 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
         if (stringMutableLiveData == null)
             stringMutableLiveData = new MutableLiveData<>();
         return stringMutableLiveData;
+    }
+
+    /**
+     * 更新观看记录
+     *
+     * @param total_second
+     * @param current_second
+     * @param class_id
+     * @param chapter_id
+     * @param viod_id
+     * @param buy_id
+     */
+    private MutableLiveData<String> updateScheduleLiveData;
+
+
+    public MutableLiveData<String> getUpdateScheduleLiveData() {
+        if (updateScheduleLiveData == null)
+            updateScheduleLiveData = new MutableLiveData<>();
+        return updateScheduleLiveData;
+    }
+
+    @Override
+    public void updateSchedule(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id) {
+        classPlayerRepository.updateSchedule(total_second, current_second, class_id, chapter_id, viod_id, buy_id).compose(setThread()).subscribe(new BaseObserver<String>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+                if (t.isSuccess()) {
+                    updateScheduleLiveData.setValue(t.getData());
+
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
     }
 }

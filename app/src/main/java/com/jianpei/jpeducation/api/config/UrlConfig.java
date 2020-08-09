@@ -122,6 +122,9 @@ public class UrlConfig {
 
     //1-1-我的课程详情
     public static final String classInfo = "course/classInfo";
+    //1-更新看课记录
+    public static final String updateSchedule = "video/updateSchedule";
+
 
     //1-话题列表
     public static final String topicData = "garden/topicData";
