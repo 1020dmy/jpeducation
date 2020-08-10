@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,10 +17,12 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.mine.MineDynamicAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.UserInfoBean;
+import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
@@ -89,7 +92,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
         setTitleViewPadding(tvStatus);
         tvStatus.setVisibility(View.VISIBLE);
         llTitle.setBackgroundColor(getResources().getColor(R.color.transparents));
-        ivBack.setImageResource(R.drawable.ic_back);
+        ivBack.setImageResource(R.drawable.info_back);
 
         userInfoBean = getIntent().getParcelableExtra("mUserInfoBean");
 
@@ -134,7 +137,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
         dynamicAdapter = new MineDynamicAdapter(threadDataBeans, this);
         dynamicAdapter.setMyItemOnClickListener(this);
         recyclerView.setAdapter(dynamicAdapter);
-
+        //我的动态
         schoolModel.getmThreadDataBeanLiveData().observe(this, new Observer<MThreadDataBean>() {
             @Override
             public void onChanged(MThreadDataBean mThreadDataBean) {
@@ -162,6 +165,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
             }
         });
+        //删除我的动态
         schoolModel.getDelThreadLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -169,11 +173,21 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
                 shortToast(s);
                 if (mPosition != -1) {
                     threadDataBeans.remove(mPosition);
-                    dynamicAdapter.notifyItemChanged(mPosition);
+                    dynamicAdapter.notifyDataSetChanged();
                 }
                 mPosition = -1;
 
 
+            }
+        });
+        //点赞/取消点赞
+        schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
+            @Override
+            public void onChanged(GardenPraiseBean gardenPraiseBean) {
+                dismissLoading();
+                threadDataBeans.get(mPosition).setIs_praise(gardenPraiseBean.getThread_info().getIs_praise());
+                threadDataBeans.get(mPosition).setLike_num(gardenPraiseBean.getThread_info().getLike_num());
+                dynamicAdapter.notifyItemChanged(mPosition);
             }
         });
 
@@ -191,12 +205,23 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
     @Override
     public void onItemClick(int position, View view) {
+        mPosition = position;
         switch (view.getId()) {
             case R.id.ib_delete:
                 showLoading("");
-                mPosition = position;
                 schoolModel.delThread(threadDataBeans.get(position).getId());
                 break;
+            case R.id.relativeLayout:
+                startActivity(new Intent(this, PostInfoActivity.class).putExtra("threadDataBean", threadDataBeans.get(position)));
+                break;
+            case R.id.iv_share:
+                break;
+            case R.id.tv_dianzan:
+            case R.id.iv_dianzan:
+                showLoading("");
+                schoolModel.gardenPraise("2", threadDataBeans.get(position).getId(), "", "");
+                break;
+
         }
 
     }

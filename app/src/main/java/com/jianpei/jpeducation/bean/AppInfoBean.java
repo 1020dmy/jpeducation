@@ -3,6 +3,11 @@ package com.jianpei.jpeducation.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.base.MyApplication;
+import com.jianpei.jpeducation.utils.AppUtils;
+import com.jianpei.jpeducation.utils.EquipmentUtil;
+import com.jianpei.jpeducation.utils.SpUtils;
+
 /**
  * jpeducation
  * <p>
@@ -18,7 +23,7 @@ public class AppInfoBean implements Parcelable {
     private String version;
     private String model;
     private String device;
-    //    private String packages;
+    private String packages;
     private String uid;
     private String imei;
     private String push_token;
@@ -28,15 +33,27 @@ public class AppInfoBean implements Parcelable {
     public static AppInfoBean appInfoBean = new AppInfoBean();
 
 
-
-
     private AppInfoBean() {
         product = "JP-A-MP";
         channel = "jianpei";
-        version = "1.0.0";
+        version = AppUtils.getVersionName(MyApplication.getInstance());
+        packages = AppUtils.getPackageName(MyApplication.getInstance());
+        model = EquipmentUtil.getSystemModel();
+        device = EquipmentUtil.getSystemDevice();
+        imei = EquipmentUtil.getIMEI();
+        os_version = EquipmentUtil.getSystemVersion();
+        vendor = EquipmentUtil.getDeviceManufacturer();
+
 
     }
 
+    public String getPackages() {
+        return packages;
+    }
+
+    public void setPackages(String packages) {
+        this.packages = packages;
+    }
 
     public String getProduct() {
         return product;
@@ -136,6 +153,8 @@ public class AppInfoBean implements Parcelable {
         dest.writeString(this.push_token);
         dest.writeString(this.os_version);
         dest.writeString(this.vendor);
+        dest.writeString(this.packages);
+
     }
 
 
@@ -150,6 +169,8 @@ public class AppInfoBean implements Parcelable {
         this.push_token = in.readString();
         this.os_version = in.readString();
         this.vendor = in.readString();
+        this.packages = in.readString();
+
     }
 
     public static final Creator<AppInfoBean> CREATOR = new Creator<AppInfoBean>() {

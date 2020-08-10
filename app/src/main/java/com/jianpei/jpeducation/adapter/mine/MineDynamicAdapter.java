@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -145,6 +146,7 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private ImageView iv_share, iv_dianzan;
         private TextView tv_message, tv_dianzan;
         private ImageButton ib_delete;
+        private RelativeLayout relativeLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -158,8 +160,15 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tv_dianzan = itemView.findViewById(R.id.tv_dianzan);
             iv_dianzan = itemView.findViewById(R.id.iv_dianzan);
             ib_delete = itemView.findViewById(R.id.ib_delete);
+            //
+            relativeLayout=itemView.findViewById(R.id.relativeLayout);
+
 
             ib_delete.setOnClickListener(this);
+            relativeLayout.setOnClickListener(this);
+            iv_share.setOnClickListener(this);
+            iv_dianzan.setOnClickListener(this);
+            tv_dianzan.setOnClickListener(this);
 
 
         }
@@ -179,6 +188,8 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private ImageView iv_share, iv_dianzan;
         private TextView tv_message, tv_dianzan;
         private ImageButton ib_delete;
+        private RelativeLayout relativeLayout;
+
 
         private NineGridImageView<ImagesBean> nineGridImageView;
 
@@ -203,8 +214,15 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tv_dianzan = itemView.findViewById(R.id.tv_dianzan);
             iv_dianzan = itemView.findViewById(R.id.iv_dianzan);
             ib_delete = itemView.findViewById(R.id.ib_delete);
+            //
+            relativeLayout=itemView.findViewById(R.id.relativeLayout);
+
 
             ib_delete.setOnClickListener(this);
+            relativeLayout.setOnClickListener(this);
+            iv_share.setOnClickListener(this);
+            iv_dianzan.setOnClickListener(this);
+            tv_dianzan.setOnClickListener(this);
 
             nineGridImageView = itemView.findViewById(R.id.nineGridImageView);
             nineGridImageView.setAdapter(adapter);

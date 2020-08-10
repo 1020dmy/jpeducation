@@ -13,6 +13,8 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.MyApplication;
+import com.jianpei.jpeducation.utils.AppUtils;
 import com.jianpei.jpeducation.utils.SpUtils;
 
 import butterknife.BindView;
@@ -55,6 +57,8 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+        tvVersion.setText("V" + AppUtils.getPackageName(MyApplication.getInstance()));
+
     }
 
 
@@ -71,7 +75,7 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(this, UpVersionActivity.class));
                 break;
             case R.id.tv_xieyi:
-                startActivity(new Intent(this, GuiZeActivity.class).putExtra("webUrl", "https://www.baidu.com").putExtra("title", "用户协议"));
+                startActivity(new Intent(this, GuiZeActivity.class).putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)).putExtra("title", "用户协议"));
                 break;
             case R.id.btn_signout:
                 SpUtils.remove(SpUtils.ID);

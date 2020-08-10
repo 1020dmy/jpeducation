@@ -21,8 +21,18 @@ public class LauncherBean implements Parcelable {
      * startingInfo : https://jianpei-images.oss-cn-beijing.aliyuncs.com/images/public/launcher.jpg
      */
 
+    private String userProtocol;
     private String startingInfo;
+    private String telephone;
     private ArrayList<String> guideList;
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public String getStartingInfo() {
         return startingInfo;
@@ -40,6 +50,13 @@ public class LauncherBean implements Parcelable {
         this.guideList = guideList;
     }
 
+    public String getUserProtocol() {
+        return userProtocol;
+    }
+
+    public void setUserProtocol(String userProtocol) {
+        this.userProtocol = userProtocol;
+    }
 
     @Override
     public int describeContents() {
@@ -50,6 +67,10 @@ public class LauncherBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.startingInfo);
         dest.writeStringList(this.guideList);
+        dest.writeString(this.userProtocol);
+        dest.writeString(this.telephone);
+
+
     }
 
     public LauncherBean() {
@@ -58,6 +79,10 @@ public class LauncherBean implements Parcelable {
     protected LauncherBean(Parcel in) {
         this.startingInfo = in.readString();
         this.guideList = in.createStringArrayList();
+        this.userProtocol = in.readString();
+        this.telephone = in.readString();
+
+
     }
 
     public static final Creator<LauncherBean> CREATOR = new Creator<LauncherBean>() {

@@ -74,7 +74,7 @@ public class OrderDataBean implements Parcelable {
     private String add_type;
     private String tagent_zhekou;
     private String group_id;
-    private String goods_type;
+    private String goods_type;//1正常订单，2拼团
     private String timeout;
     private String huod_id;
     private String regiment_id;
@@ -86,9 +86,12 @@ public class OrderDataBean implements Parcelable {
     private String add_time_str;
     private String class_name_str;
     private String material_des;
+    private String is_reg_succ;
 
     private GroupInfoBean group_info;
     private List<GroupBean> group_list;
+
+
 
     public GroupInfoBean getGroup_info() {
         return group_info;
@@ -362,6 +365,13 @@ public class OrderDataBean implements Parcelable {
         this.material_des = material_des;
     }
 
+    public String getIs_reg_succ() {
+        return is_reg_succ;
+    }
+
+    public void setIs_reg_succ(String is_reg_succ) {
+        this.is_reg_succ = is_reg_succ;
+    }
 
     @Override
     public int describeContents() {
@@ -402,6 +412,8 @@ public class OrderDataBean implements Parcelable {
         dest.writeString(this.add_time_str);
         dest.writeString(this.class_name_str);
         dest.writeString(this.material_des);
+        dest.writeString(this.is_reg_succ);
+
         dest.writeParcelable(this.group_info, flags);
         dest.writeList(this.group_list);
     }
@@ -441,6 +453,8 @@ public class OrderDataBean implements Parcelable {
         this.trade_type = in.readString();
         this.add_time_str = in.readString();
         this.class_name_str = in.readString();
+        this.is_reg_succ = in.readString();
+
         this.material_des = in.readString();
         this.group_info = in.readParcelable(GroupInfoBean.class.getClassLoader());
         this.group_list = new ArrayList<GroupBean>();

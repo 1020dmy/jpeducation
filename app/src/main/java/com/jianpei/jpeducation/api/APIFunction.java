@@ -15,6 +15,7 @@ import com.jianpei.jpeducation.bean.ForgetPwdJson;
 import com.jianpei.jpeducation.bean.IntegrlPayJson;
 import com.jianpei.jpeducation.bean.NoticeDataBean;
 import com.jianpei.jpeducation.bean.SubMaterialDataJson;
+import com.jianpei.jpeducation.bean.VersionDetectBean;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
@@ -92,6 +93,7 @@ import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mine.MessageDataBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
@@ -275,7 +277,7 @@ public interface APIFunction {
      * 1-订单详情
      */
     @POST(UrlConfig.orderInfo)
-    Observable<BaseEntity<OrderInfoBean>> orderInfo(@Body OrderInfoJson orderInfoJson);
+    Observable<BaseEntity<MIneOrderInfoBean>> orderInfo(@Body OrderInfoJson orderInfoJson);
 
     /**
      * 1-计算价格
@@ -628,8 +630,11 @@ public interface APIFunction {
     @Multipart
     Observable<BaseEntity<List<String>>> uploadFile(@Part List<MultipartBody.Part> imgs);
 
-
-
+    /**
+     * 1-版本检测
+     */
+    @POST(UrlConfig.versionDetect)
+    Observable<BaseEntity<VersionDetectBean>> versionDetect();
 
 
     /**

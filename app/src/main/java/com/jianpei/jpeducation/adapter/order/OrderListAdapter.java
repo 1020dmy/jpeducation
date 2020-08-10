@@ -60,12 +60,12 @@ public class OrderListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == 0) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orderlist_watipay, parent, false);
-            return new WaitPayMyHolder(view);
-        } else {
+        if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orderlist_complete, parent, false);
             return new CompleteMyHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orderlist_watipay, parent, false);
+            return new WaitPayMyHolder(view);
         }
     }
 
@@ -80,8 +80,9 @@ public class OrderListAdapter extends RecyclerView.Adapter {
                 waitPayMyHolder.tvStatus.setText("待付款");
             } else if ("1".equals(orderDataBean.getState())) {
                 waitPayMyHolder.tvStatus.setText("已付款");
-            } else {
+            } else if ("2".equals(orderDataBean.getState())) {
                 waitPayMyHolder.tvStatus.setText("付款失败");
+                waitPayMyHolder.tv_cancel.setVisibility(View.GONE);
             }
             waitPayMyHolder.tv_price.setText("￥" + orderDataBean.getMoney());
 
@@ -103,8 +104,14 @@ public class OrderListAdapter extends RecyclerView.Adapter {
                 completeMyHolder.tvStatus.setText("待付款");
             } else if ("1".equals(orderDataBean.getState())) {
                 completeMyHolder.tvStatus.setText("已付款");
+                if ("2".equals(orderDataBean.getGoods_type()) && "1".equals(orderDataBean.getIs_reg_succ())) {//是团购切还未拼团完成
+                    completeMyHolder.tv_student.setVisibility(View.GONE);
+                    completeMyHolder.tv_comment.setVisibility(View.GONE);
+                    completeMyHolder.tv_share.setVisibility(View.VISIBLE);
+                }
             } else {
                 completeMyHolder.tvStatus.setText("付款失败");
+
             }
 
             if (orderDataBean.getGroup_list() == null || orderDataBean.getGroup_list().size() == 0) {
@@ -156,8 +163,9 @@ public class OrderListAdapter extends RecyclerView.Adapter {
     class CompleteMyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvOrderNum, tvStatus;
         private RecyclerView recyclerView;
-        private TextView tv_comment, tv_student;
+        private TextView tv_comment, tv_student, tv_share;
         private LinearLayout linearLayout;
+
 
         public CompleteMyHolder(@NonNull View itemView) {
             super(itemView);
@@ -167,6 +175,8 @@ public class OrderListAdapter extends RecyclerView.Adapter {
             recyclerView = itemView.findViewById(R.id.recyclerView);
             tv_student = itemView.findViewById(R.id.tv_student);
             tv_comment = itemView.findViewById(R.id.tv_comment);
+            tv_share = itemView.findViewById(R.id.tv_share);
+
             linearLayout = itemView.findViewById(R.id.linearLayout);
 
 
@@ -174,6 +184,7 @@ public class OrderListAdapter extends RecyclerView.Adapter {
             tv_comment.setOnClickListener(this);
             tv_student.setOnClickListener(this);
             linearLayout.setOnClickListener(this);
+            tv_share.setOnClickListener(this);
 
         }
 

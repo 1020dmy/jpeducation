@@ -8,9 +8,12 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
+import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.contract.OrderListContract;
 import com.jianpei.jpeducation.repository.OrderListRepository;
+import com.jianpei.jpeducation.utils.L;
 
 
 /**
@@ -135,6 +138,48 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * 订单详情
+     *
+     * @param order_id
+     */
+
+    private MutableLiveData<MIneOrderInfoBean> orderInfoBeanMutableLiveData;
+
+    public MutableLiveData<MIneOrderInfoBean> getOrderInfoBeanMutableLiveData() {
+        if (orderInfoBeanMutableLiveData == null)
+            orderInfoBeanMutableLiveData = new MutableLiveData<>();
+        return orderInfoBeanMutableLiveData;
+    }
+
+    @Override
+    public void orderInfo(String order_id) {
+        if (TextUtils.isEmpty(order_id)) {
+            return;
+        }
+        orderListRepository.orderInfo(order_id).compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
+            @Override
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
+                if (t.isSuccess()) {
+                    orderInfoBeanMutableLiveData.setValue(t.getData());
+                } else {
+                    L.e("======onFailure:");
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                L.e("======onFailure==="+e.getMessage());
                 if (isNetWorkError) {
                     errData.setValue("网络异常！");
                 } else {

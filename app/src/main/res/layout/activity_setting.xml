@@ -48,7 +48,6 @@
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/material_shrink"
             android:drawablePadding="15dp"
-            android:text="V 2.0.0 "
             android:textColor="@color/c161820" />
 
 

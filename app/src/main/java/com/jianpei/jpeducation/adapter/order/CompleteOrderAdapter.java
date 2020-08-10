@@ -57,14 +57,15 @@ public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdap
             holder.tvStatus.setText("待付款");
         } else if ("1".equals(orderDataBean.getState())) {
             holder.tvStatus.setText("已付款");
-        } else {
+        } else if ("2".equals(orderDataBean.getState())) {
             holder.tvStatus.setText("付款失败");
         }
 
-        if (orderDataBean.getGroup_list() == null || orderDataBean.getGroup_list().size() == 0) {
-            holder.recyclerView.setAdapter(new OrderClassAdapter(mContext, orderDataBean.getGroup_info(), orderDataBean.getClass_name_str(), orderDataBean.getMoney()));
-        } else {
+        if (orderDataBean.getGroup_list() != null && orderDataBean.getGroup_list().size() > 0) {
             holder.recyclerView.setAdapter(new OrderClassAdapter(orderDataBean.getGroup_list(), mContext));
+        } else {
+            holder.recyclerView.setAdapter(new OrderClassAdapter(mContext, orderDataBean.getGroup_info(), orderDataBean.getClass_name_str(), orderDataBean.getMoney()));
+
         }
 
 
@@ -82,6 +83,7 @@ public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdap
 
         private LinearLayout linearLayout;
 
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -90,7 +92,7 @@ public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdap
             recyclerView = itemView.findViewById(R.id.recyclerView);
             tv_student = itemView.findViewById(R.id.tv_student);
             tv_comment = itemView.findViewById(R.id.tv_comment);
-            linearLayout=itemView.findViewById(R.id.linearLayout);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 

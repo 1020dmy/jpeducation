@@ -1,13 +1,17 @@
 package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
+import com.jianpei.jpeducation.bean.json.OrderInfoJson;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
+import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 
 /**
  * jpeducation
@@ -29,6 +33,15 @@ public interface OrderListContract {
 
         Observable<BaseEntity<String>> cancelOrder(String order_id);
 
+        /**
+         * 订单详情
+         *
+         * @param order_id
+         * @return
+         */
+
+        Observable<BaseEntity<MIneOrderInfoBean>> orderInfo(String order_id);
+
 
     }
 
@@ -39,6 +52,8 @@ public interface OrderListContract {
         void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id);
 
         void cancelOrder(String order_id);
+
+        void orderInfo(String order_id);
 
     }
 

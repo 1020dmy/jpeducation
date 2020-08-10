@@ -140,7 +140,7 @@ public class MineFragment extends BaseFragment {
         if (userInfoBean == null) {
             return;
         }
-        mUserInfoBean=userInfoBean;
+        mUserInfoBean = userInfoBean;
 //        totalGold = userInfoBean.getVirtual_currency();
 
         tvName.setText(userInfoBean.getUser_name());
@@ -222,7 +222,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MaterialActivity.class));
                 break;
             case R.id.tv_my_moving://我的动态
-                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("mUserInfoBean",mUserInfoBean));
+                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("mUserInfoBean", mUserInfoBean));
                 break;
             case R.id.ll_share://邀请好友
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
@@ -232,7 +232,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.tv_service://客服中心
                 if (customerServicePopup == null) {
-                    customerServicePopup = new CustomerServicePopup(getActivity(), "13121597264");
+                    customerServicePopup = new CustomerServicePopup(getActivity(), SpUtils.getValue(SpUtils.KFPhone));
                 }
                 customerServicePopup.showPop();
                 break;

@@ -73,6 +73,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     private String[] mPermissions = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
+            Manifest.permission.READ_PHONE_STATE
     };
 
     private String catId, catName;
@@ -102,7 +103,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         setPermissions(mPermissions, new InterfacePermission() {
             @Override
             public void onAllow() {
-                shortToast("已经获取全部权限");
+//                shortToast("已经获取全部权限");
             }
         });
 

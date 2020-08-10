@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="建培移动课堂V2.0.0"
+        android:text=""
         android:textColor="@color/c888B96"
         android:textSize="@dimen/s_dp_11" />
 

@@ -11,12 +11,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.CommentClassActivity;
 import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.order.CompleteOrderAdapter;
 import com.jianpei.jpeducation.adapter.order.MyOrderListItemListener;
+import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
@@ -27,6 +31,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +41,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompleteOrderFragment extends BaseFragment implements MyOrderListItemListener {
+public class CompleteOrderFragment extends BaseFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.recyclerView)
@@ -47,8 +53,11 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
 
     private List<OrderDataBean> mOrderDataBeans;
 
-    private CompleteOrderAdapter completeOrderAdapter;
-    private int page = 1;
+//    private CompleteOrderAdapter completeOrderAdapter;
+
+    private NOrderListAdapter nOrderListAdapter;
+
+    private int page = 1, pageSize = 10;
 
 
     @Override
@@ -66,7 +75,7 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 L.e("开始刷新");
                 page = 1;
-                orderListModel.orderData(3, page, 10);
+                orderListModel.orderData(3, page, pageSize);
 
             }
         });
@@ -75,7 +84,7 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 L.e("开始加载更多");
                 page++;
-                orderListModel.orderData(3, page, 10);
+                orderListModel.orderData(3, page, pageSize);
             }
         });
 
@@ -84,9 +93,9 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
     @Override
     protected void initData(Context mContext) {
         mOrderDataBeans = new ArrayList<>();
-        completeOrderAdapter = new CompleteOrderAdapter(mOrderDataBeans, getActivity());
-        completeOrderAdapter.setMyOrderListItemListener(this);
-        recyclerView.setAdapter(completeOrderAdapter);
+        nOrderListAdapter = new NOrderListAdapter(mOrderDataBeans, getActivity());
+        nOrderListAdapter.setMyItemOnClickListener(this);
+        recyclerView.setAdapter(nOrderListAdapter);
         //请求订单列表结果
         orderListModel.getOrderDataBeansLiveData().observe(this, new Observer<OrderListBean>() {
             @Override
@@ -99,7 +108,7 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
                     mOrderDataBeans.clear();
                 }
                 mOrderDataBeans.addAll(orderListBean.getData());
-                completeOrderAdapter.notifyDataSetChanged();
+                nOrderListAdapter.notifyDataSetChanged();
             }
         });
         //错误返回
@@ -113,17 +122,17 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
             }
         });
         showLoading("");
-        orderListModel.orderData(3, page, 10);
+        orderListModel.orderData(3, page, pageSize);
     }
 
     @Override
-    public void onClick(View view, int position) {
+    public void onItemClick(int position, View view) {
         switch (view.getId()) {
-            case R.id.tv_student:
-                startActivity(new Intent(getActivity(), MyClassActivity.class));
-                break;
-            case R.id.tv_comment:
+            case R.id.tv_comment://去评论
                 startActivity(new Intent(getActivity(), CommentClassActivity.class).putExtra("classId", mOrderDataBeans.get(position).getGroup_id()));
+                break;
+            case R.id.tv_student://去学习
+                startActivity(new Intent(getActivity(), MyClassActivity.class));
                 break;
             case R.id.linearLayout:
                 startActivity(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderDataBean", mOrderDataBeans.get(position)));
@@ -131,4 +140,25 @@ public class CompleteOrderFragment extends BaseFragment implements MyOrderListIt
         }
 
     }
+
+    @Override
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+
+    }
+
+    //    @Override
+//    public void onClick(View view, int position) {
+//        switch (view.getId()) {
+//            case R.id.tv_student:
+//                startActivity(new Intent(getActivity(), MyClassActivity.class));
+//                break;
+//            case R.id.tv_comment:
+//                startActivity(new Intent(getActivity(), CommentClassActivity.class).putExtra("classId", mOrderDataBeans.get(position).getGroup_id()));
+//                break;
+//            case R.id.linearLayout:
+//                startActivity(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderDataBean", mOrderDataBeans.get(position)));
+//                break;
+//        }
+//
+//    }
 }

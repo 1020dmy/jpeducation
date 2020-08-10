@@ -8,8 +8,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.MyApplication;
+import com.jianpei.jpeducation.bean.VersionDetectBean;
+import com.jianpei.jpeducation.utils.AppUtils;
+import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +42,8 @@ public class UpVersionActivity extends BaseActivity {
     @BindView(R.id.tv_up_tip)
     TextView tvUpTip;
 
+    private VersionDetectModel versionDetectModel;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_up_version;
@@ -44,10 +53,37 @@ public class UpVersionActivity extends BaseActivity {
     protected void initView() {
         tvTitle.setText("版本更新");
 
+        versionDetectModel = new ViewModelProvider(this).get(VersionDetectModel.class);
+
     }
 
     @Override
     protected void initData() {
+
+        versionDetectModel.getVersionDetectLiveData().observe(this, new Observer<VersionDetectBean>() {
+            @Override
+            public void onChanged(VersionDetectBean versionDetectBean) {
+                dismissLoading();
+                tvCurrent.setVisibility(View.GONE);
+                btnUp.setVisibility(View.VISIBLE);
+                tvUpTip.setVisibility(View.VISIBLE);
+                tvVersion.setText("当前版本V" + AppUtils.getVersionName(MyApplication.getInstance()));
+                tvUpVersion.setText("更新V" + versionDetectBean.getApp_version() + "版本");
+                tvUpTip.setText(versionDetectBean.getHint());
+
+            }
+        });
+        versionDetectModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast("");
+                tvVersion.setText("V" + AppUtils.getVersionName(MyApplication.getInstance()));
+            }
+        });
+
+        showLoading("");
+        versionDetectModel.versionDetect();
 
     }
 

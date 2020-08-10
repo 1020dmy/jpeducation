@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.base.MyApplication;
+import com.jianpei.jpeducation.utils.AppUtils;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.pop.CustomerServicePopup;
 
 import butterknife.BindView;
@@ -40,6 +43,7 @@ public class AboutUsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        tvTip.setText("建培移动课堂V" + AppUtils.getPackageName(MyApplication.getInstance()));
 
     }
 
@@ -52,7 +56,7 @@ public class AboutUsActivity extends BaseActivity {
                 break;
             case R.id.button:
                 if (customerServicePopup == null)
-                    customerServicePopup = new CustomerServicePopup(this, "13121597264");
+                    customerServicePopup = new CustomerServicePopup(this, SpUtils.getValue(SpUtils.KFPhone));
                 customerServicePopup.showPop();
                 break;
         }

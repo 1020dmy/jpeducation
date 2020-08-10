@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys.login;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,9 +12,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
+import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.WxLoginModel;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -22,6 +25,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -38,9 +42,10 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
     TextView tvPwdLogin;
     @BindView(R.id.tv_status)
     TextView tvStatus;
+    @BindView(R.id.tv_bottom_xieyi)
+    TextView tvBottomXieyi;
 //    @BindView(R.id.tv_accessToken)
 //    TextView textView;
-
 
 
     private PassLoginFragment passLoginFragment;
@@ -83,7 +88,7 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
     }
 
 
-    @OnClick({R.id.tv_registered, R.id.tv_pwdLogin, R.id.tv_codelogin, R.id.iv_back, R.id.tv_wxlogin})
+    @OnClick({R.id.tv_registered, R.id.tv_pwdLogin, R.id.tv_codelogin, R.id.iv_back, R.id.tv_wxlogin, R.id.tv_bottom_xieyi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_wxlogin:
@@ -100,6 +105,9 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
                 break;
             case R.id.tv_codelogin:
                 switchFragment(1);
+                break;
+            case R.id.tv_bottom_xieyi:
+                startActivity(new Intent(this, GuiZeActivity.class).putExtra("title", "协议须知").putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)));
                 break;
         }
     }
@@ -186,5 +194,6 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
 
         }
     };
+
 
 }

@@ -51,10 +51,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_nums"
@@ -74,7 +70,8 @@
 
         <TextView
             android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="￥2650"
             android:textColor="@color/cD81E06"

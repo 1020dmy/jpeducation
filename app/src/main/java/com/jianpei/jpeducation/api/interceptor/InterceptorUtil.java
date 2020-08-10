@@ -120,6 +120,7 @@ public class InterceptorUtil {
 //                        .header("vendor", "");
                 AppInfoBean.appInfoBean.setUid(SpUtils.getValue(SpUtils.ID));
                 String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
+//                String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
 
                 L.e("=========headvalue:" + headValue);
                 Request.Builder requestBuilder = original.newBuilder().header("info", headValue);

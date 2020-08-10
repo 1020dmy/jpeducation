@@ -216,6 +216,8 @@ public class UrlConfig {
     public static final String updateMessageStatus = "msg/updateMessageStatus";
 
 
+    //1-版本检测
+    public static final String versionDetect = "versionDetect";
     //1-文件上传
     public static final String uploadFile = "uploadFile";
 }

@@ -36,6 +36,11 @@ public class SpUtils {
     public static final String catName = "catname";
 
 
+    public static final String UserProtocol = "UserProtocol";
+
+    public static final String KFPhone = "KFPhone";
+
+
 
     /**
      * Put string value to SharedPreferences

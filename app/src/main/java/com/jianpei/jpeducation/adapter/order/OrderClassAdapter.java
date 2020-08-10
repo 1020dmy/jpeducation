@@ -67,10 +67,12 @@ public class OrderClassAdapter extends RecyclerView.Adapter<OrderClassAdapter.My
             holder.tv_classinfo.setText(groupBean.getClass_name_str());
             holder.tv_price.setText("￥" + groupBean.getPrice());
         } else {
-            Glide.with(context).load(groupInfoBean.getImg()).into(holder.iv_head);
-            holder.tv_title.setText(groupInfoBean.getTitle());
-            holder.tv_classinfo.setText(class_name_str);
-            holder.tv_price.setText("￥" + price);
+            if (groupInfoBean != null) {
+                Glide.with(context).load(groupInfoBean.getImg()).into(holder.iv_head);
+                holder.tv_title.setText(groupInfoBean.getTitle());
+                holder.tv_classinfo.setText(class_name_str);
+                holder.tv_price.setText("￥" + price);
+            }
         }
     }
 
@@ -79,7 +81,7 @@ public class OrderClassAdapter extends RecyclerView.Adapter<OrderClassAdapter.My
         return group_list != null ? group_list.size() : 1;
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private LinearLayout llGroupInfo;
         private ImageView iv_head;
         private TextView tv_title, tv_classinfo, tv_price;
@@ -96,6 +98,11 @@ public class OrderClassAdapter extends RecyclerView.Adapter<OrderClassAdapter.My
             tv_price = itemView.findViewById(R.id.tv_price);
             line = itemView.findViewById(R.id.line);
 
+
+        }
+
+        @Override
+        public void onClick(View v) {
 
         }
     }

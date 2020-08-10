@@ -1,11 +1,14 @@
 package com.jianpei.jpeducation.viewmodel;
 
+import android.text.TextUtils;
+
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.LauncherBean;
 import com.jianpei.jpeducation.contract.LauncherContract;
 import com.jianpei.jpeducation.repository.LauncherRepository;
+import com.jianpei.jpeducation.utils.SpUtils;
 
 /**
  * jpeducation
@@ -19,7 +22,6 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
 
 
     protected LauncherRepository launcherRepository;
-
 
 
     public LauncherModel() {
@@ -38,6 +40,10 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
             @Override
             protected void onSuccees(BaseEntity<LauncherBean> t) throws Exception {
                 if (t.isSuccess()) {
+                    if (t.getData() != null && !TextUtils.isEmpty(t.getData().getUserProtocol()))
+                        SpUtils.putString(SpUtils.UserProtocol, t.getData().getUserProtocol());
+                    if (t.getData() != null && !TextUtils.isEmpty(t.getData().getTelephone()))
+                        SpUtils.putString(SpUtils.KFPhone, t.getData().getTelephone());
                     successData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());
