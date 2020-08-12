@@ -16,8 +16,10 @@ import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.classinfo.GroupInfoActivity;
+import com.jianpei.jpeducation.adapter.GroupInfoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,6 +46,7 @@ public class GroupResultActivity extends BaseActivity {
     @BindView(R.id.btn_back)
     Button btnBack;
     private String state;
+    private MIneOrderInfoBean classGenerateOrderBean;
 
 
     @Override
@@ -53,7 +56,10 @@ public class GroupResultActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        //
         state = getIntent().getStringExtra("state");
+        classGenerateOrderBean = getIntent().getParcelableExtra("classGenerateOrderBean");
+        //
         ivBack.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
@@ -62,29 +68,41 @@ public class GroupResultActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         if ("1".equals(state)) {
-            tvTitle.setText("拼团成功");
-            btnOne.setText("查看订单");
-            tvResult.setText("拼团成功，我们会尽快为您发货");
-            ivResult.setImageResource(R.drawable.group_result_success);
+            if ("2".equals(classGenerateOrderBean.getIs_reg_succ())) {//拼团成功
+                tvTitle.setText("拼团成功");
+                btnOne.setText("查看订单");
+                tvResult.setText("拼团成功，我们会尽快为您发货");
+                ivResult.setImageResource(R.drawable.group_result_success);
+            } else {
+                tvTitle.setText("支付成功");
+                btnOne.setText("查看订单");
+                tvResult.setText("支付成功");
+                ivResult.setImageResource(R.drawable.group_result_success);
+            }
         } else {
-            tvTitle.setText("拼团失败");
+            tvTitle.setText("支付失败");
             btnOne.setText("查看订单");
-            tvResult.setText("拼团失败，原路退还您的金额");
+            tvResult.setText("支付失败");
             ivResult.setImageResource(R.drawable.group_result_fail);
         }
+
+        RegimentBean regimentBean = classGenerateOrderBean.getRegiment_info();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        GroupInfoAdapter myAdapter = new GroupInfoAdapter(regimentBean, this);
+        recyclerView.setAdapter(myAdapter);
     }
 
     @OnClick({R.id.iv_back, R.id.btn_one, R.id.btn_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.btn_back:
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_one:
-                break;
-            case R.id.btn_back:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, OrderInfoActivity.class).putExtra("orderId", classGenerateOrderBean.getId()).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 finish();
                 break;
         }

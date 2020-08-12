@@ -47,6 +47,35 @@ public abstract class BaseFragment extends Fragment {
     private Dialog dialog;
     private Toast toast;
 
+//    protected Activity mActivity;
+//    //是否第一次可见
+//    private boolean isFirstVisible = true;
+//    //是否可见
+//    private boolean isVisible = false;
+//    /**
+//     * onResume是否已经执行,fragment在ViewPager中
+//     * 第一次创建时(预加载)不管可不可见，都会执行一次生命周期
+//     * isFirstOnResume=false表示预加载或当前显示的fragment执行了onResume()
+//     * isFirstOnResume=false，fragment再次显示时，当做执行了onResume()
+//     */
+//    private boolean isFirstOnResume = true;
+//
+//    /**
+//     * 作用于onResume()在显示状态下执行后，fragment隐藏时执行对应的onPause()
+//     * 避免其他页面的onPause()执行
+//     * 是否可以使用isVisible代替？
+//     */
+//    private boolean isOnResumeVisible = false;
+//    @Override
+//    public void onAttach(Context context) {
+//        this.mActivity = (Activity) context;
+//        super.onAttach(context);
+//    }
+//
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//    }
 
     @Nullable
     @Override

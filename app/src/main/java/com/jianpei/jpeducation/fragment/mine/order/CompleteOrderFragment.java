@@ -18,13 +18,12 @@ import com.jianpei.jpeducation.activitys.mine.CommentClassActivity;
 import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
-import com.jianpei.jpeducation.adapter.order.CompleteOrderAdapter;
-import com.jianpei.jpeducation.adapter.order.MyOrderListItemListener;
 import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.viewmodel.DataNoticeChangeModel;
 import com.jianpei.jpeducation.viewmodel.OrderListModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -50,6 +49,8 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
     SmartRefreshLayout refreshLayout;
 
     private OrderListModel orderListModel;
+    private DataNoticeChangeModel dataNoticeChangeModel;
+
 
     private List<OrderDataBean> mOrderDataBeans;
 
@@ -68,6 +69,10 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
     @Override
     protected void initView(View view) {
         orderListModel = new ViewModelProvider(this).get(OrderListModel.class);
+        //
+        dataNoticeChangeModel = new ViewModelProvider(getActivity()).get(DataNoticeChangeModel.class);
+//
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -121,6 +126,16 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
                 shortToast(o);
             }
         });
+
+        //通知全局更新
+        dataNoticeChangeModel.getNoticeChangeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+//                showLoading("");
+                page = 1;
+                orderListModel.orderData(3, page, pageSize);
+            }
+        });
         showLoading("");
         orderListModel.orderData(3, page, pageSize);
     }
@@ -135,7 +150,8 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
                 startActivity(new Intent(getActivity(), MyClassActivity.class));
                 break;
             case R.id.linearLayout:
-                startActivity(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderDataBean", mOrderDataBeans.get(position)));
+//                startActivity(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderId", mOrderDataBeans.get(position).getId()));
+                startActivityForResult(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderId", mOrderDataBeans.get(position).getId()), 111);
                 break;
         }
 
@@ -145,6 +161,16 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
     }
+
+ /*   @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111 && resultCode == 112) {
+            showLoading("");
+            page = 1;
+            orderListModel.orderData(3, page, pageSize);
+        }
+    }*/
 
     //    @Override
 //    public void onClick(View view, int position) {

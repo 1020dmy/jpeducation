@@ -21,8 +21,8 @@ import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
 import com.jianpei.jpeducation.activitys.mine.SettingActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
+import com.jianpei.jpeducation.bean.VersionDetectBean;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
 import com.jianpei.jpeducation.fragment.home.HomeFragment;
 import com.jianpei.jpeducation.fragment.mine.MineFragment;
@@ -30,7 +30,10 @@ import com.jianpei.jpeducation.fragment.school.SchoolFragment;
 import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
+import com.jianpei.jpeducation.utils.dialog.UpVersionDialog;
 import com.jianpei.jpeducation.viewmodel.MainModel;
+import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
+import com.mantis.im_service.ui.activity.ChatActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -80,6 +83,11 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     private String ncatId;
 
 
+    private UpVersionDialog upVersionDialog;
+
+    private VersionDetectModel versionDetectModel;
+
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_main;
@@ -87,6 +95,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     @Override
     protected void initView() {
+        versionDetectModel = new ViewModelProvider(this).get(VersionDetectModel.class);
+
         setTitleViewPadding(ivStatue);
         homeFragment = new HomeFragment();
         schoolFragment = new SchoolFragment();
@@ -106,6 +116,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                shortToast("已经获取全部权限");
             }
         });
+
 
     }
 
@@ -146,6 +157,17 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             }
         });
 
+        versionDetectModel.getVersionDetectLiveData().observe(this, new Observer<VersionDetectBean>() {
+            @Override
+            public void onChanged(VersionDetectBean versionDetectBean) {
+                if (upVersionDialog == null)
+                    upVersionDialog = new UpVersionDialog(MainActivity.this);
+                upVersionDialog.setData(versionDetectBean);
+                upVersionDialog.show();
+            }
+        });
+        //检测更新
+//        versionDetectModel.versionDetect();
     }
 
     @Override
@@ -257,7 +279,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
-                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

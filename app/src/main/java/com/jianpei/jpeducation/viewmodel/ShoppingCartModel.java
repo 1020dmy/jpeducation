@@ -9,6 +9,7 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.contract.ShoppingCartContract;
 import com.jianpei.jpeducation.repository.ShoppingCartRepository;
 
@@ -25,7 +26,7 @@ public class ShoppingCartModel extends BaseViewModel implements ShoppingCartCont
     private ShoppingCartRepository shoppingCartRepository;
 
 
-    private MutableLiveData<ClassGenerateOrderBean> carInfoBeanLiveData;
+    private MutableLiveData<MIneOrderInfoBean> carInfoBeanLiveData;
 
     private MutableLiveData<CouponDataBean> couponDataBeanLiveData;
 
@@ -38,7 +39,7 @@ public class ShoppingCartModel extends BaseViewModel implements ShoppingCartCont
         return removeCarLiveData;
     }
 
-    public MutableLiveData<ClassGenerateOrderBean> getCarInfoBeanLiveData() {
+    public MutableLiveData<MIneOrderInfoBean> getCarInfoBeanLiveData() {
         if (carInfoBeanLiveData == null)
             carInfoBeanLiveData = new MutableLiveData<>();
         return carInfoBeanLiveData;
@@ -94,10 +95,10 @@ public class ShoppingCartModel extends BaseViewModel implements ShoppingCartCont
     @Override
     public void carInfo() {
 
-        shoppingCartRepository.carInfo().compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
+        shoppingCartRepository.carInfo().compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
 
             @Override
-            protected void onSuccees(BaseEntity<ClassGenerateOrderBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
                 if (t.isSuccess()) {
                     carInfoBeanLiveData.setValue(t.getData());
                 } else {

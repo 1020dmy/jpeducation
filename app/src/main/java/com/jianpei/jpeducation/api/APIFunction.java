@@ -55,8 +55,10 @@ import com.jianpei.jpeducation.bean.json.DelThreadJson;
 import com.jianpei.jpeducation.bean.json.EditUserJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
+import com.jianpei.jpeducation.bean.json.FeedbackJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
 import com.jianpei.jpeducation.bean.json.GetQuestionJson;
+import com.jianpei.jpeducation.bean.json.GroupCouponJson;
 import com.jianpei.jpeducation.bean.json.GroupDataJson;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ImputedPriceJson;
@@ -212,7 +214,7 @@ public interface APIFunction {
     Observable<BaseEntity<String>> couponReceive(@Body CouponReceiveJson couponReceiveJson);
 
     /**
-     * 优惠券列表
+     * 我的优惠券列表
      */
     @POST(UrlConfig.couponData)
     Observable<BaseEntity<CouponDataBean>> couponData(@Body CouponDataJson couponDataJson);
@@ -253,7 +255,7 @@ public interface APIFunction {
      * 课程优惠券列表
      */
     @POST(UrlConfig.groupCoupon)
-    Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(@Body HomeInfoJson homeInfoJson);
+    Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(@Body GroupCouponJson groupCouponJson);
 
     /**
      * 课程章节列表
@@ -271,7 +273,9 @@ public interface APIFunction {
      * 购买课程下单/计算价格
      */
     @POST(UrlConfig.classGenerateOrder)
-    Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(@Body ClassGenerateOrderJson classGenerateOrderJson);
+    Observable<BaseEntity<MIneOrderInfoBean>> classGenerateOrder(@Body ClassGenerateOrderJson classGenerateOrderJson);
+
+//    Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(@Body ClassGenerateOrderJson classGenerateOrderJson);
 
     /**
      * 1-订单详情
@@ -310,7 +314,7 @@ public interface APIFunction {
      * 支付状态查询
      */
     @POST(UrlConfig.checkPayStatus)
-    Observable<BaseEntity<CheckPayStatusBean>> checkPayStatus(@Body CheckPayStatusJson checkPayStatusJson);
+    Observable<BaseEntity<MIneOrderInfoBean>> checkPayStatus(@Body CheckPayStatusJson checkPayStatusJson);
 
     /**
      * 添加购物车
@@ -328,7 +332,9 @@ public interface APIFunction {
      * 购物车详情
      */
     @POST(UrlConfig.carInfo)
-    Observable<BaseEntity<ClassGenerateOrderBean>> carInfo(@Body CarInfoJson carInfoJson);
+    Observable<BaseEntity<MIneOrderInfoBean>> carInfo(@Body CarInfoJson carInfoJson);
+
+//    Observable<BaseEntity<ClassGenerateOrderBean>> carInfo(@Body CarInfoJson carInfoJson);
 
 
     /**
@@ -635,6 +641,12 @@ public interface APIFunction {
      */
     @POST(UrlConfig.versionDetect)
     Observable<BaseEntity<VersionDetectBean>> versionDetect();
+
+    /**
+     * 1-意见反馈
+     */
+    @POST(UrlConfig.feedback)
+    Observable<BaseEntity<String>> feedback(@Body FeedbackJson feedbackJson);
 
 
     /**

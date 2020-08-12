@@ -17,24 +17,18 @@ import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
-import com.jianpei.jpeducation.adapter.coupon.CouponAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.bean.CouponDataBean;
-import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
-import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.GroupInfoBean;
-import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.pop.MyCouponPopup;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
+import com.mantis.im_service.ui.activity.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -102,7 +96,7 @@ public class OrderConfirmActivity extends BaseActivity {
 //    private MyCouponPopup couponPopup;
 
 
-    private ClassGenerateOrderBean mClassGenerateOrderBean;
+    private MIneOrderInfoBean mClassGenerateOrderBean;
 //    private String type;
 
     private OrderConfirmModel orderConfirmModel;
@@ -154,9 +148,9 @@ public class OrderConfirmActivity extends BaseActivity {
 //            }
 //        });
         //选择优惠券后发起订单
-        orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+        orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+            public void onChanged(MIneOrderInfoBean classGenerateOrderBean) {
                 dismissLoading();
 //                if (couponPopup != null) {
 //                    couponPopup.dismiss();
@@ -198,7 +192,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 if (TextUtils.equals(s, "9000")) {
                     // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                     showLoading("");
-                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
                 } else {
                     // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                     shortToast("支付失败！" + s);
@@ -206,19 +200,23 @@ public class OrderConfirmActivity extends BaseActivity {
             }
         });
         //支付结果查询
-        orderConfirmModel.getCheckPayStatusBeanLiveData().observe(this, new Observer<CheckPayStatusBean>() {
+        orderConfirmModel.getCheckPayStatusLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(CheckPayStatusBean checkPayStatusBean) {
+            public void onChanged(MIneOrderInfoBean checkPayStatusBean) {
                 if ("0".equals(checkPayStatusBean.getState())) {//未支付
-                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
                 } else {
                     dismissLoading();
-                    if ("2".equals(mClassGenerateOrderBean.getOrder_info().getGoods_type())) {
-                        startActivity(new Intent(OrderConfirmActivity.this, GroupResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
-
+                    if ("2".equals(mClassGenerateOrderBean.getGoods_type())) {
+                        startActivity(new Intent(OrderConfirmActivity.this, GroupResultActivity.class)
+                                .putExtra("classGenerateOrderBean", checkPayStatusBean)
+                                .putExtra("state", checkPayStatusBean.getState()));
+                        finish();
                     } else {
-                        startActivity(new Intent(OrderConfirmActivity.this, OrderResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
-
+                        startActivity(new Intent(OrderConfirmActivity.this, OrderResultActivity.class)
+                                .putExtra("orderId", checkPayStatusBean.getId())
+                                .putExtra("state", checkPayStatusBean.getState()));
+                        finish();
                     }
                 }
 
@@ -233,7 +231,7 @@ public class OrderConfirmActivity extends BaseActivity {
         int resultCode = intent.getIntExtra("resultCode", -10);
         if (resultCode == 0) {
             showLoading("");
-            orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+            orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
         } else if (resultCode == -1) {
             shortToast("支付失败！");
         } else if (resultCode == -2) {
@@ -253,47 +251,52 @@ public class OrderConfirmActivity extends BaseActivity {
 
     protected void setData() {
 
-        if (mClassGenerateOrderBean == null)
+        if (mClassGenerateOrderBean == null) {
             return;
-        GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
-        OrderInfoBean orderInfoBean = mClassGenerateOrderBean.getOrder_info();
+        }
+//        GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
+//        OrderInfoBean orderInfoBean = mClassGenerateOrderBean.getOrder_info();
         //用户信息
 //        tvName.setText(orderInfoBean.getName());
 //        tvPhone.setText(orderInfoBean.getTel());
 
 
         //订单信息
-        tvOrderNum.setText(orderInfoBean.getNumber());
-        tvTime.setText(orderInfoBean.getAdd_time_str());
-        Glide.with(this).load(groupInfoBean.getImg()).into(ivIcon);
-        tvClassTitle.setText(groupInfoBean.getTitle());
-        tvClassNames.setText(orderInfoBean.getClass_name_str());
-        if ("1".equals(orderInfoBean.getIs_material())) {
-            tvMaterialName.setText(orderInfoBean.getMaterial_des());
+        tvOrderNum.setText(mClassGenerateOrderBean.getNumber());
+        tvTime.setText(mClassGenerateOrderBean.getAdd_time_str());
+        GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
+        L.e("=====image:"+groupInfoBean.getImg());
+        if (groupInfoBean != null) {
+            Glide.with(this).load(groupInfoBean.getImg()).into(ivIcon);
+            tvClassTitle.setText(groupInfoBean.getTitle());
+        }
+        tvClassNames.setText(mClassGenerateOrderBean.getClass_name_str());
+        if ("1".equals(mClassGenerateOrderBean.getIs_material())) {
+            tvMaterialName.setText(mClassGenerateOrderBean.getMaterial_des());
         } else {
             tvMaterial.setVisibility(View.GONE);
             tvMaterialName.setVisibility(View.GONE);
             tvLine.setVisibility(View.GONE);
         }
-        if ("2".equals(orderInfoBean.getGoods_type())) {
+        if ("2".equals(mClassGenerateOrderBean.getGoods_type())) {
             llQuan.setVisibility(View.GONE);
         }
         //优惠券信息
-        if ("1".equals(orderInfoBean.getIs_user_coupon())) {
+        if ("1".equals(mClassGenerateOrderBean.getIs_user_coupon())) {
             ivQuan.setImageResource(R.drawable.icon_quanou_is);
             tvQuan.setText("有可用优惠券");
             llQuan.setEnabled(true);
         }
-        mCouponTitle = orderInfoBean.getCoupon_type_str();
+        mCouponTitle = mClassGenerateOrderBean.getCoupon_type_str();
         if (!TextUtils.isEmpty(mCouponTitle))
             tvQuan.setText(mCouponTitle);
 
         //价格信息
-        tvOriginPrice.setText("￥" + orderInfoBean.getCount_integral());
-        tvDiscountPrice.setText("￥" + orderInfoBean.getDiscount_integral());
-        tvRealPrice.setText("￥" + orderInfoBean.getMoney());
+        tvOriginPrice.setText("￥" + mClassGenerateOrderBean.getCount_integral());
+        tvDiscountPrice.setText("- ￥" + mClassGenerateOrderBean.getDiscount_integral());
+        tvRealPrice.setText("￥" + mClassGenerateOrderBean.getMoney());
         //
-        tvPayPrice.setText("￥" + orderInfoBean.getMoney());
+        tvPayPrice.setText("￥" + mClassGenerateOrderBean.getMoney());
         //
 
 
@@ -306,7 +309,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.ll_weixin_pay:
                 changeStatus(1);
@@ -316,7 +319,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 break;
             case R.id.submit:
                 showLoading("");
-                orderConfirmModel.orderPayment(payType + "", mClassGenerateOrderBean.getOrder_info().getId());
+                orderConfirmModel.orderPayment(payType + "", mClassGenerateOrderBean.getId());
                 break;
             case R.id.ll_quan:
 //                if (mCouponDatas == null || mCouponDatas.size() == 0) {
@@ -343,7 +346,7 @@ public class OrderConfirmActivity extends BaseActivity {
             showLoading("");
             mCouponTitle = data.getStringExtra("couponTitle");
             String couponId = data.getStringExtra("couponId");
-            orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getGroup_info().getId(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
+            orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getGroup_info().getId(), couponId, mClassGenerateOrderBean.getId());
 
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -4,6 +4,7 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 
 import java.util.List;
 
@@ -15,7 +16,8 @@ public interface ClassInfoContract {
 
         Observable<BaseEntity<List<GroupClassBean>>> groupClass(String groupId, String regimentId);
 
-        Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
+//        Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
+        Observable<BaseEntity<MIneOrderInfoBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
 
         Observable<BaseEntity<ImputedPriceBean>> imputedPrice(String group_id, String class_ids, String suites_ids, String regiment_id);
 

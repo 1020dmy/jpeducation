@@ -83,16 +83,16 @@ public class MIneOrderInfoBean implements Parcelable {
     private String pay_type;
     private String state;
     private String addtime;
-//    private String optime;
+    //    private String optime;
 //    private String zhekou;
     private String pid;
     private String is_down;
-//    private String zk_id;
+    //    private String zk_id;
     private String tagent_id;
     private String updtime;
     private String add_type;
     private String tagent_zhekou;
-//    private String suit_id;
+    //    private String suit_id;
     private String group_id;
     private String goods_type;
     private String timeout;
@@ -104,10 +104,14 @@ public class MIneOrderInfoBean implements Parcelable {
     private String pay_time;
     private String trade_type;
     private String car_ids;
-    private String is_reg_succ;
+    private String is_reg_succ;//是否拼团成功,1.否2是
     private String add_time_str;
     private String class_name_str;
     private String material_des;
+
+    private String is_user_coupon;
+
+    private String coupon_type_str;
 
     private GroupInfoBean group_info;
     private List<GroupBean> group_list;
@@ -170,7 +174,23 @@ public class MIneOrderInfoBean implements Parcelable {
         this.money = money;
     }
 
-//    public String getIntegral() {
+    public String getIs_user_coupon() {
+        return is_user_coupon;
+    }
+
+    public void setIs_user_coupon(String is_user_coupon) {
+        this.is_user_coupon = is_user_coupon;
+    }
+
+    public String getCoupon_type_str() {
+        return coupon_type_str;
+    }
+
+    public void setCoupon_type_str(String coupon_type_str) {
+        this.coupon_type_str = coupon_type_str;
+    }
+
+    //    public String getIntegral() {
 //        return integral;
 //    }
 //
@@ -506,13 +526,13 @@ public class MIneOrderInfoBean implements Parcelable {
         this.group_list = group_list;
     }
 
-//    public RegimentBean getRegiment_info() {
-//        return regiment_info;
-//    }
-//
-//    public void setRegiment_info(RegimentBean regiment_info) {
-//        this.regiment_info = regiment_info;
-//    }
+    public RegimentBean getRegiment_info() {
+        return regiment_info;
+    }
+
+    public void setRegiment_info(RegimentBean regiment_info) {
+        this.regiment_info = regiment_info;
+    }
 
 
     @Override
@@ -572,6 +592,8 @@ public class MIneOrderInfoBean implements Parcelable {
         dest.writeParcelable(this.group_info, flags);
         dest.writeTypedList(this.group_list);
         dest.writeParcelable(this.regiment_info, flags);
+        dest.writeString(this.is_user_coupon);
+        dest.writeString(this.coupon_type_str);
     }
 
     public MIneOrderInfoBean() {
@@ -628,6 +650,9 @@ public class MIneOrderInfoBean implements Parcelable {
         this.group_info = in.readParcelable(GroupInfoBean.class.getClassLoader());
         this.group_list = in.createTypedArrayList(GroupBean.CREATOR);
         this.regiment_info = in.readParcelable(RegimentBean.class.getClassLoader());
+
+        this.is_user_coupon = in.readString();
+        this.coupon_type_str = in.readString();
     }
 
     public static final Parcelable.Creator<MIneOrderInfoBean> CREATOR = new Parcelable.Creator<MIneOrderInfoBean>() {

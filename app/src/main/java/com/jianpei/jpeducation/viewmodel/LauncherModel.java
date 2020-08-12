@@ -44,6 +44,13 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
                         SpUtils.putString(SpUtils.UserProtocol, t.getData().getUserProtocol());
                     if (t.getData() != null && !TextUtils.isEmpty(t.getData().getTelephone()))
                         SpUtils.putString(SpUtils.KFPhone, t.getData().getTelephone());
+                    if (t.getData().getShareData() != null) {
+                        SpUtils.putString(SpUtils.share_img, t.getData().getShareData().getShare_img());
+                        SpUtils.putString(SpUtils.share_title, t.getData().getShareData().getShare_title());
+                        SpUtils.putString(SpUtils.share_content, t.getData().getShareData().getShare_content());
+                        SpUtils.putString(SpUtils.share_url, t.getData().getShareData().getShare_url());
+
+                    }
                     successData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());

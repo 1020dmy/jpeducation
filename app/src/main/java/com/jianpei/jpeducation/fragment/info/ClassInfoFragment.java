@@ -187,20 +187,25 @@ public class ClassInfoFragment extends BasePlayerFragment {
             @Override
             public void onChanged(GroupInfoBean groupInfoBean) {
                 showLoading("");
+                //获取课程详情
                 classInfoFModel.groupInfo(groupInfoBean.getId(), "");
-                classInfoFModel.groupCoupon(groupInfoBean.getCat_id());
+                //获取优惠券信息
+                classInfoFModel.groupCoupon(groupInfoBean.getCat_id(), groupInfoBean.getId());
             }
         });
+        //领取优惠券结果
         classInfoFModel.getCouponReceiveLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
+                if (couponPopup != null)
+                    couponPopup.dismiss();
                 shortToast(s);
             }
         });
 
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         rvExplanation.setLayoutManager(linearLayoutManager);
         rvExplanation.setHasFixedSize(true);

@@ -122,11 +122,11 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
     }
 
     @Override
-    public void groupCoupon(String catId) {
+    public void groupCoupon(String catId, String groupCoupon) {
         if (TextUtils.isEmpty(catId)) {
             return;
         }
-        classInfoRepository.groupCoupon(catId).compose(setThread()).subscribe(new BaseObserver<List<GroupCouponBean>>() {
+        classInfoRepository.groupCoupon(catId, groupCoupon).compose(setThread()).subscribe(new BaseObserver<List<GroupCouponBean>>() {
 
             @Override
             protected void onSuccees(BaseEntity<List<GroupCouponBean>> t) throws Exception {
@@ -189,7 +189,7 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
             @Override
             protected void onSuccees(BaseEntity<String> t) throws Exception {
                 if (t.isSuccess()) {
-                    couponReceiveLiveData.setValue(t.getData());
+                    couponReceiveLiveData.setValue(t.getMsg());
                 } else {
                     errData.setValue(t.getMsg());
                 }

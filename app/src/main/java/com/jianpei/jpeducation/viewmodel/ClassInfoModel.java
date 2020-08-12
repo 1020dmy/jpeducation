@@ -13,6 +13,7 @@ import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.contract.ClassInfoContract;
 import com.jianpei.jpeducation.repository.ClassInfoRepository;
 import com.jianpei.jpeducation.utils.L;
@@ -66,10 +67,10 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
 
     //购买课程下单/计算价格结果（生成订单）
 
-    private MutableLiveData<ClassGenerateOrderBean> classGenerateOrderBeanLiveData;
+    private MutableLiveData<MIneOrderInfoBean> classGenerateOrderBeanLiveData;
 
 
-    public MutableLiveData<ClassGenerateOrderBean> getClassGenerateOrderBeanLiveData() {
+    public MutableLiveData<MIneOrderInfoBean> getClassGenerateOrderBeanLiveData() {
 
         if (classGenerateOrderBeanLiveData == null) {
             classGenerateOrderBeanLiveData = new MutableLiveData<>();
@@ -243,10 +244,10 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
 //        L.e("classIds:" + classIds + ",suitesIds:" + suitesIds);
 
 
-        classInfoRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, classIds, suitesIds, regiment_id, gather_id).compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
+        classInfoRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, classIds, suitesIds, regiment_id, gather_id).compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
 
             @Override
-            protected void onSuccees(BaseEntity<ClassGenerateOrderBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
                 if (t.isSuccess()) {
                     classGenerateOrderBeanLiveData.setValue(t.getData());
                 } else {

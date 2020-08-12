@@ -27,7 +27,7 @@ public interface ClassInfoFContract {
         Observable<BaseEntity<ClassInfoBean>> groupInfo(String groupId, String regimentId);
 
 
-        Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(String catId);
+        Observable<BaseEntity<List<GroupCouponBean>>> groupCoupon(String catId,String groupCoupon);
 
 
         Observable<BaseEntity<VideoUrlBean>> videoUrl(String type, String video_id, String buy_id,String group_id);
@@ -47,7 +47,7 @@ public interface ClassInfoFContract {
     interface Model {
         void groupInfo(String groupId, String regimentId);
 
-        void groupCoupon(String catId);
+        void groupCoupon(String catId,String groupCoupon);
 
         void videoUrl(String video_id, String buy_id,String group_id);
 

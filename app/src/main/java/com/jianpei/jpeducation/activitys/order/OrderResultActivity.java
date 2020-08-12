@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
+import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 
 import butterknife.BindView;
@@ -33,6 +34,7 @@ public class OrderResultActivity extends BaseActivity {
     Button btnBack;
 
     private String state;
+    private String orderId;
 
     @Override
     protected int setLayoutView() {
@@ -42,6 +44,7 @@ public class OrderResultActivity extends BaseActivity {
     @Override
     protected void initView() {
         state = getIntent().getStringExtra("state");
+        orderId=getIntent().getStringExtra("orderId");
         ivBack.setVisibility(View.GONE);
 
         if ("1".equals(state)) {
@@ -66,9 +69,16 @@ public class OrderResultActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_one:
+                if ("1".equals(state)) {
+                    startActivity(new Intent(this, MyClassActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                } else {
+                    startActivity(new Intent(this, OrderInfoActivity.class).putExtra("orderId",orderId).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                    finish();
+                }
+                finish();
                 break;
             case R.id.btn_back:
-                startActivity(new Intent(this, MainActivity.class));
+//                startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
                 break;
         }

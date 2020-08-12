@@ -17,6 +17,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.aliyun.player.IPlayer;
+import com.aliyun.player.bean.InfoBean;
 import com.aliyun.player.source.UrlSource;
 import com.aliyun.player.source.VidAuth;
 
@@ -163,6 +165,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         });
 
 
+
+
     }
 
     //播放视频
@@ -274,6 +278,13 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             }
         });
 
+        aliyunPlayerView.setScheduleListener(new AliyunVodPlayerView.ScheduleListener() {
+            @Override
+            public void onSchedule(long progress) {
+                L.e("=====progress:"+progress);
+            }
+        });
+
     }
 
     private void showMorea() {
@@ -360,6 +371,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         lp.screenBrightness = brightness / 255.0f;
         getWindow().setAttributes(lp);
     }
+
+
 
 
 }

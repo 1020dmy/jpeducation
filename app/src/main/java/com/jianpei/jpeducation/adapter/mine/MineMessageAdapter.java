@@ -46,7 +46,7 @@ public class MineMessageAdapter extends RecyclerView.Adapter<MineMessageAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         MessageBean messageBean = messageBeans.get(position);
-        Glide.with(context).load(messageBean.getImg()).placeholder(R.drawable.ic_launcher).into(holder.civHead);
+        Glide.with(context).load(messageBean.getImg()).placeholder(R.drawable.head_icon).into(holder.civHead);
         holder.tvTime.setText(messageBean.getTime_str());
         holder.tvContent.setText(messageBean.getContent());
 

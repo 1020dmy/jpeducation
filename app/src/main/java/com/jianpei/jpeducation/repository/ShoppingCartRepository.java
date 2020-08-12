@@ -8,6 +8,7 @@ import com.jianpei.jpeducation.bean.CouponDataJson;
 import com.jianpei.jpeducation.bean.json.CarInfoJson;
 import com.jianpei.jpeducation.bean.json.RemoveCarJson;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.shop.CarInfoBean;
 import com.jianpei.jpeducation.contract.ShoppingCartContract;
 
@@ -29,7 +30,7 @@ public class ShoppingCartRepository extends BaseRepository implements ShoppingCa
     }
 
     @Override
-    public Observable<BaseEntity<ClassGenerateOrderBean>> carInfo() {
+    public Observable<BaseEntity<MIneOrderInfoBean>> carInfo() {
         return RetrofitFactory.getInstance().API().carInfo(new CarInfoJson());
     }
     @Override

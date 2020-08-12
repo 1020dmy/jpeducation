@@ -21,7 +21,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
@@ -29,6 +28,7 @@ import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.fragment.info.ClassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
@@ -36,6 +36,7 @@ import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+import com.mantis.im_service.ui.activity.ChatActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
@@ -118,7 +119,6 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
     protected void initView() {
         height = DisplayUtil.dp2px(300);
         //初始化分享
-        initShare();
 
         groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
         viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
@@ -134,6 +134,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 mClassInfoBean = classInfoBean;
+                mClassInfoBean.setImg(groupInfoBean.getImg());
                 //更新界面数据
 //                if (classInfoBean.getHuod_price_info() == null) {
 //                    tvPrice.setVisibility(View.GONE);
@@ -178,9 +179,9 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             }
         });
         //获取 购买课程下单/计算价格结果
-        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+            public void onChanged(MIneOrderInfoBean classGenerateOrderBean) {
                 dismissLoading();
                 startActivity(new Intent(ClassInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean).putExtra("type", "ClassInfo"));
             }
@@ -216,6 +217,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
             }
 
             @Override
@@ -257,9 +259,11 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 break;
             case R.id.iv_share:
             case R.id.iv_black_share:
-                if (mShareAction != null) {
-                    mShareAction.open();
+                if (mShareAction == null) {
+                    initShare();
                 }
+                mShareAction.open();
+
                 break;
             case R.id.submit:
                 isShop = false;
@@ -271,7 +275,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 }
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.tv_shopping:
                 isShop = true;

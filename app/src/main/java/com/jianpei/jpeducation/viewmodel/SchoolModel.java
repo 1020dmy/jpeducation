@@ -438,7 +438,7 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
             @Override
             protected void onSuccees(BaseEntity<String> t) throws Exception {
                 if (t.isSuccess()) {
-                    delThreadLiveData.setValue(t.getData());
+                    delThreadLiveData.setValue(t.getMsg());
                 } else {
                     errData.setValue(t.getMsg());
                 }

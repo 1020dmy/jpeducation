@@ -34,6 +34,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="课程"
+                    android:checked="true"
                     android:textColor="@color/c161820"
                     android:textSize="@dimen/s_dp_15"
                     android:theme="@style/MyRadioButton" />

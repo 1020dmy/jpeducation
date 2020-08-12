@@ -23,6 +23,15 @@ public class GroupInfoBean implements Parcelable {
     private String img;
     private String deleted;
     private String end_time;
+    private String cat_id;
+
+    public String getCat_id() {
+        return cat_id;
+    }
+
+    public void setCat_id(String cat_id) {
+        this.cat_id = cat_id;
+    }
 
     public String getId() {
         return id;
@@ -95,6 +104,8 @@ public class GroupInfoBean implements Parcelable {
         dest.writeString(this.img);
         dest.writeString(this.deleted);
         dest.writeString(this.end_time);
+        dest.writeString(this.cat_id);
+
     }
 
     public GroupInfoBean() {
@@ -108,6 +119,8 @@ public class GroupInfoBean implements Parcelable {
         this.img = in.readString();
         this.deleted = in.readString();
         this.end_time = in.readString();
+        this.cat_id = in.readString();
+
     }
 
     public static final Parcelable.Creator<GroupInfoBean> CREATOR = new Parcelable.Creator<GroupInfoBean>() {

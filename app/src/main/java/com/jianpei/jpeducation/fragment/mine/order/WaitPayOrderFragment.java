@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,16 +17,19 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
+import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.order.MyOrderListItemListener;
 import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.adapter.order.WaitPayOrderAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.dialog.CancelOrderDialog;
+import com.jianpei.jpeducation.viewmodel.DataNoticeChangeModel;
 import com.jianpei.jpeducation.viewmodel.OrderListModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -52,6 +56,8 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
 
 
     private OrderListModel orderListModel;
+    private DataNoticeChangeModel dataNoticeChangeModel;
+
     private List<OrderDataBean> mOrderDataBeans;
 
     //    private WaitPayOrderAdapter waitPayOrderAdapter;
@@ -69,6 +75,9 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
     @Override
     protected void initView(View view) {
         orderListModel = new ViewModelProvider(this).get(OrderListModel.class);
+        //
+        dataNoticeChangeModel = new ViewModelProvider(getActivity()).get(DataNoticeChangeModel.class);
+//
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -110,9 +119,9 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
                 if (page == 1) {
                     mOrderDataBeans.clear();
                 }
-                mOrderDataBeans.addAll(orderListBean.getData());
+                if (orderListBean != null)
+                    mOrderDataBeans.addAll(orderListBean.getData());
                 nOrderListAdapter.notifyDataSetChanged();
-                L.e("====size:" + mOrderDataBeans.size());
             }
         });
         //取消订单返回
@@ -126,13 +135,13 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
             }
         });
         //发起支付选择价格
-        orderListModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
-            @Override
-            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
-                dismissLoading();
-                startActivity(new Intent(getActivity(), OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean));
-            }
-        });
+//        orderListModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
+//            @Override
+//            public void onChanged(MIneOrderInfoBean classGenerateOrderBean) {
+//                dismissLoading();
+//                startActivity(new Intent(getActivity(), OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean));
+//            }
+//        });
         //错误返回
         orderListModel.getErrData().observe(this, new Observer<String>() {
             @Override
@@ -141,6 +150,15 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
                 refreshLayout.finishLoadMore();
                 dismissLoading();
                 shortToast(o);
+            }
+        });
+        //通知全局更新
+        dataNoticeChangeModel.getNoticeChangeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+//                showLoading("");
+                page = 1;
+                orderListModel.orderData(2, page, pageSize);
             }
         });
 
@@ -168,13 +186,13 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.tv_pay:
             case R.id.linearLayout:
-
-                if (mOrderDataBeans.get(position).getGroup_list() == null || mOrderDataBeans.get(position).getGroup_list().size() == 0) {
-                    showLoading("");
-                    orderListModel.classGenerateOrder(mOrderDataBeans.get(position).getGoods_type(), mOrderDataBeans.get(position).getGroup_id(), mOrderDataBeans.get(position).getPid(), mOrderDataBeans.get(position).getId());
-                } else {
-                    startActivity(new Intent(getActivity(), ShoppingCartActivity.class));
-                }
+                startActivityForResult(new Intent(getActivity(), OrderInfoActivity.class).putExtra("orderId", mOrderDataBeans.get(position).getId()), 111);
+//                if (mOrderDataBeans.get(position).getGroup_list() == null || mOrderDataBeans.get(position).getGroup_list().size() == 0) {
+//                    showLoading("");
+//                    orderListModel.classGenerateOrder(mOrderDataBeans.get(position).getGoods_type(), mOrderDataBeans.get(position).getGroup_id(), mOrderDataBeans.get(position).getPid(), mOrderDataBeans.get(position).getId());
+//                } else {
+//                    startActivity(new Intent(getActivity(), ShoppingCartActivity.class));
+//                }
                 break;
         }
 
@@ -184,6 +202,16 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
     }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 111 && resultCode == 112) {
+//            showLoading("");
+//            page = 1;
+//            orderListModel.orderData(2, page, pageSize);
+//        }
+//    }
 
 //    @Override
 //    public void onClick(View view, int position) {

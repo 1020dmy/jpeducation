@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.GroupInfoAdapter;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -85,7 +86,7 @@ public class GroupingPopup extends PopupWindow {
         }.start();
         tvTip.setText("拼团中，还差" + mRegimentBean.getRemaining_number() + "人拼团成功");
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        MyAdapter myAdapter = new MyAdapter();
+        GroupInfoAdapter myAdapter = new GroupInfoAdapter(mRegimentBean,mContext);
         recyclerView.setAdapter(myAdapter);
     }
 
@@ -126,43 +127,43 @@ public class GroupingPopup extends PopupWindow {
     }
 
 
-    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
-
-        @NonNull
-        @Override
-        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_head, parent, false);
-            return new MyHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-            if (position <= mRegimentBean.getRegiment_data().size() - 1) {
-                RegimentBean data = mRegimentBean.getRegiment_data().get(position);
-                if ("1".equals(data.getIs_source())) {
-                    holder.tvLeader.setVisibility(View.VISIBLE);
-                }
-                Glide.with(mContext).load(data.getImg()).placeholder(R.drawable.icon_no_member).into(holder.circleImageView);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return Integer.valueOf(mRegimentBean.getNum_people());
-        }
-
-        class MyHolder extends RecyclerView.ViewHolder {
-            private CircleImageView circleImageView;
-            private TextView tvLeader;
-
-            public MyHolder(@NonNull View itemView) {
-                super(itemView);
-                circleImageView = itemView.findViewById(R.id.civ_head);
-                tvLeader = itemView.findViewById(R.id.tv_leader);
-            }
-        }
-    }
+//    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
+//
+//        @NonNull
+//        @Override
+//        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_head, parent, false);
+//            return new MyHolder(view);
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+//            if (position <= mRegimentBean.getRegiment_data().size() - 1) {
+//                RegimentBean data = mRegimentBean.getRegiment_data().get(position);
+//                if ("1".equals(data.getIs_source())) {
+//                    holder.tvLeader.setVisibility(View.VISIBLE);
+//                }
+//                Glide.with(mContext).load(data.getImg()).placeholder(R.drawable.icon_no_member).into(holder.circleImageView);
+//            }
+//        }
+//
+//
+//        @Override
+//        public int getItemCount() {
+//            return Integer.valueOf(mRegimentBean.getNum_people());
+//        }
+//
+//        class MyHolder extends RecyclerView.ViewHolder {
+//            private CircleImageView circleImageView;
+//            private TextView tvLeader;
+//
+//            public MyHolder(@NonNull View itemView) {
+//                super(itemView);
+//                circleImageView = itemView.findViewById(R.id.civ_head);
+//                tvLeader = itemView.findViewById(R.id.tv_leader);
+//            }
+//        }
+//    }
 
 
 }

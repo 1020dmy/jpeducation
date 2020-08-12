@@ -225,7 +225,11 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("mUserInfoBean", mUserInfoBean));
                 break;
             case R.id.ll_share://邀请好友
-                startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
+//                startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
+                if (mShareAction == null) {
+                    initShare();
+                }
+                mShareAction.open();
                 break;
             case R.id.tv_suggest://意见反馈
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));

@@ -9,14 +9,11 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.CouponDataBean;
-import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
-import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.contract.OrderConfirmContract;
 import com.jianpei.jpeducation.repository.OrderConfirmRepository;
 
-import java.util.ArrayList;
-import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -36,11 +33,11 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
 
     //购买课程下单/计算价格结果（生成订单）
 
-    private MutableLiveData<ClassGenerateOrderBean> classGenerateOrderBeanLiveData;
+    private MutableLiveData<MIneOrderInfoBean> classGenerateOrderBeanLiveData;
     //1-订单发起支付
     private MutableLiveData<OrderPaymentBean> orderPaymentBeanLiveData;
     //    支付状态查询
-    private MutableLiveData<CheckPayStatusBean> checkPayStatusBeanLiveData;
+//    private MutableLiveData<CheckPayStatusBean> checkPayStatusBeanLiveData;
     //支付宝支付
     private MutableLiveData<String> aliPayLiveData;
 
@@ -50,11 +47,11 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
         return aliPayLiveData;
     }
 
-    public MutableLiveData<CheckPayStatusBean> getCheckPayStatusBeanLiveData() {
-        if (checkPayStatusBeanLiveData == null)
-            checkPayStatusBeanLiveData = new MutableLiveData<>();
-        return checkPayStatusBeanLiveData;
-    }
+//    public MutableLiveData<CheckPayStatusBean> getCheckPayStatusBeanLiveData() {
+//        if (checkPayStatusBeanLiveData == null)
+//            checkPayStatusBeanLiveData = new MutableLiveData<>();
+//        return checkPayStatusBeanLiveData;
+//    }
 
     public MutableLiveData<OrderPaymentBean> getOrderPaymentBeanLiveData() {
         if (orderPaymentBeanLiveData == null)
@@ -62,7 +59,7 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
         return orderPaymentBeanLiveData;
     }
 
-    public MutableLiveData<ClassGenerateOrderBean> getClassGenerateOrderBeanLiveData() {
+    public MutableLiveData<MIneOrderInfoBean> getClassGenerateOrderBeanLiveData() {
 
         if (classGenerateOrderBeanLiveData == null) {
             classGenerateOrderBeanLiveData = new MutableLiveData<>();
@@ -113,10 +110,10 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
 
     @Override
     public void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id) {
-        orderConfirmRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, "", "", "", "").compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
+        orderConfirmRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, "", "", "", "").compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
 
             @Override
-            protected void onSuccees(BaseEntity<ClassGenerateOrderBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
                 if (t.isSuccess()) {
                     classGenerateOrderBeanLiveData.setValue(t.getData());
                 } else {
@@ -172,17 +169,27 @@ public class OrderConfirmModel extends BaseViewModel implements OrderConfirmCont
      * @param pay_type
      */
 
+    private MutableLiveData<MIneOrderInfoBean> checkPayStatusLiveData;
+
+
+    public MutableLiveData<MIneOrderInfoBean> getCheckPayStatusLiveData() {
+        if (checkPayStatusLiveData == null) {
+            checkPayStatusLiveData = new MutableLiveData<>();
+        }
+        return checkPayStatusLiveData;
+    }
+
     @Override
     public void checkPayStatus(String order_id, String pay_type) {
         if (TextUtils.isEmpty(order_id))
             return;
 
-        orderConfirmRepository.checkPayStatus(order_id, pay_type).compose(setThread()).subscribe(new BaseObserver<CheckPayStatusBean>() {
+        orderConfirmRepository.checkPayStatus(order_id, pay_type).compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
 
             @Override
-            protected void onSuccees(BaseEntity<CheckPayStatusBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
                 if (t.isSuccess()) {
-                    checkPayStatusBeanLiveData.setValue(t.getData());
+                    checkPayStatusLiveData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());
                 }

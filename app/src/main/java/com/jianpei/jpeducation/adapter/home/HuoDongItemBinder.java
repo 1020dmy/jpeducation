@@ -35,7 +35,8 @@ public class HuoDongItemBinder extends BaseItemBinder<HuoDongDataBean, HuoDongIt
 
     @Override
     public void convert(@NotNull MyHolder myHolder, HuoDongDataBean huoDongDataBean) {
-        Glide.with(context).setDefaultRequestOptions(RequestOptions.bitmapTransform(new RoundedCorners( 20))).load(huoDongDataBean.getImg()).into(myHolder.imageView);
+//        Glide.with(context).setDefaultRequestOptions(RequestOptions.bitmapTransform(new RoundedCorners( 20)))..load(huoDongDataBean.getImg()).into(myHolder.imageView);
+        Glide.with(context).load(huoDongDataBean.getImg()).placeholder(R.drawable.placeholder_icon).into(myHolder.imageView);
 
     }
 

@@ -44,8 +44,8 @@ ext {
 
     //SDK Layer
     externalJSR305 = 'com.google.code.findbugs:jsr305:3.0.0'
-    externalOKHTTP = 'com.squareup.okhttp3:okhttp:3.4.0'
-    externalOKIO = 'com.squareup.okio:okio:1.12.0'
+//    externalOKHTTP = 'com.squareup.okhttp3:okhttp:3.4.0'
+//    externalOKIO = 'com.squareup.okio:okio:1.12.0'
     externalGSON = 'com.google.code.gson:gson:2.8.0'
     externalMqtt = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     externalHttpCore = 'org.apache.httpcomponents:httpcore:4.4.1'

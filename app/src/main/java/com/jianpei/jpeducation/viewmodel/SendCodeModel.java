@@ -55,7 +55,7 @@ public class SendCodeModel extends BaseViewModel implements SendCodeContract.Mod
             @Override
             protected void onSuccees(BaseEntity<String> t) throws Exception {
                 if (t.isSuccess()) {
-                    successCodeLiveData.setValue(t.getData());
+                    successCodeLiveData.setValue(t.getMsg());
                 } else {
                     errData.setValue(t.getMsg());
                 }

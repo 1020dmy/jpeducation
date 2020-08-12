@@ -151,7 +151,6 @@ public class AliyunDownloadManager {
                     }
                 }
             });
-
         }
 
         @Override
@@ -743,7 +742,7 @@ public class AliyunDownloadManager {
         if (downloadMediaInfos == null || downloadMediaInfos.size() == 0 || downloadInfos == null) {
             return;
         }
-        for (AliyunDownloadMediaInfo downloadMediaInfo : downloadMediaInfos){
+        for (AliyunDownloadMediaInfo downloadMediaInfo : downloadMediaInfos) {
             if (downloadMediaInfo.getStatus() == AliyunDownloadMediaInfo.Status.Start ||
                     downloadMediaInfo.getStatus() == AliyunDownloadMediaInfo.Status.Wait) {
                 AliMediaDownloader jniDownloader = downloadInfos.get(downloadMediaInfo);
@@ -1151,15 +1150,15 @@ public class AliyunDownloadManager {
 
                     if (selectDownloadingList != null) {
                         Iterator<AliyunDownloadMediaInfo> iterator = selectDownloadingList.iterator();
-                        while(iterator.hasNext()){
+                        while (iterator.hasNext()) {
                             AliyunDownloadMediaInfo mediaInfo = iterator.next();
-                            if(mediaInfo.getProgress() == 100){
+                            if (mediaInfo.getProgress() == 100) {
                                 mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Complete);
                                 iterator.remove();
-                                if(selectCompletedList != null){
+                                if (selectCompletedList != null) {
                                     selectCompletedList.add(mediaInfo);
                                 }
-                            }else{
+                            } else {
                                 mediaInfo.setStatus(AliyunDownloadMediaInfo.Status.Stop);
                             }
                         }
@@ -1172,7 +1171,7 @@ public class AliyunDownloadManager {
                     if (selectPreparedList != null) {
                         dataList.addAll(selectPreparedList);
                     }
-                    if(selectCompletedList != null){
+                    if (selectCompletedList != null) {
                         dataList.addAll(selectCompletedList);
                     }
 
@@ -1195,12 +1194,12 @@ public class AliyunDownloadManager {
 
                     //增加本地文件判断,如果文件手动删除,则从数据库中删除
                     Iterator<AliyunDownloadMediaInfo> iterator = dataList.iterator();
-                    while(iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         AliyunDownloadMediaInfo nextDownloadMediaInfo = iterator.next();
                         String savePath = nextDownloadMediaInfo.getSavePath();
-                        if(!TextUtils.isEmpty(savePath)){
+                        if (!TextUtils.isEmpty(savePath)) {
                             File file = new File(savePath);
-                            if(!file.exists() && nextDownloadMediaInfo.getStatus() == AliyunDownloadMediaInfo.Status.Complete){
+                            if (!file.exists() && nextDownloadMediaInfo.getStatus() == AliyunDownloadMediaInfo.Status.Complete) {
                                 iterator.remove();
                                 mDatabaseManager.delete(nextDownloadMediaInfo);
                             }

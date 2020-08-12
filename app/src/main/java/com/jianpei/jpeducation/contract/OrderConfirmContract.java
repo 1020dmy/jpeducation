@@ -6,6 +6,7 @@ import com.jianpei.jpeducation.bean.CouponDataBean;
 import com.jianpei.jpeducation.bean.UserInfoBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 
 import java.util.ArrayList;
@@ -27,11 +28,11 @@ public interface OrderConfirmContract {
     interface Repository {
 //        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type);
 
-        Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
+        Observable<BaseEntity<MIneOrderInfoBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
 
         Observable<BaseEntity<OrderPaymentBean>> orderPayment(String type, String order_id);
 
-        Observable<BaseEntity<CheckPayStatusBean>> checkPayStatus(String order_id, String pay_type);
+        Observable<BaseEntity<MIneOrderInfoBean>> checkPayStatus(String order_id, String pay_type);
 
         Observable<String> aliPay(String orderInfo, PayTask payTask);
 

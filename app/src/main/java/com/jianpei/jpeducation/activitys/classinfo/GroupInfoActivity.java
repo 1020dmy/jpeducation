@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,14 +21,13 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
-import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.fragment.group.GclassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
@@ -35,6 +35,7 @@ import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.pop.GroupingPopup;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+import com.mantis.im_service.ui.activity.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,11 +159,13 @@ public class GroupInfoActivity extends BaseActivity {
         });
 
         //获取 购买课程下单/计算价格结果
-        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+        classInfoModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+            public void onChanged(MIneOrderInfoBean classGenerateOrderBean) {
                 dismissLoading();
-                startActivity(new Intent(GroupInfoActivity.this, OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean).putExtra("type", "GroupInfo"));
+                startActivityForResult(new Intent(GroupInfoActivity.this, OrderConfirmActivity.class)
+                        .putExtra("classGenerateOrderBean", classGenerateOrderBean)
+                        .putExtra("type", "GroupInfo"), 111);
             }
         });
         //获取计算的价格的结果
@@ -228,6 +231,12 @@ public class GroupInfoActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @OnClick({R.id.iv_back, R.id.iv_shopping, R.id.iv_share, R.id.iv_black_back, R.id.iv_black_shopping, R.id.iv_black_share, R.id.tv_kefu, R.id.submit, R.id.tv_buy})
     public void onViewClicked(View view) {
@@ -242,9 +251,13 @@ public class GroupInfoActivity extends BaseActivity {
                 break;
             case R.id.iv_share:
             case R.id.iv_black_share:
+                if (mShareAction == null) {
+                    initShare();
+                }
+                mShareAction.open();
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.submit:
                 groupId = "";

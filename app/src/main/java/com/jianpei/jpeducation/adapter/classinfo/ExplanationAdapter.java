@@ -37,7 +37,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<ExplanationAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        Glide.with(context).load(imageUrls.get(position)).into(holder.imageView);
+        Glide.with(context).load(imageUrls.get(position)).placeholder(R.drawable.placeholder_icon).into(holder.imageView);
 //        Glide.with(context).load(imageUrls.get(position)).downloadOnly();
 
 

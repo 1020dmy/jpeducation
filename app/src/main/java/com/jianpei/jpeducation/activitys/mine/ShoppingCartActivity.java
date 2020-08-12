@@ -18,17 +18,15 @@ import com.alipay.sdk.app.PayTask;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.order.OrderResultActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.ShoppingCatAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
-import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
-import com.jianpei.jpeducation.bean.order.OrderInfoBean;
+import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.bean.shop.GroupBean;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
 import com.jianpei.jpeducation.viewmodel.ShoppingCartModel;
+import com.mantis.im_service.ui.activity.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -95,7 +93,7 @@ public class ShoppingCartActivity extends BaseActivity {
 
     //    private MyCouponPopup couponPopup;
     private String mCouponTitle;
-    private ClassGenerateOrderBean mClassGenerateOrderBean;
+    private MIneOrderInfoBean mClassGenerateOrderBean;
     private IWXAPI msgApi;
 
 
@@ -132,9 +130,9 @@ public class ShoppingCartActivity extends BaseActivity {
             }
         });
         //购物车信息
-        shoppingCartModel.getCarInfoBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+        shoppingCartModel.getCarInfoBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(ClassGenerateOrderBean carInfoBean) {
+            public void onChanged(MIneOrderInfoBean carInfoBean) {
                 dismissLoading();
                 setData(carInfoBean);
 
@@ -168,9 +166,9 @@ public class ShoppingCartActivity extends BaseActivity {
             }
         });
         //选择优惠券后
-        orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
+        orderConfirmModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
+            public void onChanged(MIneOrderInfoBean classGenerateOrderBean) {
                 dismissLoading();
 //                if (couponPopup != null) {
 //                    couponPopup.dismiss();
@@ -213,7 +211,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 if (TextUtils.equals(s, "9000")) {
                     // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                     showLoading("");
-                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
                 } else {
                     // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                     shortToast("支付失败！" + s);
@@ -221,14 +219,16 @@ public class ShoppingCartActivity extends BaseActivity {
             }
         });
         //支付结果查询
-        orderConfirmModel.getCheckPayStatusBeanLiveData().observe(this, new Observer<CheckPayStatusBean>() {
+        orderConfirmModel.getCheckPayStatusLiveData().observe(this, new Observer<MIneOrderInfoBean>() {
             @Override
-            public void onChanged(CheckPayStatusBean checkPayStatusBean) {
+            public void onChanged(MIneOrderInfoBean checkPayStatusBean) {
                 if ("0".equals(checkPayStatusBean.getState())) {//未支付
-                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+                    orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
                 } else {
                     dismissLoading();
-                    startActivity(new Intent(ShoppingCartActivity.this, OrderResultActivity.class).putExtra("state", checkPayStatusBean.getState()));
+                    startActivity(new Intent(ShoppingCartActivity.this, OrderResultActivity.class)
+                            .putExtra("orderId", checkPayStatusBean.getId())
+                            .putExtra("state", checkPayStatusBean.getState()));
 
 
                 }
@@ -243,7 +243,7 @@ public class ShoppingCartActivity extends BaseActivity {
             @Override
             public void onDeleteClick(int position, String carId) {
                 showLoading("");
-                shoppingCartModel.removeCar(carId, mClassGenerateOrderBean.getOrder_info().getId());
+                shoppingCartModel.removeCar(carId, mClassGenerateOrderBean.getId());
 
             }
         });
@@ -260,7 +260,7 @@ public class ShoppingCartActivity extends BaseActivity {
         int resultCode = intent.getIntExtra("resultCode", -10);
         if (resultCode == 0) {
             showLoading("");
-            orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getOrder_info().getId(), payType + "");
+            orderConfirmModel.checkPayStatus(mClassGenerateOrderBean.getId(), payType + "");
         } else if (resultCode == -1) {
             shortToast("支付失败！");
         } else if (resultCode == -2) {
@@ -280,7 +280,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.ll_quan:
 //                if (mCouponDatas == null || mCouponDatas.size() == 0) {
@@ -298,7 +298,7 @@ public class ShoppingCartActivity extends BaseActivity {
                 break;
             case R.id.submit:
                 showLoading("");
-                orderConfirmModel.orderPayment(payType + "", mClassGenerateOrderBean.getOrder_info().getId());
+                orderConfirmModel.orderPayment(payType + "", mClassGenerateOrderBean.getId());
                 break;
         }
     }
@@ -331,13 +331,13 @@ public class ShoppingCartActivity extends BaseActivity {
             showLoading("");
             mCouponTitle = data.getStringExtra("couponTitle");
             String couponId = data.getStringExtra("couponId");
-            orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getOrder_info().getGroup_id(), couponId, mClassGenerateOrderBean.getOrder_info().getId());
+            orderConfirmModel.classGenerateOrder("1", mClassGenerateOrderBean.getGroup_id(), couponId, mClassGenerateOrderBean.getId());
 
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setData(ClassGenerateOrderBean carInfoBean) {
+    private void setData(MIneOrderInfoBean carInfoBean) {
         if (carInfoBean == null) {
             tvNodata.setVisibility(View.VISIBLE);
             return;
@@ -345,15 +345,15 @@ public class ShoppingCartActivity extends BaseActivity {
         tvNodata.setVisibility(View.GONE);
 
         mClassGenerateOrderBean = carInfoBean;
-        OrderInfoBean orderInfoBean = carInfoBean.getOrder_info();
-        tvOrderNum.setText(orderInfoBean.getNumber());
-        tvTime.setText(orderInfoBean.getAdd_time_str());
+//        OrderInfoBean orderInfoBean = carInfoBean.getOrder_info();
+        tvOrderNum.setText(carInfoBean.getNumber());
+        tvTime.setText(carInfoBean.getAdd_time_str());
         //课程信息
         groupBeans.clear();
         groupBeans.addAll(carInfoBean.getGroup_list());
         //
         //优惠券信息
-        if ("1".equals(orderInfoBean.getIs_user_coupon())) {
+        if ("1".equals(carInfoBean.getIs_user_coupon())) {
             ivQuan.setImageResource(R.drawable.icon_quanou_is);
             tvQuan.setText("有可用优惠券");
             llQuan.setEnabled(true);
@@ -361,11 +361,11 @@ public class ShoppingCartActivity extends BaseActivity {
         if (!TextUtils.isEmpty(mCouponTitle))
             tvQuan.setText(mCouponTitle);
         //价格信息
-        tvOriginPrice.setText("￥" + orderInfoBean.getCount_integral());
-        tvDiscountPrice.setText("￥" + orderInfoBean.getDiscount_integral());
-        tvRealPrice.setText("￥" + orderInfoBean.getMoney());
+        tvOriginPrice.setText("￥" + carInfoBean.getCount_integral());
+        tvDiscountPrice.setText("￥" + carInfoBean.getDiscount_integral());
+        tvRealPrice.setText("￥" + carInfoBean.getMoney());
         //
-        tvPayPrice.setText("￥" + orderInfoBean.getMoney());
+        tvPayPrice.setText("￥" + carInfoBean.getMoney());
 
         shoppingCatAdapter.notifyDataSetChanged();
 

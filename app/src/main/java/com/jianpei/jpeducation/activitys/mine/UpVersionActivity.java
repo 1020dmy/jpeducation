@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys.mine;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.bean.VersionDetectBean;
 import com.jianpei.jpeducation.utils.AppUtils;
+import com.jianpei.jpeducation.utils.down.DownloadApkUtils;
 import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
 
 import butterknife.BindView;
@@ -43,6 +45,7 @@ public class UpVersionActivity extends BaseActivity {
     TextView tvUpTip;
 
     private VersionDetectModel versionDetectModel;
+    private String url;
 
     @Override
     protected int setLayoutView() {
@@ -64,12 +67,17 @@ public class UpVersionActivity extends BaseActivity {
             @Override
             public void onChanged(VersionDetectBean versionDetectBean) {
                 dismissLoading();
-                tvCurrent.setVisibility(View.GONE);
-                btnUp.setVisibility(View.VISIBLE);
-                tvUpTip.setVisibility(View.VISIBLE);
-                tvVersion.setText("当前版本V" + AppUtils.getVersionName(MyApplication.getInstance()));
-                tvUpVersion.setText("更新V" + versionDetectBean.getApp_version() + "版本");
-                tvUpTip.setText(versionDetectBean.getHint());
+                if (versionDetectBean != null) {
+                    url = versionDetectBean.getFile_path();
+                    tvCurrent.setVisibility(View.GONE);
+                    btnUp.setVisibility(View.VISIBLE);
+                    tvUpTip.setVisibility(View.VISIBLE);
+                    tvVersion.setText("当前版本V" + AppUtils.getVersionName(MyApplication.getInstance()));
+                    tvUpVersion.setText("更新V" + versionDetectBean.getApp_version() + "版本");
+                    tvUpTip.setText(versionDetectBean.getHint());
+                } else {
+                    tvVersion.setText("V" + AppUtils.getVersionName(MyApplication.getInstance()));
+                }
 
             }
         });
@@ -95,6 +103,10 @@ public class UpVersionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_up:
+                if (!TextUtils.isEmpty(url))
+                    DownloadApkUtils.startDownload(this, url, "建培教育");
+                btnUp.setText("正在更新");
+                btnUp.setEnabled(false);
                 break;
         }
     }

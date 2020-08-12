@@ -41,6 +41,11 @@ public class SpUtils {
     public static final String KFPhone = "KFPhone";
 
 
+    public static final String share_img = "share_img";
+    public static final String share_title = "share_title";
+    public static final String share_content = "share_content";
+    public static final String share_url = "share_url";
+
 
     /**
      * Put string value to SharedPreferences

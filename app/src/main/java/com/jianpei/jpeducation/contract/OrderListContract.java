@@ -28,7 +28,8 @@ public interface OrderListContract {
         Observable<BaseEntity<OrderListBean>> orderData(int type, int pageIndex, int pageSize);
 
 
-        Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
+//        Observable<BaseEntity<ClassGenerateOrderBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
+        Observable<BaseEntity<MIneOrderInfoBean>> classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id, String class_ids, String suites_ids, String regiment_id, String gather_id);
 
 
         Observable<BaseEntity<String>> cancelOrder(String order_id);

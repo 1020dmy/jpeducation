@@ -10,7 +10,6 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2020-07-22  09:00"
         android:textColor="@color/cA2A2A2"
         android:textSize="11dp" />
 
@@ -24,7 +23,7 @@
             android:id="@+id/civ_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher" />
+           />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +37,6 @@
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="您在建培网购买的课程有1笔购课订单还 未付款，请及时付款，以便尽快为您开 通课程"
                 android:textColor="@color/c888B96"
                 android:textSize="12dp" />
 
@@ -55,6 +53,7 @@
                 android:layout_marginTop="10dp"
                 android:drawableRight="@drawable/material_shrink"
                 android:text="查看详情"
+                android:visibility="gone"
                 android:textColor="@color/c333333"
                 android:textSize="13dp" />
 

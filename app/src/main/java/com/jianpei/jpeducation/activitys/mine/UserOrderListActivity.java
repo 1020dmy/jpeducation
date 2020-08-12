@@ -1,21 +1,27 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
+import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.fragment.mine.order.AllOrderFragment;
 import com.jianpei.jpeducation.fragment.mine.order.CompleteOrderFragment;
 import com.jianpei.jpeducation.fragment.mine.order.WaitPayOrderFragment;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.viewmodel.DataNoticeChangeModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,6 +41,8 @@ public class UserOrderListActivity extends BaseActivity {
 
     private int type;
 
+    private DataNoticeChangeModel dataNoticeChangeModel;
+
 
     private Fragment[] fragments = {new AllOrderFragment(), new WaitPayOrderFragment(), new CompleteOrderFragment()};
 
@@ -50,6 +58,8 @@ public class UserOrderListActivity extends BaseActivity {
     protected void initView() {
         tvTitle.setText("我的订单");
         type = getIntent().getIntExtra("type", 0);
+
+        dataNoticeChangeModel = new ViewModelProvider(this).get(DataNoticeChangeModel.class);
 
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
@@ -71,12 +81,22 @@ public class UserOrderListActivity extends BaseActivity {
             viewPage.setCurrentItem(2);
         }
 
-
     }
 
     @Override
     protected void initData() {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Constants.orderIspay == 1) {
+            Constants.orderIspay = 0;
+            dataNoticeChangeModel.getNoticeChangeLiveData().setValue("更新数据");
+
+
+        }
     }
 
 

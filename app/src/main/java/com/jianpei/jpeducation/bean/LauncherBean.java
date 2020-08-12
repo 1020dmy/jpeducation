@@ -25,6 +25,7 @@ public class LauncherBean implements Parcelable {
     private String startingInfo;
     private String telephone;
     private ArrayList<String> guideList;
+    private ShareDataBean shareData;
 
     public String getTelephone() {
         return telephone;
@@ -58,6 +59,15 @@ public class LauncherBean implements Parcelable {
         this.userProtocol = userProtocol;
     }
 
+    public ShareDataBean getShareData() {
+        return shareData;
+    }
+
+    public void setShareData(ShareDataBean shareData) {
+        this.shareData = shareData;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -65,24 +75,22 @@ public class LauncherBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.startingInfo);
-        dest.writeStringList(this.guideList);
         dest.writeString(this.userProtocol);
+        dest.writeString(this.startingInfo);
         dest.writeString(this.telephone);
-
-
+        dest.writeStringList(this.guideList);
+        dest.writeParcelable(this.shareData, flags);
     }
 
     public LauncherBean() {
     }
 
     protected LauncherBean(Parcel in) {
-        this.startingInfo = in.readString();
-        this.guideList = in.createStringArrayList();
         this.userProtocol = in.readString();
+        this.startingInfo = in.readString();
         this.telephone = in.readString();
-
-
+        this.guideList = in.createStringArrayList();
+        this.shareData = in.readParcelable(ShareDataBean.class.getClassLoader());
     }
 
     public static final Creator<LauncherBean> CREATOR = new Creator<LauncherBean>() {

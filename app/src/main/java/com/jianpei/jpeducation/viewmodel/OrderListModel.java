@@ -35,7 +35,7 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
 
     //购买课程下单/计算价格结果（生成订单）
 
-    private MutableLiveData<ClassGenerateOrderBean> classGenerateOrderBeanLiveData;
+    private MutableLiveData<MIneOrderInfoBean> classGenerateOrderBeanLiveData;
 
     public MutableLiveData<OrderListBean> getOrderDataBeansLiveData() {
         if (orderDataBeansLiveData == null)
@@ -43,7 +43,7 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
         return orderDataBeansLiveData;
     }
 
-    public MutableLiveData<ClassGenerateOrderBean> getClassGenerateOrderBeanLiveData() {
+    public MutableLiveData<MIneOrderInfoBean> getClassGenerateOrderBeanLiveData() {
 
         if (classGenerateOrderBeanLiveData == null) {
             classGenerateOrderBeanLiveData = new MutableLiveData<>();
@@ -71,8 +71,12 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
             protected void onSuccees(BaseEntity<OrderListBean> t) throws Exception {
 
                 if (t.isSuccess()) {
-                    orderDataBeansLiveData.setValue(t.getData());
+                    if (t.getData() != null) {
+                        orderDataBeansLiveData.setValue(t.getData());
+                    } else {
+                        orderDataBeansLiveData.setValue(null);
 
+                    }
                 } else {
                     errData.setValue(t.getMsg());
                 }
@@ -93,10 +97,10 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
 
     @Override
     public void classGenerateOrder(String goods_type, String group_id, String coupon_id, String order_id) {
-        orderListRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, "", "", "", "").compose(setThread()).subscribe(new BaseObserver<ClassGenerateOrderBean>() {
+        orderListRepository.classGenerateOrder(goods_type, group_id, coupon_id, order_id, "", "", "", "").compose(setThread()).subscribe(new BaseObserver<MIneOrderInfoBean>() {
 
             @Override
-            protected void onSuccees(BaseEntity<ClassGenerateOrderBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<MIneOrderInfoBean> t) throws Exception {
                 if (t.isSuccess()) {
                     classGenerateOrderBeanLiveData.setValue(t.getData());
                 } else {
@@ -179,7 +183,7 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                L.e("======onFailure==="+e.getMessage());
+                L.e("======onFailure===" + e.getMessage());
                 if (isNetWorkError) {
                     errData.setValue("网络异常！");
                 } else {
@@ -189,4 +193,15 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
         });
 
     }
+
+//    /**
+//     * 通知三个列表去更新
+//     */
+//    private MutableLiveData<String> noticeChangeLiveData;
+//
+//    public MutableLiveData<String> getNoticeChangeLiveData() {
+//        if (noticeChangeLiveData == null)
+//            noticeChangeLiveData = new MutableLiveData<>();
+//        return noticeChangeLiveData;
+//    }
 }

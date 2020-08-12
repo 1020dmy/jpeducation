@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -287,10 +289,11 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
             tvHandsel.setText(material);
         }
         //拼团
-        if (classInfoBean.getRegiment_info() == null) {
+        if ("0".equals(classInfoBean.getRegiment_info().getRegiment_des())) {
             llPinTuan.setVisibility(View.GONE);
         } else {
             tvRegimentDes.setText(classInfoBean.getRegiment_info().getRegiment_des() + "人正在拼团");
+            regimentBeans.clear();
             regimentBeans.addAll(classInfoBean.getRegiment_info().getRegiment_data());
             groupAdapter.notifyDataSetChanged();
         }
@@ -375,7 +378,8 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
             groupJoinPopup = new GroupJoinPopup(getActivity(), regimentBean, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    //参团通知调用科目选择
+                    classInfoModel.getJoinGroupInfoLiveData().setValue(regimentBean.getId());
                 }
             });
         groupJoinPopup.showPop();

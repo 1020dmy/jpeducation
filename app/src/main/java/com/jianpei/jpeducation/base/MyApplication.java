@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.mantis_im_sdk.MIMManager;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.DisplayUtil;
@@ -54,6 +55,8 @@ public class MyApplication extends Application {
 
         DisplayUtil.getWindowSize();
         //螳螂
+        MIMManager.getInstance().init(getApplicationContext(),7011 , "5ea91b77dc4cec0b99d0b7da","");
+
 
 
 //        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");

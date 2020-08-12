@@ -22,6 +22,7 @@ import com.aliyun.utils.VcPlayerLog;
 import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
+import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.utils.LoadingDialog;
 import com.jianpei.jpeducation.utils.SpUtils;
@@ -200,6 +201,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void initShare() {
         mShareListener = new CustomShareListener(this);
+        String shareUrl = SpUtils.getValue(SpUtils.share_url);
+        String shareImg = SpUtils.getValue(SpUtils.share_img);
+        String shareTitle = SpUtils.getValue(SpUtils.share_title);
+        String shareContent = SpUtils.getValue(SpUtils.share_content);
 
 
         mShareAction = new ShareAction(this).setDisplayList(
@@ -210,10 +215,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         ).setShareboardclickCallback(new ShareBoardlistener() {
             @Override
             public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                UMWeb web = new UMWeb("http://mobile.umeng.com/social");
-                web.setTitle("来自分享面板标题");
-                web.setDescription("来自分享面板内容");
-                web.setThumb(new UMImage(BaseActivity.this, com.jianpei.umeng.R.drawable.ic_launcher));
+                UMWeb web = new UMWeb(shareUrl);
+                web.setTitle(shareTitle);
+                web.setDescription(shareContent);
+                web.setThumb(new UMImage(BaseActivity.this, shareImg));
                 new ShareAction(BaseActivity.this).withMedia(web)
                         .setPlatform(share_media)
                         .setCallback(mShareListener)

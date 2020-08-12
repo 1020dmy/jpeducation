@@ -12,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,8 @@ import com.jianpei.jpeducation.utils.FileUtils;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
 import com.jianpei.jpeducation.utils.dialog.PhotoSelectDialog;
+import com.jianpei.jpeducation.viewmodel.FeedbackModel;
+import com.jianpei.jpeducation.viewmodel.UploadFileModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +60,11 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
     @BindView(R.id.et_contact)
     EditText etContact;
 
+    private FeedbackModel feedbackModel;
+
+    private UploadFileModel uploadFileModel;//上传图片
+
+
     private PhotoSelectDialog photoSelectDialog;
     private SelectphotoUtils selectphotoUtils;
 
@@ -63,6 +72,8 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
     private FeedbackAdapter feedbackAdapter;
 
     private List<File> files;
+
+    private String type = "group";
 
 
     @Override
@@ -76,17 +87,25 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
         tvRight.setText("提交");
         tvRight.setVisibility(View.VISIBLE);
 
+        feedbackModel = new ViewModelProvider(this).get(FeedbackModel.class);
+        //
+        uploadFileModel = new ViewModelProvider(this).get(UploadFileModel.class);
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_one:
+                        type = "group";
                         break;
                     case R.id.rb_two:
+                        type = "xueyuan";
                         break;
                     case R.id.rb_three:
+                        type = "paper";
                         break;
                     case R.id.rb_four:
+                        type = "other";
                         break;
                 }
 
@@ -126,6 +145,39 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
         feedbackAdapter.setMyItemOnClickListener(this);
         recyclerView.setAdapter(feedbackAdapter);
 
+
+        feedbackModel.getFeedbackLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                dismissLoading();
+                shortToast(s);
+            }
+        });
+        feedbackModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+            }
+        });
+        //上传图片
+        uploadFileModel.getSuccessLiveData().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                feedbackModel.feedback(strings, etContent.getText().toString(), etContact.getText().toString(), type);
+
+
+            }
+        });
+        uploadFileModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                dismissLoading();
+                shortToast(o);
+
+            }
+        });
+
     }
 
 
@@ -136,7 +188,12 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
                 finish();
                 break;
             case R.id.tv_right:
-
+                showLoading("");
+                if (files.size() > 0) {
+                    uploadFileModel.uploadFile("image", files);
+                } else {
+                    feedbackModel.feedback(null, etContent.getText().toString(), etContact.getText().toString(), type);
+                }
                 break;
         }
     }

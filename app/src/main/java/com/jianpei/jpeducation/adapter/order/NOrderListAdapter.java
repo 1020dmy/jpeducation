@@ -104,13 +104,13 @@ public class NOrderListAdapter extends RecyclerView.Adapter {
                 normalHolder.tv_comment.setVisibility(View.VISIBLE);
                 normalHolder.tv_student.setVisibility(View.VISIBLE);
             } else if ("2".equals(orderDataBean.getState())) {
-                normalHolder.tvStatus.setText("付款失败");
+                normalHolder.tvStatus.setText("取消订单");
                 //
                 normalHolder.tv_cancel.setVisibility(View.GONE);
                 normalHolder.tv_comment.setVisibility(View.GONE);
                 normalHolder.tv_student.setVisibility(View.GONE);
                 //
-                normalHolder.tv_pay.setVisibility(View.VISIBLE);
+                normalHolder.tv_pay.setVisibility(View.GONE);
             }
             //
             if (orderDataBean.getGroup_info() != null) {
@@ -143,13 +143,13 @@ public class NOrderListAdapter extends RecyclerView.Adapter {
                 shoppingCatHolder.tv_comment.setVisibility(View.VISIBLE);
                 shoppingCatHolder.tv_student.setVisibility(View.VISIBLE);
             } else if ("2".equals(orderDataBean.getState())) {
-                shoppingCatHolder.tvStatus.setText("付款失败");
+                shoppingCatHolder.tvStatus.setText("取消订单");
                 //
                 shoppingCatHolder.tv_cancel.setVisibility(View.GONE);
                 shoppingCatHolder.tv_comment.setVisibility(View.GONE);
                 shoppingCatHolder.tv_student.setVisibility(View.GONE);
                 //
-                shoppingCatHolder.tv_pay.setVisibility(View.VISIBLE);
+                shoppingCatHolder.tv_pay.setVisibility(View.GONE);
             }
             shoppingCatHolder.tv_total_price.setText("￥" + orderDataBean.getMoney());
 
@@ -187,13 +187,13 @@ public class NOrderListAdapter extends RecyclerView.Adapter {
                 //
 
             } else if ("2".equals(orderDataBean.getState())) {
-                groupBuyHolder.tvStatus.setText("付款失败");
+                groupBuyHolder.tvStatus.setText("取消订单");
                 //
                 groupBuyHolder.tv_cancel.setVisibility(View.GONE);
                 groupBuyHolder.tv_comment.setVisibility(View.GONE);
                 groupBuyHolder.tv_student.setVisibility(View.GONE);
                 //
-                groupBuyHolder.tv_pay.setVisibility(View.VISIBLE);
+                groupBuyHolder.tv_pay.setVisibility(View.GONE);
             }
             //
             if (orderDataBean.getGroup_info() != null) {

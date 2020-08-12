@@ -41,7 +41,7 @@ public class UrlConfig {
     public static final String loginOut = "user/userOutLogin";
     //领取优惠券
     public static final String couponReceive = "coupon/couponReceive";
-    //优惠券列表
+    //我的优惠券列表
     public static final String couponData = "coupon/couponData";
     //资料下载
     public static final String getDownloadUrl = "material/getDownloadUrl";
@@ -220,4 +220,7 @@ public class UrlConfig {
     public static final String versionDetect = "versionDetect";
     //1-文件上传
     public static final String uploadFile = "uploadFile";
+
+    //1-意见反馈
+    public static final String feedback = "Feedback";
 }

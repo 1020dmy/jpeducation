@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="head_icon" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/切图下载/head_icon.svg" />
+                            <entry key="outputName" value="placeholder_icon" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/切图下载/占位图.svg" />
                           </map>
                         </option>
                       </PersistentState>

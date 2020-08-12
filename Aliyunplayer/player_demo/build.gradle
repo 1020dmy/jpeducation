@@ -36,7 +36,7 @@ dependencies {
     implementation project(':AliyunVideoCommon')
     implementation externalAndroidSupportV4
     implementation externalAndroidAppCompatV7
-    implementation externalOKHTTP
+//    implementation externalOKHTTP
     implementation externalLeakcanary
     implementation externalAndroidRecyclerView
     implementation externalGSON

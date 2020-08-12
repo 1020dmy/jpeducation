@@ -7,5 +7,8 @@ public class Constants {
     //订单类型（0普通订单，1购物车订单）
     public static String orderType = "0";
 
+    //
+    public static int orderIspay = 0;
+
 
 }
