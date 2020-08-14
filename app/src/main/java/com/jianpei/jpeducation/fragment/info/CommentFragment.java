@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.info;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +43,11 @@ public class CommentFragment extends BaseFragment {
 
     private int page = 1, pageSize = 10;
 
+    private String groupId;
+
+    public CommentFragment(String groupId) {
+        this.groupId = groupId;
+    }
 
     @Override
     protected int initLayout() {
@@ -76,23 +82,38 @@ public class CommentFragment extends BaseFragment {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o)) {
+                    shortToast(o);
+
+                }
             }
         });
-        classInfoModel.getGroupInfoBeanMutableLiveData().observe(this, new Observer<GroupInfoBean>() {
+
+        classInfoModel.getUpDataLiveData().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(GroupInfoBean groupInfoBean) {
+            public void onChanged(String s) {
                 showLoading("");
-                commentModel.commentList("1", groupInfoBean.getId(), "", page, pageSize);
+                mCommentBeans.clear();
+                commentModel.commentList("1", groupId, "", page, pageSize);
             }
         });
-        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
-            @Override
-            public void onChanged(RegimentInfoBean regimentInfoBean) {
-                showLoading("");
-                commentModel.commentList("1", regimentInfoBean.getPoint_id(), "", page, pageSize);
-            }
-        });
+//        classInfoModel.getGroupInfoBeanMutableLiveData().observe(this, new Observer<GroupInfoBean>() {
+//            @Override
+//            public void onChanged(GroupInfoBean groupInfoBean) {
+//                showLoading("");
+//                commentModel.commentList("1", groupInfoBean.getId(), "", page, pageSize);
+//            }
+//        });
+//        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
+//            @Override
+//            public void onChanged(RegimentInfoBean regimentInfoBean) {
+//                showLoading("");
+//                commentModel.commentList("1", regimentInfoBean.getPoint_id(), "", page, pageSize);
+//            }
+//        });
+
+        showLoading("");
+        commentModel.commentList("1", groupId, "", page, pageSize);
 
 
     }

@@ -55,6 +55,7 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
         GroupInfoBean groupInfoBean = groupInfoBeans.get(position);
         Glide.with(context).load(groupInfoBean.getImg()).placeholder(R.drawable.home_icon_demo).into(holder.imageView);
         holder.tvTitle.setText(groupInfoBean.getTitle());
+        holder.tv_price.setText(groupInfoBean.getPrice_str());
         if (TextUtils.isEmpty(groupInfoBean.getCoupon_str())) {
             holder.llZhekou.setVisibility(View.GONE);
         } else {
@@ -74,6 +75,8 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
         private TextView tvTitle, tvZhekou, tvNums, tvSubmit;
         private LinearLayout llZhekou;
 
+        private TextView tv_price;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -82,6 +85,8 @@ public class TryListenerListAdapter extends RecyclerView.Adapter<TryListenerList
             tvNums = itemView.findViewById(R.id.tv_nums);
             tvSubmit = itemView.findViewById(R.id.tv_submit);
             llZhekou = itemView.findViewById(R.id.ll_zhekou);
+
+            tv_price = itemView.findViewById(R.id.tv_price);
             tvSubmit.setOnClickListener(this);
         }
 

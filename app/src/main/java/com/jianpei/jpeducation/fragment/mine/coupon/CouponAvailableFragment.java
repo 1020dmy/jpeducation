@@ -51,8 +51,15 @@ public class CouponAvailableFragment extends BaseFragment {
 
     private CouponAdapter couponAdapter;
 
-    public CouponAvailableFragment(int formActivity) {
+    private String cat_id;
+
+    private String group_id;
+
+
+    public CouponAvailableFragment(int formActivity, String cat_id, String group_id) {
         this.formActivity = formActivity;
+        this.cat_id = cat_id;
+        this.group_id = group_id;
     }
 
     @Override
@@ -69,7 +76,7 @@ public class CouponAvailableFragment extends BaseFragment {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page++;
-                userCouponModel.couponData(page, pageSize, type);
+                userCouponModel.couponData(page, pageSize, type, cat_id, group_id);
 
             }
         });
@@ -79,7 +86,7 @@ public class CouponAvailableFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page = 1;
-                userCouponModel.couponData(page, pageSize, type);
+                userCouponModel.couponData(page, pageSize, type,cat_id,group_id);
 
             }
         });
@@ -130,7 +137,7 @@ public class CouponAvailableFragment extends BaseFragment {
         });
 
         showLoading("");
-        userCouponModel.couponData(page, pageSize, type);
+        userCouponModel.couponData(page, pageSize, type,cat_id,group_id);
 
     }
 }

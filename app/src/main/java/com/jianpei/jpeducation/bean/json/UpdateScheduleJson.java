@@ -1,5 +1,7 @@
 package com.jianpei.jpeducation.bean.json;
 
+import com.jianpei.jpeducation.utils.L;
+
 public class UpdateScheduleJson {
 
 
@@ -11,6 +13,7 @@ public class UpdateScheduleJson {
     private String buy_id;
 
     public UpdateScheduleJson(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id) {
+
         this.total_second = total_second;
         this.current_second = current_second;
         this.class_id = class_id;

@@ -13,10 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
+import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
 import com.jianpei.jpeducation.utils.MyTextWatcher;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.RegisteredModel;
 import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 
@@ -75,8 +77,8 @@ public class RegisteredActivity extends BaseNoStatusActivity {
         setTitleViewPadding(tvStatus);
         tvTitle.setText(getResources().getString(R.string.reg_title));
         //
-        sendCodeModel=new ViewModelProvider(this).get(SendCodeModel.class);
-        registeredModel=new ViewModelProvider(this).get(RegisteredModel.class);
+        sendCodeModel = new ViewModelProvider(this).get(SendCodeModel.class);
+        registeredModel = new ViewModelProvider(this).get(RegisteredModel.class);
 
     }
 
@@ -131,7 +133,6 @@ public class RegisteredActivity extends BaseNoStatusActivity {
     }
 
 
-
     @OnClick({R.id.iv_back, R.id.tv_sendCode, R.id.btn_next, R.id.tv_bottom_xieyi, R.id.iv_phone_cancle, R.id.iv_code_cancle, R.id.iv_pwd_cancle, R.id.iv_pwdr_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -140,13 +141,14 @@ public class RegisteredActivity extends BaseNoStatusActivity {
                 break;
             case R.id.tv_sendCode:
                 showLoading("");
-                sendCodeModel.sendCode(etPhone.getText().toString(),"regist");
+                sendCodeModel.sendCode(etPhone.getText().toString(), "regist");
                 break;
             case R.id.btn_next:
                 showLoading("");
                 registeredModel.register(etPhone.getText().toString(), etCode.getText().toString(), etPwd.getText().toString(), etPwdR.getText().toString());
                 break;
             case R.id.tv_bottom_xieyi:
+                startActivity(new Intent(this, GuiZeActivity.class).putExtra("title", "协议须知").putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)));
                 break;
             case R.id.iv_phone_cancle:
                 etPhone.setText("");

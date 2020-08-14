@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.utils.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +40,7 @@ public class IntegralBuyDialog extends AlertDialog {
         tv_jifen = contentView.findViewById(R.id.tv_jifen);
         btn_download = contentView.findViewById(R.id.btn_download);
         btn_dismiss = contentView.findViewById(R.id.btn_dismiss);
-        setData(onClickListener,name, num, price, total);
+        setData(onClickListener, name, num, price, total);
     }
 
     public void setData(View.OnClickListener onClickListener, String name, String num, String price, String total) {
@@ -49,11 +50,14 @@ public class IntegralBuyDialog extends AlertDialog {
                 dismiss();
             }
         });
+        if (TextUtils.isEmpty(total)) {
+            total = "0";
+        }
         btn_download.setOnClickListener(onClickListener);
         tv_xjifen.setText(price);
         tv_title.setText(name);
-        tv_nums.setText("已有"+num+"人下载");
-        tv_jifen.setText("您现在有"+total+"积分");
+        tv_nums.setText("已有" + num + "人下载");
+        tv_jifen.setText("您现在有" + total + "积分");
 
 
     }

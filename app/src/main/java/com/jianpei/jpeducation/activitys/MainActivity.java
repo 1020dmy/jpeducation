@@ -21,6 +21,7 @@ import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
 import com.jianpei.jpeducation.activitys.mine.SettingActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.PermissionBaseActivity;
 import com.jianpei.jpeducation.bean.VersionDetectBean;
 import com.jianpei.jpeducation.fragment.elective.ElectiveFragment;
@@ -33,7 +34,6 @@ import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.dialog.UpVersionDialog;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
-import com.mantis.im_service.ui.activity.ChatActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -279,7 +279,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

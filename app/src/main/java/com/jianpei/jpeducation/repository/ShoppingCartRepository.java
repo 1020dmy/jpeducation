@@ -33,9 +33,9 @@ public class ShoppingCartRepository extends BaseRepository implements ShoppingCa
     public Observable<BaseEntity<MIneOrderInfoBean>> carInfo() {
         return RetrofitFactory.getInstance().API().carInfo(new CarInfoJson());
     }
-    @Override
-    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type) {
-        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type));
-    }
+//    @Override
+//    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type) {
+//        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type));
+//    }
 
 }

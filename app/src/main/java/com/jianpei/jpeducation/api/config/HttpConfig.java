@@ -15,6 +15,9 @@ public class HttpConfig {
     //网络请求时间配置
     public static long HTTP_TIME = 3000l;
     //网络请求url
-    public static String BASE_URL = "http://dev_api.jianpei.com.cn/api/";
+//    public static String BASE_URL = "http://dev_api.jianpei.com.cn/api/";
+//
+    public static String BASE_URL = "http://open_api.jianpei.com.cn/api/";
+
 
 }

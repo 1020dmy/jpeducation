@@ -40,6 +40,10 @@ public class UserCouponActivity extends BaseActivity {
 
     private int formActivity;
 
+    private String cat_id;
+
+    private String group_id;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_user_coupon;
@@ -50,9 +54,13 @@ public class UserCouponActivity extends BaseActivity {
         tvTitle.setText("我的优惠券");
         formActivity = getIntent().getIntExtra("formActivity", -1);
 
+        cat_id = getIntent().getStringExtra("cat_id");
+        group_id = getIntent().getStringExtra("group_id");
+
+
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
-        Fragment[] fragments = {new CouponAvailableFragment(formActivity), new CouponUsedFragment(), new CouponExpiredFragment()};
+        Fragment[] fragments = {new CouponAvailableFragment(formActivity,cat_id,group_id), new CouponUsedFragment(), new CouponExpiredFragment()};
         tabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
         viewPage.setAdapter(tabFragmentAdapter);
 

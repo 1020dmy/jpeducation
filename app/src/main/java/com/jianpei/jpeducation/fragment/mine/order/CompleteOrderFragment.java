@@ -112,7 +112,8 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
                 if (page == 1) {
                     mOrderDataBeans.clear();
                 }
-                mOrderDataBeans.addAll(orderListBean.getData());
+                if (orderListBean != null)
+                    mOrderDataBeans.addAll(orderListBean.getData());
                 nOrderListAdapter.notifyDataSetChanged();
             }
         });

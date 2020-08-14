@@ -90,8 +90,8 @@ public class TryListenerListActivity extends BaseNoStatusActivity {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
 
-                refreshLayout.finishLoadMore();
-                refreshLayout.finishRefresh();
+                showLoading("");
+                tryListenerListModel.groupData("try", cat_id);
             }
         });
 
@@ -105,7 +105,9 @@ public class TryListenerListActivity extends BaseNoStatusActivity {
         tryListenerListAdapter.setMyItemOnClickListener(new MyItemOnClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                startActivity(new Intent(TryListenerListActivity.this, ClassInfoActivity.class).putExtra("groupInfoBean", mGroupInfoBeans.get(position)));
+                startActivity(new Intent(TryListenerListActivity.this, ClassInfoActivity.class)
+                        .putExtra("groupId", mGroupInfoBeans.get(position).getId())
+                        .putExtra("catId", mGroupInfoBeans.get(position).getCat_id()));
 
             }
 
@@ -124,7 +126,6 @@ public class TryListenerListActivity extends BaseNoStatusActivity {
                 refreshLayout.finishRefresh();
                 dismissLoading();
                 mGroupInfoBeans.clear();
-                ;
                 mGroupInfoBeans.addAll(groupInfoBeans);
                 tryListenerListAdapter.notifyDataSetChanged();
             }

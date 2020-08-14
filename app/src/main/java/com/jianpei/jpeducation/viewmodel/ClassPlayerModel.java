@@ -9,8 +9,10 @@ import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.ClassPlayerContract;
 import com.jianpei.jpeducation.repository.ClassPlayerRepository;
+import com.jianpei.jpeducation.utils.L;
 
 /**
  * jpeducation
@@ -163,6 +165,7 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
 
     @Override
     public void updateSchedule(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id) {
+
         classPlayerRepository.updateSchedule(total_second, current_second, class_id, chapter_id, viod_id, buy_id).compose(setThread()).subscribe(new BaseObserver<String>() {
 
             @Override
@@ -185,5 +188,30 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
                 }
             }
         });
+    }
+
+    /**
+     * 切换视频
+     */
+
+    private MutableLiveData<ViodBean> viodBeanMutableLiveData;
+
+
+    public MutableLiveData<ViodBean> getViodBeanMutableLiveData() {
+        if (viodBeanMutableLiveData == null) {
+            viodBeanMutableLiveData = new MutableLiveData<>();
+        }
+        return viodBeanMutableLiveData;
+    }
+
+    /**
+     * 视频下载
+     */
+    private MutableLiveData<ViodBean> downloadViodLiveData;
+
+    public MutableLiveData<ViodBean> getDownloadViodLiveData() {
+        if (downloadViodLiveData == null)
+            downloadViodLiveData = new MutableLiveData<>();
+        return downloadViodLiveData;
     }
 }

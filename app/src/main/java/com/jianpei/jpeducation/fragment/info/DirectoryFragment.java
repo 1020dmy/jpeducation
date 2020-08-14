@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.fragment.info;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -57,6 +58,12 @@ public class DirectoryFragment extends BaseFragment {
     DirectoryChapterBean directoryChapterBean;
 
     private ClassInfoFModel classInfoFModel;
+
+    private String groupId;
+
+    public DirectoryFragment(String groupId) {
+        this.groupId = groupId;
+    }
 
     @Override
     protected int initLayout() {
@@ -119,30 +126,43 @@ public class DirectoryFragment extends BaseFragment {
             }
         });
 
-        ///班级
-        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
+        //接收更新数据通知
+        classInfoModel.getUpDataLiveData().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(GroupInfoBean groupInfoBean) {
-//                showLoading("");
-                ciDirectoryModel.classDirectory(groupInfoBean.getId());
-
-
+            public void onChanged(String s) {
+                showLoading("");
+                ciDirectoryModel.classDirectory(groupId);
             }
         });
+
+
+//        ///班级
+//        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
+//            @Override
+//            public void onChanged(GroupInfoBean groupInfoBean) {
+////                showLoading("");
+//                ciDirectoryModel.classDirectory(groupInfoBean.getId());
+//
+//
+//            }
+//        });
         ///团购
-        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(getActivity(), new Observer<RegimentInfoBean>() {
-            @Override
-            public void onChanged(RegimentInfoBean regimentInfoBean) {
-                ciDirectoryModel.classDirectory(regimentInfoBean.getPoint_id());
-            }
-        });
+//        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(getActivity(), new Observer<RegimentInfoBean>() {
+//            @Override
+//            public void onChanged(RegimentInfoBean regimentInfoBean) {
+//                ciDirectoryModel.classDirectory(regimentInfoBean.getPoint_id());
+//            }
+//        });
 
 
         ciDirectoryModel.getErrData().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o)) {
+                    shortToast(o);
+
+                }
             }
         });
         directoryAdapter.addChildClickViewIds(R.id.tv_try);
@@ -178,6 +198,10 @@ public class DirectoryFragment extends BaseFragment {
                 }
             }
         });
+
+        showLoading("");
+        ciDirectoryModel.classDirectory(groupId);
+
 
     }
 

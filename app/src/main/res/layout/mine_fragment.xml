@@ -119,6 +119,7 @@
             android:translationY="-40dp">
 
             <ImageView
+                android:id="@+id/iv_share"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:src="@drawable/mine_guanggao" />
@@ -219,10 +220,12 @@
                     style="@style/mineText_two"
                     android:drawableLeft="@drawable/mine_my_tiku"
                     android:paddingTop="20dp"
+                    android:visibility="gone"
                     android:paddingBottom="20dp"
                     android:text="我的题库" />
 
-                <include layout="@layout/line" />
+<!--                <include layout="@layout/line"-->
+<!--                    android:visibility="gone"/>-->
 
 
                 <TextView
@@ -244,15 +247,23 @@
                     style="@style/mineText_two"
                     android:drawableLeft="@drawable/mine_my_dongtai"
                     android:paddingBottom="20dp"
+                    android:visibility="gone"
                     android:text="我的动态" />
 
-                <include layout="@layout/line" />
+<!--                <include layout="@layout/line"-->
+<!--                    android:visibility="gone"/>-->
 
                 <LinearLayout
                     android:id="@+id/ll_share"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="20dp">
+                    >
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/ll_share"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingTop="20dp">-->
 
                     <TextView
                         android:layout_width="wrap_content"

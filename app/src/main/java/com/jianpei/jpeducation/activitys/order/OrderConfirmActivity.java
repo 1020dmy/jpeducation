@@ -17,14 +17,15 @@ import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.order.GroupInfoBean;
 import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
-import com.mantis.im_service.ui.activity.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -265,7 +266,6 @@ public class OrderConfirmActivity extends BaseActivity {
         tvOrderNum.setText(mClassGenerateOrderBean.getNumber());
         tvTime.setText(mClassGenerateOrderBean.getAdd_time_str());
         GroupInfoBean groupInfoBean = mClassGenerateOrderBean.getGroup_info();
-        L.e("=====image:"+groupInfoBean.getImg());
         if (groupInfoBean != null) {
             Glide.with(this).load(groupInfoBean.getImg()).into(ivIcon);
             tvClassTitle.setText(groupInfoBean.getTitle());
@@ -309,7 +309,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.ll_weixin_pay:
                 changeStatus(1);
@@ -327,7 +327,10 @@ public class OrderConfirmActivity extends BaseActivity {
 //                } else {
 //                    showPop();
 //                }
-                startActivityForResult(new Intent(this, UserCouponActivity.class).putExtra("formActivity", 0), 101);
+                startActivityForResult(new Intent(this, UserCouponActivity.class)
+                        .putExtra("formActivity", 0)
+                        .putExtra("cat_id", SpUtils.getValue(SpUtils.catId))
+                        .putExtra("group_id",mClassGenerateOrderBean.getGroup_id() ), 101);
 
                 break;
         }

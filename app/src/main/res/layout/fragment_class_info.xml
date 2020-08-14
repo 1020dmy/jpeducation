@@ -169,7 +169,8 @@
                     android:layout_height="wrap_content"
                     android:text="课时"
                     android:textColor="@color/c888B96"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_class"
@@ -177,17 +178,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:textColor="@color/c161820"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="1px"
                     android:layout_height="8dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
                     android:text="时效"
                     android:textColor="@color/c161820"
                     android:textSize="12dp" />

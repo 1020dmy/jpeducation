@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.jianpei.jpeducation.utils.LoadingDialog;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.umeng.ShareActivity;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -145,6 +146,10 @@ public abstract class BaseFragment extends Fragment {
 
     public void initShare() {
         mShareListener = new CustomShareListener(getActivity());
+        String shareUrl = SpUtils.getValue(SpUtils.share_url)+"?code=" + SpUtils.getValue(SpUtils.ID);
+        String shareImg = SpUtils.getValue(SpUtils.share_img);
+        String shareTitle = SpUtils.getValue(SpUtils.share_title);
+        String shareContent = SpUtils.getValue(SpUtils.share_content);
 
 
         mShareAction = new ShareAction(getActivity()).setDisplayList(
@@ -155,10 +160,10 @@ public abstract class BaseFragment extends Fragment {
         ).setShareboardclickCallback(new ShareBoardlistener() {
             @Override
             public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                UMWeb web = new UMWeb("http://mobile.umeng.com/social");
-                web.setTitle("来自分享面板标题");
-                web.setDescription("来自分享面板内容");
-                web.setThumb(new UMImage(getActivity(), com.jianpei.umeng.R.drawable.ic_launcher));
+                UMWeb web = new UMWeb(shareUrl);
+                web.setTitle(shareTitle);
+                web.setDescription(shareContent);
+                web.setThumb(new UMImage(getActivity(), shareImg));
                 new ShareAction(getActivity()).withMedia(web)
                         .setPlatform(share_media)
                         .setCallback(mShareListener)
@@ -167,6 +172,31 @@ public abstract class BaseFragment extends Fragment {
         });
 
     }
+
+//    public void initShare() {
+//        mShareListener = new CustomShareListener(getActivity());
+//
+//
+//        mShareAction = new ShareAction(getActivity()).setDisplayList(
+//                SHARE_MEDIA.WEIXIN,
+//                SHARE_MEDIA.WEIXIN_CIRCLE,
+//                SHARE_MEDIA.QQ,
+//                SHARE_MEDIA.QZONE
+//        ).setShareboardclickCallback(new ShareBoardlistener() {
+//            @Override
+//            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+//                UMWeb web = new UMWeb("http://mobile.umeng.com/social");
+//                web.setTitle("来自分享面板标题");
+//                web.setDescription("来自分享面板内容");
+//                web.setThumb(new UMImage(getActivity(), com.jianpei.umeng.R.drawable.ic_launcher));
+//                new ShareAction(getActivity()).withMedia(web)
+//                        .setPlatform(share_media)
+//                        .setCallback(mShareListener)
+//                        .share();
+//            }
+//        });
+//
+//    }
 
     private class CustomShareListener implements UMShareListener {
 
@@ -206,7 +236,7 @@ public abstract class BaseFragment extends Fragment {
                     && platform != SHARE_MEDIA.GOOGLEPLUS
                     && platform != SHARE_MEDIA.YNOTE
                     && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
 
         }

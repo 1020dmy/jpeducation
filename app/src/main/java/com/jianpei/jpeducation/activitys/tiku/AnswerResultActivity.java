@@ -150,7 +150,10 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
 
     @Override
     public void onItemClick(int position, View view) {
-        startActivity(new Intent(this, ClassInfoActivity.class).putExtra("groupInfoBean", groupDataBeans.get(position)));
+        startActivity(new Intent(this, ClassInfoActivity.class)
+                .putExtra("groupId", groupDataBeans.get(position).getId())
+                .putExtra("catId", groupDataBeans.get(position).getCat_id()));
+
 
     }
 

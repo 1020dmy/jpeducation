@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aliyun.vodplayerview.utils.NetWatchdog;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
@@ -27,6 +29,7 @@ import com.jianpei.jpeducation.adapter.classinfo.ExplanationAdapter;
 import com.jianpei.jpeducation.adapter.classinfo.GroupAdapter;
 import com.jianpei.jpeducation.adapter.classinfo.TeacherAdapter;
 import com.jianpei.jpeducation.base.BasePlayerFragment;
+import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.classinfo.RegimentDataBean;
@@ -121,15 +124,27 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
     //团购列表弹窗
     private GroupPopup groupPopup;
 
-    private String groupId;
+//    private String groupId;
+
+    private String pointId, id;
+
+    public GclassInfoFragment(String pointId, String id) {
+        this.pointId = pointId;
+        this.id = id;
+    }
 
     @Override
     protected int initLayout() {
         return R.layout.fragment_gclass_info;
     }
 
+
     @Override
     protected void initView(View view) {
+        if (NetWatchdog.is4GConnected(MyApplication.getInstance())) {
+            tvTryListener.setVisibility(View.GONE);
+        }
+
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
         classInfoFModel = new ViewModelProvider(getActivity()).get(ClassInfoFModel.class);
 
@@ -139,24 +154,35 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
 
         });
         //GroupInfoActivity数据监听
-        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
+//        classInfoModel.getRegimentInfoBeanMutableLiveData().observe(this, new Observer<RegimentInfoBean>() {
+//            @Override
+//            public void onChanged(RegimentInfoBean regimentInfoBean) {//获取成功，调用详情接口
+//                //获取团购Id
+//                groupId = regimentInfoBean.getId();
+//                showLoading("");
+//                //获取详情数据
+//                classInfoFModel.groupInfo(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+//
+//            }
+//        });
+        //接收更新数据
+        classInfoModel.getUpDataLiveData().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(RegimentInfoBean regimentInfoBean) {//获取成功，调用详情接口
-                //获取团购Id
-                groupId = regimentInfoBean.getId();
+            public void onChanged(String s) {
                 showLoading("");
-                //获取详情数据
-                classInfoFModel.groupInfo(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
-
+                teacherBeans.clear();
+                regimentBeans.clear();
+                classInfoFModel.groupInfo(pointId, id);
             }
         });
+
         //详情结果监听
         classInfoFModel.getClassInfoBean().observe(getActivity(), new Observer<ClassInfoBean>() {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
                 classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
-                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "",classInfoBean.getId());//获取试看视频
+                classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "", classInfoBean.getId());//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
         });
@@ -165,7 +191,8 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o))
+                    shortToast(o);
             }
         });
         //视频结果监听
@@ -219,6 +246,11 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
         groupAdapter.setToJoinGroupListener(this);
         rvItems.setAdapter(groupAdapter);
 
+        //
+        showLoading("");
+        //获取详情数据
+        classInfoFModel.groupInfo(pointId, id);
+
     }
 
 
@@ -232,10 +264,10 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
                 break;
             case R.id.tv_more:
                 showLoading("");
-                classInfoFModel.regimentData(groupId);
+                classInfoFModel.regimentData(id);
                 break;
             case R.id.tv_guize:
-                startActivity(new Intent(getActivity(), GuiZeActivity.class).putExtra("webUrl", webUrl).putExtra("title","拼团规则"));
+                startActivity(new Intent(getActivity(), GuiZeActivity.class).putExtra("webUrl", webUrl).putExtra("title", "拼团规则"));
                 break;
         }
     }
@@ -309,8 +341,8 @@ public class GclassInfoFragment extends BasePlayerFragment implements GroupAdapt
         stringBuilder = null;
         tvTeachers.setText(teachers);
 
-        tvClass.setText(classInfoBean.getVideo_time_str());
-        tvAging.setText(classInfoBean.getEnd_time_str());
+//        tvClass.setText(classInfoBean.getVideo_time_str());
+        tvAging.setText(classInfoBean.getYear_num() + "年");
         tvPeople.setText(classInfoBean.getBuy_num() + "人已报名");
 
         //服务保障

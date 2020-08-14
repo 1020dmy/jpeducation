@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.adapter.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.classinfo.GroupInfoActivity;
 import com.jianpei.jpeducation.bean.homedata.HuoDongDataBean;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +50,22 @@ public class HuoDongItemBinder extends BaseItemBinder<HuoDongDataBean, HuoDongIt
         return new MyHolder(view);
     }
 
+    @Override
+    public void onClick(@NotNull MyHolder holder, @NotNull View view, HuoDongDataBean data, int position) {
+        super.onClick(holder, view, data, position);
+        if ("group".equals(data.getType())) {//跳转班级详情
+            context.startActivity(new Intent(context, ClassInfoActivity.class)
+                    .putExtra("groupId", data.getPoint_id())
+                    .putExtra("catId", data.getCat_id()));
+
+        } else if ("regiment".equals(data.getType())) {
+            context.startActivity(new Intent(context, GroupInfoActivity.class)
+                    .putExtra("pointId", data.getPoint_id())
+                    .putExtra("id", data.getId()));
+        }
+
+    }
+
     class MyHolder extends BaseViewHolder {
         private ImageView imageView;
 
@@ -55,6 +74,8 @@ public class HuoDongItemBinder extends BaseItemBinder<HuoDongDataBean, HuoDongIt
             imageView = view.findViewById(R.id.imageView);
 
         }
+
+
     }
 
 

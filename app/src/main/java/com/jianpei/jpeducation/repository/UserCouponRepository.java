@@ -20,7 +20,7 @@ import io.reactivex.Observable;
 public class UserCouponRepository extends BaseRepository implements UserCouponContract.Repository {
 
     @Override
-    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type) {
-        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type));
+    public Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type,String cat_id,String group_id) {
+        return RetrofitFactory.getInstance().API().couponData(new CouponDataJson(pageIndex, pageSize, type, cat_id, group_id));
     }
 }

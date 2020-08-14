@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.binder.BaseItemBinder;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.classinfo.GroupInfoActivity;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 
@@ -67,6 +66,8 @@ public class RegimentInfoItemBinder extends BaseItemBinder<RegimentInfoBean, Reg
 
     @Override
     public void onChildClick(@NotNull MyHolder holder, @NotNull View view, RegimentInfoBean data, int position) {
-        context.startActivity(new Intent(context, GroupInfoActivity.class).putExtra("regimentInfoBean", data));
+        context.startActivity(new Intent(context, GroupInfoActivity.class)
+                .putExtra("pointId", data.getPoint_id())
+                .putExtra("id", data.getId()));
     }
 }

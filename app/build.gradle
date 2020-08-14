@@ -28,6 +28,20 @@ android {
 //    configurations {
 //        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
 //    }
+    android.applicationVariants.all { variant ->
+        def appName = "teachercenter-hd-dt"
+
+        //添加git commit Id 信息，可以对应上 打包那条提交记录 更新日期：2020/07/07
+        def cmd = "git rev-parse --short HEAD"
+
+        def commitId = cmd.execute().text.trim()
+
+        def versionName = "${variant.versionName}"
+        variant.outputs.all { output ->
+            print(output)
+            outputFileName = "${appName}_${versionName}_${variant.buildType.name}_${commitId}.apk"
+        }
+    }
 
 
     buildTypes {
@@ -135,21 +149,21 @@ dependencies {
     //图片压缩
     implementation 'top.zibin:Luban:1.1.8'
 
-    implementation 'org.jetbrains:annotations:16.0.2'
+//    implementation 'org.jetbrains:annotations:16.0.2'
 
-    api project(path: ':tanglang')
-    configurations {
-        all*.exclude group: 'com.squareup.okhttp3', module: 'logging-interceptor'
-    }
-    configurations {
-        all*.exclude group: 'com.google.code.gson', module: 'gson'
-    }
-    configurations {
-        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-    }
-    configurations {
-        all*.exclude group: 'com.squareup.okio', module: 'okio'
-    }
+//    api project(path: ':tanglang')
+//    configurations {
+//        all*.exclude group: 'com.squareup.okhttp3', module: 'logging-interceptor'
+//    }
+//    configurations {
+//        all*.exclude group: 'com.google.code.gson', module: 'gson'
+//    }
+//    configurations {
+//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
+//    configurations {
+//        all*.exclude group: 'com.squareup.okio', module: 'okio'
+//    }
 
 
     //查看大图

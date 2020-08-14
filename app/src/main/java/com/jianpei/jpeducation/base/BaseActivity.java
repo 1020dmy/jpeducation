@@ -201,7 +201,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void initShare() {
         mShareListener = new CustomShareListener(this);
-        String shareUrl = SpUtils.getValue(SpUtils.share_url);
+        String shareUrl = SpUtils.getValue(SpUtils.share_url)+"?code=" + SpUtils.getValue(SpUtils.ID);
         String shareImg = SpUtils.getValue(SpUtils.share_img);
         String shareTitle = SpUtils.getValue(SpUtils.share_title);
         String shareContent = SpUtils.getValue(SpUtils.share_content);
@@ -266,7 +266,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     && platform != SHARE_MEDIA.GOOGLEPLUS
                     && platform != SHARE_MEDIA.YNOTE
                     && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
 
         }

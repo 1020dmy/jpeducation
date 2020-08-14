@@ -23,7 +23,7 @@ public interface ShoppingCartContract {
 
         Observable<BaseEntity<MIneOrderInfoBean>> carInfo();
 
-        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type);
+//        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type);
 
     }
 
@@ -33,7 +33,7 @@ public interface ShoppingCartContract {
 
         void carInfo();
 
-        void couponData(int pageIndex, int pageSize, int type);
+//        void couponData(int pageIndex, int pageSize, int type);
 
 
     }

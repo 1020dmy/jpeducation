@@ -113,7 +113,7 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
         offlineClassRoomModel.getDeleteResultLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                L.e("==========s:"+s);
+                L.e("==========s:" + s);
                 offlineClassRoomModel.getOfflineCompleteData();
             }
         });
@@ -123,11 +123,11 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                shortToast("暂无数据");
             }
         });
 
-        shortToast("");
+        showLoading("");
         offlineClassRoomModel.getOfflineCompleteData();
 
 

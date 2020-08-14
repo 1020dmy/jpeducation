@@ -53,7 +53,7 @@ public class InterceptorUtil {
     public static Interceptor parameterInterceptor() {
         return new Interceptor() {
             @Override
-            public Response intercept(Chain chain) {
+            public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 String method = request.method();
                 TreeMap<String, Object> rootMap = new TreeMap<>();
@@ -104,7 +104,7 @@ public class InterceptorUtil {
     public static Interceptor addHeadInterceptor() {
         return new Interceptor() {
             @Override
-            public Response intercept(Chain chain) {
+            public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
 //                Request.Builder requestBuilder = original.newBuilder()
 //                        .header("product", "JP-A-MP")

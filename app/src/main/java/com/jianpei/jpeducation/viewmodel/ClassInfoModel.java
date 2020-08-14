@@ -140,18 +140,29 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
     ////
 
 
-    public MutableLiveData<RegimentInfoBean> getRegimentInfoBeanMutableLiveData() {
-        if (regimentInfoBeanMutableLiveData == null) {
-            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
-        }
-        return regimentInfoBeanMutableLiveData;
-    }
+//    public MutableLiveData<RegimentInfoBean> getRegimentInfoBeanMutableLiveData() {
+//        if (regimentInfoBeanMutableLiveData == null) {
+//            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
+//        }
+//        return regimentInfoBeanMutableLiveData;
+//    }
 
-    public void setRegimentInfoBeanMutableLiveData(RegimentInfoBean regimentInfoBean) {
-        if (regimentInfoBeanMutableLiveData == null) {
-            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
+//    public void setRegimentInfoBeanMutableLiveData(RegimentInfoBean regimentInfoBean) {
+//        if (regimentInfoBeanMutableLiveData == null) {
+//            regimentInfoBeanMutableLiveData = new MutableLiveData<>();
+//        }
+//        regimentInfoBeanMutableLiveData.setValue(regimentInfoBean);
+//    }
+
+
+    //通知刷新数据
+    private MutableLiveData<String> upDataLiveData;
+
+    public MutableLiveData<String> getUpDataLiveData() {
+        if (upDataLiveData == null) {
+            upDataLiveData = new MutableLiveData<>();
         }
-        regimentInfoBeanMutableLiveData.setValue(regimentInfoBean);
+        return upDataLiveData;
     }
 
     /**
@@ -252,6 +263,9 @@ public class ClassInfoModel extends BaseViewModel implements ClassInfoContract.M
                     classGenerateOrderBeanLiveData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());
+                    if (t.getData() != null) {
+                        classGenerateOrderBeanLiveData.setValue(t.getData());
+                    }
                 }
             }
 

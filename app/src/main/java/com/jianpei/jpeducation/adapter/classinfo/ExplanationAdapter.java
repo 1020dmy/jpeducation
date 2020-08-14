@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.L;
 
@@ -37,8 +38,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<ExplanationAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        Glide.with(context).load(imageUrls.get(position)).placeholder(R.drawable.placeholder_icon).into(holder.imageView);
-//        Glide.with(context).load(imageUrls.get(position)).downloadOnly();
+        Glide.with(context).load(imageUrls.get(position)).placeholder(R.drawable.placeholder_icon).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(holder.imageView);
 
 
     }

@@ -58,14 +58,12 @@ public class MaterialRepository implements MaterialContract.Repository {
         return RetrofitFactory.getInstance().API().myMaterialData(new MaterialDataJson(pageIndex, pageSize)).map(new Function<BaseEntity<MaterialDataBean>, BaseEntity<MaterialDataBean>>() {
             @Override
             public BaseEntity<MaterialDataBean> apply(BaseEntity<MaterialDataBean> materialDataBeanBaseEntity) throws Exception {
-
                 if (materialDataBeanBaseEntity.getData() != null) {
                     List<MaterialTitle> materialTitles = materialDataBeanBaseEntity.getData().getData();
                     if (materialTitles != null && materialTitles.size() > 0) {
                         MyRoomDatabase.getInstance().materialTitleDao().insertMaterialTitle(materialTitles);
                     }
                 }
-
                 return materialDataBeanBaseEntity;
             }
         });
@@ -183,7 +181,7 @@ public class MaterialRepository implements MaterialContract.Repository {
             @Override
             public void subscribe(ObservableEmitter<List<MaterialInfoBean>> emitter) throws Exception {
                 List<MaterialInfoBean> materialInfoBeans = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBeans(class_id);
-                L.e("=========subscribe:"+materialInfoBeans.size());
+                L.e("=========subscribe:" + materialInfoBeans.size());
                 emitter.onNext(materialInfoBeans);
                 emitter.onComplete();
             }

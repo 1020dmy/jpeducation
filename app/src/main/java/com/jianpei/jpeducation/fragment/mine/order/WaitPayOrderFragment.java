@@ -130,8 +130,10 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
             public void onChanged(String s) {
 //                dismissLoading();
 //                shortToast(s);
-                page = 1;
-                orderListModel.orderData(2, page, pageSize);
+
+//                page = 1;
+//                orderListModel.orderData(2, page, pageSize);
+                dataNoticeChangeModel.getNoticeChangeLiveData().setValue("");
             }
         });
         //发起支付选择价格

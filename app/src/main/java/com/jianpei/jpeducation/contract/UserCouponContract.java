@@ -20,14 +20,14 @@ import io.reactivex.Observable;
 public interface UserCouponContract {
 
     interface Repository {
-        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type);
+        Observable<BaseEntity<CouponDataBean>> couponData(int pageIndex, int pageSize, int type, String cat_id, String group_id);
 
 
     }
 
 
     interface Model {
-        void couponData(int pageIndex, int pageSize, int type);
+        void couponData(int pageIndex, int pageSize, int type, String cat_id, String group_id);
 
     }
 }

@@ -197,7 +197,10 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
 
     @Override
     public void onItemClick(int position, View view) {
-        startActivity(new Intent(getActivity(), ClassInfoActivity.class).putExtra("groupInfoBean", groupDataBeans.get(position)));
+        startActivity(new Intent(getActivity(), ClassInfoActivity.class)
+                .putExtra("groupId", groupDataBeans.get(position).getId())
+                .putExtra("catId", groupDataBeans.get(position).getCat_id()));
+
 
     }
 

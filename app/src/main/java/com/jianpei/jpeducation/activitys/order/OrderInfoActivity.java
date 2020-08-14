@@ -19,6 +19,7 @@ import com.alipay.sdk.app.PayTask;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.GroupInfoAdapter;
 import com.jianpei.jpeducation.adapter.order.OrderInfoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -26,9 +27,9 @@ import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
 import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.order.WxInfo;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
 import com.jianpei.jpeducation.viewmodel.OrderListModel;
-import com.mantis.im_service.ui.activity.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -281,7 +282,7 @@ public class OrderInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.button://分享
                 if (mShareAction == null) {
@@ -301,7 +302,11 @@ public class OrderInfoActivity extends BaseActivity {
                 orderConfirmModel.orderPayment(payType + "", orderId);
                 break;
             case R.id.ll_quan://优惠券
-                startActivityForResult(new Intent(this, UserCouponActivity.class).putExtra("formActivity", 0), 101);
+//                startActivityForResult(new Intent(this, UserCouponActivity.class).putExtra("formActivity", 0), 101);
+                startActivityForResult(new Intent(this, UserCouponActivity.class)
+                        .putExtra("formActivity", 0)
+                        .putExtra("cat_id", SpUtils.getValue(SpUtils.catId))
+                        .putExtra("group_id", group_id), 101);
                 break;
 
         }
@@ -328,12 +333,16 @@ public class OrderInfoActivity extends BaseActivity {
 
     private MIneOrderInfoBean mOrderInfoBean;
 
+
+    private String group_id;
+
     public void setData(MIneOrderInfoBean orderInfoBean) {
 
         if (orderInfoBean == null) {
             return;
         }
         mOrderInfoBean = orderInfoBean;
+        group_id = orderInfoBean.getGroup_id();
         //是否需要显示支付
         if ("0".equals(orderInfoBean.getState())) {//未支付的订单
             llBottom.setVisibility(View.VISIBLE);

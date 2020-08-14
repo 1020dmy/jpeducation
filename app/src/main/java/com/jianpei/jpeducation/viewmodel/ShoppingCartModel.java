@@ -125,30 +125,30 @@ public class ShoppingCartModel extends BaseViewModel implements ShoppingCartCont
      * @param type
      */
 
-    @Override
-    public void couponData(int pageIndex, int pageSize, int type) {
-
-        shoppingCartRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
-
-            @Override
-            protected void onSuccees(BaseEntity<CouponDataBean> t) throws Exception {
-
-                if (t.isSuccess()) {
-                    couponDataBeanLiveData.setValue(t.getData());
-                } else {
-                    errData.setValue(t.getMsg());
-                }
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                if (isNetWorkError) {
-                    errData.setValue("网络问题！");
-                } else {
-                    errData.setValue(e.getMessage());
-                }
-            }
-        });
-    }
+//    @Override
+//    public void couponData(int pageIndex, int pageSize, int type) {
+//
+//        shoppingCartRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
+//
+//            @Override
+//            protected void onSuccees(BaseEntity<CouponDataBean> t) throws Exception {
+//
+//                if (t.isSuccess()) {
+//                    couponDataBeanLiveData.setValue(t.getData());
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络问题！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//    }
 }

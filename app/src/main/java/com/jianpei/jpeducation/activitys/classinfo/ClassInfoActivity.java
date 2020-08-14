@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,24 +20,24 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
-import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
-import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.fragment.info.ClassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
 import com.jianpei.jpeducation.fragment.info.DirectoryFragment;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
-import com.mantis.im_service.ui.activity.ChatActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
@@ -97,7 +98,9 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
     private int height;
 
-    private GroupInfoBean groupInfoBean;
+//    private GroupInfoBean groupInfoBean;
+
+    private String groupId,catId;//
 
     private SubjectPopup subjectPopup;
 
@@ -120,11 +123,15 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
         height = DisplayUtil.dp2px(300);
         //初始化分享
 
-        groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
+//        groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
+        //
+        groupId = getIntent().getStringExtra("groupId");
+        catId=getIntent().getStringExtra("catId");
+
         viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
-        classInfoFragment = new ClassInfoFragment();
-        directoryFragment = new DirectoryFragment();
-        commentFragment = new CommentFragment();
+        classInfoFragment = new ClassInfoFragment(groupId,catId);
+        directoryFragment = new DirectoryFragment(groupId);
+        commentFragment = new CommentFragment(groupId);
         fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
 
 
@@ -134,17 +141,9 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 mClassInfoBean = classInfoBean;
-                mClassInfoBean.setImg(groupInfoBean.getImg());
-                //更新界面数据
-//                if (classInfoBean.getHuod_price_info() == null) {
-//                    tvPrice.setVisibility(View.GONE);
-//                    tvNowPrice.setText(classInfoBean.getOriginal_price_info());
-//                } else {
-//                    tvNowPrice.setText(classInfoBean.getHuod_price_info());
-//                    tvPrice.setText("原价：" + classInfoBean.getOriginal_price_info());
-//                    tvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//                }
+
+//                mClassInfoBean.setImg(groupInfoBean.getImg());
+
 
             }
         });
@@ -201,13 +200,14 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o))
+                    shortToast(o);
 
             }
         });
 
         ////传递信息到fagemnt
-        classInfoModel.setGroupInfo(groupInfoBean);
+//        classInfoModel.setGroupInfo(groupInfoBean);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -255,7 +255,11 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 break;
             case R.id.iv_shopping:
             case R.id.iv_black_shopping:
-                startActivity(new Intent(this, ShoppingCartActivity.class));
+                if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                    startActivity(new Intent(this, LoginActivity.class));
+                } else {
+                    startActivity(new Intent(this, ShoppingCartActivity.class));
+                }
                 break;
             case R.id.iv_share:
             case R.id.iv_black_share:
@@ -271,11 +275,11 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                     showPow();
                 } else {
                     showLoading("");
-                    classInfoModel.groupClass(groupInfoBean.getId(), "");
+                    classInfoModel.groupClass(groupId, "");
                 }
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.tv_shopping:
                 isShop = true;
@@ -283,7 +287,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                     showPow();
                 } else {
                     showLoading("");
-                    classInfoModel.groupClass(groupInfoBean.getId(), "");
+                    classInfoModel.groupClass(groupId, "");
                 }
                 break;
         }
@@ -299,12 +303,16 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             subjectPopup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    subjectPopup.dismiss();
+                    if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                        startActivity(new Intent(ClassInfoActivity.this, LoginActivity.class));
+                        return;
+                    }
                     if (!isShop) {
                         showLoading("");
-                        classInfoModel.classGenerateOrder("1", groupInfoBean.getId(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
+                        classInfoModel.classGenerateOrder("1", groupId, "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "", "");
                     } else {
-//                        shortToast("添加购物车成功！");
-                        classInfoModel.insertCar(groupInfoBean.getId(), subjectPopup.getClassIds(), subjectPopup.getSuitesIds());
+                        classInfoModel.insertCar(groupId, subjectPopup.getClassIds(), subjectPopup.getSuitesIds());
                     }
                 }
             });
@@ -312,7 +320,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             subjectPopup.setMyItemOnClickListener(new SubjectPopup.MyItemClickListener() {
                 @Override
                 public void onClicker() {
-                    classInfoModel.imputedPrice(groupInfoBean.getId(), subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "");
+                    classInfoModel.imputedPrice(groupId, subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), "");
                 }
             });
         }

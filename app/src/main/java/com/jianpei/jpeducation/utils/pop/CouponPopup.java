@@ -165,7 +165,9 @@ public class CouponPopup extends PopupWindow {
 
             @Override
             public void onClick(View v) {
-
+                if (myCouponReceiveListener != null) {
+                    myCouponReceiveListener.onClickCouponReceive(mGroupCouponBeans.get(getLayoutPosition()).getId());
+                }
             }
         }
 

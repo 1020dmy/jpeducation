@@ -35,6 +35,7 @@ public class PlayListChapterProvider extends BaseNodeProvider {
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
         DirectoryBean directorysBean = (DirectoryBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, directorysBean.getTitle());
+
         if (directorysBean.isExpanded()) {
             baseViewHolder.setImageResource(R.id.imageView, R.drawable.material_unfold);
         } else {

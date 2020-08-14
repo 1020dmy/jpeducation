@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.jianpei.jpeducation.bean.material.MaterialTitle;
 
@@ -61,6 +62,7 @@ public interface MaterialTitleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMaterialTitle(List<MaterialTitle> materialTitles);
+
 
     /**
      * 删除

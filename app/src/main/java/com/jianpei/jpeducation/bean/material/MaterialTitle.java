@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.bean.material;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -27,6 +28,7 @@ public class MaterialTitle extends BaseExpandNode {
 
     @NonNull
     @PrimaryKey
+    @ColumnInfo(name = "id")
     private String id;
     private String cat_id;
     private String title;

@@ -57,6 +57,7 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements Class
     public LinkedHashMap<String, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
 
 
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_class_download;
@@ -153,8 +154,10 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements Class
     @Override
     public void onProgress(ViodBean info, int percent) {
 
-        if (downloadingInfos.get(info.getId()) != null)
+        if (downloadingInfos.get(info.getId()) != null) {
             setProgress(downloadingInfos.get(info.getId()).getView(R.id.progressBar), percent);
+
+        }
 
     }
 

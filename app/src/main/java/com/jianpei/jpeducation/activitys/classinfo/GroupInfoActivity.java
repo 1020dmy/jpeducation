@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.classinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
+import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
@@ -35,7 +37,6 @@ import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.pop.GroupingPopup;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
-import com.mantis.im_service.ui.activity.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +78,7 @@ public class GroupInfoActivity extends BaseActivity {
 
     private String[] tabTitle = {"详情", "目录", "评价"};
     private GclassInfoFragment classInfoFragment;//详情
-    //    private GdirectoryFragment directoryFragment;//目录
     private DirectoryFragment directoryFragment;
-    //    private GcommentFragment commentFragment;//评价
     private CommentFragment commentFragment;
     private Fragment[] fragments;
 
@@ -89,14 +88,16 @@ public class GroupInfoActivity extends BaseActivity {
     private ClassInfoModel classInfoModel;
 
 
-    private RegimentInfoBean regimentInfoBean;
+//    private RegimentInfoBean regimentInfoBean;
+
+    private String groupId;
 
     ///科目列表
     private List<GroupClassBean> mGroupClassBeans;
     private SubjectPopup subjectPopup;
     private ClassInfoBean mClassInfoBean;
     //所参团的ID
-    private String groupId;
+    private String pointId, id;
     //类型
     private String goods_type = "2";
 
@@ -109,7 +110,11 @@ public class GroupInfoActivity extends BaseActivity {
     protected void initView() {
 
         height = DisplayUtil.dp2px(300);
-        regimentInfoBean = getIntent().getParcelableExtra("regimentInfoBean");
+//        regimentInfoBean = getIntent().getParcelableExtra("regimentInfoBean");
+        pointId = getIntent().getStringExtra("pointId");
+        id = getIntent().getStringExtra("id");
+
+
         classInfoModel = new ViewModelProvider(this).get(ClassInfoModel.class);//初始化model
         //接收来自与ClassInfoFragment的消息
         classInfoModel.getTabViewStatus().observe(this, new Observer<Integer>() {
@@ -144,7 +149,7 @@ public class GroupInfoActivity extends BaseActivity {
             }
         });
 
-        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
+//        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
 
         //获取科目信息
         mGroupClassBeans = new ArrayList<>();
@@ -181,7 +186,8 @@ public class GroupInfoActivity extends BaseActivity {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o))
+                    shortToast(o);
             }
         });
         //显示用户当前的拼团
@@ -204,14 +210,14 @@ public class GroupInfoActivity extends BaseActivity {
                     showPow();
                 } else {
                     showLoading("");
-                    classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                    classInfoModel.groupClass(pointId, id);
                 }
             }
         });
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
-        classInfoFragment = new GclassInfoFragment();
-        directoryFragment = new DirectoryFragment();
-        commentFragment = new CommentFragment();
+        classInfoFragment = new GclassInfoFragment(pointId, id);
+        directoryFragment = new DirectoryFragment(pointId);
+        commentFragment = new CommentFragment(pointId);
         fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
 
     }
@@ -234,7 +240,8 @@ public class GroupInfoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
+//        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
+        classInfoModel.getUpDataLiveData().setValue("");
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -257,7 +264,7 @@ public class GroupInfoActivity extends BaseActivity {
                 mShareAction.open();
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, KeFuActivity.class));
                 break;
             case R.id.submit:
                 groupId = "";
@@ -269,7 +276,7 @@ public class GroupInfoActivity extends BaseActivity {
                         showPow();
                     } else {
                         showLoading("");
-                        classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                        classInfoModel.groupClass(pointId, id);
                     }
                 }
                 break;
@@ -280,7 +287,7 @@ public class GroupInfoActivity extends BaseActivity {
                     showPow();
                 } else {
                     showLoading("");
-                    classInfoModel.groupClass(regimentInfoBean.getPoint_id(), regimentInfoBean.getId());
+                    classInfoModel.groupClass(pointId, id);
                 }
                 break;
         }
@@ -296,7 +303,7 @@ public class GroupInfoActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     showLoading("");
-                    classInfoModel.classGenerateOrder(goods_type, regimentInfoBean.getPoint_id(), "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), regimentInfoBean.getId(), groupId);
+                    classInfoModel.classGenerateOrder(goods_type, pointId, "0", "0", subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), id, groupId);
 
                 }
             });
@@ -304,7 +311,7 @@ public class GroupInfoActivity extends BaseActivity {
             subjectPopup.setMyItemOnClickListener(new SubjectPopup.MyItemClickListener() {
                 @Override
                 public void onClicker() {
-                    classInfoModel.imputedPrice(regimentInfoBean.getPoint_id(), subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), regimentInfoBean.getId());
+                    classInfoModel.imputedPrice(pointId, subjectPopup.getClassIds(), subjectPopup.getSuitesIds(), id);
                 }
             });
         }

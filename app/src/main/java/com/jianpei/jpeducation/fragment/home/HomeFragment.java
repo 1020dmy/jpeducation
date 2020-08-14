@@ -225,6 +225,7 @@ public class HomeFragment extends BaseFragment {
         mainModel.getCatId().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                datas.clear();//切换专业/清楚数据
                 homePageModel.getHomeData(s);//获取首页数据
                 homePageModel.noticeData(s);//获取通知数据
 
@@ -251,6 +252,8 @@ public class HomeFragment extends BaseFragment {
                         integralBuyDialog = new IntegralBuyDialog(getActivity(), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                integralBuyDialog.dismiss();
+                                showLoading("");
                                 integralModel.integrlPay(3, downloadBean.getIntergral_price(), "");
 
                             }

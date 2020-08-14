@@ -16,11 +16,33 @@ public class CouponDataJson implements Parcelable {
     private int pageSize;
     private int type;
 
+    private String cat_id;
 
-    public CouponDataJson(int pageIndex, int pageSize, int type) {
+    private String group_id;
+
+
+    public CouponDataJson(int pageIndex, int pageSize, int type, String cat_id, String group_id) {
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
         this.type = type;
+        this.cat_id = cat_id;
+        this.group_id = group_id;
+    }
+
+    public String getCat_id() {
+        return cat_id;
+    }
+
+    public void setCat_id(String cat_id) {
+        this.cat_id = cat_id;
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 
     public int getPageIndex() {

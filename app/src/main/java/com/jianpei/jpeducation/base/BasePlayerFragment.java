@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 
 import com.aliyun.player.source.VidAuth;
 import com.aliyun.utils.VcPlayerLog;
+import com.aliyun.vodplayerview.listener.OnAutoPlayListener;
 import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.view.control.ControlView;

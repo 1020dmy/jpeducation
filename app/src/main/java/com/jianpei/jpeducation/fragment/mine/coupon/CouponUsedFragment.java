@@ -47,6 +47,10 @@ public class CouponUsedFragment extends BaseFragment {
 
     private CouponAdapter couponAdapter;
 
+    private String cat_id;
+
+    private String group_id;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_coupon_available;
@@ -61,7 +65,7 @@ public class CouponUsedFragment extends BaseFragment {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page++;
-                userCouponModel.couponData(page, pageSize, type);
+                userCouponModel.couponData(page, pageSize, type,cat_id,group_id);
 
             }
         });
@@ -71,7 +75,7 @@ public class CouponUsedFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page = 1;
-                userCouponModel.couponData(page, pageSize, type);
+                userCouponModel.couponData(page, pageSize, type,cat_id,group_id);
 
             }
         });
@@ -112,6 +116,6 @@ public class CouponUsedFragment extends BaseFragment {
         });
 
         showLoading("");
-        userCouponModel.couponData(page, pageSize, type);
+        userCouponModel.couponData(page, pageSize, type,cat_id,group_id);
     }
 }

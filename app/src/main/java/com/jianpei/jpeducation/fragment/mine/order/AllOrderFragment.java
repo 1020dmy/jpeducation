@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.fragment.mine.order;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -121,18 +122,13 @@ public class AllOrderFragment extends BaseFragment implements MyItemOnClickListe
                 if (page == 1) {
                     mOrderDataBeans.clear();
                 }
-                mOrderDataBeans.addAll(orderListBean.getData());
+                if (orderListBean != null)
+                    mOrderDataBeans.addAll(orderListBean.getData());
                 nOrderListAdapter.notifyDataSetChanged();
             }
         });
         //发起支付选择价格
-//        orderListModel.getClassGenerateOrderBeanLiveData().observe(this, new Observer<ClassGenerateOrderBean>() {
-//            @Override
-//            public void onChanged(ClassGenerateOrderBean classGenerateOrderBean) {
-//                dismissLoading();
-//                startActivity(new Intent(getActivity(), OrderConfirmActivity.class).putExtra("classGenerateOrderBean", classGenerateOrderBean));
-//            }
-//        });
+
         //错误返回
         orderListModel.getErrData().observe(this, new Observer<String>() {
             @Override
@@ -140,7 +136,9 @@ public class AllOrderFragment extends BaseFragment implements MyItemOnClickListe
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o)){
+                    shortToast(o);
+                }
             }
         });
         //取消订单成功
@@ -148,8 +146,9 @@ public class AllOrderFragment extends BaseFragment implements MyItemOnClickListe
             @Override
             public void onChanged(String s) {
                 shortToast(s);
-                page = 1;
-                orderListModel.orderData(1, page, pageSize);
+//                page = 1;
+//                orderListModel.orderData(1, page, pageSize);
+                dataNoticeChangeModel.getNoticeChangeLiveData().setValue("");
 
             }
         });

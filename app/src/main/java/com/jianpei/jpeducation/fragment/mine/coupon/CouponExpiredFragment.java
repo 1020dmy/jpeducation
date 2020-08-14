@@ -42,8 +42,13 @@ public class CouponExpiredFragment extends BaseFragment {
 
     private List<CouponDataBean.CouponData> couponDatas;
 
+    private String cat_id;
+
+    private String group_id;
+
 
     private CouponAdapter couponAdapter;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_coupon_available;
@@ -58,7 +63,7 @@ public class CouponExpiredFragment extends BaseFragment {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page++;
-                userCouponModel.couponData(page, pageSize, type);
+                userCouponModel.couponData(page, pageSize, type, cat_id, group_id);
 
             }
         });
@@ -67,8 +72,8 @@ public class CouponExpiredFragment extends BaseFragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
-                page=1;
-                userCouponModel.couponData(page, pageSize, type);
+                page = 1;
+                userCouponModel.couponData(page, pageSize, type, cat_id, group_id);
 
             }
         });
@@ -107,6 +112,6 @@ public class CouponExpiredFragment extends BaseFragment {
         });
 
         showLoading("");
-        userCouponModel.couponData(page, pageSize, type);
+        userCouponModel.couponData(page, pageSize, type, cat_id, group_id);
     }
 }

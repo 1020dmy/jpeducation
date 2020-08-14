@@ -133,7 +133,7 @@ public class OrderListModel extends BaseViewModel implements OrderListContract.M
             @Override
             protected void onSuccees(BaseEntity<String> t) throws Exception {
                 if (t.isSuccess()) {
-                    cancleOrderLiveData.setValue(t.getData());
+                    cancleOrderLiveData.setValue(t.getMsg());
                 } else {
                     errData.setValue(t.getMsg());
                 }

@@ -151,6 +151,7 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
             public void onChanged(String s) {
                 dismissLoading();
                 shortToast(s);
+                finish();
             }
         });
         feedbackModel.getErrData().observe(this, new Observer<String>() {
@@ -158,6 +159,7 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
             public void onChanged(String o) {
                 dismissLoading();
                 shortToast(o);
+                finish();
             }
         });
         //上传图片

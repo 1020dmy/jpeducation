@@ -1,10 +1,12 @@
 package com.jianpei.jpeducation.fragment.info;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -33,7 +35,9 @@ import com.aliyun.player.source.VidAuth;
 import com.aliyun.player.source.VidSts;
 import com.aliyun.utils.VcPlayerLog;
 import com.aliyun.vodplayerview.constants.PlayParameter;
+import com.aliyun.vodplayerview.listener.OnAutoPlayListener;
 import com.aliyun.vodplayerview.utils.FixedToastUtils;
+import com.aliyun.vodplayerview.utils.NetWatchdog;
 import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.aliyun.vodplayerview.utils.download.AliyunDownloadManager;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
@@ -44,18 +48,21 @@ import com.aliyun.vodplayerview.view.more.SpeedValue;
 import com.aliyun.vodplayerview.widget.AliyunScreenMode;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.player.TryPlayerActivity;
 import com.jianpei.jpeducation.adapter.ItemOffsetDecoration;
 import com.jianpei.jpeducation.adapter.classinfo.ExplanationAdapter;
 import com.jianpei.jpeducation.adapter.classinfo.TeacherAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.base.BasePlayerFragment;
+import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupCouponBean;
 import com.jianpei.jpeducation.bean.classinfo.TeacherBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.pop.CouponPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -132,6 +139,13 @@ public class ClassInfoFragment extends BasePlayerFragment {
     private String originalPrice;
     private String material;
 
+    private String groupId;//
+    private String catId;
+
+    public ClassInfoFragment(String groupId,String catId) {
+        this.groupId = groupId;
+        this.catId=catId;
+    }
 
     @Override
     protected int initLayout() {
@@ -140,13 +154,20 @@ public class ClassInfoFragment extends BasePlayerFragment {
 
     @Override
     protected void initView(View view) {
+
+        if (NetWatchdog.is4GConnected(MyApplication.getInstance())) {
+            tvTryListener.setVisibility(View.GONE);
+        }
+
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
         classInfoFModel = new ViewModelProvider(this).get(ClassInfoFModel.class);
+        //首页数据结果
         classInfoFModel.getClassInfoBean().observe(getActivity(), new Observer<ClassInfoBean>() {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
-                classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);
+
+                classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);//数据回传到Activity
                 classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "", classInfoBean.getId());//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
             }
@@ -155,44 +176,52 @@ public class ClassInfoFragment extends BasePlayerFragment {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
-                shortToast(o);
+                if (!TextUtils.isEmpty(o)) {
+                    shortToast(o);
+
+                }
 
             }
         });
+        //获取视频播放结果
         classInfoFModel.getVideoUrlBeansLiveData().observe(getActivity(), new Observer<VideoUrlBean>() {
             @Override
             public void onChanged(VideoUrlBean videoUrlBean) {
                 //试听课程结果
                 aliyunPlayerView.setCoverUri(videoUrlBean.getImg());
+
                 //初始化播放器并播放试听课程
                 initAliyunPlayerView();
+
                 playVideo(videoUrlBean);
 
             }
         });
 
         mGroupCouponBeans = new ArrayList<>();
+        //获取优惠券结果
         classInfoFModel.getGroupCouponBeansLiveData().observe(getActivity(), new Observer<List<GroupCouponBean>>() {
             @Override
             public void onChanged(List<GroupCouponBean> groupCouponBeans) {
                 mGroupCouponBeans.addAll(groupCouponBeans);
             }
         });
-
+        //滚动监听
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             classInfoModel.tabViewStatusChange(scrollY);
 
         });
-        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
-            @Override
-            public void onChanged(GroupInfoBean groupInfoBean) {
-                showLoading("");
-                //获取课程详情
-                classInfoFModel.groupInfo(groupInfoBean.getId(), "");
-                //获取优惠券信息
-                classInfoFModel.groupCoupon(groupInfoBean.getCat_id(), groupInfoBean.getId());
-            }
-        });
+
+//        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
+//            @Override
+//            public void onChanged(GroupInfoBean groupInfoBean) {
+//                showLoading("");
+//                //获取课程详情
+//                classInfoFModel.groupInfo(groupInfoBean.getId(), "");
+//                //获取优惠券信息
+//                classInfoFModel.groupCoupon(groupInfoBean.getCat_id(), groupInfoBean.getId());
+//            }
+//        });
         //领取优惠券结果
         classInfoFModel.getCouponReceiveLiveData().observe(this, new Observer<String>() {
             @Override
@@ -223,6 +252,13 @@ public class ClassInfoFragment extends BasePlayerFragment {
         teacherAdapter = new TeacherAdapter(teacherBeans, getActivity());
 
         recyclerView.setAdapter(teacherAdapter);
+
+
+        //
+        showLoading("");
+        classInfoFModel.groupInfo(groupId, "");
+        //获取优惠券信息
+        classInfoFModel.groupCoupon(catId, groupId);
 
 
     }
@@ -266,8 +302,8 @@ public class ClassInfoFragment extends BasePlayerFragment {
         stringBuilder = null;
         tvTeachers.setText(teachers);
 
-        tvClass.setText(classInfoBean.getVideo_time_str());
-        tvAging.setText(classInfoBean.getEnd_time_str());
+//        tvClass.setText(classInfoBean.getVideo_time_str());
+        tvAging.setText(classInfoBean.getYear_num() + "年");
         tvNums.setText(classInfoBean.getBuy_num() + "人已报名");
         //服务保障
         tvServer.setText(classInfoBean.getOur_service());
@@ -305,6 +341,10 @@ public class ClassInfoFragment extends BasePlayerFragment {
                     couponPopup.setMyCouponReceiveListener(new CouponPopup.MyCouponReceiveListener() {
                         @Override
                         public void onClickCouponReceive(String couponId) {
+                            if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                return;
+                            }
                             showLoading("");
                             classInfoFModel.couponReceive(couponId, "");
                         }

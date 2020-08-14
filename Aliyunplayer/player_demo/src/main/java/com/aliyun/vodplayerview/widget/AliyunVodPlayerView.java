@@ -561,6 +561,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
                 } else {
                     if (mAliyunPlayAuth != null) {
                         prepareAuth(mAliyunPlayAuth);
+                        mAliyunVodPlayer.start();
                     } else if (mAliyunVidSts != null) {
                         prepareVidsts(mAliyunVidSts);
                     } else if (mAliyunLocalSource != null) {
@@ -1689,6 +1690,8 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         if (mQualityView != null) {
             mQualityView.setIsMtsSource(false);
         }
+        VcPlayerLog.d(TAG, "prepareAuth = ");
+
         mAliyunVodPlayer.setDataSource(aliyunPlayAuth);
         mAliyunVodPlayer.prepare();
     }
@@ -2024,7 +2027,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
             mControlView.show();
             mControlView.setPlayState(ControlView.PlayState.Playing);
         }
-
         if (mAliyunVodPlayer == null) {
             return;
         }
@@ -2036,6 +2038,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         if (mPlayerState == IPlayer.paused || mPlayerState == IPlayer.prepared) {
             mAliyunVodPlayer.start();
         }
+
 
     }
 
@@ -2104,6 +2107,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
      * 判断是否开启精准seek
      */
     private void isAutoAccurate(int position) {
+        Log.e("isAutoAccurate:",""+position);
         if (getDuration() <= ACCURATE) {
             mAliyunVodPlayer.seekTo(position, IPlayer.SeekMode.Accurate);
         } else {
@@ -2777,7 +2781,9 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
                 mControlView.setVideoPosition((int) mCurrentPosition);
             }
             if (scheduleListener != null) {
-                scheduleListener.onSchedule(mCurrentPosition*100/mSourceDuration);
+//                scheduleListener.onSchedule(mCurrentPosition*100/mSourceDuration);
+                scheduleListener.onSchedule(mSourceDuration / 1000, mCurrentPosition / 1000);
+
             }
         } else if (infoBean.getCode() == InfoCode.AutoPlayStart) {
             //自动播放开始,需要设置播放状态
@@ -2990,7 +2996,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
 
 
     public interface ScheduleListener {
-        void onSchedule(long progress);
+        void onSchedule(long sourceDuration, long progress);
     }
 
 }

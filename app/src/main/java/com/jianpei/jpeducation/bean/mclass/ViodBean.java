@@ -321,4 +321,19 @@ public class ViodBean extends BaseNode {
 
         return Arrays.hashCode(new String[]{id});
     }
+
+    @Override
+    public String toString() {
+        return "ViodBean{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", isfree='" + isfree + '\'' +
+                ", chapter_id='" + chapter_id + '\'' +
+                ", dqtime='" + dqtime + '\'' +
+                ", totaltime='" + totaltime + '\'' +
+                ", is_last_read='" + is_last_read + '\'' +
+                ", schedule='" + schedule + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

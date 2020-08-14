@@ -12,6 +12,7 @@ import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.ClassPlayerContract;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.classdownload.DownloadMediaInfo;
 
 import java.util.List;
@@ -84,6 +85,7 @@ public class ClassPlayerRepository extends BaseRepository implements ClassPlayer
      */
     @Override
     public Observable<BaseEntity<String>> updateSchedule(String total_second, String current_second, String class_id, String chapter_id, String viod_id, String buy_id) {
+
         return RetrofitFactory.getInstance().API().updateSchedule(new UpdateScheduleJson(total_second, current_second, class_id, chapter_id, viod_id, buy_id));
     }
 }

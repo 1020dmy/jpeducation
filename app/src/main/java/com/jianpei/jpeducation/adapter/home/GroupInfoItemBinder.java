@@ -79,6 +79,9 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
 
     @Override
     public void onChildClick(@NotNull MyHolder holder, @NotNull View view, GroupInfoBean data, int position) {
-        context.startActivity(new Intent(context, ClassInfoActivity.class).putExtra("groupInfoBean", data));
+        context.startActivity(new Intent(context, ClassInfoActivity.class)
+                .putExtra("groupId", data.getId())
+                .putExtra("catId", data.getCat_id()));
+
     }
 }

@@ -8,14 +8,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.MainActivity;
-import com.jianpei.jpeducation.activitys.classinfo.GroupInfoActivity;
 import com.jianpei.jpeducation.adapter.GroupInfoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.RegimentBean;
@@ -23,7 +19,6 @@ import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupResultActivity extends BaseActivity {
 

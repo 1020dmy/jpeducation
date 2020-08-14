@@ -35,9 +35,9 @@ public class UserCouponModel extends BaseViewModel implements UserCouponContract
     }
 
     @Override
-    public void couponData(int pageIndex, int pageSize, int type) {
+    public void couponData(int pageIndex, int pageSize, int type,String cat_id,String group_id) {
 
-        userCouponRepository.couponData(pageIndex, pageSize, type).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
+        userCouponRepository.couponData(pageIndex, pageSize, type, cat_id, group_id).compose(setThread()).subscribe(new BaseObserver<CouponDataBean>() {
             @Override
             protected void onSuccees(BaseEntity<CouponDataBean> t) throws Exception {
                 if (t.isSuccess()) {

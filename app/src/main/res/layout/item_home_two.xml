@@ -37,6 +37,7 @@
         android:background="@drawable/home_daojishi_bg"
         android:orientation="horizontal"
         android:paddingLeft="37dp"
+        android:visibility="gone"
         android:paddingTop="15dp">
 
         <TextView
