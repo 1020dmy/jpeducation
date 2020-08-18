@@ -88,6 +88,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     private PlayerCommentFragment playerCommentFragment;
 
 
+    private long mProgress;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_class_player;
@@ -159,12 +161,12 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             public void onChanged(VideoUrlBean videoUrlBean) {
                 dismissLoading();
                 if (type == 0) {
-                    if (videoUrlBean.getType() == 0) {
+                    if (videoUrlBean.getType() == 0) {//视频播放
                         if (aliyunPlayerView != null)
                             aliyunPlayerView.onStop();
                         playVideo(videoUrlBean);
                     }
-                } else {
+                } else {//视频下载
                     if (videoDownloadManager == null) {
                         initDownload();
                     }
@@ -213,11 +215,10 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
             }
         });
-
+        //更新记录成功
         classPlayerModel.getUpdateScheduleLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                L.e("s:" + s);
             }
         });
         //查询下载数量
@@ -269,7 +270,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 //        videoDownloadManager.setRefreshStsCallback(new MyRefreshStsCallback());
 
         // 视频下载的回调
-        videoDownloadManager.setDownloadInfoListener(playerListFragment);
+//        videoDownloadManager.setDownloadInfoListener();
     }
 
 
@@ -370,8 +371,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         aliyunPlayerView.setScheduleListener(new AliyunVodPlayerView.ScheduleListener() {
             @Override
             public void onSchedule(long sourceDuration, long progress) {
-                L.e("=====progress:" + progress);
-                if (progress != 0 && progress % 20 == 0) {//没隔20秒更新记录
+                if (progress != 0 && mProgress != progress && progress % 20 == 0) {//没隔20秒更新记录
+                    mProgress = progress;
                     classPlayerModel.updateSchedule(sourceDuration + "", progress + "", myClassBean.getCid(), pViodBean.getChapter_id(), pViodBean.getId(), myClassBean.getId());
                 }
 

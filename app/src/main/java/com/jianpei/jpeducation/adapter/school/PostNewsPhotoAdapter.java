@@ -1,8 +1,6 @@
 package com.jianpei.jpeducation.adapter.school;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,6 @@ import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import java.io.File;
 import java.util.List;
 
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 /**
  * jpeducation
@@ -56,23 +52,24 @@ public class PostNewsPhotoAdapter extends RecyclerView.Adapter<PostNewsPhotoAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        Glide.with(context).load(images.get(position)).into(holder.imageView);
 
-        Luban.with(context).ignoreBy(100).load(images.get(position)).setCompressListener(new OnCompressListener() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(File file) {
-                Glide.with(context).load(file).into(holder.imageView);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-        }).launch();
+//        Luban.with(context).ignoreBy(100).load(images.get(position)).setCompressListener(new OnCompressListener() {
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(File file) {
+//                Glide.with(context).load(file).into(holder.imageView);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//        }).launch();
 
 
     }

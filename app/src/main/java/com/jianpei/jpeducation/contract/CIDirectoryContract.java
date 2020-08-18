@@ -5,6 +5,7 @@ import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface CIDirectoryContract {
 
         Observable<BaseEntity<List<DirectoryProfessionBean>>> classDirectory(String groupId);
 
-        Observable<BaseEntity<List<DirectorySectionBean>>> viodList(String class_id, String chapter_id, String type);
+        Observable<BaseEntity<List<ViodBean>>> viodList(String class_id, String chapter_id, String type);
 
 
     }

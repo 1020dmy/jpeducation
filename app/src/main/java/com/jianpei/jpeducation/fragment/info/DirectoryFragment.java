@@ -26,6 +26,7 @@ import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.viewmodel.CIDirectoryModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
@@ -96,9 +97,9 @@ public class DirectoryFragment extends BaseFragment {
 
             }
         });
-        ciDirectoryModel.getViodListBeansLiveData().observe(getActivity(), new Observer<List<DirectorySectionBean>>() {
+        ciDirectoryModel.getViodListBeansLiveData().observe(getActivity(), new Observer<List<ViodBean>>() {
             @Override
-            public void onChanged(List<DirectorySectionBean> viodListBeans) {
+            public void onChanged(List<ViodBean> viodListBeans) {
                 dismissLoading();
                 directoryAdapter.nodeAddData(directoryChapterBean, 0, viodListBeans);
 

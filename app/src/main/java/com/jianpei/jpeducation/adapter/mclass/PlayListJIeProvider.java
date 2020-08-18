@@ -28,20 +28,23 @@ public class PlayListJIeProvider extends BaseNodeProvider {
 
 
     public MyItemOnClickListener myItemOnClickListener;
+//    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
+
 
     public int nPosition;
     public ViodBean nViodBean;
 
-
-    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
-
-    public PlayListJIeProvider(LinkedHashMap<String, BaseViewHolder> downloadingInfos) {
-        this.downloadingInfos = downloadingInfos;
-    }
-
-    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+    public PlayListJIeProvider(MyItemOnClickListener myItemOnClickListener) {
         this.myItemOnClickListener = myItemOnClickListener;
+//        this.downloadingInfos = downloadingInfos;
+        addChildClickViewIds(R.id.iv_download, R.id.ll_section);
+
     }
+
+
+//    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+//        this.myItemOnClickListener = myItemOnClickListener;
+//    }
 
     @Override
     public int getItemViewType() {
@@ -86,9 +89,9 @@ public class PlayListJIeProvider extends BaseNodeProvider {
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
             baseViewHolder.setVisible(R.id.tv_progress, true);
             baseViewHolder.setVisible(R.id.iv_download, true);
-                baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
-            if (downloadingInfos != null)
-                downloadingInfos.put(viodsBean.getId(), baseViewHolder);
+            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
+//            if (downloadingInfos != null)
+//                downloadingInfos.put(viodsBean.getId(), baseViewHolder);
         } else if (viodsBean.getStatus() == 4) {
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_t);
             baseViewHolder.setVisible(R.id.tv_progress, true);
@@ -111,16 +114,16 @@ public class PlayListJIeProvider extends BaseNodeProvider {
     @Override
     public void onChildClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
         if (myItemOnClickListener != null) {
-            if (view.getId() == R.id.linearLayout) {
+            if (view.getId() == R.id.ll_section) {
+                L.e("npositon:" + nPosition + ",position:" + position);
                 if (nPosition != position) {
                     ViodBean viodBean = (ViodBean) data;
                     viodBean.setIs_last_read("1");
-                    if (nPosition != -1 && nViodBean!=null) {
+                    if (nPosition != -1 && nViodBean != null) {
                         nViodBean.setIs_last_read("0");
                         getAdapter().notifyItemChanged(nPosition);
                     }
                     getAdapter().notifyItemChanged(position);
-                    nPosition = position;
                     //发送通知切换视频
                     myItemOnClickListener.onItemClick(helper, view, data, position);
                 }

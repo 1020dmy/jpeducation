@@ -23,6 +23,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.mine.FeedbackAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.utils.BitmapUtil;
 import com.jianpei.jpeducation.utils.FileUtils;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
@@ -208,7 +209,8 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
         switch (requestCode) {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
-                files.add(selectphotoUtils.imgFile);
+                String aaa = BitmapUtil.compressImage(selectphotoUtils.imgFile.getPath());//图片压缩
+                files.add(new File(aaa));
                 feedbackAdapter.notifyItemChanged(files.size() - 1);
                 break;
             case SelectphotoUtils.SCAN_OPEN_PHONE://相册返回
@@ -217,7 +219,8 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
                     if (fileUtils == null) {
                         fileUtils = new FileUtils(this);
                     }
-                    files.add(new File(fileUtils.getFilePathByUri(data.getData())));
+                    String bbb = BitmapUtil.compressImage(fileUtils.getFilePathByUri(data.getData()));//图片压缩
+                    files.add(new File(bbb));
                     feedbackAdapter.notifyItemChanged(files.size() - 1);
 
                 }

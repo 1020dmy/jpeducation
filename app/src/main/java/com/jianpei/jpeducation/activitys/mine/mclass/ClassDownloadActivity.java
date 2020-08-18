@@ -4,7 +4,6 @@ package com.jianpei.jpeducation.activitys.mine.mclass;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -18,24 +17,24 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.mclass.DownloadClassAdapter;
-import com.jianpei.jpeducation.adapter.mclass.DownloadClassChapterProvider;
-import com.jianpei.jpeducation.adapter.mclass.DownloadClassJieProvider;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.classdownload.ClassDownloadListener;
 import com.jianpei.jpeducation.utils.classdownload.VideoDownloadManager;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashMap;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ClassDownloadActivity extends BaseNoStatusActivity implements ClassDownloadListener {
+public class ClassDownloadActivity extends BaseNoStatusActivity implements MyItemOnClickListener {
 
 
     @BindView(R.id.iv_statue)
@@ -50,12 +49,15 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements Class
     RecyclerView recyclerView;
 
     private DownloadClassAdapter downloadClassAdapter;
-    private DownloadClassJieProvider downloadClassJieProvider;
+//    private DownloadClassJieProvider downloadClassJieProvider;
 
     private OfflineClassRoomModel offlineClassRoomModel;
 
-    public LinkedHashMap<String, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
 
+//    public LinkedHashMap<String, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
+
+
+    private List<ViodBean> viodBeans;
 
 
     @Override
@@ -78,38 +80,26 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements Class
 
     @Override
     protected void initData() {
-        downloadClassAdapter = new DownloadClassAdapter();
-        downloadClassJieProvider = new DownloadClassJieProvider(downloadingInfos);
-        downloadClassJieProvider.setMyItemOnClickListener(new MyItemOnClickListener() {
-            @Override
-            public void onItemClick(int position, View view) {
-
-            }
-
-            @Override
-            public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
-                switch (view.getId()) {
-                    case R.id.tv_status:
-                        break;
-                    case R.id.tv_delete:
-                        ViodBean viodBean = (ViodBean) data;
-                        VideoDownloadManager.getInstance().deleteFile(viodBean);
-                        break;
-                }
-
-            }
-        });
-        downloadClassAdapter.addNodeProvider(new DownloadClassChapterProvider());
-        downloadClassAdapter.addNodeProvider(downloadClassJieProvider);
+        downloadClassAdapter = new DownloadClassAdapter(this);
         recyclerView.setAdapter(downloadClassAdapter);
-
+        //更新结果
         offlineClassRoomModel.getDirectoryBeansLiveData().observe(this, new Observer<List<DirectoryBean>>() {
             @Override
             public void onChanged(List<DirectoryBean> directoryBeans) {
                 dismissLoading();
                 downloadClassAdapter.setList(directoryBeans);
+                for (DirectoryBean directoryBean : directoryBeans) {
+                    if (directoryBean.getViods() != null) {
+                        if (viodBeans == null) {
+                            viodBeans = new ArrayList<>();
+                        }
+                        viodBeans.addAll(directoryBean.getViods());
+
+                    }
+                }
             }
         });
+
         offlineClassRoomModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
@@ -117,92 +107,140 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements Class
                 shortToast(o);
             }
         });
+        //删除结果
+        offlineClassRoomModel.getDeleteResultLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                L.e("==========s:" + s);
+                offlineClassRoomModel.getUndone();
+            }
+        });
+
 
         showLoading("");
         offlineClassRoomModel.getUndone();
 
 
-        VideoDownloadManager.getInstance().setDownloadInfoListener(this);
+        VideoDownloadManager.getInstance().setDownloadInfoListener(new MyClassDownloadListener(this));
 
     }
 
-    protected void setProgress(ProgressBar progressBar, int progress) {
-        progressBar.setProgress(progress);
-    }
+    private class MyClassDownloadListener implements ClassDownloadListener {
+        private WeakReference<ClassDownloadActivity> weakReference;
 
+        public MyClassDownloadListener(ClassDownloadActivity playerListFragment) {
+            weakReference = new WeakReference<>(playerListFragment);
+        }
+
+        @Override
+        public void onPrepared(List<ViodBean> viodBeans) {
+        }
+
+        @Override
+        public void onAdd(ViodBean info) {
+
+        }
+
+        @Override
+        public void onStart(ViodBean info) {
+            ClassDownloadActivity playerListFragment = weakReference.get();
+            if (playerListFragment != null && viodBeans != null) {
+                for (ViodBean viodBean : viodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(info.getStatus());
+                    }
+                }
+                downloadClassAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        public void onProgress(ViodBean info, int percent) {
+            ClassDownloadActivity playerListFragment = weakReference.get();
+            if (playerListFragment != null && viodBeans != null) {
+                for (ViodBean viodBean : viodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(info.getStatus());
+                    }
+                }
+                downloadClassAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        public void onStop(ViodBean info) {
+
+        }
+
+        @Override
+        public void onCompletion(ViodBean info) {
+            ClassDownloadActivity playerListFragment = weakReference.get();
+            if (playerListFragment != null) {
+                offlineClassRoomModel.getUndone();
+
+            }
+        }
+
+        @Override
+        public void onError(ViodBean info, ErrorCode code, String msg, String requestId) {
+
+        }
+
+        @Override
+        public void onWait(ViodBean outMediaInfo) {
+
+        }
+
+        @Override
+        public void onDelete(ViodBean info) {
+
+            offlineClassRoomModel.deleteViodBean(info);
+
+        }
+
+        @Override
+        public void onDeleteAll() {
+
+        }
+
+        @Override
+        public void onFileProgress(ViodBean info) {
+
+        }
+    }
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         finish();
     }
 
+
     @Override
-    public void onPrepared(List<ViodBean> viodBeans) {
+    public void onItemClick(int position, View view) {
 
     }
 
     @Override
-    public void onAdd(ViodBean info) {
-
-    }
-
-    @Override
-    public void onStart(ViodBean info) {
-
-    }
-
-    @Override
-    public void onProgress(ViodBean info, int percent) {
-
-        if (downloadingInfos.get(info.getId()) != null) {
-            setProgress(downloadingInfos.get(info.getId()).getView(R.id.progressBar), percent);
-
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+        switch (view.getId()) {
+            case R.id.tv_status:
+                break;
+            case R.id.tv_delete:
+                L.e("=====delete======");
+                showLoading("");
+                ViodBean viodBean = (ViodBean) data;
+                VideoDownloadManager.getInstance().deleteFile(viodBean);
+                break;
         }
-
     }
-
-    @Override
-    public void onStop(ViodBean info) {
-
-    }
-
-    @Override
-    public void onCompletion(ViodBean info) {
-
-    }
-
-    @Override
-    public void onError(ViodBean info, ErrorCode code, String msg, String requestId) {
-
-    }
-
-    @Override
-    public void onWait(ViodBean outMediaInfo) {
-
-    }
-
-    @Override
-    public void onDelete(ViodBean info) {
-
-    }
-
-    @Override
-    public void onDeleteAll() {
-
-    }
-
-    @Override
-    public void onFileProgress(ViodBean info) {
-
-    }
-
 
     @Override
     protected void onDestroy() {
-        VideoDownloadManager.getInstance().removeDownloadInfoListener(this);
-        if (downloadingInfos != null)
-            downloadingInfos.clear();
-        downloadingInfos = null;
+
         super.onDestroy();
     }
 }

@@ -10,6 +10,7 @@ import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.CIDirectoryContract;
 import com.jianpei.jpeducation.repository.CIDirectoryRepository;
 
@@ -30,10 +31,10 @@ public class CIDirectoryModel extends BaseViewModel implements CIDirectoryContra
 
     private MutableLiveData<List<DirectoryProfessionBean>> mutableLiveData;
 
-    private MutableLiveData<List<DirectorySectionBean>> viodListBeansLiveData;
+    private MutableLiveData<List<ViodBean>> viodListBeansLiveData;
 
 
-    public MutableLiveData<List<DirectorySectionBean>> getViodListBeansLiveData() {
+    public MutableLiveData<List<ViodBean>> getViodListBeansLiveData() {
         if(viodListBeansLiveData==null)
             viodListBeansLiveData=new MutableLiveData<>();
         return viodListBeansLiveData;
@@ -82,10 +83,10 @@ public class CIDirectoryModel extends BaseViewModel implements CIDirectoryContra
     @Override
     public void viodList(String class_id, String chapter_id) {
 
-        ciDirectoryRepository.viodList(class_id,chapter_id,"1").compose(setThread()).subscribe(new BaseObserver<List<DirectorySectionBean>>(){
+        ciDirectoryRepository.viodList(class_id,chapter_id,"1").compose(setThread()).subscribe(new BaseObserver<List<ViodBean>>(){
 
             @Override
-            protected void onSuccees(BaseEntity<List<DirectorySectionBean>> t) throws Exception {
+            protected void onSuccees(BaseEntity<List<ViodBean>> t) throws Exception {
                 if (t.isSuccess()) {
                     viodListBeansLiveData.setValue(t.getData());
                 } else {

@@ -33,8 +33,8 @@
 
         <RadioButton
             android:id="@+id/rb_xueyuan"
-            android:visibility="gone"
             style="@style/main_bottom_btn"
+            android:visibility="gone"
             android:drawableTop="@drawable/select_main_xueyuan"
             android:text="@string/main_btn_two" />
 
@@ -47,8 +47,8 @@
 
         <RadioButton
             android:id="@+id/rb_tiku"
-            android:visibility="gone"
             style="@style/main_bottom_btn"
+            android:visibility="gone"
             android:drawableTop="@drawable/select_main_tiku"
             android:text="@string/main_btn_five" />
 

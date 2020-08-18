@@ -12,9 +12,10 @@ android {
 }
 
 dependencies {
-    implementation (externalGlide){
-        exclude group: "com.android.support"
-    }
-    implementation externalAndroidSupportV4
-    implementation externalAndroidAppCompatV7
+//    implementation (externalGlide){
+//        exclude group: "com.android.support"
+//    }
+//    implementation externalAndroidSupportV4
+    implementation externalAndroidAppAppcompat
+    implementation externalAndroidAppGlide
 }

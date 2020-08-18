@@ -7,12 +7,15 @@ import androidx.lifecycle.MutableLiveData;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.ClassPlayerContract;
 import com.jianpei.jpeducation.repository.ClassPlayerRepository;
 import com.jianpei.jpeducation.utils.L;
+
+import java.util.List;
 
 /**
  * jpeducation
@@ -214,4 +217,47 @@ public class ClassPlayerModel extends BaseViewModel implements ClassPlayerContra
             downloadViodLiveData = new MutableLiveData<>();
         return downloadViodLiveData;
     }
+
+    /**
+     * 章节列表
+     *
+     * @param class_id
+     * @param chapter_id
+     * @param type
+     */
+    private MutableLiveData<List<ViodBean>> viodListLiveData;
+
+    public MutableLiveData<List<ViodBean>> getViodListLiveData() {
+        if (viodListLiveData == null)
+            viodListLiveData = new MutableLiveData<>();
+        return viodListLiveData;
+    }
+
+    @Override
+    public void viodList(String class_id, String chapter_id, String type) {
+
+        classPlayerRepository.viodList(class_id, chapter_id, type).compose(setThread()).subscribe(new BaseObserver<List<ViodBean>>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<List<ViodBean>> t) throws Exception {
+                if (t.isSuccess()) {
+                    viodListLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络异常！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
 }

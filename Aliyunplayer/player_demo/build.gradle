@@ -32,17 +32,19 @@ android {
 dependencies {
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     api project(':Aliyunplayer:AlivcPlayer')
-    implementation project(':zxing')
     implementation project(':AliyunVideoCommon')
-    implementation externalAndroidSupportV4
-    implementation externalAndroidAppCompatV7
+//    implementation externalAndroidSupportV4
+    implementation externalAndroidAppAppcompat
 //    implementation externalOKHTTP
     implementation externalLeakcanary
-    implementation externalAndroidRecyclerView
+//    implementation externalAndroidRecyclerView
     implementation externalGSON
     implementation externalAliyunOSS
     implementation externalAlivcConan
 
     implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
     implementation externalAlivcCore
+
+    implementation externalAndroidAppMaterial
+
 }

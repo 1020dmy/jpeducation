@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 
@@ -20,6 +21,12 @@ import org.jetbrains.annotations.NotNull;
  * Describe:
  */
 public class PlayListChapterProvider extends BaseNodeProvider {
+
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public PlayListChapterProvider(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
 
     @Override
     public int getItemViewType() {
@@ -46,6 +53,9 @@ public class PlayListChapterProvider extends BaseNodeProvider {
     @Override
     public void onClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
         getAdapter().expandOrCollapse(position);
+        if (myItemOnClickListener != null) {
+            myItemOnClickListener.onItemClick(helper, view, data, position);
+        }
 
 
     }

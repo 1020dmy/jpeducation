@@ -24,17 +24,19 @@ import java.util.LinkedHashMap;
  */
 public class DownloadClassJieProvider extends BaseNodeProvider {
 
-    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
+//    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
 
 
     private MyItemOnClickListener myItemOnClickListener;
 
-    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
-        this.myItemOnClickListener = myItemOnClickListener;
-    }
+//    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+//        this.myItemOnClickListener = myItemOnClickListener;
+//    }
 
-    public DownloadClassJieProvider(LinkedHashMap<String, BaseViewHolder> downloadingInfos) {
-        this.downloadingInfos = downloadingInfos;
+
+    public DownloadClassJieProvider(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+        addChildClickViewIds(R.id.tv_delete,R.id.tv_status);
     }
 
     @Override
@@ -56,7 +58,6 @@ public class DownloadClassJieProvider extends BaseNodeProvider {
         if (viodBean.getStatus() == 1) {
             baseViewHolder.setText(R.id.tv_status, "准备下载");
         } else if (viodBean.getStatus() == 3) {
-            downloadingInfos.put(viodBean.getId(), baseViewHolder);
             baseViewHolder.setText(R.id.tv_status, "下载中");
         } else if (viodBean.getStatus() == 4) {
             baseViewHolder.setText(R.id.tv_status, "暂停");

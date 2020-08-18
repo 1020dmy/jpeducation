@@ -22,6 +22,7 @@ import com.jianpei.jpeducation.adapter.school.PostNewsPhotoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.school.AttentionBean;
 import com.jianpei.jpeducation.bean.school.TopicBean;
+import com.jianpei.jpeducation.utils.BitmapUtil;
 import com.jianpei.jpeducation.utils.FileUtils;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
@@ -238,7 +239,8 @@ public class PostNewsActivity extends BaseActivity {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
 //                selectphotoUtils.cropPhoto(selectphotoUtils.imgUri, true);
-                files.add(selectphotoUtils.imgFile);
+                String aaa = BitmapUtil.compressImage(selectphotoUtils.imgFile.getPath());//图片压缩
+                files.add(new File(aaa));
                 postNewsPhotoAdapter.notifyItemChanged(files.size() - 1);
                 break;
             case SelectphotoUtils.SCAN_OPEN_PHONE://相册返回
@@ -247,7 +249,8 @@ public class PostNewsActivity extends BaseActivity {
                     if (fileUtils == null) {
                         fileUtils = new FileUtils(this);
                     }
-                    files.add(new File(fileUtils.getFilePathByUri(data.getData())));
+                    String bbb = BitmapUtil.compressImage(fileUtils.getFilePathByUri(data.getData()));//图片压缩
+                    files.add(new File(bbb));
                     postNewsPhotoAdapter.notifyItemChanged(files.size() - 1);
 
                 }
@@ -288,12 +291,14 @@ public class PostNewsActivity extends BaseActivity {
                 etContent.addAtSpan("@", attentionBean.getUser_name());
             }
         }
-
-
     }
+
 
     @Override
     protected void onDestroy() {
+        if (postNewsResultDialog != null)
+            postNewsResultDialog.dismiss();
+        postNewsResultDialog = null;
         super.onDestroy();
     }
 }

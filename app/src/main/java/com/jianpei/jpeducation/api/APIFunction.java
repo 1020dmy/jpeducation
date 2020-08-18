@@ -92,6 +92,7 @@ import com.jianpei.jpeducation.bean.material.MaterialDataBean;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ClassDataBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.bean.mine.MessageDataBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
@@ -261,7 +262,7 @@ public interface APIFunction {
      * 课程章节列表
      */
     @POST(UrlConfig.viodList)
-    Observable<BaseEntity<List<DirectorySectionBean>>> viodList(@Body ViodListJson viodListJson);
+    Observable<BaseEntity<List<ViodBean>>> viodList(@Body ViodListJson viodListJson);
 
     /**
      * 获取视频播放url

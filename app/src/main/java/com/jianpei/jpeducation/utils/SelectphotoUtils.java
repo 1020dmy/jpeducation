@@ -147,10 +147,6 @@ public class SelectphotoUtils {
      * 打开相册
      */
     public void openGallery() {
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//        weakReference.get().startActivityForResult(intent, SCAN_OPEN_PHONE);
-
 
         Intent intentFromGallery;
 //        当sdk版本低于19时使用此方法

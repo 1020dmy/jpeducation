@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -16,14 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aliyun.player.bean.ErrorCode;
 
 
+import com.aliyun.vodplayerview.activity.AliyunPlayerSkinActivity;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.mclass.ClassPlayerActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.mclass.PlayListAdapter;
 import com.jianpei.jpeducation.adapter.mclass.PlayListChapterProvider;
 import com.jianpei.jpeducation.adapter.mclass.PlayListJIeProvider;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.classinfo.VideoUrlBean;
 import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
@@ -35,6 +40,8 @@ import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -44,7 +51,7 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class PlayerListFragment extends BaseFragment implements ClassDownloadListener {
+public class PlayerListFragment extends BaseFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.tv_teachers)
@@ -53,36 +60,32 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
     TextView tvProfession;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.nestedScrollView)
+    NestedScrollView nestedScrollView;
 
     private ClassPlayerModel classPlayerModel;
 
     private String classId;
 
     private PlayListAdapter playListAdapter;
-
-    private PlayListJIeProvider playListJIeProvider;
-
-    private String buyId;
-
-//    private int nPosition = -1;
-
-    private ViodBean viodBean;
-//    private ViodBean dViodBean;
-
-//    private int type;
+    private LinearLayoutManager linearLayoutManager;
 
 
     private DownloadClassPopup downloadClassPopup;
 
-//    private VideoDownloadManager videoDownloadManager;
+    private List<ViodBean> mViodBeans;
 
-    public LinkedHashMap<String, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
-    private BaseViewHolder mBaseViewHolder;
+
+    //    public LinkedHashMap<String, BaseViewHolder> downloadingInfos = new LinkedHashMap<>();
+//    private BaseViewHolder mBaseViewHolder;
+
+
+    int positoin = 0;
 
 
     public PlayerListFragment(String classId, String buyId) {
         this.classId = classId;
-        this.buyId = buyId;
+//        this.buyId = buyId;
     }
 
     @Override
@@ -92,49 +95,15 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
 
     @Override
     protected void initView(View view) {
-        playListJIeProvider = new PlayListJIeProvider(downloadingInfos);
-        playListJIeProvider.addChildClickViewIds(R.id.linearLayout, R.id.iv_download);
-        playListJIeProvider.setMyItemOnClickListener(new MyItemOnClickListener() {
-            @Override
-            public void onItemClick(int position, View view) {
-
-            }
-
-            @Override
-            public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
-                switch (view.getId()) {
-                    case R.id.linearLayout:
-                        if (playListJIeProvider.nViodBean!=null){
-                            classPlayerModel.getViodBeanMutableLiveData().setValue(playListJIeProvider.nViodBean);
-                        }else{
-                            classPlayerModel.getViodBeanMutableLiveData().setValue((ViodBean) data);
-
-                        }
-                        //发送通知切换视频
-//                        }
-                        break;
-                    case R.id.iv_download:
-                        showLoading("");
-                        mBaseViewHolder = helper;
-                        //发送视频下载的通知
-                        classPlayerModel.getDownloadViodLiveData().setValue((ViodBean) data);
-                        break;
-
-                }
-
-            }
-        });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        playListAdapter = new PlayListAdapter();
-        playListAdapter.addNodeProvider(new PlayListChapterProvider());
-        playListAdapter.addNodeProvider(playListJIeProvider);
+        playListAdapter = new PlayListAdapter(this);
         recyclerView.setAdapter(playListAdapter);
 
-        //下载初始化
-//        initDownload();
-        VideoDownloadManager.getInstance().setDownloadInfoListener(this);
+        VideoDownloadManager.getInstance().setDownloadInfoListener(new MyClassDownloadListener(this));
+
+        nestedScrollView.fullScroll(View.FOCUS_DOWN);
 
 
     }
@@ -142,34 +111,50 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
     @Override
     protected void initData(Context mContext) {
         classPlayerModel = new ViewModelProvider(getActivity()).get(ClassPlayerModel.class);
-        //
+
+        //获取课程信息
         classPlayerModel.getmClassInfoBeanLiveData().observe(this, new Observer<MClassInfoBean>() {
             @Override
             public void onChanged(MClassInfoBean mClassInfoBean) {
                 dismissLoading();
                 setData(mClassInfoBean);
+                if (positoin != 0) {//定位当前播放的位置
+                    nestedScrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int height = (positoin + 3) * 54;
+                            if (height < nestedScrollView.getMeasuredHeight())
+                                nestedScrollView.smoothScrollTo(0, height);
+                            else {
+                                nestedScrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
+
+                            }
+
+                        }
+                    });
+                }
+
             }
         });
-        //视频播放url
-//        classPlayerModel.getVideoUrlBeansLiveData().observe(this, new Observer<VideoUrlBean>() {
-//            @Override
-//            public void onChanged(VideoUrlBean videoUrlBean) {
-//                videoUrlBean.setType(type);
-//                if (type == 0) {
-//                    dismissLoading();
-//                    classPlayerModel.getPlayUrlBean().setValue(videoUrlBean);
-//                } else {
-//                    downloadVideo(videoUrlBean);//开始下载
-//                }
-//
-//            }
-//        });
+        //节列表结果
+        classPlayerModel.getViodListLiveData().observe(this, new Observer<List<ViodBean>>() {
+            @Override
+            public void onChanged(List<ViodBean> viodBeans) {
+                dismissLoading();
+                playListAdapter.nodeAddData(directoryBean, 0, viodBeans);
+                if (mViodBeans == null) {
+                    mViodBeans = new ArrayList<>();
+                }
+                mViodBeans.addAll(viodBeans);
+
+            }
+        });
+        //获取失败
         classPlayerModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
                 dismissLoading();
                 shortToast(o);
-                L.e("=========errData:" + o);
             }
         });
 
@@ -178,13 +163,10 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
 
     }
 
-
-//    private String group_id;
-
+    ///数据更新
     protected void setData(MClassInfoBean mClassInfoBean) {
         if (mClassInfoBean == null)
             return;
-//        group_id = mClassInfoBean.getViod_info().getGroup_id();
 
         List<MClassInfoBean.TeachersBean> teachersBeans = mClassInfoBean.getTeachers();
         if (teachersBeans != null && teachersBeans.size() != 0) {
@@ -200,54 +182,24 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
         }
         tvProfession.setText(mClassInfoBean.getViod_info().getTitle());
         playListAdapter.setList(mClassInfoBean.getDirectorys());
-
-
         for (DirectoryBean directoryBean : mClassInfoBean.getDirectorys()) {
+            positoin++;
+            if (directoryBean.getViods() != null) {
+                if (mViodBeans == null)
+                    mViodBeans = new ArrayList<>();
+                mViodBeans.addAll(directoryBean.getViods());
+            }
             for (ViodBean viodBean : directoryBean.getViods()) {
+                positoin++;
                 if ("1".equals(viodBean.getIs_last_read())) {
-                    this.viodBean = viodBean;
                     classPlayerModel.getViodBeanMutableLiveData().setValue(viodBean);
                     return;
                 }
             }
-
         }
 
-        //播放视频
-//        if (playListJIeProvider.nViodBean != null) {
-//            //播放上一次的视频
-//            classPlayerModel.getViodBeanMutableLiveData().setValue(playListJIeProvider.nViodBean);
-//        }
 
     }
-
-
-//    protected void initDownload() {
-//        // 获取AliyunDownloadManager对象
-//        videoDownloadManager = VideoDownloadManager.getInstance();
-//        //设置同时下载个数
-//        videoDownloadManager.setMaxNum(3);
-//
-////        videoDownloadManager = DownloadDataProvider.getSingleton(getActivity().getApplicationContext());
-//        // 更新sts回调
-////        videoDownloadManager.setRefreshStsCallback(new MyRefreshStsCallback());
-//
-//        // 视频下载的回调
-//        videoDownloadManager.setDownloadInfoListener(this);
-//    }
-
-//    //播放视频
-//    protected void downloadVideo(VideoUrlBean videoUrlBean) {
-//        if (videoUrlBean == null) {
-//            shortToast("视频加载失败");
-//            return;
-//        }
-//        VidAuth vidAuth = new VidAuth();
-//        vidAuth.setPlayAuth(videoUrlBean.getAuth());
-//        vidAuth.setVid(videoUrlBean.getVid());
-//        vidAuth.setRegion("cn-shanghai");
-//        videoDownloadManager.prepareDownload(vidAuth, dViodBean);
-//    }
 
 
     protected void setProgress(TextView tv_progress, int progress) {
@@ -255,177 +207,156 @@ public class PlayerListFragment extends BaseFragment implements ClassDownloadLis
 
     }
 
-//    public ClassDownloadListener classDownloadListener = new ClassDownloadListener() {
-//        @Override
-//        public void onPrepared(List<ViodBean> viodBeans) {
-//            dismissLoading();
-//            if (downloadClassPopup == null) {
-//                downloadClassPopup = new DownloadClassPopup(getActivity());
-//                downloadClassPopup.setMyClickListener(new DownloadClassPopup.MyClickListener() {
-//                    @Override
-//                    public void ClickListener(ViodBean downLoadTag) {
-//                        //点击了下载
-//                        VideoDownloadManager.getInstance().startDownload(downLoadTag);
-//
-//                    }
-//                });
-//            }
-//            downloadClassPopup.showAllDownloadItems(viodBeans);
-//            downloadClassPopup.showPop();
-//        }
-//
-//        @Override
-//        public void onAdd(ViodBean info) {
-//
-//        }
-//
-//        @Override
-//        public void onStart(ViodBean info) {
-//            ImageView imageView = mBaseViewHolder.getView(R.id.iv_download);
-//            imageView.setImageResource(R.drawable.download_progress_o);
-//            mBaseViewHolder.getView(R.id.tv_progress).setVisibility(View.VISIBLE);
-//            downloadingInfos.put(info.getId(), mBaseViewHolder);
-//            //通知更新下载数量
-//            classPlayerModel.getStringMutableLiveData()
-//                    .setValue("");
-//        }
-//
-//        @Override
-//        public void onProgress(ViodBean info, int percent) {
-//            L.e("======onProgress:" + percent);
-//            if (downloadingInfos!=null && downloadingInfos.get(info.getId()) != null) {
-//                setProgress(downloadingInfos.get(info.getId()).getView(R.id.tv_progress), percent);
-//            } else {
-//                L.e("======onProgress:null");
-//            }
-//        }
-//
-//        @Override
-//        public void onStop(ViodBean info) {
-//
-//        }
-//
-//        @Override
-//        public void onCompletion(ViodBean info) {
-//
-//        }
-//
-//        @Override
-//        public void onError(ViodBean info, ErrorCode code, String msg, String requestId) {
-//            dismissLoading();
-//
-//        }
-//
-//        @Override
-//        public void onWait(ViodBean outMediaInfo) {
-//
-//        }
-//
-//        @Override
-//        public void onDelete(ViodBean info) {
-//
-//        }
-//
-//        @Override
-//        public void onDeleteAll() {
-//
-//        }
-//
-//        @Override
-//        public void onFileProgress(ViodBean info) {
-//
-//        }
-//    };
+    private class MyClassDownloadListener implements ClassDownloadListener {
+        private WeakReference<PlayerListFragment> weakReference;
 
-    @Override
-    public void onPrepared(List<ViodBean> viodBeans) {
-        dismissLoading();
-        if (downloadClassPopup == null) {
-            downloadClassPopup = new DownloadClassPopup(getActivity());
-            downloadClassPopup.setMyClickListener(new DownloadClassPopup.MyClickListener() {
-                @Override
-                public void ClickListener(ViodBean downLoadTag) {
-                    //点击了下载
-                    VideoDownloadManager.getInstance().startDownload(downLoadTag);
+        public MyClassDownloadListener(PlayerListFragment playerListFragment) {
+            weakReference = new WeakReference<>(playerListFragment);
+        }
 
+        @Override
+        public void onPrepared(List<ViodBean> viodBeans) {
+            dismissLoading();
+            if (downloadClassPopup == null) {
+                downloadClassPopup = new DownloadClassPopup(weakReference.get().getActivity());
+                downloadClassPopup.setMyClickListener(new DownloadClassPopup.MyClickListener() {
+                    @Override
+                    public void ClickListener(ViodBean downLoadTag) {
+                        //点击了下载
+                        VideoDownloadManager.getInstance().startDownload(downLoadTag);
+                    }
+                });
+            }
+            downloadClassPopup.showAllDownloadItems(viodBeans);
+            downloadClassPopup.showPop();
+        }
+
+        @Override
+        public void onAdd(ViodBean info) {
+
+        }
+
+        @Override
+        public void onStart(ViodBean info) {
+            PlayerListFragment playerListFragment = weakReference.get();
+            if (playerListFragment != null && mViodBeans!=null) {
+                for (ViodBean viodBean : mViodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(viodBean.getStatus());
+                    }
                 }
-            });
-        }
-        downloadClassPopup.showAllDownloadItems(viodBeans);
-        downloadClassPopup.showPop();
-    }
-
-    @Override
-    public void onAdd(ViodBean info) {
-
-    }
-
-    @Override
-    public void onStart(ViodBean info) {
-        ImageView imageView = mBaseViewHolder.getView(R.id.iv_download);
-        imageView.setImageResource(R.drawable.download_progress_o);
-        mBaseViewHolder.getView(R.id.tv_progress).setVisibility(View.VISIBLE);
-        downloadingInfos.put(info.getId(), mBaseViewHolder);
-        //通知更新下载数量
-        classPlayerModel.getStringMutableLiveData()
-                .setValue("");
-    }
-
-    @Override
-    public void onProgress(ViodBean info, int percent) {
-        L.e("======onProgress:" + percent);
-
-
-        if (downloadingInfos != null && downloadingInfos.get(info.getId()) != null) {
-            setProgress(downloadingInfos.get(info.getId()).getView(R.id.tv_progress), percent);
-        } else {
-            L.e("======onProgress:null");
+                playListAdapter.notifyDataSetChanged();
+            }
 
         }
+
+        @Override
+        public void onProgress(ViodBean info, int percent) {
+            PlayerListFragment playerListFragment = weakReference.get();
+            if (playerListFragment != null && mViodBeans!=null) {
+                for (ViodBean viodBean : mViodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(viodBean.getStatus());
+                    }
+                }
+                playListAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        public void onStop(ViodBean info) {
+
+        }
+
+        @Override
+        public void onCompletion(ViodBean info) {
+            PlayerListFragment playerListFragment = weakReference.get();
+            if (playerListFragment != null && mViodBeans!=null) {
+                for (ViodBean viodBean : mViodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(viodBean.getStatus());
+                    }
+                }
+                playListAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onError(ViodBean info, ErrorCode code, String msg, String requestId) {
+
+        }
+
+        @Override
+        public void onWait(ViodBean outMediaInfo) {
+
+        }
+
+        @Override
+        public void onDelete(ViodBean info) {
+            PlayerListFragment playerListFragment = weakReference.get();
+            if (playerListFragment != null && mViodBeans!=null) {
+                for (ViodBean viodBean : mViodBeans) {
+                    if (viodBean.getId().equals(info.getId())) {
+                        viodBean.setProgress(info.getProgress());
+                        viodBean.setStatus(viodBean.getStatus());
+                    }
+                }
+                playListAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        public void onDeleteAll() {
+
+        }
+
+        @Override
+        public void onFileProgress(ViodBean info) {
+
+        }
     }
+
+
+    ////
+    @Override
+    public void onItemClick(int position, View view) {
+
+    }
+
+    DirectoryBean directoryBean;
 
     @Override
-    public void onStop(ViodBean info) {
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+
+        switch (view.getId()) {
+            case R.id.ll_title://章
+                directoryBean = (DirectoryBean) data;
+                if (directoryBean.isExpanded() && directoryBean.getChildNode().size() == 0) {//获取资料
+                    showLoading("");
+                    classPlayerModel.viodList(classId, directoryBean.getId(), "2");
+                }
+                break;
+            case R.id.iv_download://下载
+                showLoading("");
+//                mBaseViewHolder = helper;
+                //发送视频下载的通知
+                classPlayerModel.getDownloadViodLiveData().setValue((ViodBean) data);
+                break;
+            case R.id.ll_section://播放
+                classPlayerModel.getViodBeanMutableLiveData().setValue((ViodBean) data);
+                break;
+        }
 
     }
 
-    @Override
-    public void onCompletion(ViodBean info) {
-
-    }
-
-    @Override
-    public void onError(ViodBean info, ErrorCode code, String msg, String requestId) {
-        dismissLoading();
-
-    }
-
-    @Override
-    public void onWait(ViodBean outMediaInfo) {
-
-    }
-
-    @Override
-    public void onDelete(ViodBean info) {
-
-    }
-
-    @Override
-    public void onDeleteAll() {
-
-    }
-
-    @Override
-    public void onFileProgress(ViodBean info) {
-
-    }
 
     @Override
     public void onDestroy() {
-        VideoDownloadManager.getInstance().removeDownloadInfoListener(this);
-        if (downloadingInfos != null)
-            downloadingInfos.clear();
-        downloadingInfos = null;
         super.onDestroy();
     }
 }

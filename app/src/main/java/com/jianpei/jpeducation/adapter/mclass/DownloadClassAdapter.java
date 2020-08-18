@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.adapter.mclass;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
@@ -18,6 +19,13 @@ import java.util.List;
  * Describe:
  */
 public class DownloadClassAdapter  extends BaseNodeAdapter {
+
+
+    public DownloadClassAdapter(MyItemOnClickListener myItemOnClickListener) {
+        super();
+        addNodeProvider(new DownloadClassChapterProvider());
+        addNodeProvider(new DownloadClassJieProvider(myItemOnClickListener));
+    }
 
     @Override
     protected int getItemType(@NotNull List<? extends BaseNode> list, int i) {

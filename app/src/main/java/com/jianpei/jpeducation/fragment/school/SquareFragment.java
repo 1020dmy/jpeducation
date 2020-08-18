@@ -232,6 +232,9 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
             case R.id.ll_topic:
                 startActivity(new Intent(getActivity(), TopicInfoActivity.class).putExtra("topicBean", topicBeans.get(position)));
                 break;
+            case R.id.civ_head://个人动态
+
+                break;
         }
 
     }
