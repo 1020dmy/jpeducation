@@ -40,6 +40,7 @@ import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.classdownload.VideoDownloadManager;
+import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
@@ -87,8 +88,10 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     private PlayerListFragment playerListFragment;
     private PlayerCommentFragment playerCommentFragment;
 
-
     private long mProgress;
+
+
+    private DownloadClassManager downloadClassManager;
 
     @Override
     protected int setLayoutView() {
@@ -101,7 +104,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         initShare();//初始化分享
         myClassBean = getIntent().getParcelableExtra("myClassBean");
         //
-        playerListFragment = new PlayerListFragment(myClassBean.getCid(), myClassBean.getId());
+        playerListFragment = new PlayerListFragment(myClassBean.getCid());
         playerCommentFragment = new PlayerCommentFragment(myClassBean.getCid());
         Fragment[] fragments = {playerListFragment, playerCommentFragment};
         viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
@@ -121,15 +124,16 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         classRoomModel = new ViewModelProvider(this).get(OfflineClassRoomModel.class);
 
         //查询下载数量结果
-        classRoomModel.getViodBeanLiveData().observe(this, new Observer<List<ViodBean>>() {
+        classRoomModel.getViodBeanLiveData().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(List<ViodBean> viodBeans) {
-                if (viodBeans != null) {
-                    if (viodBeans.size() == 0) {
+            public void onChanged(Integer integer) {
+                L.e("=========当前下载数量：" + integer);
+                if (integer != null) {
+                    if (integer == 0) {
                         tvDownNum.setVisibility(View.GONE);
                     } else {
                         tvDownNum.setVisibility(View.VISIBLE);
-                        tvDownNum.setText(viodBeans.size() + "");
+                        tvDownNum.setText(integer + "");
                     }
                 }
 
@@ -150,9 +154,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         classPlayerModel.getStringMutableLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-
-                classRoomModel.getRoomViodBean(3);
-
+                classRoomModel.getRoomViodBean(DownloadClassManager.COMPLETE);
             }
         });
         //视频播放url
@@ -167,7 +169,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
                         playVideo(videoUrlBean);
                     }
                 } else {//视频下载
-                    if (videoDownloadManager == null) {
+                    if (downloadClassManager == null) {
                         initDownload();
                     }
                     downloadVideo(videoUrlBean, dViodBean);
@@ -221,10 +223,10 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             public void onChanged(String s) {
             }
         });
-        //查询下载数量
-        classRoomModel.getRoomViodBean(3);
+
 
     }
+
 
     //播放视频
     protected void playVideo(VideoUrlBean videoUrlBean) {
@@ -244,7 +246,6 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
     }
 
-    private VideoDownloadManager videoDownloadManager;
 
     //视频下载
     protected void downloadVideo(VideoUrlBean videoUrlBean, ViodBean viodBean) {
@@ -256,21 +257,11 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         vidAuth.setPlayAuth(videoUrlBean.getAuth());
         vidAuth.setVid(videoUrlBean.getVid());
         vidAuth.setRegion("cn-shanghai");
-        videoDownloadManager.prepareDownload(vidAuth, viodBean);
+        downloadClassManager.paperDownload(vidAuth, viodBean);
     }
 
     protected void initDownload() {
-        // 获取AliyunDownloadManager对象
-        videoDownloadManager = VideoDownloadManager.getInstance();
-        //设置同时下载个数
-        videoDownloadManager.setMaxNum(3);
-
-//        videoDownloadManager = DownloadDataProvider.getSingleton(getActivity().getApplicationContext());
-        // 更新sts回调
-//        videoDownloadManager.setRefreshStsCallback(new MyRefreshStsCallback());
-
-        // 视频下载的回调
-//        videoDownloadManager.setDownloadInfoListener();
+        downloadClassManager = DownloadClassManager.getInstance();
     }
 
 
@@ -291,7 +282,9 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
                 finish();
                 break;
             case R.id.iv_download:
-                startActivity(new Intent(this, ClassDownloadActivity.class));
+                startActivity(new Intent(this, ClassDownloadActivity.class)
+                        .putExtra("buyId", myClassBean.getId())
+                        .putExtra("cid", myClassBean.getCid()));
                 break;
             case R.id.iv_share:
                 if (mShareAction != null) {
@@ -304,6 +297,8 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     @Override
     public void onResume() {
         super.onResume();
+        //查询下载数量
+        classRoomModel.getRoomViodBean(DownloadClassManager.COMPLETE);
     }
 
     @Override

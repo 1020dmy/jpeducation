@@ -31,15 +31,13 @@ import io.reactivex.ObservableOnSubscribe;
 public class OfflineClassRoomRepository extends BaseRepository implements OfflineClassRoomContract.Repository {
 
     @Override
-    public Observable<List<ViodBean>> getRoomViodBean(int status) {
-        return Observable.create(new ObservableOnSubscribe<List<ViodBean>>() {
+    public Observable<Integer> getRoomViodBean(int status) {
+        return Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
-            public void subscribe(ObservableEmitter<List<ViodBean>> emitter) throws Exception {
-                emitter.onNext(MyRoomDatabase.getInstance().viodBeanDao().getViodBeans(status));
-
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                Integer nums = MyRoomDatabase.getInstance().viodBeanDao().getUndoneNums(status);
+                emitter.onNext(MyRoomDatabase.getInstance().viodBeanDao().getUndoneNums(status));
                 emitter.onComplete();
-
-
             }
         });
     }
@@ -68,7 +66,7 @@ public class OfflineClassRoomRepository extends BaseRepository implements Offlin
                 Iterator<DirectoryBean> directoryBeanIterator = directoryBeans.iterator();
                 while (directoryBeanIterator.hasNext()) {
                     DirectoryBean directoryBean = directoryBeanIterator.next();
-                    List<ViodBean> downloadMediaInfos = MyRoomDatabase.getInstance().viodBeanDao().getViodBeans(directoryBean.getId(), 5);
+                    List<ViodBean> downloadMediaInfos = MyRoomDatabase.getInstance().viodBeanDao().getViodBeans(directoryBean.getId(), 4);
                     if (downloadMediaInfos != null && downloadMediaInfos.size() > 0) {//
                         directoryBean.setViods(downloadMediaInfos);
                     } else {
@@ -91,7 +89,7 @@ public class OfflineClassRoomRepository extends BaseRepository implements Offlin
                 Iterator<DirectoryBean> directoryBeanIterator = directoryBeans.iterator();
                 while (directoryBeanIterator.hasNext()) {
                     DirectoryBean directoryBean = directoryBeanIterator.next();
-                    List<ViodBean> downloadMediaInfos = MyRoomDatabase.getInstance().viodBeanDao().getUndone(directoryBean.getId(), 5);
+                    List<ViodBean> downloadMediaInfos = MyRoomDatabase.getInstance().viodBeanDao().getUndone(directoryBean.getId(), 4);
                     if (downloadMediaInfos != null && downloadMediaInfos.size() > 0) {//
                         directoryBean.setViods(downloadMediaInfos);
                     } else {

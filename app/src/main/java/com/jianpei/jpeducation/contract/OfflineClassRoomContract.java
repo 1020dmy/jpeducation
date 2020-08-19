@@ -24,7 +24,7 @@ public interface OfflineClassRoomContract {
 
     interface Repository {
         //根据状态查询数据
-        Observable<List<ViodBean>> getRoomViodBean(int status);
+        Observable<Integer> getRoomViodBean(int status);
 
 //        //获取离线数据
 //        Observable<List<DownloadMediaInfo>> getCompleteData(int status);

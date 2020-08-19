@@ -31,6 +31,7 @@ import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.dialog.UpVersionDialog;
+import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
 
@@ -312,5 +313,14 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             radioGroup.check(R.id.rb_tiku);
         }
         super.onNewIntent(intent);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        DownloadClassManager.getInstance().stopAllDownloads();
+        DownloadClassManager.getInstance().release();
+        super.onDestroy();
+
     }
 }

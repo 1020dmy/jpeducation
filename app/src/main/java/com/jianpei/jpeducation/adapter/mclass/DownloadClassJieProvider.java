@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
+import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,19 +25,13 @@ import java.util.LinkedHashMap;
  */
 public class DownloadClassJieProvider extends BaseNodeProvider {
 
-//    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
-
 
     private MyItemOnClickListener myItemOnClickListener;
-
-//    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
-//        this.myItemOnClickListener = myItemOnClickListener;
-//    }
 
 
     public DownloadClassJieProvider(MyItemOnClickListener myItemOnClickListener) {
         this.myItemOnClickListener = myItemOnClickListener;
-        addChildClickViewIds(R.id.tv_delete,R.id.tv_status);
+        addChildClickViewIds(R.id.tv_delete, R.id.tv_status);
     }
 
     @Override
@@ -54,14 +49,14 @@ public class DownloadClassJieProvider extends BaseNodeProvider {
         ViodBean viodBean = (ViodBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, viodBean.getTitle());
         ProgressBar progressBar = baseViewHolder.getView(R.id.progressBar);
-        //1.准备，3.下载状态，4.停止，5.完成
-        if (viodBean.getStatus() == 1) {
-            baseViewHolder.setText(R.id.tv_status, "准备下载");
-        } else if (viodBean.getStatus() == 3) {
-            baseViewHolder.setText(R.id.tv_status, "下载中");
-        } else if (viodBean.getStatus() == 4) {
-            baseViewHolder.setText(R.id.tv_status, "暂停");
-        } else if (viodBean.getStatus() == 5) {
+        //1START,2STOP，3ERROR，4COMPLETE
+        if (viodBean.getStatus() == DownloadClassManager.START) {
+            baseViewHolder.setText(R.id.tv_status, "正在下载");
+        } else if (viodBean.getStatus() == DownloadClassManager.STOP) {
+            baseViewHolder.setText(R.id.tv_status, "继续下载");
+        } else if (viodBean.getStatus() == DownloadClassManager.ERROR) {
+            baseViewHolder.setText(R.id.tv_status, "重新下载");
+        } else if (viodBean.getStatus() == DownloadClassManager.COMPLETE) {
             baseViewHolder.setText(R.id.tv_status, "下载完成");
         }
         progressBar.setProgress(viodBean.getProgress());

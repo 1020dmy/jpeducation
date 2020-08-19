@@ -123,9 +123,11 @@ public class VideoDownloadManager {
 
         @Override
         public void onPrepared(final List<ViodBean> infos) {
+            L.e("=========threadName1:"+Thread.currentThread().getName());
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    L.e("=========threadName2:"+Thread.currentThread().getName());
                     for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
                         aliyunDownloadInfoListener.onPrepared(infos);
                     }
@@ -538,6 +540,8 @@ public class VideoDownloadManager {
         jniDownloader.setOnPreparedListener(new AliMediaDownloader.OnPreparedListener() {
             @Override
             public void onPrepared(MediaInfo mediaInfo) {
+                L.e("=========threadName3:"+Thread.currentThread().getName());
+
                 List<TrackInfo> trackInfos = mediaInfo.getTrackInfos();
                 for (TrackInfo trackInfo : trackInfos) {
                     TrackInfo.Type type = trackInfo.getType();

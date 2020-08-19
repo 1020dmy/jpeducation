@@ -32,8 +32,6 @@ public interface ViodBeanDao {
     List<ViodBean> getAllViodBean(String value);
 
 
-
-
     /**
      * 根据章ID查询和状态查询
      *
@@ -42,7 +40,6 @@ public interface ViodBeanDao {
      */
     @Query("SELECT * FROM viodbean Where chapter_id= :value And status = :value2")
     List<ViodBean> getViodBeans(String value, int value2);
-
 
 
     /**
@@ -54,6 +51,15 @@ public interface ViodBeanDao {
     @Query("SELECT * FROM viodbean Where chapter_id= :value And status != :value2")
     List<ViodBean> getUndone(String value, int value2);
 
+
+    /**
+     * 查询未下载完成的数据
+     *
+     * @param
+     * @return
+     */
+    @Query("SELECT count(*) FROM viodbean Where  status != :value2")
+    int getUndoneNums(int value2);
 
     /**
      * 根据下载状态查询

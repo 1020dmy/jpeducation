@@ -87,7 +87,6 @@ public class TryPlayerActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(localUrl)) {
             initAliyunPlayerView();
             changePlayLocalSource(localUrl, title);
-
         } else {
             directorySectionBean = getIntent().getParcelableExtra("directorySectionBean");
             classInfoFModel.videoUrl(directorySectionBean.getId(), "","0");

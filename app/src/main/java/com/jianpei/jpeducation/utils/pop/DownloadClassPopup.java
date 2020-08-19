@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.aliyun.player.nativeclass.TrackInfo;
 import com.aliyun.vodplayerview.listener.QualityValue;
 import com.aliyun.vodplayerview.utils.DensityUtil;
 import com.bumptech.glide.Glide;
@@ -50,7 +51,8 @@ public class DownloadClassPopup extends PopupWindow {
     private Button button;
 
     private RadioGroup rg_quality_list;
-    private ViodBean downLoadTag;
+    private TrackInfo downLoadTag;
+    private ViodBean viodBean;
 
     private MyClickListener myClickListener;
     private Map<String, String> qualityList = new HashMap<>();
@@ -90,52 +92,64 @@ public class DownloadClassPopup extends PopupWindow {
             public void onClick(View v) {
                 dismiss();
                 if (myClickListener != null) {
-                    myClickListener.ClickListener(downLoadTag);
+                    myClickListener.ClickListener(downLoadTag, viodBean);
                 }
             }
         });
 
     }
 
-    public void showAllDownloadItems(List<ViodBean> downloadMediaInfos) {
-        if (downloadMediaInfos == null || downloadMediaInfos.isEmpty()) {
+    public void showAllDownloadItems(List<TrackInfo> trackInfos, ViodBean viodBean) {
+        if (trackInfos == null) {
             return;
         }
+        this.viodBean = viodBean;
         rg_quality_list.removeAllViews();
 
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, 1f);
         layoutParams.setMargins(0, 0, DensityUtil.px2dip(mContext, 16), 0);
-        Iterator<ViodBean> iterator = downloadMediaInfos.iterator();
-        while (iterator.hasNext()) {
-            ViodBean info = iterator.next();
-            L.e("========清晰度：" + info.getQuality());
+        for (TrackInfo trackInfo : trackInfos) {
+            L.e("========清晰度：" + trackInfo.getVodDefinition());
             RadioButton item = (RadioButton) LayoutInflater.from(mContext).inflate(com.aliyun.vodplayer.R.layout.view_item_quality,
                     new FrameLayout(mContext), false);
 
             item.setLayoutParams(layoutParams);
-            item.setText(qualityList.get(info.getQuality()));
-            item.setTag(info);
+            item.setText(qualityList.get(trackInfo.getVodDefinition()));
+            item.setTag(trackInfo);
             ////设置id，供自动化测试用
             rg_quality_list.addView(item);
+
         }
+        //        Iterator<TrackInfo> iterator = downloadMediaInfos.iterator();
+//        while (iterator.hasNext()) {
+//            ViodBean info = iterator.next();
+//            RadioButton item = (RadioButton) LayoutInflater.from(mContext).inflate(com.aliyun.vodplayer.R.layout.view_item_quality,
+//                    new FrameLayout(mContext), false);
+//
+//            item.setLayoutParams(layoutParams);
+//            item.setText(qualityList.get(info.getQuality()));
+//            item.setTag(info);
+//            ////设置id，供自动化测试用
+//            rg_quality_list.addView(item);
+//        }
 
         if (rg_quality_list.getChildCount() > 0) {
             int checkId = rg_quality_list.getChildAt(0).getId();
             rg_quality_list.check(checkId);
-            downLoadTag = (ViodBean) rg_quality_list.findViewById(checkId).getTag();
+            downLoadTag = (TrackInfo) rg_quality_list.findViewById(checkId).getTag();
         }
         rg_quality_list.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rbChecked = contentView.findViewById(checkedId);
-                downLoadTag = (ViodBean) rbChecked.getTag();
-                tv_size.setText(formatSizeDecimal(downLoadTag.getSize()));
+                downLoadTag = (TrackInfo) rbChecked.getTag();
+                tv_size.setText(formatSizeDecimal(downLoadTag.getVodFileSize()));
             }
         });
-        Glide.with(mContext).load(downloadMediaInfos.get(0).getCoverUrl()).into(imageView);
-        tv_title.setText(downloadMediaInfos.get(0).getTitle());
-        tv_size.setText(formatSizeDecimal(downloadMediaInfos.get(0).getSize()));
+        Glide.with(mContext).load(viodBean.getCoverUrl()).into(imageView);
+        tv_title.setText(viodBean.getTitle());
+        tv_size.setText(formatSizeDecimal(downLoadTag.getVodFileSize()));
 
     }
 
@@ -161,7 +175,7 @@ public class DownloadClassPopup extends PopupWindow {
 
 
     public interface MyClickListener {
-        void ClickListener(ViodBean downLoadTag);
+        void ClickListener(TrackInfo trackInfo, ViodBean viodBean);
     }
 
 

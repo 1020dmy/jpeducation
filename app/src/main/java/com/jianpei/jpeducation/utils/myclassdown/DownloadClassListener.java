@@ -25,14 +25,20 @@ public interface DownloadClassListener {
     void onStop(ViodBean viodBean);
 
     //进度
-    void onProgress(ViodBean viodBean,int progress);
+    void onProgress(ViodBean viodBean, int progress);
 
     //处理进度
-    void onFileProgress(ViodBean viodBean,int progress);
+    void onFileProgress(ViodBean viodBean, int progress);
 
     //错误
     void onError(ViodBean viodBean, ErrorInfo errorInfo);
 
     //完成
     void onCompletion(ViodBean viodBean);
+
+    void deleteFile(ViodBean viodBean);
+
+//    //重新获取vid
+    void againStart(ViodBean viodBean);
+
 }

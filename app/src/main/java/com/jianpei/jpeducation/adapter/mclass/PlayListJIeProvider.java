@@ -11,6 +11,7 @@ import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,6 @@ public class PlayListJIeProvider extends BaseNodeProvider {
 
 
     public MyItemOnClickListener myItemOnClickListener;
-//    public LinkedHashMap<String, BaseViewHolder> downloadingInfos;
 
 
     public int nPosition;
@@ -36,15 +36,10 @@ public class PlayListJIeProvider extends BaseNodeProvider {
 
     public PlayListJIeProvider(MyItemOnClickListener myItemOnClickListener) {
         this.myItemOnClickListener = myItemOnClickListener;
-//        this.downloadingInfos = downloadingInfos;
-        addChildClickViewIds(R.id.iv_download, R.id.ll_section);
+        addChildClickViewIds(R.id.iv_download, R.id.ll_section,R.id.tv_progress);
 
     }
 
-
-//    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
-//        this.myItemOnClickListener = myItemOnClickListener;
-//    }
 
     @Override
     public int getItemViewType() {
@@ -78,33 +73,29 @@ public class PlayListJIeProvider extends BaseNodeProvider {
                 baseViewHolder.setText(R.id.tv_play_progress, "开始学习");
             }
         }
-        //1.准备，3.下载状态，4.停止，5.完成
-        if (viodsBean.getStatus() == 1) {
+        //1START,2STOP，3ERROR，4COMPLETE
+        if (viodsBean.getStatus() == DownloadClassManager.START) {//开始
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
             baseViewHolder.setVisible(R.id.tv_progress, true);
-            baseViewHolder.setVisible(R.id.iv_download, true);
-            baseViewHolder.setText(R.id.tv_progress, "0%");
-        } else if (viodsBean.getStatus() == 3) {//下载中
-
-            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
-            baseViewHolder.setVisible(R.id.tv_progress, true);
-            baseViewHolder.setVisible(R.id.iv_download, true);
+            baseViewHolder.setGone(R.id.iv_download, true);
             baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
-//            if (downloadingInfos != null)
-//                downloadingInfos.put(viodsBean.getId(), baseViewHolder);
-        } else if (viodsBean.getStatus() == 4) {
+        } else if (viodsBean.getStatus() == DownloadClassManager.STOP) {//停止下载
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_t);
             baseViewHolder.setVisible(R.id.tv_progress, true);
-            baseViewHolder.setVisible(R.id.iv_download, true);
-            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
-
-        } else if (viodsBean.getStatus() == 5) {
+            baseViewHolder.setGone(R.id.iv_download, true);
+            baseViewHolder.setText(R.id.tv_progress, "继续下载");
+        } else if (viodsBean.getStatus() == DownloadClassManager.ERROR) {//下载错误
             baseViewHolder.setGone(R.id.iv_download, true);
             baseViewHolder.setVisible(R.id.tv_progress, true);
-            baseViewHolder.setText(R.id.tv_progress, viodsBean.getProgress() + "%");
+            baseViewHolder.setText(R.id.tv_progress, "重新下载");
 
-        } else {
+        } else if (viodsBean.getStatus() == DownloadClassManager.COMPLETE) {//下载完成
             baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_t);
+            baseViewHolder.setVisible(R.id.tv_progress, true);
+            baseViewHolder.setGone(R.id.iv_download, true);
+            baseViewHolder.setText(R.id.tv_progress, "下载完成");
+        } else {//未下载
+            baseViewHolder.setImageResource(R.id.iv_download, R.drawable.download_progress_o);
             baseViewHolder.setGone(R.id.tv_progress, true);
             baseViewHolder.setVisible(R.id.iv_download, true);
         }
