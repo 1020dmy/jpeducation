@@ -25,6 +25,7 @@ import com.jianpei.jpeducation.bean.mclass.DirectoryBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassListener;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
+import com.jianpei.jpeducation.utils.myclassdown.RefreshVidCallback;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
@@ -58,6 +59,8 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
     private List<ViodBean> viodBeans;
 
     private MyDownloadClassListener myDownloadClassListener;
+    private MyRefreshVidCallback myRefreshVidCallback;
+
 
     private ClassPlayerModel classPlayerModel;
     //
@@ -262,6 +265,7 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
             case R.id.tv_status:
                 ViodBean viodBean = (ViodBean) data;
                 if (viodBean.getStatus() == DownloadClassManager.STOP || viodBean.getStatus() == DownloadClassManager.ERROR) {//继续下载
+                    showLoading("");
                     DownloadClassManager.getInstance().continueDownload(viodBean);
 
                 } else if (viodBean.getStatus() == DownloadClassManager.START) {//停止下载
@@ -276,12 +280,19 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        DownloadClassManager.getInstance().clearListener(myDownloadClassListener);
-        myDownloadClassListener = null;
-        super.onDestroy();
+
+    /**
+     * 刷新vid监听
+     */
+    class MyRefreshVidCallback implements RefreshVidCallback {
+        @Override
+        public void refreshVid(ViodBean viodBean) {
+            //重新获取vid
+            mViodBean = viodBean;
+            classPlayerModel.videoUrl(viodBean.getId(), buyId, cid);//获取vid
+        }
     }
+
 
     /**
      * 下载更新列表
@@ -289,6 +300,8 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
      * @param viodBean
      */
     protected void upDataList(ViodBean viodBean) {
+        if (viodBeans == null)
+            return;
         for (ViodBean viodBean1 : viodBeans) {
             if (viodBean.getId().equals(viodBean1.getId())) {
                 viodBean1.setProgress(viodBean.getProgress());
@@ -307,6 +320,7 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
 
         @Override
         public void onStart(ViodBean viodBean) {
+            dismissLoading();
             upDataList(viodBean);
 
         }
@@ -328,6 +342,7 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
 
         @Override
         public void onError(ViodBean viodBean, ErrorInfo errorInfo) {
+            dismissLoading();
             upDataList(viodBean);
 
         }
@@ -339,17 +354,37 @@ public class ClassDownloadActivity extends BaseNoStatusActivity implements MyIte
 
         }
 
-        @Override
-        public void againStart(ViodBean viodBean) {
-            if (viodBean.getStatus() == DownloadClassManager.STOP || viodBean.getStatus() == DownloadClassManager.ERROR) {
-                mViodBean=viodBean;
-                classPlayerModel.videoUrl(viodBean.getId(), buyId, cid);//获取vid
-            }
-        }
+//        @Override
+//        public void againStart(ViodBean viodBean) {
+//            if (viodBean.getStatus() == DownloadClassManager.STOP || viodBean.getStatus() == DownloadClassManager.ERROR) {
+//                mViodBean=viodBean;
+//                classPlayerModel.videoUrl(viodBean.getId(), buyId, cid);//获取vid
+//            }
+//        }
 
         @Override
         public void deleteFile(ViodBean viodBean) {
             offlineClassRoomModel.deleteViodBean(viodBean);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        //vid刷新监听
+        if (myRefreshVidCallback == null)
+            myRefreshVidCallback = new MyRefreshVidCallback();
+        DownloadClassManager.getInstance().clearRefreshVidCallback();
+        DownloadClassManager.getInstance().setRefreshVidCallback(myRefreshVidCallback);
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        DownloadClassManager.getInstance().clearRefreshVidCallback();
+        DownloadClassManager.getInstance().clearListener(myDownloadClassListener);
+        myDownloadClassListener = null;
+        myRefreshVidCallback = null;
+        super.onDestroy();
     }
 }

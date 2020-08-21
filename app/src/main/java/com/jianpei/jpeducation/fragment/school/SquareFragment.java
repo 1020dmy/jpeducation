@@ -10,16 +10,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
 import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.activitys.school.TopicInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.HotTopicAdapter;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.TopicBean;
@@ -83,7 +86,7 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
         MyLayoutManager myLayoutManager = new MyLayoutManager(getActivity());
         myLayoutManager.setScrollEnabled(false);
         recyclerView.setLayoutManager(myLayoutManager);
-
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -95,7 +98,6 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                     startId = "0";
                 }
                 schoolModel.threadData(startId, endId, follow);
-
             }
         });
 
@@ -148,14 +150,20 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
             }
         });
         //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
             @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
+            public void onChanged(AttentionResultBean s) {
                 dismissLoading();
                 schoolAdapter.notifyDataSetChanged();
-
             }
         });
+//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+//            @Override
+//            public void onChanged(ThreadDataBean threadDataBean) {
+//                dismissLoading();
+//
+//            }
+//        });
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -214,26 +222,29 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
         switch (view.getId()) {
             case R.id.btn_status://关注/取消关注
                 showLoading("");
-//                viewType = 0;
                 schoolModel.attention(mThreadDataBeans.get(position).getUser_id(), "", mThreadDataBeans.get(position).getId(), mThreadDataBeans);
                 break;
             case R.id.iv_share://分享
+                if (mShareAction == null)
+                    initShare();
+                mShareAction.open();
                 break;
             case R.id.tv_dianzan:
             case R.id.iv_dianzan:
-                showLoading("");
-//                viewType = 1;
+//                showLoading("");
                 schoolModel.gardenPraise(type, mThreadDataBeans.get(position).getId(), "", "");
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivity(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()));
                 break;
             case R.id.ll_topic:
                 startActivity(new Intent(getActivity(), TopicInfoActivity.class).putExtra("topicBean", topicBeans.get(position)));
                 break;
             case R.id.civ_head://个人动态
-
+                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mThreadDataBeans.get(position).getUser_id()));
                 break;
         }
 

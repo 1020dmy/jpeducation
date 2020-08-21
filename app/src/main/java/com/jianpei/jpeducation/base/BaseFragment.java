@@ -97,6 +97,8 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initData(Context mContext);
 
 
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -146,7 +148,7 @@ public abstract class BaseFragment extends Fragment {
 
     public void initShare() {
         mShareListener = new CustomShareListener(getActivity());
-        String shareUrl = SpUtils.getValue(SpUtils.share_url)+"?code=" + SpUtils.getValue(SpUtils.ID);
+        String shareUrl = SpUtils.getValue(SpUtils.share_url) + "?code=" + SpUtils.getValue(SpUtils.ID);
         String shareImg = SpUtils.getValue(SpUtils.share_img);
         String shareTitle = SpUtils.getValue(SpUtils.share_title);
         String shareContent = SpUtils.getValue(SpUtils.share_content);

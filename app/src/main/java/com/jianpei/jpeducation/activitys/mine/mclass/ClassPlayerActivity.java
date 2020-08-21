@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.mine.mclass;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.aliyun.player.source.UrlSource;
 import com.aliyun.player.source.VidAuth;
 
+import com.aliyun.private_service.PrivateService;
 import com.aliyun.vodplayerview.view.choice.AlivcShowMoreDialog;
 import com.aliyun.vodplayerview.view.control.ControlView;
 import com.aliyun.vodplayerview.view.more.AliyunShowMoreValue;
@@ -38,14 +40,12 @@ import com.jianpei.jpeducation.bean.mclass.MyClassBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerCommentFragment;
 import com.jianpei.jpeducation.fragment.mine.mclass.PlayerListFragment;
+import com.jianpei.jpeducation.utils.Common;
 import com.jianpei.jpeducation.utils.L;
-import com.jianpei.jpeducation.utils.classdownload.VideoDownloadManager;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 import com.jianpei.jpeducation.viewmodel.OfflineClassRoomModel;
 
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -91,7 +91,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
     private long mProgress;
 
 
-    private DownloadClassManager downloadClassManager;
+//    private DownloadClassManager downloadClassManager;
 
     @Override
     protected int setLayoutView() {
@@ -116,7 +116,10 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         }).attach();
         //初始化播放器并播放试听课程
         initAliyunPlayerView();
+        //初始化下载
+        copyAssets();
     }
+
 
     @Override
     protected void initData() {
@@ -128,13 +131,11 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             @Override
             public void onChanged(Integer integer) {
                 L.e("=========当前下载数量：" + integer);
-                if (integer != null) {
-                    if (integer == 0) {
-                        tvDownNum.setVisibility(View.GONE);
-                    } else {
-                        tvDownNum.setVisibility(View.VISIBLE);
-                        tvDownNum.setText(integer + "");
-                    }
+                if (integer == null || integer == 0) {
+                    tvDownNum.setVisibility(View.GONE);
+                } else {
+                    tvDownNum.setVisibility(View.VISIBLE);
+                    tvDownNum.setText(integer + "");
                 }
 
             }
@@ -154,7 +155,12 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         classPlayerModel.getStringMutableLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                classRoomModel.getRoomViodBean(DownloadClassManager.COMPLETE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        classRoomModel.getRoomViodBean(DownloadClassManager.COMPLETE);
+                    }
+                }, 1000);
             }
         });
         //视频播放url
@@ -169,9 +175,6 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
                         playVideo(videoUrlBean);
                     }
                 } else {//视频下载
-                    if (downloadClassManager == null) {
-                        initDownload();
-                    }
                     downloadVideo(videoUrlBean, dViodBean);
 
                 }
@@ -186,7 +189,6 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
                     return;
                 type = 0;
                 pViodBean = viodBean;
-                L.e("====pViodBean:" + pViodBean.toString());
                 if (TextUtils.isEmpty(viodBean.getSavePath())) {//点播播放
                     showLoading("");
                     classPlayerModel.videoUrl(viodBean.getId(), myClassBean.getId(), myClassBean.getCid());
@@ -223,10 +225,32 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
             public void onChanged(String s) {
             }
         });
-
-
     }
 
+    /**
+     *
+     */
+    private Common commenUtils;
+
+    private void copyAssets() {
+
+        commenUtils = Common.getInstance(getApplicationContext()).copyAssetsToSD("encrypt", "aliyun");
+
+        commenUtils.setFileOperateCallback(new Common.FileOperateCallback() {
+            @Override
+            public void onSuccess() {
+                L.e("============复制成功");
+                PrivateService.initService(getApplicationContext(), getApplication().getExternalCacheDir() + "/aliyun/encryptedApp.dat");
+            }
+
+            @Override
+            public void onFailed(String error) {
+                L.e("============复制失败：" + error);
+
+            }
+        });
+
+    }
 
     //播放视频
     protected void playVideo(VideoUrlBean videoUrlBean) {
@@ -257,11 +281,7 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
         vidAuth.setPlayAuth(videoUrlBean.getAuth());
         vidAuth.setVid(videoUrlBean.getVid());
         vidAuth.setRegion("cn-shanghai");
-        downloadClassManager.paperDownload(vidAuth, viodBean);
-    }
-
-    protected void initDownload() {
-        downloadClassManager = DownloadClassManager.getInstance();
+        DownloadClassManager.getInstance().paperDownload(vidAuth, viodBean);
     }
 
 
@@ -320,9 +340,14 @@ public class ClassPlayerActivity extends BaseNoStatusActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (aliyunPlayerView != null)
             aliyunPlayerView.onDestroy();
+        if (commenUtils != null) {
+            commenUtils.onDestroy();
+            commenUtils = null;
+        }
+        super.onDestroy();
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.jianpei.jpeducation.activitys.school;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,11 @@ public class TopicInfoActivity extends BaseNoStatusActivity {
         setTitleViewPadding(tvStatus);
         topicBean = getIntent().getParcelableExtra("topicBean");
         tvTopicTitle.setText("#话题：" + topicBean.getTitle() + "!");
-        tvReadNum.setText("阅读量：" + topicBean.getView_num());
+        if (TextUtils.isEmpty(topicBean.getView_num()))
+            tvReadNum.setText("阅读量：" + 0);
+        else{
+            tvReadNum.setText("阅读量：" + topicBean.getView_num());
+        }
         Fragment[] fragments = {new TopicInfoHotFragment(topicBean.getId()), new TopicInfoNewFragment(topicBean.getId())};
 
         viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));

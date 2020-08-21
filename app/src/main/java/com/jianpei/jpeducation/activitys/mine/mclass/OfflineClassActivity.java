@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.activitys.mine.mclass;
 
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -86,7 +87,11 @@ public class OfflineClassActivity extends BaseNoStatusActivity {
                 ViodBean viodBean = (ViodBean) data;
                 switch (view.getId()) {
                     case R.id.tv_title:
-                        startActivity(new Intent(OfflineClassActivity.this, TryPlayerActivity.class).putExtra("localUrl", viodBean.getSavePath()).putExtra("title", viodBean.getTitle()));
+                        if (!TextUtils.isEmpty(viodBean.getSavePath())) {
+                            startActivity(new Intent(OfflineClassActivity.this, TryPlayerActivity.class).putExtra("localUrl", viodBean.getSavePath()).putExtra("title", viodBean.getTitle()));
+                        } else {
+                            shortToast("离线视频已失效");
+                        }
                         break;
                     case R.id.tv_delete:
                         showLoading("");

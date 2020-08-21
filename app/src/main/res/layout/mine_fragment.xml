@@ -168,11 +168,6 @@
 
                 </RelativeLayout>
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/tv_wait_pay"-->
-                <!--                    style="@style/mineText"-->
-                <!--                    android:drawableTop="@drawable/mine_wait_pay"-->
-                <!--                    android:text="待支付" />-->
 
                 <TextView
                     android:id="@+id/tv_pay"
@@ -245,16 +240,17 @@
                     style="@style/mineText_two"
                     android:drawableLeft="@drawable/mine_my_dongtai"
                     android:paddingBottom="20dp"
-                    android:text="我的动态"
-                    android:visibility="gone" />
+                    android:text="我的动态" />
 
-                <!--                <include layout="@layout/line" />-->
+                <include layout="@layout/line" />
 
 
                 <LinearLayout
                     android:id="@+id/ll_share"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"

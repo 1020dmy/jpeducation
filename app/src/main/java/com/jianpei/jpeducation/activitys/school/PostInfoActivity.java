@@ -1,8 +1,10 @@
 package com.jianpei.jpeducation.activitys.school;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewStructure;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.entity.node.BaseNode;
@@ -26,6 +29,7 @@ import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.CommentAdapter;
 import com.jianpei.jpeducation.adapter.school.ImageListAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ImagesBean;
@@ -34,9 +38,12 @@ import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.utils.keyboard.OnSoftKeyBoardChangeListener;
 import com.jianpei.jpeducation.utils.keyboard.SoftKeyBoardListener;
+import com.jianpei.jpeducation.view.ninegridelayout.ItemImageClickListener;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageView;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageViewAdapter;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.enitity.ThumbViewInfo;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -112,7 +119,8 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     //点赞参数
     private String type = "2";
     //
-    private ThreadDataBean threadDataBean;
+//    private ThreadDataBean threadDataBean;
+    private String thread_id,tuserId;
     //
     private int commentIndex;
 
@@ -124,10 +132,16 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     @Override
     protected void initView() {
         tvTitle.setText("帖子正文");
-//        thread_id = getIntent().getStringExtra("thread_id");
-//        user_id = getIntent().getStringExtra("user_id");
-        threadDataBean = getIntent().getParcelableExtra("threadDataBean");
+//        threadDataBean = getIntent().getParcelableExtra("threadDataBean");
+        thread_id=getIntent().getStringExtra("thread_id");
+        tuserId=getIntent().getStringExtra("userId");
         schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
+        //
+        MyLayoutManager myLayoutManager = new MyLayoutManager(this);
+        myLayoutManager.setScrollEnabled(false);
+        recyclerView.setLayoutManager(myLayoutManager);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        //
         //软键盘显示/隐藏
         SoftKeyBoardListener.setListener(this, new OnSoftKeyBoardChangeListener() {
             @Override
@@ -162,7 +176,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 } else {
                     endId = "0";
                 }
-                schoolModel.evaluationData(threadDataBean.getId(), startId, endId);
+                schoolModel.evaluationData(thread_id, startId, endId);
             }
         });
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -175,33 +189,54 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 } else {
                     startId = "0";
                 }
-                schoolModel.evaluationData(threadDataBean.getId(), startId, endId);
+                schoolModel.evaluationData(thread_id, startId, endId);
             }
         });
+
+        nineGridImageView.setItemImageClickListener(new ItemImageClickListener<ImagesBean>() {
+            @Override
+            public void onItemImageClick(Context context, ImageView imageView, int index, List<ImagesBean> list) {
+                GPreviewBuilder.from((Activity) context)
+                        .setData(computeBoundsBackward(list))
+                        .setIsScale(true)
+                        .setCurrentIndex(index)
+                        .setType(GPreviewBuilder.IndicatorType.Dot)
+                        .start();//启动
+            }
+        });
+    }
+
+
+    /**
+     * 查找信息
+     *
+     * @param list 图片集合
+     */
+    private List<ThumbViewInfo> computeBoundsBackward(List<ImagesBean> list) {
+        List<ThumbViewInfo> thumbViewInfos = new ArrayList<>();
+        for (int i = 0; i < nineGridImageView.getChildCount(); i++) {
+            View itemView = nineGridImageView.getChildAt(i);
+            Rect bounds = new Rect();
+            if (itemView != null) {
+                ImageView thumbView = (ImageView) itemView;
+                thumbView.getGlobalVisibleRect(bounds);
+            }
+            thumbViewInfos.add(new ThumbViewInfo(list.get(i).getUrl(), bounds));
+
+        }
+        return thumbViewInfos;
     }
 
     @Override
     protected void initData() {
 
-//        imagesBeans = new ArrayList<>();
-//        imageListAdapter = new ImageListAdapter(imagesBeans, this);
         //评论
         mEvaluationDataBeans = new ArrayList<>();
         commentAdapter = new CommentAdapter(mEvaluationDataBeans, this);
         commentAdapter.setMyItemOnClickListener(this);
-        MyLayoutManager myLayoutManager = new MyLayoutManager(this);
-        myLayoutManager.setScrollEnabled(false);
-        recyclerView.setLayoutManager(myLayoutManager);
+
         recyclerView.setAdapter(commentAdapter);
-        //详情
-//        schoolModel.getThreadInfoBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
-//            @Override
-//            public void onChanged(ThreadDataBean threadInfoBean) {
-//                dismissLoading();
-//                setData(threadInfoBean);
-//
-//            }
-//        });
+
         //评论列表
         schoolModel.getEvaluationDataBeansLiveData().observe(this, new Observer<List<EvaluationDataBean>>() {
             @Override
@@ -232,19 +267,21 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 } else {
                     startId = "0";
                 }
-                schoolModel.evaluationData(threadDataBean.getId(), startId, endId);
+                schoolModel.evaluationData(thread_id, startId, endId);
             }
         });
 
         //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
             @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
+            public void onChanged(AttentionResultBean s) {
                 dismissLoading();
-                setData(threadDataBean);
+                changeStatus(s.getIs_attention());
+
 
             }
         });
+
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -260,6 +297,14 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
 
             }
         });
+        //帖子详情
+        schoolModel.getThreadInfoBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+            @Override
+            public void onChanged(ThreadDataBean threadDataBean) {
+                dismissLoading();
+                setData(threadDataBean);
+            }
+        });
 
         schoolModel.getErrData().observe(this, new Observer<String>() {
             @Override
@@ -271,32 +316,22 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             }
         });
         showLoading("");
-//        schoolModel.threadInfo(thread_id);
-        schoolModel.evaluationData(threadDataBean.getId(), startId, endId);
-
-        setData(threadDataBean);
+        schoolModel.threadInfo(thread_id);
+        schoolModel.evaluationData(thread_id, startId, endId);
 
 
     }
 
+
     private void setData(ThreadDataBean threadInfoBean) {
         if (threadInfoBean == null)
             return;
-        Glide.with(this).load(threadInfoBean.getUser_img()).into(civHead);
+        Glide.with(this).load(threadInfoBean.getUser_img()).placeholder(R.drawable.head_icon).into(civHead);
         tvName.setText(threadInfoBean.getUser_name());
         tvTime.setText(threadInfoBean.getCreated_at_str());
-        if ("1".equals(threadInfoBean.getIs_my_thread())) {//是否我的帖子1是，0否
-            btnStatus.setVisibility(View.GONE);
-        }
-        if ("1".equals(threadInfoBean.getIs_attention())) {//是否关注1是，0否
-            btnStatus.setText("取消关注");
-            btnStatus.setTextColor(getResources().getColor(R.color.cA5A7B0));
-            btnStatus.setBackgroundResource(R.drawable.shape_selectzhuanye_item);
-        } else {
-            btnStatus.setText("关注+");
-            btnStatus.setTextColor(getResources().getColor(R.color.cE73B30));
-            btnStatus.setBackgroundResource(R.drawable.shape_selectzhuanye_itemt);
-        }
+        //是否关注
+        changeStatus(threadInfoBean.getIs_attention());
+
         if ("1".equals(threadInfoBean.getIs_praise())) {//是否点赞1是，0否
             ivDianzan.setImageResource(R.drawable.school_undianzan_icon);
         } else {
@@ -317,11 +352,25 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             };
             nineGridImageView.setAdapter(adapter);
             nineGridImageView.setImagesData(threadInfoBean.getImages());
-        }else{
+        } else {
             nineGridImageView.setVisibility(View.GONE);
         }
     }
 
+    private void changeStatus(int status) {
+        if (0 == status) {
+            btnStatus.setText("关注+");
+            btnStatus.setTextColor(getResources().getColor(R.color.cE73B30));
+            btnStatus.setBackgroundResource(R.drawable.shape_selectzhuanye_itemt);
+        } else if (1 == status) {
+            btnStatus.setText("取消关注");
+            btnStatus.setTextColor(getResources().getColor(R.color.cA5A7B0));
+            btnStatus.setBackgroundResource(R.drawable.shape_selectzhuanye_item);
+        } else if (2 == status) {
+            btnStatus.setVisibility(View.GONE);
+        }
+
+    }
 
     @OnClick({R.id.iv_back, R.id.btn_status, R.id.iv_dianzan, R.id.iv_share, R.id.tv_send, R.id.tv_reply_send})
     public void onViewClicked(View view) {
@@ -332,22 +381,25 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             case R.id.btn_status://关注/取消关注
                 showLoading("");
 //                viewType = 0;
-                schoolModel.attention(threadDataBean.getUser_id(), "", threadDataBean.getId(), null);
+                schoolModel.attention(tuserId, "", thread_id, null);
                 break;
             case R.id.iv_dianzan://点赞/取消点赞
                 showLoading("");
 //                viewType = 1;
-                schoolModel.gardenPraise(type, threadDataBean.getId(), "", "");
+                schoolModel.gardenPraise(type, thread_id, "", "");
                 break;
             case R.id.iv_share://分享
+                if (mShareAction == null)
+                    initShare();
+                mShareAction.open();
                 break;
             case R.id.tv_send://评论
                 showLoading("");
-                schoolModel.insertEvaluation(threadDataBean.getId(), etComment.getText().toString(), "", "");
+                schoolModel.insertEvaluation(thread_id, etComment.getText().toString(), "", "");
                 break;
             case R.id.tv_reply_send://评论回复
                 showLoading("");
-                schoolModel.insertEvaluation(threadDataBean.getId(), etReplyContent.getText().toString(), evaluationId, userId);
+                schoolModel.insertEvaluation(thread_id, etReplyContent.getText().toString(), evaluationId, userId);
                 break;
         }
     }
@@ -361,7 +413,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             case R.id.iv_dianzan:
                 showLoading("");
                 commentIndex = position;
-                schoolModel.gardenPraise("3", threadDataBean.getId(), "", mEvaluationDataBeans.get(position).getId());
+                schoolModel.gardenPraise("3", thread_id, "", mEvaluationDataBeans.get(position).getId());
                 break;
             case R.id.ll_reply:
                 llComment.setVisibility(View.GONE);

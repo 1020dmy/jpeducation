@@ -5,13 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.school.TopicBean;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,18 @@ import java.util.List;
 public class TopicListAdapter extends RecyclerView.Adapter {
 
     private List<TopicBean> topicBeans;
-    private MyCheckBoxClickListener myCheckBoxClickListener;
 
-    public void setMyCheckBoxClickListener(MyCheckBoxClickListener myCheckBoxClickListener) {
-        this.myCheckBoxClickListener = myCheckBoxClickListener;
+
+    private ArrayList<TopicBean> selectTopicBeans;
+
+    private MyItemClickListener myItemClickListener;
+
+    public void setMyItemClickListener(MyItemClickListener myItemClickListener) {
+        this.myItemClickListener = myItemClickListener;
+    }
+
+    public ArrayList<TopicBean> getSelectTopicBeans() {
+        return selectTopicBeans;
     }
 
     public TopicListAdapter(List<TopicBean> topicBeans) {
@@ -69,6 +80,7 @@ public class TopicListAdapter extends RecyclerView.Adapter {
         } else {
             MyHolderT myHolderT = (MyHolderT) holder;
             myHolderT.tvTitle.setText(topicBean.getTitle());
+            myHolderT.checkBox.setChecked(topicBean.isSelect());
         }
     }
 
@@ -86,42 +98,45 @@ public class TopicListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    class MyHolderT extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    class MyHolderT extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle;
         private CheckBox checkBox;
         private TextView tvLine;
+
+        private RelativeLayout relativeLayout;
 
         public MyHolderT(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             checkBox = itemView.findViewById(R.id.checkBox);
             tvLine = itemView.findViewById(R.id.tv_line);
-            checkBox.setOnCheckedChangeListener(this);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
+            relativeLayout.setOnClickListener(this);
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (myCheckBoxClickListener!=null){
-                    myCheckBoxClickListener.onCheckClick(getAdapterPosition(),buttonView,isChecked);
-                }
-//            if (selectTopicBean.size() == 5) {
-//                buttonView.setChecked(false);
-//                return;
-//            }
-//            topicBeans.get(getLayoutPosition()).setSelect(isChecked);
-//            if (isChecked == true) {
-//                selectTopicBean.add(topicBeans.get(getLayoutPosition()));
-//            } else {
-//                selectTopicBean.remove(topicBeans.get(getLayoutPosition()));
-//            }
-//
-//            L.e("size:" + selectTopicBean.size());
+        public void onClick(View v) {
+            if (selectTopicBeans == null)
+                selectTopicBeans = new ArrayList<>();
+            TopicBean topicBean = topicBeans.get(getLayoutPosition());
+            if (!topicBean.isSelect() && selectTopicBeans.size() >= 5) {
+                if (myItemClickListener != null)
+                    myItemClickListener.onClick("最多可选择5个话题");
+                return;
+            }
+            topicBean.setSelect(!topicBean.isSelect());
+            notifyItemChanged(getLayoutPosition());
+            if (topicBean.isSelect()) {
+                selectTopicBeans.add(topicBean);
+            } else {
+                selectTopicBeans.remove(topicBean);
+            }
 
         }
     }
 
-    public interface MyCheckBoxClickListener {
-        void onCheckClick(int position, CompoundButton buttonView, boolean isChecked);
+    public interface MyItemClickListener {
+        void onClick(String message);
     }
+
 }

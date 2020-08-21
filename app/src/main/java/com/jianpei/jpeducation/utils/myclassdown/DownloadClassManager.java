@@ -87,6 +87,9 @@ public class DownloadClassManager {
     //对外监听
     public List<DownloadClassListener> outClassDownloadListeners = new ArrayList<>();
 
+    //刷新vid
+    public RefreshVidCallback refreshVidCallback;
+
 
     //内部监听
     public DownloadClassListener classDownloadListener = new DownloadClassListener() {
@@ -179,12 +182,12 @@ public class DownloadClassManager {
         @Override
         public void onCompletion(ViodBean viodBean) {//更新数据库
 
-            AliMediaDownloader jniDownloader = downloadInfos.get(viodBean.getId());
-            if (jniDownloader == null) {
-                return;
-            }
+//            AliMediaDownloader jniDownloader = downloadInfos.get(viodBean.getId());
+//            if (jniDownloader == null) {
+//                return;
+//            }
             viodBean.setStatus(COMPLETE);
-            viodBean.setSavePath(jniDownloader.getFilePath());
+//            viodBean.setSavePath(jniDownloader.getFilePath());
             ThreadUtils.runOnSubThread(new Runnable() {
                 @Override
                 public void run() {
@@ -197,12 +200,12 @@ public class DownloadClassManager {
             }
         }
 
-        @Override
-        public void againStart(ViodBean viodBean) {//重新获取vid
-            for (DownloadClassListener classDownloadListener : outClassDownloadListeners) {
-                classDownloadListener.againStart(viodBean);
-            }
-        }
+//        @Override
+//        public void againStart(ViodBean viodBean) {//重新获取vid
+//            for (DownloadClassListener classDownloadListener : outClassDownloadListeners) {
+//                classDownloadListener.againStart(viodBean);
+//            }
+//        }
 
         @Override
         public void deleteFile(ViodBean viodBean) {
@@ -352,10 +355,6 @@ public class DownloadClassManager {
 
 
     private void addDownloadingQueue(ViodBean viodBean) {
-        if (downloading.size() >= mMaxNum) {//超出最大下载数量
-            return;
-        }
-
         for (ViodBean viodBean1 : downloading) {
             if (viodBean.equals(viodBean1)) {//已经存在了
                 return;
@@ -443,8 +442,8 @@ public class DownloadClassManager {
             aliMediaDownloader.start();
         } else {//不存在则创建后在下载
             if (viodBean.getVidAuth() == null) {
-                if (classDownloadListener != null)
-                    classDownloadListener.againStart(viodBean);//重新获取vid
+                if (refreshVidCallback != null)
+                    refreshVidCallback.refreshVid(viodBean);//重新获取vid
                 return;
             }
             aliMediaDownloader = AliDownloaderFactory.create(mContext);
@@ -513,6 +512,20 @@ public class DownloadClassManager {
 
     }
 
+    /**
+     * 获取正在下载的数量
+     *
+     * @return
+     */
+//
+//    public int getDownloadingNums() {
+//        if (downloading != null) {
+//            return downloading.size();
+//        }
+//        return 0;
+//
+//    }
+
 
     /**
      * 重置
@@ -531,4 +544,24 @@ public class DownloadClassManager {
             downloadInfos = null;
         }
     }
+
+    public RefreshVidCallback getRefreshVidCallback() {
+        return refreshVidCallback;
+    }
+
+    public void setRefreshVidCallback(RefreshVidCallback refreshVidCallback) {
+        this.refreshVidCallback = refreshVidCallback;
+    }
+
+    public void clearRefreshVidCallback() {
+        refreshVidCallback = null;
+    }
+
+//    public void setDownloadingNums(int downloadingNums) {
+//        this.downloadingNums = downloadingNums;
+//    }
+//
+//    public int getDownloadingNums() {
+//        return downloadingNums;
+//    }
 }

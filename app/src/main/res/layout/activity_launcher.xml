@@ -25,7 +25,8 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/shape_selectzhuanye_itemt"
         android:gravity="center"
-        android:text="5秒"
+        android:text="跳过"
+        android:visibility="gone"
         android:textColor="@color/cE73E2F"
         android:textSize="@dimen/s_dp_14" />
 

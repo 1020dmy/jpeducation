@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:paddingLeft="10dp"
+    android:id="@+id/relativeLayout"
     android:paddingRight="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -23,6 +24,7 @@
         android:textSize="@dimen/s_dp_13" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
+        android:enabled="false"
         android:id="@+id/checkBox"
         android:layout_width="12dp"
         android:layout_height="12dp"

@@ -13,8 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,6 +26,7 @@ import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
+import com.jianpei.jpeducation.adapter.NTabFragmentAdapter;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
@@ -67,13 +70,9 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
     @BindView(R.id.submit)
     TextView submit;
 
-//    @BindView(R.id.tv_now_price)
-//    TextView tvNowPrice;
-//    @BindView(R.id.tv_price)
-//    TextView tvPrice;
 
     @BindView(R.id.viewPage)
-    ViewPager2 viewPager;
+    ViewPager viewPager;
     @BindView(R.id.iv_black_back)
     ImageView ivBlackBack;
     @BindView(R.id.iv_black_shopping)
@@ -92,7 +91,8 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
     private CommentFragment commentFragment;//评价
     private Fragment[] fragments;
 
-    private TabFragmentAdapter classInfoTabFragmentAdapter;
+
+    private NTabFragmentAdapter nTabFragmentAdapter;
 
     private ClassInfoModel classInfoModel;
 
@@ -100,7 +100,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
 //    private GroupInfoBean groupInfoBean;
 
-    private String groupId,catId;//
+    private String groupId, catId;//
 
     private SubjectPopup subjectPopup;
 
@@ -123,27 +123,23 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
         height = DisplayUtil.dp2px(300);
         //初始化分享
 
-//        groupInfoBean = getIntent().getParcelableExtra("groupInfoBean");
-        //
         groupId = getIntent().getStringExtra("groupId");
-        catId=getIntent().getStringExtra("catId");
+        catId = getIntent().getStringExtra("catId");
 
-        viewPager.setUserInputEnabled(false); //true:滑动，false：禁止滑动
-        classInfoFragment = new ClassInfoFragment(groupId,catId);
+        classInfoFragment = new ClassInfoFragment(groupId, catId);
         directoryFragment = new DirectoryFragment(groupId);
         commentFragment = new CommentFragment(groupId);
         fragments = new Fragment[]{classInfoFragment, directoryFragment, commentFragment};
 
 
         classInfoModel = new ViewModelProvider(this).get(ClassInfoModel.class);//初始化model
-
+        /**
+         * 课程详情
+         */
         classInfoModel.getClassInfoBeanLiveData().observe(this, new Observer<ClassInfoBean>() {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 mClassInfoBean = classInfoBean;
-
-//                mClassInfoBean.setImg(groupInfoBean.getImg());
-
 
             }
         });
@@ -167,11 +163,12 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
         });
 
         //获取科目信息
-        mGroupClassBeans = new ArrayList<>();
         classInfoModel.getGroupClassBeansLiveData().observe(this, new Observer<List<GroupClassBean>>() {
             @Override
             public void onChanged(List<GroupClassBean> groupClassBeans) {
                 dismissLoading();
+                if (mGroupClassBeans == null)
+                    mGroupClassBeans = new ArrayList<>();
                 mGroupClassBeans.addAll(groupClassBeans);
                 showPow();
 
@@ -206,8 +203,6 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
             }
         });
 
-        ////传递信息到fagemnt
-//        classInfoModel.setGroupInfo(groupInfoBean);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -230,19 +225,10 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initData() {
-
-        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
-        viewPager.setAdapter(classInfoTabFragmentAdapter);
-
-
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(tabTitle[position]);
-            }
-        }).attach();
-
-
+        nTabFragmentAdapter = new NTabFragmentAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, tabTitle);
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.setAdapter(nTabFragmentAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
@@ -124,12 +125,12 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
      * @param attention_id
      * @param topic_id
      */
-    private MutableLiveData<ThreadDataBean> threadDataBeanLiveData;
+    private MutableLiveData<AttentionResultBean> attentionLiveData;
 
-    public MutableLiveData<ThreadDataBean> getThreadDataBeanLiveData() {
-        if (threadDataBeanLiveData == null)
-            threadDataBeanLiveData = new MutableLiveData<>();
-        return threadDataBeanLiveData;
+    public MutableLiveData<AttentionResultBean> getAttentionLiveData() {
+        if (attentionLiveData == null)
+            attentionLiveData = new MutableLiveData<>();
+        return attentionLiveData;
     }
 
     @Override
@@ -137,15 +138,14 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
         if (TextUtils.isEmpty(attention_id)) {
             return;
         }
-        schoolRepository.attention(attention_id, topic_id, thread_id, mThreadDataBeans).compose(setThread()).subscribe(new BaseObserver<ThreadDataBean>() {
+        schoolRepository.attention(attention_id, topic_id, thread_id, mThreadDataBeans).compose(setThread()).subscribe(new BaseObserver<AttentionResultBean>() {
             @Override
-            protected void onSuccees(BaseEntity<ThreadDataBean> t) throws Exception {
+            protected void onSuccees(BaseEntity<AttentionResultBean> t) throws Exception {
                 if (t.isSuccess()) {
-                    threadDataBeanLiveData.setValue(t.getData());
+                    attentionLiveData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());
                 }
-
             }
 
             @Override
@@ -158,6 +158,40 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
             }
         });
     }
+    //    private MutableLiveData<ThreadDataBean> threadDataBeanLiveData;
+//
+//    public MutableLiveData<ThreadDataBean> getThreadDataBeanLiveData() {
+//        if (threadDataBeanLiveData == null)
+//            threadDataBeanLiveData = new MutableLiveData<>();
+//        return threadDataBeanLiveData;
+//    }
+
+//    @Override
+//    public void attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
+//        if (TextUtils.isEmpty(attention_id)) {
+//            return;
+//        }
+//        schoolRepository.attention(attention_id, topic_id, thread_id, mThreadDataBeans).compose(setThread()).subscribe(new BaseObserver<ThreadDataBean>() {
+//            @Override
+//            protected void onSuccees(BaseEntity<ThreadDataBean> t) throws Exception {
+//                if (t.isSuccess()) {
+//                    threadDataBeanLiveData.setValue(t.getData());
+//                } else {
+//                    errData.setValue(t.getMsg());
+//                }
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                if (isNetWorkError) {
+//                    errData.setValue("网络问题！");
+//                } else {
+//                    errData.setValue(e.getMessage());
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 1-点赞/取消点赞
@@ -213,6 +247,11 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
             threadInfoBeanLiveData = new MutableLiveData<>();
         return threadInfoBeanLiveData;
     }
+
+    /**
+     * 动态详情
+     * @param thread_id
+     */
 
     @Override
     public void threadInfo(String thread_id) {
@@ -392,8 +431,8 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
     }
 
     @Override
-    public void mThreadData(int pageIndex, int pageSize) {
-        schoolRepository.mThreadData(pageIndex, pageSize).compose(setThread()).subscribe(new BaseObserver<MThreadDataBean>() {
+    public void mThreadData(int pageIndex, int pageSize, String userId) {
+        schoolRepository.mThreadData(pageIndex, pageSize, userId).compose(setThread()).subscribe(new BaseObserver<MThreadDataBean>() {
             @Override
             protected void onSuccees(BaseEntity<MThreadDataBean> t) throws Exception {
                 if (t.isSuccess()) {

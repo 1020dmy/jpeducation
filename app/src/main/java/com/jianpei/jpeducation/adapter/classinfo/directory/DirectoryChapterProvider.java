@@ -7,7 +7,9 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryChapterBean;
+import com.jianpei.jpeducation.utils.L;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +23,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DirectoryChapterProvider extends BaseNodeProvider {
 
+
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public DirectoryChapterProvider(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
 
     @Override
     public int getItemViewType() {
@@ -50,5 +58,8 @@ public class DirectoryChapterProvider extends BaseNodeProvider {
     @Override
     public void onClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
         getAdapter().expandOrCollapse(position);
+        if (myItemOnClickListener != null) {
+            myItemOnClickListener.onItemClick(helper, view, data, position);
+        }
     }
 }

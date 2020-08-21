@@ -142,9 +142,9 @@ public class ClassInfoFragment extends BasePlayerFragment {
     private String groupId;//
     private String catId;
 
-    public ClassInfoFragment(String groupId,String catId) {
+    public ClassInfoFragment(String groupId, String catId) {
         this.groupId = groupId;
-        this.catId=catId;
+        this.catId = catId;
     }
 
     @Override
@@ -154,19 +154,19 @@ public class ClassInfoFragment extends BasePlayerFragment {
 
     @Override
     protected void initView(View view) {
+        L.e("=========initView========");
 
         if (NetWatchdog.is4GConnected(MyApplication.getInstance())) {
             tvTryListener.setVisibility(View.GONE);
         }
 
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
-        classInfoFModel = new ViewModelProvider(this).get(ClassInfoFModel.class);
+        classInfoFModel = new ViewModelProvider(getActivity()).get(ClassInfoFModel.class);
         //首页数据结果
         classInfoFModel.getClassInfoBean().observe(getActivity(), new Observer<ClassInfoBean>() {
             @Override
             public void onChanged(ClassInfoBean classInfoBean) {
                 dismissLoading();
-
                 classInfoModel.getClassInfoBeanLiveData().setValue(classInfoBean);//数据回传到Activity
                 classInfoFModel.videoUrl(classInfoBean.getVideo_id(), "", classInfoBean.getId());//获取试看视频
                 setDatatoView(classInfoBean);//设置页面数据
@@ -194,7 +194,6 @@ public class ClassInfoFragment extends BasePlayerFragment {
                 initAliyunPlayerView();
 
                 playVideo(videoUrlBean);
-
             }
         });
 
@@ -212,16 +211,6 @@ public class ClassInfoFragment extends BasePlayerFragment {
 
         });
 
-//        classInfoModel.getGroupInfoBeanMutableLiveData().observe(getActivity(), new Observer<GroupInfoBean>() {
-//            @Override
-//            public void onChanged(GroupInfoBean groupInfoBean) {
-//                showLoading("");
-//                //获取课程详情
-//                classInfoFModel.groupInfo(groupInfoBean.getId(), "");
-//                //获取优惠券信息
-//                classInfoFModel.groupCoupon(groupInfoBean.getCat_id(), groupInfoBean.getId());
-//            }
-//        });
         //领取优惠券结果
         classInfoFModel.getCouponReceiveLiveData().observe(this, new Observer<String>() {
             @Override
@@ -247,6 +236,8 @@ public class ClassInfoFragment extends BasePlayerFragment {
 
     @Override
     protected void initData(Context mContext) {
+
+        L.e("=========initData========");
 
         teacherBeans = new ArrayList<>();
         teacherAdapter = new TeacherAdapter(teacherBeans, getActivity());
@@ -368,7 +359,6 @@ public class ClassInfoFragment extends BasePlayerFragment {
         super.onConfigurationChanged(newConfig);
         int type = this.getResources().getConfiguration().orientation;
         if (type == Configuration.ORIENTATION_LANDSCAPE) {
-            L.e("==========", "切换到了横屏");
             llClassInfo.setVisibility(View.GONE);
             llContent.setVisibility(View.GONE);
             llServer.setVisibility(View.GONE);
@@ -378,7 +368,6 @@ public class ClassInfoFragment extends BasePlayerFragment {
 
             //切换到了横屏
         } else if (type == Configuration.ORIENTATION_PORTRAIT) {
-            L.e("==========", "切换到了竖屏");
             //切换到了竖屏
             llClassInfo.setVisibility(View.VISIBLE);
             llContent.setVisibility(View.VISIBLE);

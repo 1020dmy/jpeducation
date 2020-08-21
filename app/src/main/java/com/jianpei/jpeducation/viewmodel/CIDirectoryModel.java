@@ -8,8 +8,6 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
-import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
-import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.CIDirectoryContract;
 import com.jianpei.jpeducation.repository.CIDirectoryRepository;
@@ -51,6 +49,11 @@ public class CIDirectoryModel extends BaseViewModel implements CIDirectoryContra
         ciDirectoryRepository = new CIDirectoryRepository();
     }
 
+    /**
+     * 1-班级课程目录
+     * @param groupId
+     */
+
     @Override
     public void classDirectory(String groupId) {
         if (TextUtils.isEmpty(groupId))
@@ -79,6 +82,12 @@ public class CIDirectoryModel extends BaseViewModel implements CIDirectoryContra
             }
         });
     }
+
+    /**
+     * 获取章节列表
+     * @param class_id
+     * @param chapter_id
+     */
 
     @Override
     public void viodList(String class_id, String chapter_id) {

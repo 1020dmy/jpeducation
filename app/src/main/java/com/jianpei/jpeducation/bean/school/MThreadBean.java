@@ -1,5 +1,8 @@
 package com.jianpei.jpeducation.bean.school;
 
+
+import com.jianpei.jpeducation.bean.userinfo.UserInfoBean;
+
 import java.util.List;
 
 /**
@@ -14,6 +17,8 @@ public class MThreadBean {
 
     private List<ThreadDataBean> data;
 
+
+    private UserInfoBean userInfo;
 
     /**
      * attention : {"u_count":"3","atten_count":"0"}
@@ -36,6 +41,14 @@ public class MThreadBean {
 
     public void setAttention(AttentionBean attention) {
         this.attention = attention;
+    }
+
+    public UserInfoBean getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoBean userInfo) {
+        this.userInfo = userInfo;
     }
 
     public static class AttentionBean {

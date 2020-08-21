@@ -87,6 +87,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     private VersionDetectModel versionDetectModel;
 
+    //
+
 
     @Override
     protected int setLayoutView() {
@@ -116,6 +118,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                shortToast("已经获取全部权限");
             }
         });
+
+
 
 
     }
@@ -320,7 +324,10 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     protected void onDestroy() {
         DownloadClassManager.getInstance().stopAllDownloads();
         DownloadClassManager.getInstance().release();
+
         super.onDestroy();
 
     }
+
+
 }

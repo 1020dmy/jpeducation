@@ -18,6 +18,7 @@ import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -128,14 +129,21 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
             }
         });
         //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
             @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
+            public void onChanged(AttentionResultBean integer) {
                 dismissLoading();
                 schoolAdapter.notifyDataSetChanged();
-
             }
         });
+//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+//            @Override
+//            public void onChanged(ThreadDataBean threadDataBean) {
+//                dismissLoading();
+//                schoolAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override

@@ -13,8 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -23,6 +25,7 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
 import com.jianpei.jpeducation.activitys.web.KeFuActivity;
+import com.jianpei.jpeducation.adapter.NTabFragmentAdapter;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
@@ -48,7 +51,7 @@ public class GroupInfoActivity extends BaseActivity {
 
 
     @BindView(R.id.viewPage)
-    ViewPager2 viewPage;
+    ViewPager viewPage;
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.iv_shopping)
@@ -82,7 +85,8 @@ public class GroupInfoActivity extends BaseActivity {
     private CommentFragment commentFragment;
     private Fragment[] fragments;
 
-    private TabFragmentAdapter classInfoTabFragmentAdapter;
+    //    private TabFragmentAdapter classInfoTabFragmentAdapter;
+    private NTabFragmentAdapter nTabFragmentAdapter;
     private int height;
 
     private ClassInfoModel classInfoModel;
@@ -214,7 +218,7 @@ public class GroupInfoActivity extends BaseActivity {
                 }
             }
         });
-        viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
+//        viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
         classInfoFragment = new GclassInfoFragment(pointId, id);
         directoryFragment = new DirectoryFragment(pointId);
         commentFragment = new CommentFragment(pointId);
@@ -224,16 +228,22 @@ public class GroupInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
-        viewPage.setAdapter(classInfoTabFragmentAdapter);
 
+        nTabFragmentAdapter = new NTabFragmentAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, tabTitle);
 
-        new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(tabTitle[position]);
-            }
-        }).attach();
+        viewPage.setOffscreenPageLimit(3);
+        viewPage.setAdapter(nTabFragmentAdapter);
+        tabLayout.setupWithViewPager(viewPage);
+        //        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
+//        viewPage.setAdapter(classInfoTabFragmentAdapter);
+//
+//
+//        new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
+//            @Override
+//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+//                tab.setText(tabTitle[position]);
+//            }
+//        }).attach();
 
     }
 

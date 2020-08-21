@@ -38,7 +38,7 @@ public interface DownloadClassListener {
 
     void deleteFile(ViodBean viodBean);
 
-//    //重新获取vid
-    void againStart(ViodBean viodBean);
+////    //重新获取vid
+//    void againStart(ViodBean viodBean);
 
 }

@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.mine;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +22,12 @@ import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.mine.MineDynamicAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
-import com.jianpei.jpeducation.bean.UserInfoBean;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.userinfo.UserInfoBean;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -66,6 +68,8 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.iv_sex)
     ImageView ivSex;
+    @BindView(R.id.btn_status)
+    Button btn_status;
 
     private SchoolModel schoolModel;
 
@@ -75,9 +79,11 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
     private int page = 1, pageSize = 10;
 
-    private UserInfoBean userInfoBean;
+//    private UserInfoBean userInfoBean;
 
     private int mPosition;
+
+    private String userId, threadId;
 
 
     @Override
@@ -94,7 +100,8 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
         llTitle.setBackgroundColor(getResources().getColor(R.color.transparents));
         ivBack.setImageResource(R.drawable.info_back);
 
-        userInfoBean = getIntent().getParcelableExtra("mUserInfoBean");
+//        userInfoBean = getIntent().getParcelableExtra("mUserInfoBean");
+        userId = getIntent().getStringExtra("userId");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -106,7 +113,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page = 1;
-                schoolModel.mThreadData(page, pageSize);
+                schoolModel.mThreadData(page, pageSize, userId);
 
 
             }
@@ -116,23 +123,13 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
                 page++;
-                schoolModel.mThreadData(page, pageSize);
+                schoolModel.mThreadData(page, pageSize, userId);
             }
         });
     }
 
     @Override
     protected void initData() {
-        if (userInfoBean != null) {
-            tvName.setText(userInfoBean.getUser_name());
-            if ("1".equals(userInfoBean.getSex())) {
-                ivSex.setImageResource(R.drawable.sex_boy);
-            } else {
-                ivSex.setImageResource(R.drawable.sex_gril);
-            }
-            Glide.with(this).load(userInfoBean.getImg()).placeholder(R.drawable.head_icon).into(civHead);
-        }
-
         threadDataBeans = new ArrayList<>();
         dynamicAdapter = new MineDynamicAdapter(threadDataBeans, this);
         dynamicAdapter.setMyItemOnClickListener(this);
@@ -144,15 +141,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
-                if (page == 1) {
-                    threadDataBeans.clear();
-                    MThreadBean mThreadBean = mThreadDataBean.getData();
-                    tvFensi.setText(mThreadBean.getAttention().getAtten_count() + " 粉丝");
-                    tvGuanzhu.setText(mThreadBean.getAttention().getU_count() + " 关注");
-                }
-                threadDataBeans.addAll(mThreadDataBean.getData().getData());
-                dynamicAdapter.notifyDataSetChanged();
-
+                setData(mThreadDataBean);
             }
         });
         schoolModel.getErrData().observe(this, new Observer<String>() {
@@ -165,6 +154,16 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
             }
         });
+        //关注/取消关注
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
+            @Override
+            public void onChanged(AttentionResultBean ss) {
+                dismissLoading();
+                changeStatus(ss.getIs_attention());
+
+            }
+        });
+
         //删除我的动态
         schoolModel.getDelThreadLiveData().observe(this, new Observer<String>() {
             @Override
@@ -193,15 +192,55 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
 
         showLoading("");
-        schoolModel.mThreadData(page, pageSize);
+        schoolModel.mThreadData(page, pageSize, userId);
 
     }
 
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        finish();
+    private void changeStatus(int status) {
+        if (0 == status) {
+            btn_status.setVisibility(View.VISIBLE);
+            btn_status.setText("关注+");
+            btn_status.setTextColor(getResources().getColor(R.color.cE73B30));
+            btn_status.setBackgroundResource(R.drawable.shape_selectzhuanye_itemt);
+        } else if (1 == status) {
+            btn_status.setVisibility(View.VISIBLE);
+            btn_status.setText("取消关注");
+            btn_status.setTextColor(getResources().getColor(R.color.cA5A7B0));
+            btn_status.setBackgroundResource(R.drawable.shape_selectzhuanye_item);
+        } else if (2 == status) {
+            btn_status.setVisibility(View.GONE);
+        }
+
     }
+
+    private void setData(MThreadDataBean mThreadDataBean) {
+        if (mThreadDataBean == null)
+            return;
+        UserInfoBean userInfoBean = mThreadDataBean.getData().getUserInfo();
+        changeStatus(userInfoBean.getIs_attention());
+
+        Glide.with(this).load(userInfoBean.getImg()).placeholder(R.drawable.head_icon).into(civHead);
+        tvName.setText(userInfoBean.getUser_name());
+        if ("1".equals(userInfoBean.getSex())) {
+            ivSex.setImageResource(R.drawable.sex_boy);
+        } else {
+            ivSex.setImageResource(R.drawable.sex_gril);
+        }
+        MThreadBean.AttentionBean attentionBean = mThreadDataBean.getData().getAttention();
+        tvFensi.setText(attentionBean.getAtten_count() + " 粉丝");
+        tvGuanzhu.setText(attentionBean.getU_count() + " 关注");
+
+        if (page == 1) {
+            threadDataBeans.clear();
+        }
+        threadDataBeans.addAll(mThreadDataBean.getData().getData());
+        dynamicAdapter.setIsAttention(userInfoBean.getIs_attention());
+        dynamicAdapter.notifyDataSetChanged();
+
+
+    }
+
 
     @Override
     public void onItemClick(int position, View view) {
@@ -215,6 +254,9 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
                 startActivity(new Intent(this, PostInfoActivity.class).putExtra("threadDataBean", threadDataBeans.get(position)));
                 break;
             case R.id.iv_share:
+                if (mShareAction == null)
+                    initShare();
+                mShareAction.open();
                 break;
             case R.id.tv_dianzan:
             case R.id.iv_dianzan:
@@ -229,5 +271,19 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
     @Override
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
+    }
+
+
+    @OnClick({R.id.iv_back, R.id.btn_status})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.btn_status:
+                showLoading("");
+                schoolModel.attention(userId, "", "", null);
+                break;
+        }
     }
 }

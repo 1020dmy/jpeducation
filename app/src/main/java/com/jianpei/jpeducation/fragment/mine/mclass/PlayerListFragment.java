@@ -28,6 +28,7 @@ import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassListener;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
+import com.jianpei.jpeducation.utils.myclassdown.RefreshVidCallback;
 import com.jianpei.jpeducation.utils.pop.DownloadClassPopup;
 import com.jianpei.jpeducation.viewmodel.ClassPlayerModel;
 
@@ -70,6 +71,7 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
     int positoin = 0;
 
     private MyDownloadClassListener myDownloadClassListener;
+    private MyRefreshVidCallback myRefreshVidCallback;
 
 
     public PlayerListFragment(String classId) {
@@ -91,11 +93,10 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
 
         nestedScrollView.fullScroll(View.FOCUS_DOWN);
 
-        //下载监听
-        myDownloadClassListener = new MyDownloadClassListener();
+
+        if (myDownloadClassListener == null)
+            myDownloadClassListener = new MyDownloadClassListener();
         DownloadClassManager.getInstance().addDownloadInfoListener(myDownloadClassListener);
-
-
     }
 
     @Override
@@ -179,7 +180,7 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
             for (ViodBean viodBean : directoryBean.getViods()) {
                 positoin++;
                 if ("1".equals(viodBean.getIs_last_read())) {
-//                    classPlayerModel.getViodBeanMutableLiveData().setValue(viodBean);
+                    classPlayerModel.getViodBeanMutableLiveData().setValue(viodBean);
                     return;
                 }
             }
@@ -229,16 +230,22 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
             classPlayerModel.getStringMutableLiveData().setValue("");//更新下载数量
         }
 
-        @Override
-        public void againStart(ViodBean viodBean) {
-            //重新获取vid
-            if (viodBean.getStatus() == DownloadClassManager.STOP || viodBean.getStatus() == DownloadClassManager.ERROR)
-                classPlayerModel.getDownloadViodLiveData().setValue(viodBean);
-        }
 
         @Override
         public void deleteFile(ViodBean viodBean) {
             upDataList(viodBean);
+        }
+    }
+
+    /**
+     * 刷新vid监听
+     */
+    class MyRefreshVidCallback implements RefreshVidCallback {
+        @Override
+        public void refreshVid(ViodBean viodBean) {
+            //重新获取vid
+            classPlayerModel.getDownloadViodLiveData().setValue(viodBean);
+
         }
     }
 
@@ -248,6 +255,8 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
      * @param viodBean
      */
     protected void upDataList(ViodBean viodBean) {
+        if (mViodBeans == null)
+            return;
         for (ViodBean viodBean1 : mViodBeans) {
             if (viodBean.getId().equals(viodBean1.getId())) {
                 viodBean1.setProgress(viodBean.getProgress());
@@ -439,11 +448,25 @@ public class PlayerListFragment extends BaseFragment implements MyItemOnClickLis
 
     }
 
+    @Override
+    public void onResume() {
+        //vid刷新监听
+        if (myRefreshVidCallback == null)
+            myRefreshVidCallback = new MyRefreshVidCallback();
+        DownloadClassManager.getInstance().clearRefreshVidCallback();
+        DownloadClassManager.getInstance().setRefreshVidCallback(myRefreshVidCallback);
+        super.onResume();
+    }
+
 
     @Override
     public void onDestroy() {
         DownloadClassManager.getInstance().clearListener(myDownloadClassListener);
+        DownloadClassManager.getInstance().clearRefreshVidCallback();
         myDownloadClassListener = null;
+        myRefreshVidCallback = null;
+        if (mViodBeans != null)
+            mViodBeans.clear();
         super.onDestroy();
     }
 

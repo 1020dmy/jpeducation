@@ -93,17 +93,19 @@ public class SchoolAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             myHolder.tv_time.setText(threadDataBean.getCreated_at_str());
             myHolder.tv_content.setText(threadDataBean.getContent());
 
-            if ("1".equals(threadDataBean.getIs_my_thread())) {//是否我的帖子1是，0否
-                myHolder.btn_status.setVisibility(View.GONE);
-            }
-            if ("1".equals(threadDataBean.getIs_attention())) {//是否关注1是，0否
+//            if ("1".equals(threadDataBean.getIs_my_thread())) {//是否我的帖子1是，0否
+//                myHolder.btn_status.setVisibility(View.GONE);
+//            }
+            if (1 == threadDataBean.getIs_attention()) {//是否关注1是，0否
                 myHolder.btn_status.setText("取消关注");
                 myHolder.btn_status.setTextColor(mContext.getResources().getColor(R.color.cA5A7B0));
                 myHolder.btn_status.setBackgroundResource(R.drawable.shape_selectzhuanye_item);
-            } else {
+            } else if (0 == threadDataBean.getIs_attention()) {
                 myHolder.btn_status.setText("关注+");
                 myHolder.btn_status.setTextColor(mContext.getResources().getColor(R.color.cE73B30));
                 myHolder.btn_status.setBackgroundResource(R.drawable.shape_selectzhuanye_itemt);
+            } else if (2 == threadDataBean.getIs_attention()) {
+                myHolder.btn_status.setVisibility(View.GONE);
             }
 
             if ("0".equals(threadDataBean.getPost_num()))
@@ -266,7 +268,6 @@ public class SchoolAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             nineGridImageView.setItemImageClickListener(new ItemImageClickListener<ImagesBean>() {
                 @Override
                 public void onItemImageClick(Context context, ImageView imageView, int index, List<ImagesBean> list) {
-
                     GPreviewBuilder.from((Activity) context)
                             .setData(computeBoundsBackward(list))
                             .setIsScale(true)
@@ -301,11 +302,7 @@ public class SchoolAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 thumbViewInfos.add(new ThumbViewInfo(list.get(i).getUrl(), bounds));
 
             }
-
             return thumbViewInfos;
-
         }
-
-
     }
 }

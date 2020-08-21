@@ -72,16 +72,16 @@ public class GroupInfoItemBinder extends BaseItemBinder<GroupInfoBean, GroupInfo
             tvSubmit = view.findViewById(R.id.tv_submit);
             llZhekou = view.findViewById(R.id.ll_zhekou);
             tv_price = view.findViewById(R.id.tv_price);
-            addChildClickViewIds(R.id.tv_submit);
 
         }
     }
 
+
     @Override
-    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, GroupInfoBean data, int position) {
+    public void onClick(@NotNull MyHolder holder, @NotNull View view, GroupInfoBean data, int position) {
         context.startActivity(new Intent(context, ClassInfoActivity.class)
                 .putExtra("groupId", data.getId())
-                .putExtra("catId", data.getCat_id()));
+                .putExtra("catId", data.getCat_id()));    }
 
-    }
+
 }

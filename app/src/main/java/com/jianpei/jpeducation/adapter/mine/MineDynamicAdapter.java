@@ -1,6 +1,8 @@
 package com.jianpei.jpeducation.adapter.mine;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,13 @@ import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.school.ImagesBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.view.ninegridelayout.ItemImageClickListener;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageView;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageViewAdapter;
+import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.enitity.ThumbViewInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,6 +48,8 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private MyItemOnClickListener myItemOnClickListener;
 
+    private int isAttention;
+
 
     public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
         this.myItemOnClickListener = myItemOnClickListener;
@@ -52,6 +60,13 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.mContext = context;
     }
 
+    public int getIsAttention() {
+        return isAttention;
+    }
+
+    public void setIsAttention(int isAttention) {
+        this.isAttention = isAttention;
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -161,7 +176,11 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             iv_dianzan = itemView.findViewById(R.id.iv_dianzan);
             ib_delete = itemView.findViewById(R.id.ib_delete);
             //
-            relativeLayout=itemView.findViewById(R.id.relativeLayout);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
+
+            if (isAttention == 2) {
+                ib_delete.setVisibility(View.VISIBLE);
+            }
 
 
             ib_delete.setOnClickListener(this);
@@ -215,7 +234,12 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             iv_dianzan = itemView.findViewById(R.id.iv_dianzan);
             ib_delete = itemView.findViewById(R.id.ib_delete);
             //
-            relativeLayout=itemView.findViewById(R.id.relativeLayout);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
+
+            //
+            if (isAttention == 2) {
+                ib_delete.setVisibility(View.VISIBLE);
+            }
 
 
             ib_delete.setOnClickListener(this);
@@ -226,18 +250,17 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             nineGridImageView = itemView.findViewById(R.id.nineGridImageView);
             nineGridImageView.setAdapter(adapter);
-//            nineGridImageView.setItemImageClickListener(new ItemImageClickListener<ImagesBean>() {
-//                @Override
-//                public void onItemImageClick(Context context, ImageView imageView, int index, List<ImagesBean> list) {
-//                    computeBoundsBackward(list);
-//                    GPreviewBuilder.from((Activity) mContext)
-//                            .setData(list)
-//                            .setIsScale(true)
-//                            .setCurrentIndex(index)
-//                            .setType(GPreviewBuilder.IndicatorType.Dot)
-//                            .start();//启动
-//                }
-//            });
+            nineGridImageView.setItemImageClickListener(new ItemImageClickListener<ImagesBean>() {
+                @Override
+                public void onItemImageClick(Context context, ImageView imageView, int index, List<ImagesBean> list) {
+                    GPreviewBuilder.from((Activity) context)
+                            .setData(computeBoundsBackward(list))
+                            .setIsScale(true)
+                            .setCurrentIndex(index)
+                            .setType(GPreviewBuilder.IndicatorType.Dot)
+                            .start();//启动
+                }
+            });
 
         }
 
@@ -248,25 +271,25 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         }
 
-        //        /**
-//         * 查找信息
-//         *
-//         * @param list 图片集合
-//         */
-//        private void computeBoundsBackward(List<ImagesBean> list) {
-//
-//            for (int i = 0; i < nineGridImageView.getChildCount(); i++) {
-//                View itemView = nineGridImageView.getChildAt(i);
-//                Rect bounds = new Rect();
-//                if (itemView != null) {
-//                    ImageView thumbView = (ImageView) itemView;
-//                    thumbView.getGlobalVisibleRect(bounds);
-//                }
-//                list.get(i).setmBounds(bounds);
-//                list.get(i).setUrl(list.get(i).getUrl());
-//            }
-//
-//        }
+        /**
+         * 查找信息
+         *
+         * @param list 图片集合
+         */
+        private List<ThumbViewInfo> computeBoundsBackward(List<ImagesBean> list) {
+            List<ThumbViewInfo> thumbViewInfos = new ArrayList<>();
+            for (int i = 0; i < nineGridImageView.getChildCount(); i++) {
+                View itemView = nineGridImageView.getChildAt(i);
+                Rect bounds = new Rect();
+                if (itemView != null) {
+                    ImageView thumbView = (ImageView) itemView;
+                    thumbView.getGlobalVisibleRect(bounds);
+                }
+                thumbViewInfos.add(new ThumbViewInfo(list.get(i).getUrl(), bounds));
+
+            }
+            return thumbViewInfos;
+        }
     }
 
 

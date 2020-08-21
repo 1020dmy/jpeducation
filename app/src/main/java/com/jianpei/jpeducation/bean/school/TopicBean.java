@@ -27,6 +27,7 @@ public class TopicBean implements Parcelable {
     private String post_num;
     private String content;
 
+
     public String getView_num() {
         return view_num;
     }

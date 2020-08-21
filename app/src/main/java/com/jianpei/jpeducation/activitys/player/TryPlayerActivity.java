@@ -60,7 +60,9 @@ public class TryPlayerActivity extends AppCompatActivity {
     @BindView(R.id.aliyunPlayerView)
     AliyunVodPlayerView aliyunPlayerView;
 
-    private DirectorySectionBean directorySectionBean;
+//    private DirectorySectionBean directorySectionBean;
+
+    private String voidId;
 
     private ClassInfoFModel classInfoFModel;
     private String localUrl;
@@ -88,8 +90,8 @@ public class TryPlayerActivity extends AppCompatActivity {
             initAliyunPlayerView();
             changePlayLocalSource(localUrl, title);
         } else {
-            directorySectionBean = getIntent().getParcelableExtra("directorySectionBean");
-            classInfoFModel.videoUrl(directorySectionBean.getId(), "","0");
+            voidId = getIntent().getStringExtra("viodBeanId");
+            classInfoFModel.videoUrl(voidId, "", "0");
         }
 
 
@@ -177,6 +179,13 @@ public class TryPlayerActivity extends AppCompatActivity {
             aliyunPlayerView.setAutoPlay(false);
             aliyunPlayerView.onStop();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (aliyunPlayerView!=null)
+            aliyunPlayerView.onDestroy();
     }
 
     @Override

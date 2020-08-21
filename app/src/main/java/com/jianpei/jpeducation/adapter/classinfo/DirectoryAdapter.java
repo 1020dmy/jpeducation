@@ -2,12 +2,14 @@ package com.jianpei.jpeducation.adapter.classinfo;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.classinfo.directory.DirectoryChapterProvider;
 import com.jianpei.jpeducation.adapter.classinfo.directory.DirectoryProfessionProvider;
 import com.jianpei.jpeducation.adapter.classinfo.directory.DirectorySectionProvider;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryChapterBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,12 +26,11 @@ import java.util.List;
  */
 public class DirectoryAdapter extends BaseNodeAdapter {
 
-
-    public DirectoryAdapter() {
+    public DirectoryAdapter(MyItemOnClickListener myItemOnClickListener) {
         super();
         addNodeProvider(new DirectoryProfessionProvider());
-        addNodeProvider(new DirectoryChapterProvider());
-        addNodeProvider(new DirectorySectionProvider());
+        addNodeProvider(new DirectoryChapterProvider(myItemOnClickListener));
+        addNodeProvider(new DirectorySectionProvider(myItemOnClickListener));
 
     }
 
@@ -42,7 +43,7 @@ public class DirectoryAdapter extends BaseNodeAdapter {
             return 0;
         } else if (baseNode instanceof DirectoryChapterBean) {
             return 1;
-        } else if (baseNode instanceof DirectorySectionBean) {
+        } else if (baseNode instanceof ViodBean) {
             return 2;
         }
         return -1;

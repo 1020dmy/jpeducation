@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
@@ -31,7 +32,7 @@ public interface SchoolContract {
         Observable<BaseEntity<ThreadFromTopicDataBean>> threadFromTopicData(String start_id, String end_id, String follow, String topic_id, String is_hot);
 
         //关注/取消关注
-        Observable<BaseEntity<ThreadDataBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans);
+        Observable<BaseEntity<AttentionResultBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans);
 
         //点赞/取消点赞
         Observable<BaseEntity<GardenPraiseBean>> gardenPraise(String type, String thread_id, String topic_id, String post_id);
@@ -49,7 +50,7 @@ public interface SchoolContract {
         Observable<BaseEntity<String>> insertEvaluation(String thread_id, String content, String post_id, String user_id_at);
 
         //我的动态
-        Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize);
+        Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize,String userid);
 
 
         //删除动态
@@ -76,7 +77,7 @@ public interface SchoolContract {
 
         void insertEvaluation(String thread_id, String content, String post_id, String user_id_at);
 
-        void mThreadData(int pageIndex, int pageSize);
+        void mThreadData(int pageIndex, int pageSize,String userId);
 
 
         void delThread(String thread_id);

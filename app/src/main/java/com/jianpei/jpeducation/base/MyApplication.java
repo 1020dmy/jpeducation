@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.DisplayUtil;
@@ -59,10 +60,8 @@ public class MyApplication extends Application {
 //        MIMManager.getInstance().init(getApplicationContext(),7011 , "5ea91b77dc4cec0b99d0b7da","");
 
         //查看大图
-//        ZoomMediaLoader.getInstance().init(new TestImageLoader());
+        ZoomMediaLoader.getInstance().init(new TestImageLoader());
 
-
-//        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
 
     }
 

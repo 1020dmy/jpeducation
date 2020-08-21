@@ -23,8 +23,11 @@ public class DirectoryChapterBean extends BaseExpandNode implements Parcelable {
 
     private String id;
     private String title;
+    private String class_id;
 
     private List<BaseNode> baseNodes;
+
+
 
     public DirectoryChapterBean() {
         setExpanded(false);
@@ -49,7 +52,15 @@ public class DirectoryChapterBean extends BaseExpandNode implements Parcelable {
         this.title = title;
     }
 
-//    public List<DirectorySectionBean> getDir() {
+    public String getClass_id() {
+        return class_id;
+    }
+
+    public void setClass_id(String class_id) {
+        this.class_id = class_id;
+    }
+
+    //    public List<DirectorySectionBean> getDir() {
 //        return dir;
 //    }
 
@@ -59,7 +70,7 @@ public class DirectoryChapterBean extends BaseExpandNode implements Parcelable {
 
 
     public List<BaseNode> getBaseNodes() {
-        if(baseNodes==null){
+        if (baseNodes==null){
             baseNodes=new ArrayList<>();
         }
         return baseNodes;
@@ -72,7 +83,7 @@ public class DirectoryChapterBean extends BaseExpandNode implements Parcelable {
     @Nullable
     @Override
     public List<BaseNode> getChildNode() {
-        return getBaseNodes();
+        return baseNodes;
     }
 
 
