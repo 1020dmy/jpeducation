@@ -23,6 +23,7 @@ import com.jianpei.jpeducation.adapter.order.MyOrderListItemListener;
 import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.adapter.order.WaitPayOrderAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
 import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
@@ -46,7 +47,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickListener {
+public class WaitPayOrderFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.recyclerView)
@@ -164,10 +165,14 @@ public class WaitPayOrderFragment extends BaseFragment implements MyItemOnClickL
             }
         });
 
+
+    }
+
+    @Override
+    protected void loadData() {
         showLoading("");
         orderListModel.orderData(2, page, pageSize);
     }
-
 
     @Override
     public void onItemClick(int position, View view) {

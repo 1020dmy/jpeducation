@@ -207,7 +207,7 @@
                     android:paddingBottom="20dp"
                     android:text="我的课程" />
 
-                <!--                <include layout="@layout/line" />-->
+                <!--                                <include layout="@layout/line" />-->
 
                 <TextView
                     android:id="@+id/tv_my_tiku"
@@ -249,8 +249,7 @@
                     android:id="@+id/ll_share"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    >
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"

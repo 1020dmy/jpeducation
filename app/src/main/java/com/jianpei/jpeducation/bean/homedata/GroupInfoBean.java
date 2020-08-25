@@ -265,6 +265,9 @@ public class GroupInfoBean implements Parcelable {
         dest.writeString(this.sort_num);
         dest.writeString(this.buy_num);
         dest.writeString(this.coupon_str);
+        dest.writeString(this.min_price);
+
+
     }
 
     public GroupInfoBean() {
@@ -289,6 +292,8 @@ public class GroupInfoBean implements Parcelable {
         this.sort_num = in.readString();
         this.buy_num = in.readString();
         this.coupon_str = in.readString();
+        this.min_price = in.readString();
+
     }
 
     public static final Creator<GroupInfoBean> CREATOR = new Creator<GroupInfoBean>() {

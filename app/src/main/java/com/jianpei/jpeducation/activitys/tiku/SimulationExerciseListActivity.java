@@ -55,15 +55,16 @@ public class SimulationExerciseListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        paper_type=getIntent().getStringExtra("paper_type");
-        if ("1".equals(paper_type)){
+        paper_type = getIntent().getStringExtra("paper_type");
+        if ("1".equals(paper_type)) {
             tvTitle.setText("历年真题");
-        }else if ("2".equals(paper_type)){
+        } else if ("2".equals(paper_type)) {
             tvTitle.setText("模拟练习");
 
         }
         catId = SpUtils.getValue(SpUtils.catId);
         answerModel = new ViewModelProvider(this).get(AnswerModel.class);
+
 
     }
 
@@ -76,8 +77,9 @@ public class SimulationExerciseListActivity extends BaseActivity {
                 dismissLoading();
                 if (curriculumDataBeans != null && curriculumDataBeans.size() > 0) {
                     for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                        fragments.add(new SimulationFragment(curriculumDataBean,paper_type));
+                        fragments.add(new SimulationFragment(curriculumDataBean, paper_type));
                     }
+                    viewPage.setOffscreenPageLimit(fragments.size());
                     viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
                     new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
                         @Override

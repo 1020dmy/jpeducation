@@ -156,11 +156,12 @@ public class GroupInfoActivity extends BaseActivity {
 //        classInfoModel.setRegimentInfoBeanMutableLiveData(regimentInfoBean);//传递消息到frgament
 
         //获取科目信息
-        mGroupClassBeans = new ArrayList<>();
         classInfoModel.getGroupClassBeansLiveData().observe(this, new Observer<List<GroupClassBean>>() {
             @Override
             public void onChanged(List<GroupClassBean> groupClassBeans) {
                 dismissLoading();
+                if (mGroupClassBeans == null)
+                    mGroupClassBeans = new ArrayList<>();
                 mGroupClassBeans.addAll(groupClassBeans);
                 showPow();
 
@@ -282,7 +283,7 @@ public class GroupInfoActivity extends BaseActivity {
                 if (mClassInfoBean.getUser_regiment_info() != null) {
                     showGroupingPow();
                 } else {
-                    if (mGroupClassBeans.size() != 0) {
+                    if (mGroupClassBeans != null && mGroupClassBeans.size() != 0) {
                         showPow();
                     } else {
                         showLoading("");
@@ -293,7 +294,7 @@ public class GroupInfoActivity extends BaseActivity {
             case R.id.tv_buy:
                 goods_type = "1";
                 groupId = "";
-                if (mGroupClassBeans.size() != 0) {
+                if (mGroupClassBeans != null && mGroupClassBeans.size() != 0) {
                     showPow();
                 } else {
                     showLoading("");

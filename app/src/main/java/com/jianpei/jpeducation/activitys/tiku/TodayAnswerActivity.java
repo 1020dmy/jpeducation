@@ -4,9 +4,7 @@ package com.jianpei.jpeducation.activitys.tiku;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -400,9 +398,7 @@ public class TodayAnswerActivity extends BaseActivity {
         switch (resultCode) {
             case 111:
                 CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
-
-                answerModel.getQuestion("4", "0", cardBean.getQuestion_id(), cardBean.getRecord_id() + "", "", "");
-
+                answerModel.getQuestion(source, "0", cardBean.getQuestion_id(), cardBean.getRecord_id() + "", "", "");
                 break;
         }
 

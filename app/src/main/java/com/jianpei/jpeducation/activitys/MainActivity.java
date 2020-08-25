@@ -120,8 +120,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         });
 
 
-
-
     }
 
 

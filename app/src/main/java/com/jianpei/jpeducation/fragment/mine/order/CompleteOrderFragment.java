@@ -20,6 +20,7 @@ import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.utils.L;
@@ -40,7 +41,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompleteOrderFragment extends BaseFragment implements MyItemOnClickListener {
+public class CompleteOrderFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.recyclerView)
@@ -137,6 +138,11 @@ public class CompleteOrderFragment extends BaseFragment implements MyItemOnClick
                 orderListModel.orderData(3, page, pageSize);
             }
         });
+
+    }
+
+    @Override
+    protected void loadData() {
         showLoading("");
         orderListModel.orderData(3, page, pageSize);
     }

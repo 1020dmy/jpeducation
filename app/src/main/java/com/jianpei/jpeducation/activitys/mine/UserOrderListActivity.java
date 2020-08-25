@@ -46,7 +46,7 @@ public class UserOrderListActivity extends BaseActivity {
 
     private Fragment[] fragments = {new AllOrderFragment(), new WaitPayOrderFragment(), new CompleteOrderFragment()};
 
-    private TabFragmentAdapter tabFragmentAdapter;
+//    private TabFragmentAdapter tabFragmentAdapter;
 
 
     @Override
@@ -63,11 +63,8 @@ public class UserOrderListActivity extends BaseActivity {
 
         viewPage.setUserInputEnabled(false); //true:滑动，false：禁止滑动
 
-        tabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
-
-        viewPage.setAdapter(tabFragmentAdapter);
-
-
+        viewPage.setOffscreenPageLimit(fragments.length);
+        viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
         new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {

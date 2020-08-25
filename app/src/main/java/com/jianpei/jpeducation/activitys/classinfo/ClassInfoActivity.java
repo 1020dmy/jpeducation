@@ -13,10 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -72,7 +70,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
 
     @BindView(R.id.viewPage)
-    ViewPager viewPager;
+    ViewPager2 viewPager;
     @BindView(R.id.iv_black_back)
     ImageView ivBlackBack;
     @BindView(R.id.iv_black_shopping)
@@ -225,10 +223,17 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initData() {
-        nTabFragmentAdapter = new NTabFragmentAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, tabTitle);
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(nTabFragmentAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments));
+        viewPager.setOffscreenPageLimit(fragments.length);
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+
+                tab.setText(tabTitle[position]);
+
+            }
+        }).attach();
     }
 
 
@@ -257,7 +262,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 break;
             case R.id.submit:
                 isShop = false;
-                if (mGroupClassBeans.size() != 0) {
+                if (mGroupClassBeans != null && mGroupClassBeans.size() != 0) {
                     showPow();
                 } else {
                     showLoading("");
@@ -269,7 +274,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 break;
             case R.id.tv_shopping:
                 isShop = true;
-                if (mGroupClassBeans.size() != 0) {
+                if (mGroupClassBeans != null && mGroupClassBeans.size() != 0) {
                     showPow();
                 } else {
                     showLoading("");

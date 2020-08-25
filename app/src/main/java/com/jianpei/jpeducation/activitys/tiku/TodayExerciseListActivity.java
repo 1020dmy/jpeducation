@@ -118,7 +118,7 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
                 shortToast(o);
             }
         });
-        shortToast("");
+        showLoading("");
         todayExerciseListModel.paperData(page, pageSize, catId, "", "", paperType);
 
     }

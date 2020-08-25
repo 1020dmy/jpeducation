@@ -22,6 +22,7 @@ import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.order.NOrderListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.order.OrderDataBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.utils.L;
@@ -43,7 +44,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllOrderFragment extends BaseFragment implements MyItemOnClickListener {
+public class AllOrderFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.recyclerView)
@@ -136,7 +137,7 @@ public class AllOrderFragment extends BaseFragment implements MyItemOnClickListe
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
-                if (!TextUtils.isEmpty(o)){
+                if (!TextUtils.isEmpty(o)) {
                     shortToast(o);
                 }
             }
@@ -161,11 +162,15 @@ public class AllOrderFragment extends BaseFragment implements MyItemOnClickListe
                 orderListModel.orderData(1, page, pageSize);
             }
         });
-        showLoading("");
-        orderListModel.orderData(1, page, pageSize);
+
 
     }
 
+    @Override
+    protected void loadData() {
+        showLoading("");
+        orderListModel.orderData(1, page, pageSize);
+    }
 
     @Override
     public void onItemClick(int position, View view) {

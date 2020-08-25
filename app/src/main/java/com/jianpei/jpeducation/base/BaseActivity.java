@@ -56,6 +56,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     private Dialog dialog;
+    //
+    private boolean isFirstLoad = true;
 
 
     @Override
@@ -66,7 +68,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(setLayoutView());
         unbinder = ButterKnife.bind(this);
         initView();
-        initData();
     }
 
 
@@ -175,6 +176,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            initData();
+
+        }
     }
 
     @Override
@@ -201,7 +207,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void initShare() {
         mShareListener = new CustomShareListener(this);
-        String shareUrl = SpUtils.getValue(SpUtils.share_url)+"?code=" + SpUtils.getValue(SpUtils.ID);
+        String shareUrl = SpUtils.getValue(SpUtils.share_url) + "?code=" + SpUtils.getValue(SpUtils.ID);
         String shareImg = SpUtils.getValue(SpUtils.share_img);
         String shareTitle = SpUtils.getValue(SpUtils.share_title);
         String shareContent = SpUtils.getValue(SpUtils.share_content);

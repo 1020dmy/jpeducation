@@ -123,7 +123,7 @@ public class DownloadApkUtils {
 //    }
 
 
-    public static void installApk( Context context) {
+    public static void installApk(Context context) {
         if (!saveFile.exists()) {
             return;
         }
@@ -132,7 +132,7 @@ public class DownloadApkUtils {
 
             // todo 在AndroidManifest中的android:authorities值  当前应用的包名：cn.xu.test+FileProvider（数据共享）
             Uri apkUri = FileProvider.getUriForFile(context,
-                    "com.jianpei.jpeducation", saveFile);
+                    "com.jianpei.jpeducation.fileprovider", saveFile);
             Intent install = new Intent(Intent.ACTION_VIEW);
             install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //添加这一句表示对目标应用临时授权该Uri所代表的文件

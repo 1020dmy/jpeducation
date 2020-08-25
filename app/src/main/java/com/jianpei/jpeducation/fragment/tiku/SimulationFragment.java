@@ -17,6 +17,7 @@ import com.jianpei.jpeducation.activitys.tiku.TestPaperInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.TodayExerciseAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.PaperDataBean;
 import com.jianpei.jpeducation.bean.tiku.TestPaperBean;
@@ -34,7 +35,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SimulationFragment extends BaseFragment implements MyItemOnClickListener {
+public class SimulationFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -71,6 +72,13 @@ public class SimulationFragment extends BaseFragment implements MyItemOnClickLis
     }
 
     @Override
+    protected void loadData() {
+        shortToast("");
+        todayExerciseListModel.paperData(page, pageSize, catId, curriculumDataBean.getId(), "", paperType);
+
+    }
+
+    @Override
     protected void initData(Context mContext) {
 
         catId = SpUtils.getValue(SpUtils.catId);
@@ -101,8 +109,6 @@ public class SimulationFragment extends BaseFragment implements MyItemOnClickLis
                 shortToast(o);
             }
         });
-//        shortToast("");
-        todayExerciseListModel.paperData(page, pageSize, catId, curriculumDataBean.getId(), "", paperType);
 
     }
 
