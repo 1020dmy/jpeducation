@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:background="@android:color/transparent"
+    android:gravity="center"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/dialog_xiazai_bg"
         android:orientation="vertical"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp"
         android:paddingLeft="23dp"
         android:paddingRight="23dp">
 
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="本资料下载需"
                 android:textColor="#F6E420"
-                android:textSize="24dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="50"
                 android:textColor="#FAE6B4"
-                android:textSize="38dp"
+                android:textSize="24dp"
                 android:textStyle="bold|italic" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="积分"
                 android:textColor="#F6E420"
-                android:textSize="24dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
 

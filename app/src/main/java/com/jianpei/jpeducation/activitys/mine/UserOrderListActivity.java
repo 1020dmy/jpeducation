@@ -1,12 +1,10 @@
 package com.jianpei.jpeducation.activitys.mine;
 
 
-import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,7 +18,6 @@ import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.fragment.mine.order.AllOrderFragment;
 import com.jianpei.jpeducation.fragment.mine.order.CompleteOrderFragment;
 import com.jianpei.jpeducation.fragment.mine.order.WaitPayOrderFragment;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.DataNoticeChangeModel;
 
 import butterknife.BindView;
