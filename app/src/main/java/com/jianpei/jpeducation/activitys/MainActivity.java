@@ -171,7 +171,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             }
         });
         //检测更新
-//        versionDetectModel.versionDetect();
+        versionDetectModel.versionDetect();
     }
 
     @Override

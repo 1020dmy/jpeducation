@@ -57,7 +57,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        tvVersion.setText("V" + AppUtils.getPackageName(MyApplication.getInstance()));
+        tvVersion.setText("V" + AppUtils.getVersionName(MyApplication.getInstance()));
 
     }
 
@@ -75,7 +75,7 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(this, UpVersionActivity.class));
                 break;
             case R.id.tv_xieyi:
-                startActivity(new Intent(this, GuiZeActivity.class).putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)).putExtra("title", "用户协议"));
+                startActivity(new Intent(this, GuiZeActivity.class).putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)).putExtra("title", R.string.xieyi_name));
                 break;
             case R.id.btn_signout:
                 SpUtils.remove(SpUtils.ID);

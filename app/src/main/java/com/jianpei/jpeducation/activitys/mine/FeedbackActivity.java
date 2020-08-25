@@ -209,7 +209,7 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
         switch (requestCode) {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
-                String aaa = BitmapUtil.compressImage(selectphotoUtils.imgFile.getPath());//图片压缩
+                String aaa = BitmapUtil.compressImage2(selectphotoUtils.imgFile.getPath());//图片压缩
                 files.add(new File(aaa));
                 feedbackAdapter.notifyItemChanged(files.size() - 1);
                 break;
@@ -219,7 +219,7 @@ public class FeedbackActivity extends BaseActivity implements MyItemOnClickListe
                     if (fileUtils == null) {
                         fileUtils = new FileUtils(this);
                     }
-                    String bbb = BitmapUtil.compressImage(fileUtils.getFilePathByUri(data.getData()));//图片压缩
+                    String bbb = BitmapUtil.compressImage(fileUtils.getFilePathByUri(data.getData()),getExternalCacheDir() + "/image");//图片压缩
                     files.add(new File(bbb));
                     feedbackAdapter.notifyItemChanged(files.size() - 1);
 

@@ -8,10 +8,15 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.media.ExifInterface;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * jpeducation
@@ -95,7 +100,47 @@ public class BitmapUtil {
      * @return 压缩后的路径
      */
 
-    public static String compressImage(String filePath) {
+    public static String compressImage(String filePath, String savePath) {
+
+        //原文件
+//        File oldFile = new File(filePath);
+
+        if (TextUtils.isEmpty(savePath)) {
+            return "";
+        }
+        String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
+
+        File outputFile = new File(savePath, "photo_" + time + ".jpeg");
+
+
+        //压缩文件路径 照片路径/
+//        String targetPath = oldFile.getPath();
+        int quality = 50;//压缩比例0-100
+        Bitmap bm = getSmallBitmap(filePath);//获取一定尺寸的图片
+        int degree = getRotateAngle(filePath);//获取相片拍摄角度
+
+        if (degree != 0) {//旋转照片角度，防止头像横着显示
+            bm = setRotateAngle(degree, bm);
+        }
+//        File outputFile = new File(savePath);
+        try {
+            if (!outputFile.exists()) {
+                outputFile.getParentFile().mkdirs();
+                //outputFile.createNewFile();
+            } else {
+                outputFile.delete();
+            }
+            FileOutputStream out = new FileOutputStream(outputFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, quality, out);
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return filePath;
+        }
+        return outputFile.getPath();
+    }
+
+    public static String compressImage2(String filePath) {
 
         //原文件
         File oldFile = new File(filePath);
@@ -114,7 +159,7 @@ public class BitmapUtil {
         try {
             if (!outputFile.exists()) {
                 outputFile.getParentFile().mkdirs();
-                //outputFile.createNewFile();
+                outputFile.createNewFile();
             } else {
                 outputFile.delete();
             }

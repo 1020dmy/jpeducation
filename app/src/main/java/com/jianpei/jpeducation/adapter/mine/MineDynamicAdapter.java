@@ -2,6 +2,8 @@ package com.jianpei.jpeducation.adapter.mine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
+import com.jianpei.jpeducation.activitys.school.TopicInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
+import com.jianpei.jpeducation.bean.school.AttentionBean;
 import com.jianpei.jpeducation.bean.school.ImagesBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.bean.school.TopicBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.view.ninegridelayout.ItemImageClickListener;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageView;
 import com.jianpei.jpeducation.view.ninegridelayout.NineGridImageViewAdapter;
 import com.previewlibrary.GPreviewBuilder;
 import com.previewlibrary.enitity.ThumbViewInfo;
+import com.shuyu.textutillib.RichTextView;
+import com.shuyu.textutillib.listener.SpanAtUserCallBack;
+import com.shuyu.textutillib.listener.SpanTopicCallBack;
+import com.shuyu.textutillib.model.TopicModel;
+import com.shuyu.textutillib.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +112,9 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(mContext).load(threadDataBean.getUser_img()).placeholder(R.drawable.head_icon).into(myHolder.civ_head);
             myHolder.tv_name.setText(threadDataBean.getUser_name());
             myHolder.tv_time.setText(threadDataBean.getCreated_at_str());
-            myHolder.tv_content.setText(threadDataBean.getContent());
+//            myHolder.tv_content.setText(threadDataBean.getContent());
+            setTopAndUser(myHolder.tv_content, threadDataBean.getUsers(), threadDataBean.getTopics(), threadDataBean.getContent());
+
 
             if ("0".equals(threadDataBean.getPost_num()))
                 myHolder.tv_message.setText("");
@@ -124,7 +137,8 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(mContext).load(threadDataBean.getUser_img()).placeholder(R.drawable.head_icon).into(myHolder.civ_head);
             myHolder.tv_name.setText(threadDataBean.getUser_name());
             myHolder.tv_time.setText(threadDataBean.getCreated_at_str());
-            myHolder.tv_content.setText(threadDataBean.getContent());
+//            myHolder.tv_content.setText(threadDataBean.getContent());
+            setTopAndUser(myHolder.tv_content, threadDataBean.getUsers(), threadDataBean.getTopics(), threadDataBean.getContent());
 
             if ("0".equals(threadDataBean.getPost_num()))
                 myHolder.tv_message.setText("");
@@ -157,7 +171,7 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CircleImageView civ_head;
         private TextView tv_name, tv_time;
-        private TextView tv_content;
+        private RichTextView tv_content;
         private ImageView iv_share, iv_dianzan;
         private TextView tv_message, tv_dianzan;
         private ImageButton ib_delete;
@@ -168,8 +182,30 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             civ_head = itemView.findViewById(R.id.civ_head);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_time = itemView.findViewById(R.id.tv_time);
-
+            //
             tv_content = itemView.findViewById(R.id.tv_content);
+            tv_content.setAtColor(Color.RED);
+            tv_content.setTopicColor(Color.BLUE);
+            tv_content.setLinkColor(Color.YELLOW);
+            tv_content.setNeedNumberShow(false);
+            tv_content.setNeedUrlShow(false);
+            tv_content.setSpanAtUserCallBackListener(new SpanAtUserCallBack() {
+                @Override
+                public void onClick(View view, UserModel userModel1) {
+                    mContext.startActivity(new Intent(mContext, MineDynamicActivity.class).putExtra("userId", userModel1.getUser_id()));
+                }
+            });
+            tv_content.setSpanTopicCallBackListener(new SpanTopicCallBack() {
+                @Override
+                public void onClick(View view, TopicModel topicModel) {
+                    mContext.startActivity(new Intent(mContext, TopicInfoActivity.class)
+                            .putExtra("topicId", topicModel.getTopicId())
+                            .putExtra("topicTitle", topicModel.getTopicName()));
+
+                }
+            });
+            //
+
             iv_share = itemView.findViewById(R.id.iv_share);
             tv_message = itemView.findViewById(R.id.tv_message);
             tv_dianzan = itemView.findViewById(R.id.tv_dianzan);
@@ -203,7 +239,7 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     class MyHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CircleImageView civ_head;
         private TextView tv_name, tv_time;
-        private TextView tv_content;
+        private RichTextView tv_content;
         private ImageView iv_share, iv_dianzan;
         private TextView tv_message, tv_dianzan;
         private ImageButton ib_delete;
@@ -226,8 +262,31 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             civ_head = itemView.findViewById(R.id.civ_head);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_time = itemView.findViewById(R.id.tv_time);
-
+            //
             tv_content = itemView.findViewById(R.id.tv_content);
+            tv_content.setAtColor(Color.RED);
+            tv_content.setTopicColor(Color.BLUE);
+            tv_content.setLinkColor(Color.YELLOW);
+            tv_content.setNeedNumberShow(false);
+            tv_content.setNeedUrlShow(false);
+            tv_content.setSpanAtUserCallBackListener(new SpanAtUserCallBack() {
+                @Override
+                public void onClick(View view, UserModel userModel1) {
+                    mContext.startActivity(new Intent(mContext, MineDynamicActivity.class).putExtra("userId", userModel1.getUser_id()));
+                }
+            });
+            tv_content.setSpanTopicCallBackListener(new SpanTopicCallBack() {
+                @Override
+                public void onClick(View view, TopicModel topicModel) {
+                    mContext.startActivity(new Intent(mContext, TopicInfoActivity.class)
+                            .putExtra("topicId", topicModel.getTopicId())
+                            .putExtra("topicTitle", topicModel.getTopicName())
+                            .putExtra("viewNum",topicModel.getViewNums()));
+
+                }
+            });
+            //
+
             iv_share = itemView.findViewById(R.id.iv_share);
             tv_message = itemView.findViewById(R.id.tv_message);
             tv_dianzan = itemView.findViewById(R.id.tv_dianzan);
@@ -291,6 +350,23 @@ public class MineDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return thumbViewInfos;
         }
     }
+    private void setTopAndUser(RichTextView richTextView, List<AttentionBean> users, List<TopicBean> topics, String text) {
+        List<UserModel> userModels = new ArrayList<>();
+        List<TopicModel> topicModels = new ArrayList<>();
 
+        if (users != null) {
+
+            for (AttentionBean attentionBean : users) {
+                userModels.add(new UserModel(attentionBean.getUser_name(), attentionBean.getId()));
+            }
+        }
+        if (topics != null) {
+            for (TopicBean topicBean : topics) {
+                topicModels.add(new TopicModel(topicBean.getTitle(), topicBean.getId(),topicBean.getView_num()));
+            }
+        }
+
+        richTextView.setRichText(text, userModels, topicModels);
+    }
 
 }

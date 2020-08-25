@@ -11,7 +11,7 @@
         android:id="@+id/civ_head"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/head_icon" />
 
 
     <TextView
@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/civ_head"
-        android:text="张三"
         android:textColor="@color/c888B96"
         android:textSize="@dimen/s_dp_12" />
 
@@ -32,7 +31,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/civ_head"
-        android:text="3wrewrew"
         android:textColor="@color/c888B96"
         android:textSize="@dimen/s_dp_11" />
 
@@ -44,13 +42,24 @@
         android:background="@color/transparents"
         android:src="@drawable/shopping_cat_delete" />
 
-    <TextView
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_content"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@id/civ_head"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        android:text="sdfdsfdsfsdfdsfafad打算发多发的疯狂事发房间开打飞机的房间里都放假啦放假"-->
+    <!--        android:textColor="@color/c161820"-->
+    <!--        android:textSize="@dimen/s_dp_13" />-->
+
+    <com.shuyu.textutillib.RichTextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/civ_head"
         android:layout_marginTop="15dp"
-        android:text="sdfdsfdsfsdfdsfafad打算发多发的疯狂事发房间开打飞机的房间里都放假啦放假"
+        android:ellipsize="end"
+        android:maxLines="5"
         android:textColor="@color/c161820"
         android:textSize="@dimen/s_dp_13" />
 

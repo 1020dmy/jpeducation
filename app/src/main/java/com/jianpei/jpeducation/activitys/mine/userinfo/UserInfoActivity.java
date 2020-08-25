@@ -184,7 +184,7 @@ public class UserInfoActivity extends BaseNoStatusActivity {
         if (userInfoBean == null)
             return;
         mUserInfoBean = userInfoBean;
-        Glide.with(this).load(userInfoBean.getImg()).placeholder(R.drawable.ic_launcher).into(imageView);
+        Glide.with(this).load(userInfoBean.getImg()).placeholder(R.drawable.head_icon).into(imageView);
         tvName.setText(userInfoBean.getUser_name());
         sexType = userInfoBean.getSex();
         if ("1".equals(sexType)) {

@@ -85,6 +85,8 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
     private String userId, threadId;
 
+    private int status;
+
 
     @Override
     protected int setLayoutView() {
@@ -198,6 +200,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
 
 
     private void changeStatus(int status) {
+        this.status = status;
         if (0 == status) {
             btn_status.setVisibility(View.VISIBLE);
             btn_status.setText("关注+");
@@ -251,7 +254,11 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
                 schoolModel.delThread(threadDataBeans.get(position).getId());
                 break;
             case R.id.relativeLayout:
-                startActivity(new Intent(this, PostInfoActivity.class).putExtra("threadDataBean", threadDataBeans.get(position)));
+//                startActivity(new Intent(this, PostInfoActivity.class).putExtra("threadDataBean", threadDataBeans.get(position)));
+
+                startActivityForResult(new Intent(this, PostInfoActivity.class)
+                        .putExtra("thread_id", threadDataBeans.get(position).getId())
+                        .putExtra("userId", threadDataBeans.get(position).getUser_id()), 111);
                 break;
             case R.id.iv_share:
                 if (mShareAction == null)
@@ -278,6 +285,7 @@ public class MineDynamicActivity extends BaseNoStatusActivity implements MyItemO
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                setResult(status);
                 finish();
                 break;
             case R.id.btn_status:

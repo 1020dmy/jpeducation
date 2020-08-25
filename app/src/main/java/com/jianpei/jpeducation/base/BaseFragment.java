@@ -97,8 +97,6 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initData(Context mContext);
 
 
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -244,4 +242,9 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        dismissLoading();
+        super.onStop();
+    }
 }

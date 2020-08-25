@@ -201,7 +201,10 @@ public class TopicInfoNewFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+//                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
         }
     }

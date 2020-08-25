@@ -3,6 +3,9 @@ package com.jianpei.jpeducation.bean.school;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.view.contentedittext.TObject;
+import com.shuyu.textutillib.model.TopicModel;
+
 /**
  * jpeducation
  * <p>

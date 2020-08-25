@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -41,7 +42,7 @@ public class DownloadApkUtils {
 //            saveFile = new File(Environment.getExternalStorageDirectory()+"/download/", "jianpei.apk");
             saveFile = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "jianpei.apk");
         }
-        if (saveFile.exists()){
+        if (saveFile.exists()) {
             saveFile.delete();
         }
 
@@ -96,28 +97,55 @@ public class DownloadApkUtils {
         }
     }
 
-    public static void installApk(Context context) {
-        downloadId = 0;
-//        try {
-//            String[] command = {"chmod", "777", saveFile.getAbsolutePath()};
-//            ProcessBuilder builder = new ProcessBuilder(command);
-//            builder.start();
-//        } catch (Exception ignored) {
-//            ignored.printStackTrace();
+//    public static void installApk(Context context) {
+//        downloadId = 0;
+////        try {
+////            String[] command = {"chmod", "777", saveFile.getAbsolutePath()};
+////            ProcessBuilder builder = new ProcessBuilder(command);
+////            builder.start();
+////        } catch (Exception ignored) {
+////            ignored.printStackTrace();
+////        }
+//
+//        if (!saveFile.exists()) {
+//            return;
 //        }
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            Uri contentUri = FileProvider.getUriForFile(context, "com.jianpei.jpeducation.fileprovider", saveFile);
+//            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+//        } else {
+//            intent.setDataAndType(Uri.fromFile(saveFile), "application/vnd.android.package-archive");
+//        }
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        MyApplication.getInstance().startActivity(intent);
+//    }
 
+
+    public static void installApk( Context context) {
         if (!saveFile.exists()) {
             return;
         }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
+        //判读版本是否在7.0以上 todo 这里是7.0安装是会出现解析包的错误
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, "com.jianpei.jpeducation.fileprovider", saveFile);
-            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+
+            // todo 在AndroidManifest中的android:authorities值  当前应用的包名：cn.xu.test+FileProvider（数据共享）
+            Uri apkUri = FileProvider.getUriForFile(context,
+                    "com.jianpei.jpeducation", saveFile);
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            install.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            context.startActivity(install);
+
         } else {
-            intent.setDataAndType(Uri.fromFile(saveFile), "application/vnd.android.package-archive");
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setDataAndType(Uri.fromFile(saveFile), "application/vnd.android.package-archive");
+            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(install);
         }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().startActivity(intent);
+
     }
 }

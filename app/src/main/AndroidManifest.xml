@@ -40,7 +40,6 @@
         <activity
             android:name=".activitys.mine.MineDynamicActivity"
             android:configChanges="screenSize|orientation"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.mine.MineTikuActivity"

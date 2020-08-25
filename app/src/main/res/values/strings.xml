@@ -26,7 +26,7 @@
 
     <!---->
 
-    <string name="login_botm_tip_o">《建培教育用户协议》</string>
+    <string name="login_botm_tip_o">《建培教育用户隐私协议》</string>
 
     <!--login-->
     <string name="registered">注册</string>
@@ -50,6 +50,8 @@
     <string name="reg_pwd_re">请确认密码</string>
     <string name="reg_getcode">获取验证码</string>
     <string name="reg_title">注册</string>
+
+    <string name="xieyi_name">用户隐私协议须知</string>
 
     <!--bind-->
     <string name="bind_btn">绑定</string>

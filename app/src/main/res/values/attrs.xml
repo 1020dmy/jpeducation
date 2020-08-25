@@ -34,4 +34,11 @@
         <!--下面是否显示阴影-->
         <attr name="yc_bottomShow" format="boolean" />
     </declare-styleable>
+
+
+    <!-- TEditText -->
+    <declare-styleable name="TEditText">
+        <attr name="object_foreground_color" format="color" />
+        <attr name="object_background_color" format="color" />
+    </declare-styleable>
 </resources>

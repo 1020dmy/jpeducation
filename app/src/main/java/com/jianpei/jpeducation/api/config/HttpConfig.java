@@ -18,6 +18,8 @@ public class HttpConfig {
     public static String BASE_URL = "http://dev_api.jianpei.com.cn/api/";
 //
 //    public static String BASE_URL = "http://open_api.jianpei.com.cn/api/";
+//    public static String BASE_URL = "http://api_110.jianpei.com.cn/api/";
+
 
 
 }

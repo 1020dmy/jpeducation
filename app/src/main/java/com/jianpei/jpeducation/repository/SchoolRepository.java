@@ -52,22 +52,24 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
     //关注/取消关注
     @Override
     public Observable<BaseEntity<AttentionResultBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
-        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<AttentionResultBean>, BaseEntity<AttentionResultBean>>() {
-            @Override
-            public BaseEntity<AttentionResultBean> apply(BaseEntity<AttentionResultBean> attentionResultBeanBaseEntity) throws Exception {
-                if (mThreadDataBeans == null) {
-                    return attentionResultBeanBaseEntity;
-                }
-                if (attentionResultBeanBaseEntity.isSuccess()) {
-                    for (ThreadDataBean threadDataBean : mThreadDataBeans) {
-                        if (threadDataBean.getUser_id().equals(attentionResultBeanBaseEntity.getData().getAttention_id())) {
-                            threadDataBean.setIs_attention(attentionResultBeanBaseEntity.getData().getIs_attention());
-                        }
-                    }
-                }
-                return attentionResultBeanBaseEntity;
-            }
-        });
+
+        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id));
+//        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<AttentionResultBean>, BaseEntity<AttentionResultBean>>() {
+//            @Override
+//            public BaseEntity<AttentionResultBean> apply(BaseEntity<AttentionResultBean> attentionResultBeanBaseEntity) throws Exception {
+//                if (mThreadDataBeans == null) {
+//                    return attentionResultBeanBaseEntity;
+//                }
+//                if (attentionResultBeanBaseEntity.isSuccess()) {
+//                    for (ThreadDataBean threadDataBean : mThreadDataBeans) {
+//                        if (threadDataBean.getUser_id().equals(attentionResultBeanBaseEntity.getData().getAttention_id())) {
+//                            threadDataBean.setIs_attention(attentionResultBeanBaseEntity.getData().getIs_attention());
+//                        }
+//                    }
+//                }
+//                return attentionResultBeanBaseEntity;
+//            }
+//        });
     }
 
 

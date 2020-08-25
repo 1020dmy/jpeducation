@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStructure;
 import android.view.inputmethod.InputMethodManager;
@@ -119,10 +120,12 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     //点赞参数
     private String type = "2";
     //
-//    private ThreadDataBean threadDataBean;
-    private String thread_id,tuserId;
+    private ThreadDataBean mThreadDataBean;
+    private String thread_id, tuserId;
     //
     private int commentIndex;
+
+    private int status;
 
     @Override
     protected int setLayoutView() {
@@ -133,8 +136,9 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     protected void initView() {
         tvTitle.setText("帖子正文");
 //        threadDataBean = getIntent().getParcelableExtra("threadDataBean");
-        thread_id=getIntent().getStringExtra("thread_id");
-        tuserId=getIntent().getStringExtra("userId");
+        thread_id = getIntent().getStringExtra("thread_id");
+        tuserId = getIntent().getStringExtra("userId");
+
         schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
         //
         MyLayoutManager myLayoutManager = new MyLayoutManager(this);
@@ -326,12 +330,13 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     private void setData(ThreadDataBean threadInfoBean) {
         if (threadInfoBean == null)
             return;
+        mThreadDataBean = threadInfoBean;
         Glide.with(this).load(threadInfoBean.getUser_img()).placeholder(R.drawable.head_icon).into(civHead);
         tvName.setText(threadInfoBean.getUser_name());
         tvTime.setText(threadInfoBean.getCreated_at_str());
         //是否关注
         changeStatus(threadInfoBean.getIs_attention());
-
+        //
         if ("1".equals(threadInfoBean.getIs_praise())) {//是否点赞1是，0否
             ivDianzan.setImageResource(R.drawable.school_undianzan_icon);
         } else {
@@ -358,6 +363,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     }
 
     private void changeStatus(int status) {
+        this.status = status;
         if (0 == status) {
             btnStatus.setText("关注+");
             btnStatus.setTextColor(getResources().getColor(R.color.cE73B30));
@@ -376,6 +382,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                setResult(status, getIntent().putExtra("mThreadDataBean", mThreadDataBean));
                 finish();
                 break;
             case R.id.btn_status://关注/取消关注
@@ -435,6 +442,15 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
         imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(status, getIntent().putExtra("mThreadDataBean", mThreadDataBean));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {

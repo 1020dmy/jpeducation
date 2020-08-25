@@ -23,6 +23,7 @@ import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.jianpei.jpeducation.viewmodel.TopicInfoModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -50,6 +51,8 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
     private String topic_id, is_hot = "1";
 
     private SchoolModel schoolModel;
+    private TopicInfoModel topicInfoModel;
+
     private SchoolAdapter schoolAdapter;
     private List<ThreadDataBean> mThreadDataBeans;
 
@@ -103,6 +106,9 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 ;
             }
         });
+
+        topicInfoModel = new ViewModelProvider(getActivity()).get(TopicInfoModel.class);
+
     }
 
     @Override
@@ -118,6 +124,7 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
+                topicInfoModel.getViewNamLiveData().setValue(threadFromTopicDataBean.getTopic_info().getView_num());
                 if (threadFromTopicDataBean != null) {
                     if ("0".equals(endId)) {
                         mThreadDataBeans.addAll(0, threadFromTopicDataBean.getData());
@@ -169,7 +176,7 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
     @Override
     public void onResume() {
         super.onResume();
-        showLoading("");
+//        showLoading("");
         endId = "0";
         if (mThreadDataBeans.size() > 0) {
             startId = mThreadDataBeans.get(0).getId();
@@ -198,7 +205,10 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+//                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
         }
     }

@@ -4,6 +4,8 @@ import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.bean.school.AttentionBean;
 import com.jianpei.jpeducation.bean.school.AttentionDataBean;
 import com.jianpei.jpeducation.bean.school.TopicBean;
+import com.shuyu.textutillib.model.TopicModel;
+import com.shuyu.textutillib.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,9 @@ public interface PostNewsContract {
     interface Model {
 
 
-        void insertGarden(String content, List<String> images, ArrayList<AttentionBean> selectAttentionBeans, ArrayList<TopicBean> selectTopicBean);
+//        void insertGarden(String content, List<String> images, ArrayList<AttentionBean> selectAttentionBeans, ArrayList<TopicBean> selectTopicBean);
 
+        void insertGarden(String content, List<String> images, ArrayList<UserModel> userModels, ArrayList<TopicModel> topicModels);
 
     }
 }

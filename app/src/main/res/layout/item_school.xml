@@ -49,13 +49,24 @@
         android:textSize="@dimen/s_dp_14" />
 
 
-    <TextView
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_content"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@id/civ_head"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        android:text="sdfdsfdsfsdfdsfafad打算发多发的疯狂事发房间开打飞机的房间里都放假啦放假"-->
+    <!--        android:textColor="@color/c161820"-->
+    <!--        android:textSize="@dimen/s_dp_13" />-->
+
+    <com.shuyu.textutillib.RichTextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/civ_head"
         android:layout_marginTop="15dp"
-        android:text="sdfdsfdsfsdfdsfafad打算发多发的疯狂事发房间开打飞机的房间里都放假啦放假"
+        android:maxLines="5"
+        android:ellipsize="end"
         android:textColor="@color/c161820"
         android:textSize="@dimen/s_dp_13" />
 

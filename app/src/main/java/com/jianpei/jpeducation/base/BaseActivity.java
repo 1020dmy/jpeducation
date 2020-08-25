@@ -337,5 +337,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onStop() {
+        dismissLoading();
+        super.onStop();
+    }
 }

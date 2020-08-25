@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
@@ -27,8 +29,10 @@ import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.TopicBean;
 import com.jianpei.jpeducation.bean.school.TopicDataBean;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.jianpei.jpeducation.viewmodel.SchoolRefreshNoticeModel;
 import com.jianpei.jpeducation.viewmodel.TopicListModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -58,6 +62,7 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     private SchoolAdapter schoolAdapter;
 
     private SchoolModel schoolModel;
+    private SchoolRefreshNoticeModel schoolRefreshNoticeModel;//数据更新
 
 
     private List<ThreadDataBean> mThreadDataBeans;
@@ -82,21 +87,26 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     @Override
     protected void initView(View view) {
         rvTopic.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-
         MyLayoutManager myLayoutManager = new MyLayoutManager(getActivity());
         myLayoutManager.setScrollEnabled(false);
         recyclerView.setLayoutManager(myLayoutManager);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        ///
+        schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
+        schoolRefreshNoticeModel = new ViewModelProvider(getActivity()).get(SchoolRefreshNoticeModel.class);
+        //
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 showLoading("");
+                mThreadDataBeans.clear();
                 endId = "0";
-                if (mThreadDataBeans.size() > 0) {
-                    startId = mThreadDataBeans.get(0).getId();
-                } else {
-                    startId = "0";
-                }
+//                if (mThreadDataBeans.size() > 0) {
+//                    startId = mThreadDataBeans.get(0).getId();
+//                } else {
+                startId = "0";
+//                }
                 schoolModel.threadData(startId, endId, follow);
             }
         });
@@ -131,7 +141,6 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
         rvTopic.setAdapter(hotTopicAdapter);
 
 
-        schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
         //帖子列表
         schoolModel.getThreadDataBeansLiveData().observe(this, new Observer<List<ThreadDataBean>>() {
             @Override
@@ -140,13 +149,14 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 refreshLayout.finishLoadMore();
                 dismissLoading();
                 if (threadDataBeans != null && threadDataBeans.size() > 0) {
-                    if ("0".equals(endId)) {
-                        mThreadDataBeans.addAll(0, threadDataBeans);
-                    } else {
-                        mThreadDataBeans.addAll(threadDataBeans);
-                    }
-                    schoolAdapter.notifyDataSetChanged();
+//                    if ("0".equals(endId)) {
+//                        mThreadDataBeans.addAll(0, threadDataBeans);
+//                    } else {
+//                        mThreadDataBeans.addAll(threadDataBeans);
+//                    }
+                    mThreadDataBeans.addAll(threadDataBeans);
                 }
+                schoolAdapter.notifyDataSetChanged();
             }
         });
         //关注/取消关注
@@ -154,16 +164,11 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
             @Override
             public void onChanged(AttentionResultBean s) {
                 dismissLoading();
-                schoolAdapter.notifyDataSetChanged();
+
+                schoolRefreshNoticeModel.getRefreshNoticeLiveData().setValue("取消/关注");
             }
         });
-//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
-//            @Override
-//            public void onChanged(ThreadDataBean threadDataBean) {
-//                dismissLoading();
-//
-//            }
-//        });
+
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -199,21 +204,23 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 shortToast(o);
             }
         });
+        //通知数据更新
+        schoolRefreshNoticeModel.getRefreshNoticeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                refresh();
+            }
+        });
+        showLoading("");
         topicListModel.topicData(page, pageSize);
+        schoolModel.threadData(startId, endId, follow);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        showLoading("");
-        endId = "0";
-        if (mThreadDataBeans.size() > 0) {
-            startId = mThreadDataBeans.get(0).getId();
-        } else {
-            startId = "0";
-        }
-        schoolModel.threadData(startId, endId, follow);
+
     }
 
     @Override
@@ -236,15 +243,21 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class)
+//                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+//                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+//                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
                         .putExtra("thread_id", mThreadDataBeans.get(position).getId())
-                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()));
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
             case R.id.ll_topic:
-                startActivity(new Intent(getActivity(), TopicInfoActivity.class).putExtra("topicBean", topicBeans.get(position)));
+                startActivity(new Intent(getActivity(), TopicInfoActivity.class)
+                        .putExtra("topicId", topicBeans.get(position).getId())
+                        .putExtra("topicTitle", topicBeans.get(position).getTitle())
+                        .putExtra("viewNum", topicBeans.get(position).getView_num()));
                 break;
             case R.id.civ_head://个人动态
-                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mThreadDataBeans.get(position).getUser_id()));
+                startActivityForResult(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
         }
 
@@ -254,4 +267,36 @@ public class SquareFragment extends BaseFragment implements MyItemOnClickListene
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
     }
+
+
+    public void refresh() {
+        if (mThreadDataBeans.size() != 0) {
+            startId = mThreadDataBeans.get(mThreadDataBeans.size() - 1).getId();
+        } else {
+            startId = "0";
+        }
+        endId = "0";
+        mThreadDataBeans.clear();
+        schoolAdapter.notifyDataSetChanged();
+        schoolModel.threadData(startId, endId, follow);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        L.e("result:" + resultCode + "," + requestCode);
+        if (data != null) {
+            ThreadDataBean threadDataBean = data.getParcelableExtra("mThreadDataBean");
+            mThreadDataBeans.get(indexPosition).setLike_num(threadDataBean.getLike_num());
+            mThreadDataBeans.get(indexPosition).setIs_praise(threadDataBean.getIs_praise());
+            mThreadDataBeans.get(indexPosition).setPost_num(threadDataBean.getPost_num());
+            schoolAdapter.notifyItemChanged(indexPosition);
+
+        }
+        if (requestCode == 111 && resultCode != mThreadDataBeans.get(indexPosition).getIs_attention()) {
+            schoolRefreshNoticeModel.getRefreshNoticeLiveData().setValue("取消/关注");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }

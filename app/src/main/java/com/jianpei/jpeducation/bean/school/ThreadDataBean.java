@@ -42,7 +42,7 @@ public class ThreadDataBean implements Parcelable {
     private String id;
     private String user_id;
     private String article_id;
-    private String status;
+    private int status;
     private String title;
     private String content;
     private String pic;
@@ -162,11 +162,11 @@ public class ThreadDataBean implements Parcelable {
         this.article_id = article_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -287,7 +287,7 @@ public class ThreadDataBean implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.user_id);
         dest.writeString(this.article_id);
-        dest.writeString(this.status);
+        dest.writeInt(this.status);
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.pic);
@@ -318,7 +318,7 @@ public class ThreadDataBean implements Parcelable {
         this.id = in.readString();
         this.user_id = in.readString();
         this.article_id = in.readString();
-        this.status = in.readString();
+        this.status = in.readInt();
         this.title = in.readString();
         this.content = in.readString();
         this.pic = in.readString();
