@@ -21,8 +21,7 @@
                 android:id="@+id/civ_head"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:src="@drawable/head_icon"
-                />
+                android:src="@drawable/head_icon" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -169,11 +168,6 @@
 
                 </RelativeLayout>
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/tv_wait_pay"-->
-                <!--                    style="@style/mineText"-->
-                <!--                    android:drawableTop="@drawable/mine_wait_pay"-->
-                <!--                    android:text="待支付" />-->
 
                 <TextView
                     android:id="@+id/tv_pay"
@@ -213,19 +207,18 @@
                     android:paddingBottom="20dp"
                     android:text="我的课程" />
 
-                <include layout="@layout/line" />
+                <!--                <include layout="@layout/line" />-->
 
                 <TextView
                     android:id="@+id/tv_my_tiku"
                     style="@style/mineText_two"
                     android:drawableLeft="@drawable/mine_my_tiku"
                     android:paddingTop="20dp"
-                    android:visibility="gone"
                     android:paddingBottom="20dp"
-                    android:text="我的题库" />
+                    android:text="我的题库"
+                    android:visibility="gone" />
 
-<!--                <include layout="@layout/line"-->
-<!--                    android:visibility="gone"/>-->
+                <include layout="@layout/line" />
 
 
                 <TextView
@@ -247,23 +240,17 @@
                     style="@style/mineText_two"
                     android:drawableLeft="@drawable/mine_my_dongtai"
                     android:paddingBottom="20dp"
-                    android:visibility="gone"
                     android:text="我的动态" />
 
-<!--                <include layout="@layout/line"-->
-<!--                    android:visibility="gone"/>-->
+                <include layout="@layout/line" />
+
 
                 <LinearLayout
                     android:id="@+id/ll_share"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     >
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/ll_share"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:paddingTop="20dp">-->
 
                     <TextView
                         android:layout_width="wrap_content"

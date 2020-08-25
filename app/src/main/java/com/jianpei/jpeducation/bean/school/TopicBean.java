@@ -3,6 +3,9 @@ package com.jianpei.jpeducation.bean.school;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.view.contentedittext.TObject;
+import com.shuyu.textutillib.model.TopicModel;
+
 /**
  * jpeducation
  * <p>
@@ -26,6 +29,7 @@ public class TopicBean implements Parcelable {
     private String view_num;
     private String post_num;
     private String content;
+
 
     public String getView_num() {
         return view_num;

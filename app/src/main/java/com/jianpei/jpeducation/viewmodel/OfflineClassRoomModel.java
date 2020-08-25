@@ -31,26 +31,30 @@ public class OfflineClassRoomModel extends BaseViewModel implements OfflineClass
 
 
     //获取下载中的数据
-    private MutableLiveData<List<ViodBean>> viodBeanLiveData;
+    private MutableLiveData<Integer> viodBeanLiveData;
 
-    public MutableLiveData<List<ViodBean>> getViodBeanLiveData() {
+    public MutableLiveData<Integer> getViodBeanLiveData() {
         if (viodBeanLiveData == null)
             viodBeanLiveData = new MutableLiveData<>();
         return viodBeanLiveData;
     }
 
+    /**
+     * 查询当前下载数量
+     * @param status
+     */
     @Override
     public void getRoomViodBean(int status) {
 
-        repository.getRoomViodBean(status).compose(setThread()).subscribe(new Observer<List<ViodBean>>() {
+        repository.getRoomViodBean(status).compose(setThread()).subscribe(new Observer<Integer>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(List<ViodBean> viodBeans) {
-                viodBeanLiveData.setValue(viodBeans);
+            public void onNext(Integer nums) {
+                viodBeanLiveData.setValue(nums);
             }
 
             @Override

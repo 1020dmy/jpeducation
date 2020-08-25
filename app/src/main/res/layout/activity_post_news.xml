@@ -17,32 +17,36 @@
         android:layout_marginTop="15dp"
         android:layout_weight="1"
         android:background="@color/white"
+
+
         android:orientation="vertical">
 
 
-        <!--        <EditText-->
+        <!--        <com.jianpei.jpeducation.view.contentedittext.TEditText-->
         <!--            android:id="@+id/et_content"-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="200dp"-->
+        <!--            android:inputType="textMultiLine"-->
         <!--            android:background="@null"-->
         <!--            android:gravity="top"-->
-        <!--            android:hint="输入帖子正文…"-->
         <!--            android:maxLength="800"-->
         <!--            android:padding="10dp"-->
-        <!--            android:textColorHint="@color/cA5A7B0"-->
-        <!--            android:textSize="@dimen/s_dp_13" />-->
+        <!--            android:textSize="@dimen/s_dp_13"-->
+        <!--            app:object_foreground_color="@color/colorPrimary"-->
+        <!--            app:object_background_color="@color/colorAccent"/>-->
 
-        <com.jianpei.jpeducation.view.contentedittext.ContentEditText
+
+        <com.shuyu.textutillib.RichEditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@null"
             android:gravity="top"
-            android:hint="输入帖子正文…"
-            android:maxLength="800"
+            android:inputType="textMultiLine"
             android:padding="10dp"
-            android:textColorHint="@color/cA5A7B0"
-            android:textSize="@dimen/s_dp_13" />
+
+            android:textSize="@dimen/s_dp_13"
+            app:richMaxLength="800" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -64,8 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="18dp"
-            android:visibility="gone"
-            android:src="@drawable/post_new_icon" />
+            android:src="@drawable/post_new_icon"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_huati"

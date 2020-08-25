@@ -18,7 +18,6 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.FeedbackActivity;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
-import com.jianpei.jpeducation.activitys.mine.InviteFriendsActivity;
 import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
 import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
 import com.jianpei.jpeducation.activitys.mine.MineTikuActivity;
@@ -186,7 +185,7 @@ public class MineFragment extends BaseFragment {
 
     @OnClick({R.id.civ_head, R.id.rl_wait_pay, R.id.tv_pay, R.id.tv_shop, R.id.tv_coupon, R.id.tv_integral, R.id.tv_my_class, R.id.tv_my_tiku, R.id.tv_my_data, R.id.tv_my_moving, R.id.ll_share, R.id.tv_suggest, R.id.tv_service, R.id.tv_signin, R.id.tv_jinbi, R.id.tv_jinbi_num, R.id.tv_name, R.id.iv_share})
     public void onViewClicked(View view) {
-        if (view.getId() != R.id.tv_service && view.getId()!=R.id.ll_share && view.getId()!=R.id.iv_share) {//除客服中心分享和设置，其他需要判断登陆状态
+        if (view.getId() != R.id.tv_service && view.getId() != R.id.ll_share && view.getId() != R.id.iv_share) {//除客服中心分享和设置，其他需要判断登陆状态
             if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 return;
@@ -223,7 +222,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MaterialActivity.class));
                 break;
             case R.id.tv_my_moving://我的动态
-                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("mUserInfoBean", mUserInfoBean));
+                startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mUserInfoBean.getId()));
                 break;
             case R.id.ll_share://邀请好友
             case R.id.iv_share:

@@ -22,6 +22,7 @@ public class DownloadReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
             DownloadApkUtils.installApk(context);
+
         } else if (intent.getAction().equals(DownloadManager.ACTION_NOTIFICATION_CLICKED)) {
             // 如果还未完成下载，用户点击Notification ，跳转到下载中心
             Intent viewDownloadIntent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);

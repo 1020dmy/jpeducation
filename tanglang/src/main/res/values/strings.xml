@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">mantis_im</string>
+    <!--    Main Activity-->
+    <string name="name_hint">请输入您的名字</string>
+    <string name="company_hint">请输入登录凭证</string>
+    <string name="loginBtn">进入</string>
+    <string name="chat_title">在线客服</string>
+
+
+    <string name="minutes_ago">分钟前</string>
+
+    <string name="face_Emoji">Emoji</string>
+    <string name="face_recently">Recently</string>
+    <string name="face_set_one">Default</string>
+    <string name="activity_chat_input_hint_string" translatable="false">请输入</string>
+    <string name="activity_chat_send_string">发送</string>
+    <string name="activity_chat_title_string">在线客服</string>
+    <string name="activity_MB_title_string">在线留言</string>
+    <string name="activity_chat_input_flag_String">对方正在输入...</string>
+    <string name="mb_header_content_string">您好！请填写一下信息，我们会尽快与您联系。</string>
+    <string name="mb_submit_string">提交留言</string>
+
+    <string name="title_activity_login">进入</string>
+    <string name="prompt_probe">probeid</string>
+    <string name="prompt_userid">userid</string>
+
+
+</resources>

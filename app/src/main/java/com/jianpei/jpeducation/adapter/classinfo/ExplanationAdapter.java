@@ -58,4 +58,5 @@ public class ExplanationAdapter extends RecyclerView.Adapter<ExplanationAdapter.
             imageView = itemView.findViewById(R.id.imageView);
         }
     }
+
 }

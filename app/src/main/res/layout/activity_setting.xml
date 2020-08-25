@@ -65,7 +65,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
-        android:text="用户协议"
+        android:text="用户隐私协议"
         android:textColor="@android:color/black" />
 
     <TextView

@@ -48,8 +48,6 @@ public class MineAttentionActivity extends BaseActivity {
     private MineAttentionAdapter mineAttentionAdapter;
     private List<AttentionBean> mAttentionBeans;
 
-    private ArrayList<AttentionBean> selectAttentionBeans;
-
 
     private MineAttentionModel mineAttentionModel;
 
@@ -92,22 +90,11 @@ public class MineAttentionActivity extends BaseActivity {
     @Override
     protected void initData() {
         mAttentionBeans = new ArrayList<>();
-        selectAttentionBeans=new ArrayList<>();
         mineAttentionAdapter = new MineAttentionAdapter(mAttentionBeans, this);
         mineAttentionAdapter.setMyCheckBoxClickListener(new MineAttentionAdapter.MyCheckBoxClickListener() {
             @Override
-            public void onCheckClick(int position, CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true) {
-                    if (selectAttentionBeans.size() == 10) {
-                        buttonView.setChecked(false);
-                        shortToast("最多可@10个好友");
-                        return;
-                    }
-                    selectAttentionBeans.add(mAttentionBeans.get(position));
-                } else {
-                    selectAttentionBeans.remove(mAttentionBeans.get(position));
-                }
-                mAttentionBeans.get(position).setSelect(isChecked);
+            public void onCheckClick(String message) {
+                shortToast(message);
             }
         });
         recyclerView.setAdapter(mineAttentionAdapter);
@@ -149,8 +136,8 @@ public class MineAttentionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_right:
-                if (selectAttentionBeans.size() != 0) {
-                    setResult(103, getIntent().putParcelableArrayListExtra("selectAttentionBeans", selectAttentionBeans));
+                if (mineAttentionAdapter.getSelectAttentionBeans() != null && mineAttentionAdapter.getSelectAttentionBeans().size() != 0) {
+                    setResult(103, getIntent().putParcelableArrayListExtra("selectAttentionBeans", mineAttentionAdapter.getSelectAttentionBeans()));
                 }
                 finish();
                 break;

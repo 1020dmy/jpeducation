@@ -22,6 +22,7 @@ import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
@@ -131,14 +132,22 @@ public class TopicInfoNewFragment extends BaseFragment implements MyItemOnClickL
             }
         });
         //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
             @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
+            public void onChanged(AttentionResultBean s) {
                 dismissLoading();
                 schoolAdapter.notifyDataSetChanged();
 
             }
         });
+//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+//            @Override
+//            public void onChanged(ThreadDataBean threadDataBean) {
+//                dismissLoading();
+//                schoolAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -192,7 +201,10 @@ public class TopicInfoNewFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+//                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
         }
     }

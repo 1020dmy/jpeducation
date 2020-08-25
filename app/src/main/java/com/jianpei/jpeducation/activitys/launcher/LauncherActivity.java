@@ -2,9 +2,10 @@ package com.jianpei.jpeducation.activitys.launcher;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ import com.jianpei.jpeducation.viewmodel.LauncherModel;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherBean> {
 
@@ -32,6 +35,8 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
     private String catId;
 
     private CountDownTimer countDownTimer;
+
+    private LauncherBean launcherBean;
 
     @Override
     protected int setLayoutView() {
@@ -53,54 +58,32 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
     @Override
     protected void onError(String message) {
         shortToast(message);
-        start(null);
+        tvTime.setVisibility(View.VISIBLE);
+        start();
     }
 
     @Override
     protected void onSuccess(LauncherBean data) {
-        Glide.with(LauncherActivity.this).load(data.getStartingInfo()).into(imageView);
-        start(data.getGuideList());
+        launcherBean = data;
+        tvTime.setVisibility(View.VISIBLE);
+        Glide.with(LauncherActivity.this).load(data.getStartingInfo().getImage_path()).into(imageView);
+        start();
     }
 
-    public void start(ArrayList<String> images) {
-
-        countDownTimer = new CountDownTimer(5000, 1000) {
+    public void start() {
+        int countdown = launcherBean.getStartingInfo().getCountdown();
+        if (countdown <= 0)
+            countdown = 3;
+        countDownTimer = new CountDownTimer(countdown * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvTime.setText(millisUntilFinished / 1000 + "秒");
-
             }
 
             @Override
             public void onFinish() {
-                if (isfirst == 0) {
-                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
-                } else {
-                    if (TextUtils.isEmpty(catId)) {
-                        startActivity(new Intent(LauncherActivity.this, SelectDisciplineActivity.class));
-                    } else {
-                        startActivity(new Intent(LauncherActivity.this, MainActivity.class));
-                    }
-                }
-                finish();
-
+                judgeActiviyt();
             }
         }.start();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (isfirst == 0) {
-//                    startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", images));
-//                } else {
-//                    if (TextUtils.isEmpty(catId)) {
-//                        startActivity(new Intent(LauncherActivity.this, SelectDisciplineActivity.class));
-//                    } else {
-//                        startActivity(new Intent(LauncherActivity.this, MainActivity.class));
-//                    }
-//                }
-//                finish();
-//            }
-//        }, 2000);
     }
 
     @Override
@@ -109,5 +92,27 @@ public class LauncherActivity extends BaseModelActivity<LauncherModel, LauncherB
             countDownTimer.cancel();
         countDownTimer = null;
         super.onStop();
+    }
+
+
+    @OnClick(R.id.tv_time)
+    public void onViewClicked() {
+        countDownTimer.cancel();
+        judgeActiviyt();
+
+    }
+
+    protected void judgeActiviyt() {
+        if (isfirst == 0) {
+            startActivity(new Intent(LauncherActivity.this, GuideActivity.class).putStringArrayListExtra("images", launcherBean.getGuideList()));
+            finish();
+        } else if (TextUtils.isEmpty(catId)) {
+            startActivity(new Intent(LauncherActivity.this, SelectDisciplineActivity.class));
+            finish();
+        } else {
+            startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+            finish();
+        }
+
     }
 }

@@ -32,6 +32,7 @@ public class MaterialDownloadManager {
 
 
     private LinkedHashMap<DownloadTask, MaterialInfoBean> downloadInfos = new LinkedHashMap<>();
+
     private MaterialDownloadListener materialDownloadListener;
 
 

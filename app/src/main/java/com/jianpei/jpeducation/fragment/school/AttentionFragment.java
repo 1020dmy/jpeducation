@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
 import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
+import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.MyLayoutManager;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.jianpei.jpeducation.viewmodel.SchoolRefreshNoticeModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -46,6 +52,7 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
 
     private SchoolAdapter schoolAdapter;
     private SchoolModel schoolModel;
+    private SchoolRefreshNoticeModel schoolRefreshNoticeModel;//数据刷新通知（广场，关注）
 
     private List<ThreadDataBean> mThreadDataBeans;
     private String startId = "0", endId = "0", follow = "1";
@@ -62,12 +69,20 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
 
     @Override
     protected void initView(View view) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new MyLayoutManager(getActivity()));
+
+        schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
+
+        schoolRefreshNoticeModel = new ViewModelProvider(getActivity()).get(SchoolRefreshNoticeModel.class);
+
 
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 showLoading("");
+
                 endId = "0";
                 if (mThreadDataBeans.size() > 0) {
                     startId = mThreadDataBeans.get(0).getId();
@@ -82,6 +97,8 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 showLoading("");
                 startId = "0";
                 if (mThreadDataBeans.size() > 0) {
@@ -97,14 +114,14 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
     @Override
     public void onResume() {
         super.onResume();
-        showLoading("");
-        endId = "0";
-        if (mThreadDataBeans.size() > 0) {
-            startId = mThreadDataBeans.get(0).getId();
-        } else {
-            startId = "0";
-        }
-        schoolModel.threadData(startId, endId, follow);
+//        showLoading("");
+//        endId = "0";
+//        if (mThreadDataBeans.size() > 0) {
+//            startId = mThreadDataBeans.get(0).getId();
+//        } else {
+//            startId = "0";
+//        }
+//        schoolModel.threadData(startId, endId, follow);
     }
 
     @Override
@@ -114,13 +131,12 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
         schoolAdapter.setMyItemOnClickListener(this);
         recyclerView.setAdapter(schoolAdapter);
         //
-        schoolModel = new ViewModelProvider(this).get(SchoolModel.class);
         //帖子列表
         schoolModel.getThreadDataBeansLiveData().observe(this, new Observer<List<ThreadDataBean>>() {
             @Override
             public void onChanged(List<ThreadDataBean> threadDataBeans) {
-                refreshLayout.finishRefresh();
-                refreshLayout.finishLoadMore();
+//                refreshLayout.finishRefresh();
+//                refreshLayout.finishLoadMore();
                 dismissLoading();
                 if (threadDataBeans != null && threadDataBeans.size() > 0) {
                     if ("0".equals(endId)) {
@@ -128,19 +144,30 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
                     } else {
                         mThreadDataBeans.addAll(threadDataBeans);
                     }
-                    schoolAdapter.notifyDataSetChanged();
                 }
-            }
-        });
-        //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
-            @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
-                dismissLoading();
                 schoolAdapter.notifyDataSetChanged();
 
             }
         });
+        //关注/取消关注
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
+            @Override
+            public void onChanged(AttentionResultBean s) {
+                dismissLoading();
+//                schoolAdapter.notifyDataSetChanged();
+//                refresh();
+                schoolRefreshNoticeModel.getRefreshNoticeLiveData().setValue("取消/关注");
+
+            }
+        });
+//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+//            @Override
+//            public void onChanged(ThreadDataBean threadDataBean) {
+//                dismissLoading();
+//                schoolAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -151,7 +178,13 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
                 schoolAdapter.notifyItemChanged(indexPosition);
             }
         });
-        //
+        //数据刷新通知
+        schoolRefreshNoticeModel.getRefreshNoticeLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                refresh();
+            }
+        });
         schoolModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
@@ -161,6 +194,9 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
                 shortToast(o);
             }
         });
+        showLoading("");
+        schoolModel.threadData(startId, endId, follow);
+
     }
 
 
@@ -183,7 +219,12 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
+                break;
+            case R.id.civ_head://个人动态
+                startActivityForResult(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mThreadDataBeans.get(position).getUser_id()),111);
                 break;
         }
     }
@@ -191,5 +232,37 @@ public class AttentionFragment extends BaseFragment implements MyItemOnClickList
     @Override
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
+    }
+
+    public void refresh() {
+
+        if (mThreadDataBeans.size() != 0) {
+            startId = mThreadDataBeans.get(mThreadDataBeans.size() - 1).getId();
+        } else {
+            startId = "0";
+        }
+        endId = "0";
+        mThreadDataBeans.clear();
+        schoolAdapter.notifyDataSetChanged();
+        schoolModel.threadData(startId, endId, follow);
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        L.e("result:" + resultCode + "," + requestCode);
+        if (data != null) {
+            ThreadDataBean threadDataBean = data.getParcelableExtra("mThreadDataBean");
+            mThreadDataBeans.get(indexPosition).setLike_num(threadDataBean.getLike_num());
+            mThreadDataBeans.get(indexPosition).setIs_praise(threadDataBean.getIs_praise());
+            mThreadDataBeans.get(indexPosition).setPost_num(threadDataBean.getPost_num());
+            schoolAdapter.notifyItemChanged(indexPosition);
+
+        }
+        if (requestCode == 111 && resultCode != mThreadDataBeans.get(indexPosition).getIs_attention()) {
+            schoolRefreshNoticeModel.getRefreshNoticeLiveData().setValue("取消/关注");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

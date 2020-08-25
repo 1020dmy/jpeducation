@@ -68,6 +68,7 @@ import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
 import com.jianpei.jpeducation.bean.json.InsertGardenJson;
 import com.jianpei.jpeducation.bean.json.InsertRecordJson;
 import com.jianpei.jpeducation.bean.json.IntegralDataJson;
+import com.jianpei.jpeducation.bean.json.MThreadDataJson;
 import com.jianpei.jpeducation.bean.json.MaterialDataJson;
 import com.jianpei.jpeducation.bean.json.OrderDataJson;
 import com.jianpei.jpeducation.bean.json.OrderInfoJson;
@@ -92,6 +93,7 @@ import com.jianpei.jpeducation.bean.material.MaterialDataBean;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
 import com.jianpei.jpeducation.bean.mclass.ClassDataBean;
 import com.jianpei.jpeducation.bean.mclass.MClassInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.bean.mine.MessageDataBean;
 import com.jianpei.jpeducation.bean.order.CheckPayStatusBean;
 import com.jianpei.jpeducation.bean.order.ClassGenerateOrderBean;
@@ -100,6 +102,7 @@ import com.jianpei.jpeducation.bean.order.OrderInfoBean;
 import com.jianpei.jpeducation.bean.order.OrderListBean;
 import com.jianpei.jpeducation.bean.order.OrderPaymentBean;
 import com.jianpei.jpeducation.bean.school.AttentionDataBean;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
@@ -261,7 +264,7 @@ public interface APIFunction {
      * 课程章节列表
      */
     @POST(UrlConfig.viodList)
-    Observable<BaseEntity<List<DirectorySectionBean>>> viodList(@Body ViodListJson viodListJson);
+    Observable<BaseEntity<List<ViodBean>>> viodList(@Body ViodListJson viodListJson);
 
     /**
      * 获取视频播放url
@@ -456,7 +459,8 @@ public interface APIFunction {
      * 关注/取消关注
      */
     @POST(UrlConfig.attention)
-    Observable<BaseEntity<ThreadDataBean>> attention(@Body AttentionJson attentionJson);
+    Observable<BaseEntity<AttentionResultBean>> attention(@Body AttentionJson attentionJson);
+//    Observable<BaseEntity<ThreadDataBean>> attention(@Body AttentionJson attentionJson);
 
     /**
      * 1-点赞/取消点赞
@@ -493,7 +497,7 @@ public interface APIFunction {
      * 1-我的动态
      */
     @POST(UrlConfig.mThreadData)
-    Observable<BaseEntity<MThreadDataBean>> mThreadData(@Body TopicDataJson topicDataJson);
+    Observable<BaseEntity<MThreadDataBean>> mThreadData(@Body MThreadDataJson mThreadDataJson);
 
     /**
      * 1-删除评论

@@ -313,7 +313,7 @@ public class ViodBean extends BaseNode {
             return false;
         }
         ViodBean that = (ViodBean) o;
-        return id == that.id && quality == that.quality;
+        return id == that.id;
     }
 
     @Override

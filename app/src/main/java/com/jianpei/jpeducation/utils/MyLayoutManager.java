@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * jpeducation
@@ -37,5 +38,14 @@ public class MyLayoutManager extends LinearLayoutManager {
     @Override
     public boolean canScrollVertically() {
         return isScrollEnabled && super.canScrollVertically();
+    }
+
+    @Override
+    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        try {
+            super.onLayoutChildren(recycler, state);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

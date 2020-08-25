@@ -3,6 +3,8 @@ package com.jianpei.jpeducation.bean.school;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jianpei.jpeducation.view.contentedittext.TObject;
+
 /**
  * jpeducation
  * <p>
@@ -11,7 +13,7 @@ import android.os.Parcelable;
  * <p>
  * Describe:
  */
-public class AttentionBean implements Parcelable {
+public class AttentionBean extends TObject implements Parcelable {
 
     /**
      * id : 16

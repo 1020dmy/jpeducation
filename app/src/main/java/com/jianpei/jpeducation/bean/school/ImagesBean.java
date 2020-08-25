@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
  * <p>
  * Describe:
  */
-public class ImagesBean implements Parcelable {
+public class ImagesBean implements Parcelable{
 
 
     /**
@@ -125,7 +125,8 @@ public class ImagesBean implements Parcelable {
         }
     };
 
-//    public void setmBounds(Rect mBounds) {
+
+    //    public void setmBounds(Rect mBounds) {
 //        this.mBounds = mBounds;
 //    }
 

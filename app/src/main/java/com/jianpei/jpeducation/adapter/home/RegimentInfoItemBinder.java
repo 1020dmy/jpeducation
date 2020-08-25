@@ -60,14 +60,15 @@ public class RegimentInfoItemBinder extends BaseItemBinder<RegimentInfoBean, Reg
             tvTitle = view.findViewById(R.id.tv_title);
             tvPrice = view.findViewById(R.id.tv_price);
             tvNums = view.findViewById(R.id.tv_nums);
-            addChildClickViewIds(R.id.tv_baoming);
         }
     }
 
     @Override
-    public void onChildClick(@NotNull MyHolder holder, @NotNull View view, RegimentInfoBean data, int position) {
+    public void onClick(@NotNull MyHolder holder, @NotNull View view, RegimentInfoBean data, int position) {
         context.startActivity(new Intent(context, GroupInfoActivity.class)
                 .putExtra("pointId", data.getPoint_id())
                 .putExtra("id", data.getId()));
     }
+
+
 }

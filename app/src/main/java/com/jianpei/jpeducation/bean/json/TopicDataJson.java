@@ -12,6 +12,7 @@ public class TopicDataJson {
     private int pageIndex;
     private int pageSize;
 
+
     public TopicDataJson(int pageIndex, int pageSize) {
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
@@ -32,4 +33,6 @@ public class TopicDataJson {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
+
+
 }

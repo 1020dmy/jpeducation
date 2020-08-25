@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+
+//    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion externalCompileSdkVersion
+    buildToolsVersion externalBuildToolsVersion
+
+    defaultConfig {
+
+        minSdkVersion  externalMinSdkVersion
+        targetSdkVersion externalTargetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+//    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile androidDependencies.support_v4
+//    compile androidDependencies.appcompat_v7
+
+    implementation externalAndroidAppAppcompat
+    implementation externalAndroidAppAnnotation
+
+}
+
+//apply from: '../bintray.gradle'

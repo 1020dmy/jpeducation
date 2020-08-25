@@ -42,7 +42,7 @@ public class ThreadDataBean implements Parcelable {
     private String id;
     private String user_id;
     private String article_id;
-    private String status;
+    private int status;
     private String title;
     private String content;
     private String pic;
@@ -59,7 +59,7 @@ public class ThreadDataBean implements Parcelable {
     private String is_my_thread;
     private String is_praise;
     private String is_post;
-    private String is_attention;
+    private int is_attention;
 
     private List<AttentionBean> users;
     private List<TopicBean> topics;
@@ -82,11 +82,11 @@ public class ThreadDataBean implements Parcelable {
 
     private List<ImagesBean> images;
 
-    public String getIs_attention() {
+    public int getIs_attention() {
         return is_attention;
     }
 
-    public void setIs_attention(String is_attention) {
+    public void setIs_attention(int is_attention) {
         this.is_attention = is_attention;
     }
 
@@ -162,11 +162,11 @@ public class ThreadDataBean implements Parcelable {
         this.article_id = article_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -287,7 +287,7 @@ public class ThreadDataBean implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.user_id);
         dest.writeString(this.article_id);
-        dest.writeString(this.status);
+        dest.writeInt(this.status);
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.pic);
@@ -303,7 +303,7 @@ public class ThreadDataBean implements Parcelable {
         dest.writeString(this.is_my_thread);
         dest.writeString(this.is_praise);
         dest.writeString(this.is_post);
-        dest.writeString(this.is_attention);
+        dest.writeInt(this.is_attention);
         dest.writeTypedList(this.users);
         dest.writeTypedList(this.topics);
         dest.writeList(this.images);
@@ -318,7 +318,7 @@ public class ThreadDataBean implements Parcelable {
         this.id = in.readString();
         this.user_id = in.readString();
         this.article_id = in.readString();
-        this.status = in.readString();
+        this.status = in.readInt();
         this.title = in.readString();
         this.content = in.readString();
         this.pic = in.readString();
@@ -334,7 +334,7 @@ public class ThreadDataBean implements Parcelable {
         this.is_my_thread = in.readString();
         this.is_praise = in.readString();
         this.is_post = in.readString();
-        this.is_attention = in.readString();
+        this.is_attention = in.readInt();
         this.users = in.createTypedArrayList(AttentionBean.CREATOR);
         this.topics = in.createTypedArrayList(TopicBean.CREATOR);
         this.images = new ArrayList<ImagesBean>();

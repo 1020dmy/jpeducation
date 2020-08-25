@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.school;
 
 
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -13,7 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.TopicListAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.school.TopicBean;
@@ -25,13 +29,16 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TopicListActivity extends BaseActivity {
+public class TopicListActivity extends BaseActivity implements TopicListAdapter.MyItemClickListener {
 
 
     @BindView(R.id.iv_back)
@@ -56,7 +63,7 @@ public class TopicListActivity extends BaseActivity {
 
     private TopicListModel topicListModel;
 
-    private ArrayList<TopicBean> selectTopicBean;
+//    private ArrayList<TopicBean> selectTopicBean;
 
 
     @Override
@@ -97,26 +104,8 @@ public class TopicListActivity extends BaseActivity {
     @Override
     protected void initData() {
         topicBeans = new ArrayList<>();
-        selectTopicBean = new ArrayList<>();
         topicListAdapter = new TopicListAdapter(topicBeans);
-        topicListAdapter.setMyCheckBoxClickListener(new TopicListAdapter.MyCheckBoxClickListener() {
-            @Override
-            public void onCheckClick(int position, CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked == true) {
-                    if (selectTopicBean.size() == 5) {
-                        buttonView.setChecked(false);
-                        shortToast("最多可选择5个话题");
-                        return;
-                    }
-                    selectTopicBean.add(topicBeans.get(position));
-                } else {
-                    selectTopicBean.remove(topicBeans.get(position));
-                }
-                topicBeans.get(position).setSelect(isChecked);
-                L.e("size:" + selectTopicBean.size());
-            }
-        });
+        topicListAdapter.setMyItemClickListener(this);
         recyclerView.setAdapter(topicListAdapter);
 
         topicListModel = new ViewModelProvider(this).get(TopicListModel.class);
@@ -164,12 +153,16 @@ public class TopicListActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_right:
-                if (selectTopicBean.size() != 0) {
-                    setResult(102, getIntent().putParcelableArrayListExtra("selectTopicBean", selectTopicBean));
+                if (topicListAdapter.getSelectTopicBeans() != null && topicListAdapter.getSelectTopicBeans().size() != 0) {
+                    setResult(102, getIntent().putParcelableArrayListExtra("selectTopicBean", topicListAdapter.getSelectTopicBeans()));
                 }
                 finish();
                 break;
         }
     }
 
+    @Override
+    public void onClick(String message) {
+        shortToast(message);
+    }
 }

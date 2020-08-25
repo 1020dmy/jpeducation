@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_FFFFFF">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000F00</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="color_06CB94">#06CB94</color>
+    <color name="color_C9D1D4">#C9D1D4</color>
+    <color name="color_F4F4F4">#F4F4F4</color>
+    <color name="color_202034">#202034</color>
+    <color name="my_bg_start">#E0563F</color>
+    <color name="my_bg_end">#FF7954</color>
+    <color name="my_bg_selected_start">#B63C27</color>
+    <color name="my_bg_selected_end">#E95A33</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="color_001D15">#001D15</color>
+    <color name="color_3E464C">#3E464C</color>
+    <color name="grey_b">#b9bec2</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_CBCBCB">#CBCBCB</color>
+    <color name="color_FF3434">#FF3434</color>
+    <color name="color_A1A6AB">#A1A6AB</color>
+    <color name="color_E4E4E4">#E4E4E4</color>
+</resources>

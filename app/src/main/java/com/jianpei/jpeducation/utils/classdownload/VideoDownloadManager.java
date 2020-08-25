@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.utils.classdownload;
 
 import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +16,7 @@ import com.aliyun.vodplayerview.listener.RefreshStsCallback;
 import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.room.MyRoomDatabase;
+import com.jianpei.jpeducation.utils.L;
 
 
 import java.io.File;
@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class VideoDownloadManager {
 
 
+
     public static final String TAG = "AliyunDownloadManager";
 
     public static final String MEMORY_LESS_MSG = "memory_less";
@@ -56,7 +57,8 @@ public class VideoDownloadManager {
     /**
      * 下载路径
      */
-    private String downloadDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AliPlayerDemoDownload";
+
+    private String downloadDir;
 //    /**
 //     * 加密文件路径
 //     */
@@ -121,9 +123,11 @@ public class VideoDownloadManager {
 
         @Override
         public void onPrepared(final List<ViodBean> infos) {
+            L.e("=========threadName1:"+Thread.currentThread().getName());
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    L.e("=========threadName2:"+Thread.currentThread().getName());
                     for (ClassDownloadListener aliyunDownloadInfoListener : outListenerList) {
                         aliyunDownloadInfoListener.onPrepared(infos);
                     }
@@ -246,7 +250,7 @@ public class VideoDownloadManager {
         @Override
         public void onDelete(final ViodBean info) {
             deleteMediaInfo(info);
-            MyRoomDatabase.getInstance().viodBeanDao().delete(info);
+//            MyRoomDatabase.getInstance().viodBeanDao().delete(info);
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -343,6 +347,8 @@ public class VideoDownloadManager {
 
     private VideoDownloadManager() {
         this.mContext = MyApplication.getInstance();
+        downloadDir = mContext.getExternalCacheDir() + "/AliPlayerDemoDownload";
+        L.e("==========下载路径：" + downloadDir);
 //        mDatabaseManager = DatabaseManager.getInstance();
         if (!TextUtils.isEmpty(downloadDir)) {
             File file = new File(downloadDir);
@@ -421,10 +427,10 @@ public class VideoDownloadManager {
     public String getDownloadDir() {
         return downloadDir;
     }
-
-    public void setDownloadDir(String downloadDir) {
-        this.downloadDir = downloadDir;
-    }
+//
+//    public void setDownloadDir(String downloadDir) {
+//        this.downloadDir = downloadDir;
+//    }
 
 //    public String getEncryptFilePath() {
 //        return encryptFilePath;
@@ -534,6 +540,8 @@ public class VideoDownloadManager {
         jniDownloader.setOnPreparedListener(new AliMediaDownloader.OnPreparedListener() {
             @Override
             public void onPrepared(MediaInfo mediaInfo) {
+                L.e("=========threadName3:"+Thread.currentThread().getName());
+
                 List<TrackInfo> trackInfos = mediaInfo.getTrackInfos();
                 for (TrackInfo trackInfo : trackInfos) {
                     TrackInfo.Type type = trackInfo.getType();
@@ -699,7 +707,7 @@ public class VideoDownloadManager {
 
         //如果没有sts，则是恢复数据的操作，需要重新请求sts
 //        if (downloadMediaInfo.getVidAuth() == null) {
-//            getVidSts(downloadMediaInfo, INTENT_STATE_START);
+//            getVidSts(downloadMediaInfo, INTENT_STATE_START);x
 //        } else {
         //直接开始下载
         //判断磁盘空间是否足够
@@ -1304,8 +1312,6 @@ public class VideoDownloadManager {
     public void setRefreshStsCallback(final RefreshStsCallback refreshStsCallback) {
 
     }
-
-
 
 
 }

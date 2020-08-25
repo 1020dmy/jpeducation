@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -32,6 +31,7 @@ import com.jianpei.jpeducation.fragment.tiku.TikuFragment;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.dialog.UpVersionDialog;
+import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
 
@@ -87,6 +87,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     private VersionDetectModel versionDetectModel;
 
+    //
+
 
     @Override
     protected int setLayoutView() {
@@ -116,6 +118,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 //                shortToast("已经获取全部权限");
             }
         });
+
+
 
 
     }
@@ -167,7 +171,7 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             }
         });
         //检测更新
-//        versionDetectModel.versionDetect();
+        versionDetectModel.versionDetect();
     }
 
     @Override
@@ -314,4 +318,16 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         }
         super.onNewIntent(intent);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        DownloadClassManager.getInstance().stopAllDownloads();
+        DownloadClassManager.getInstance().release();
+
+        super.onDestroy();
+
+    }
+
+
 }

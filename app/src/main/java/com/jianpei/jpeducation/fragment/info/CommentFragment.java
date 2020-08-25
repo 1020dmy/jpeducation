@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.classinfo.CommentAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.CommentBean;
 import com.jianpei.jpeducation.bean.CommentListBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
@@ -28,7 +29,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentFragment extends BaseFragment {
+public class CommentFragment extends LazyLoadFragment {
 
 
     @BindView(R.id.recyclerView)
@@ -59,7 +60,7 @@ public class CommentFragment extends BaseFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        commentModel = new ViewModelProvider(getActivity()).get(CommentModel.class);
+        commentModel = new ViewModelProvider(this).get(CommentModel.class);
         classInfoModel = new ViewModelProvider(getActivity()).get(ClassInfoModel.class);
 
 
@@ -112,9 +113,12 @@ public class CommentFragment extends BaseFragment {
 //            }
 //        });
 
+
+    }
+
+    @Override
+    protected void loadData() {
         showLoading("");
         commentModel.commentList("1", groupId, "", page, pageSize);
-
-
     }
 }

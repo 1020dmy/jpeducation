@@ -114,8 +114,13 @@ public class MaterialRepository implements MaterialContract.Repository {
                     Iterator<MaterialInfoBean> infoBeanIterator = arrayListBaseEntity.getData().iterator();
                     while (infoBeanIterator.hasNext()) {
                         MaterialInfoBean materialInfoBean = infoBeanIterator.next();
-                        if (MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId()) != null) {
-                            infoBeanIterator.remove();
+                        MaterialInfoBean materialInfoBean1 = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId());
+                        if (materialInfoBean1 != null) {
+//                            infoBeanIterator.remove();
+                            materialInfoBean.setStatus(materialInfoBean1.getStatus());
+                            materialInfoBean.setPath(materialInfoBean1.getPath());
+
+
                         }
                     }
                     return arrayListBaseEntity;

@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * jpeducation
@@ -22,10 +21,10 @@ public class LauncherBean implements Parcelable {
      */
 
     private String userProtocol;
-    private String startingInfo;
     private String telephone;
     private ArrayList<String> guideList;
     private ShareDataBean shareData;
+    private StartingInfoBean startingInfo;
 
     public String getTelephone() {
         return telephone;
@@ -35,13 +34,6 @@ public class LauncherBean implements Parcelable {
         this.telephone = telephone;
     }
 
-    public String getStartingInfo() {
-        return startingInfo;
-    }
-
-    public void setStartingInfo(String startingInfo) {
-        this.startingInfo = startingInfo;
-    }
 
     public ArrayList<String> getGuideList() {
         return guideList;
@@ -67,6 +59,14 @@ public class LauncherBean implements Parcelable {
         this.shareData = shareData;
     }
 
+    public StartingInfoBean getStartingInfo() {
+        return startingInfo;
+    }
+
+    public void setStartingInfo(StartingInfoBean startingInfo) {
+        this.startingInfo = startingInfo;
+    }
+
 
     @Override
     public int describeContents() {
@@ -76,10 +76,10 @@ public class LauncherBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.userProtocol);
-        dest.writeString(this.startingInfo);
         dest.writeString(this.telephone);
         dest.writeStringList(this.guideList);
         dest.writeParcelable(this.shareData, flags);
+        dest.writeParcelable(this.startingInfo, flags);
     }
 
     public LauncherBean() {
@@ -87,10 +87,10 @@ public class LauncherBean implements Parcelable {
 
     protected LauncherBean(Parcel in) {
         this.userProtocol = in.readString();
-        this.startingInfo = in.readString();
         this.telephone = in.readString();
         this.guideList = in.createStringArrayList();
         this.shareData = in.readParcelable(ShareDataBean.class.getClassLoader());
+        this.startingInfo = in.readParcelable(StartingInfoBean.class.getClassLoader());
     }
 
     public static final Creator<LauncherBean> CREATOR = new Creator<LauncherBean>() {

@@ -8,6 +8,7 @@ import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.classinfo.ViodListBean;
 import com.jianpei.jpeducation.bean.json.GroupInfoJson;
 import com.jianpei.jpeducation.bean.json.ViodListJson;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
 import com.jianpei.jpeducation.contract.CIDirectoryContract;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class CIDirectoryRepository extends BaseRepository implements CIDirectory
     }
 
     @Override
-    public Observable<BaseEntity<List<DirectorySectionBean>>> viodList(String class_id, String chapter_id, String type) {
+    public Observable<BaseEntity<List<ViodBean>>> viodList(String class_id, String chapter_id, String type) {
         return RetrofitFactory.getInstance().API().viodList(new ViodListJson(class_id, chapter_id, type));
     }
 }

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="RatioImageView">
-        <attr name="ratio" format="float"/>
-    </declare-styleable>
 
-    <declare-styleable name="NineGridLayout">
-        <attr name="sapcing" format="dimension"/>
-    </declare-styleable>
+
+
 
     <declare-styleable name="NineGridImageView">
         <attr format="dimension" name="singleImgSize"/>
@@ -37,5 +33,12 @@
         <attr name="yc_topShow" format="boolean" />
         <!--下面是否显示阴影-->
         <attr name="yc_bottomShow" format="boolean" />
+    </declare-styleable>
+
+
+    <!-- TEditText -->
+    <declare-styleable name="TEditText">
+        <attr name="object_foreground_color" format="color" />
+        <attr name="object_background_color" format="color" />
     </declare-styleable>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout"
+    android:id="@+id/ll_section"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:background="@color/white"
@@ -63,7 +63,7 @@
             android:id="@+id/tv_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:padding="10dp"
             android:textColor="@color/cE73B30"
             android:textSize="@dimen/s_dp_12"
             android:visibility="gone" />

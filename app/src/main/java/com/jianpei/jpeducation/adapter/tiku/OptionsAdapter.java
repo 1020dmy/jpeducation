@@ -22,12 +22,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.tiku.SimulationExerciseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.view.URLDrawable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -8,10 +8,12 @@ import com.jianpei.jpeducation.bean.json.DelThreadJson;
 import com.jianpei.jpeducation.bean.json.EvaluationDataJson;
 import com.jianpei.jpeducation.bean.json.GardenPraiseJson;
 import com.jianpei.jpeducation.bean.json.InsertEvaluationJson;
+import com.jianpei.jpeducation.bean.json.MThreadDataJson;
 import com.jianpei.jpeducation.bean.json.ReplyDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadDataJson;
 import com.jianpei.jpeducation.bean.json.ThreadInfoJson;
 import com.jianpei.jpeducation.bean.json.TopicDataJson;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.EvaluationDataBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.MThreadDataBean;
@@ -49,26 +51,49 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
 
     //关注/取消关注
     @Override
-    public Observable<BaseEntity<ThreadDataBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
-        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<ThreadDataBean>, BaseEntity<ThreadDataBean>>() {
-            @Override
-            public BaseEntity<ThreadDataBean> apply(BaseEntity<ThreadDataBean> threadDataBeanBaseEntity) throws Exception {
-                if (mThreadDataBeans == null) {
-                    return threadDataBeanBaseEntity;
-                }
-                if (threadDataBeanBaseEntity.isSuccess()) {
-                    for (ThreadDataBean threadDataBean : mThreadDataBeans) {
-                        if (threadDataBean.getUser_id().equals(threadDataBeanBaseEntity.getData().getUser_id())) {
-                            threadDataBean.setIs_attention(threadDataBeanBaseEntity.getData().getIs_attention());
-                            threadDataBean.setIs_praise(threadDataBeanBaseEntity.getData().getIs_praise());
-                            threadDataBean.setLike_num(threadDataBeanBaseEntity.getData().getLike_num());
-                        }
-                    }
-                }
-                return threadDataBeanBaseEntity;
-            }
-        });
+    public Observable<BaseEntity<AttentionResultBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
+
+        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id));
+//        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<AttentionResultBean>, BaseEntity<AttentionResultBean>>() {
+//            @Override
+//            public BaseEntity<AttentionResultBean> apply(BaseEntity<AttentionResultBean> attentionResultBeanBaseEntity) throws Exception {
+//                if (mThreadDataBeans == null) {
+//                    return attentionResultBeanBaseEntity;
+//                }
+//                if (attentionResultBeanBaseEntity.isSuccess()) {
+//                    for (ThreadDataBean threadDataBean : mThreadDataBeans) {
+//                        if (threadDataBean.getUser_id().equals(attentionResultBeanBaseEntity.getData().getAttention_id())) {
+//                            threadDataBean.setIs_attention(attentionResultBeanBaseEntity.getData().getIs_attention());
+//                        }
+//                    }
+//                }
+//                return attentionResultBeanBaseEntity;
+//            }
+//        });
     }
+
+
+//    @Override
+//    public Observable<BaseEntity<ThreadDataBean>> attention(String attention_id, String topic_id, String thread_id, List<ThreadDataBean> mThreadDataBeans) {
+//        return RetrofitFactory.getInstance().API().attention(new AttentionJson(attention_id, topic_id, thread_id)).map(new Function<BaseEntity<ThreadDataBean>, BaseEntity<ThreadDataBean>>() {
+//            @Override
+//            public BaseEntity<ThreadDataBean> apply(BaseEntity<ThreadDataBean> threadDataBeanBaseEntity) throws Exception {
+//                if (mThreadDataBeans == null) {
+//                    return threadDataBeanBaseEntity;
+//                }
+//                if (threadDataBeanBaseEntity.isSuccess()) {
+//                    for (ThreadDataBean threadDataBean : mThreadDataBeans) {
+//                        if (threadDataBean.getUser_id().equals(threadDataBeanBaseEntity.getData().getUser_id())) {
+//                            threadDataBean.setIs_attention(threadDataBeanBaseEntity.getData().getIs_attention());
+//                            threadDataBean.setIs_praise(threadDataBeanBaseEntity.getData().getIs_praise());
+//                            threadDataBean.setLike_num(threadDataBeanBaseEntity.getData().getLike_num());
+//                        }
+//                    }
+//                }
+//                return threadDataBeanBaseEntity;
+//            }
+//        });
+//    }
 
     //点赞/取消点赞
     @Override
@@ -102,9 +127,10 @@ public class SchoolRepository extends BaseRepository implements SchoolContract.R
 
     //我的动态
     @Override
-    public Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize) {
-        return RetrofitFactory.getInstance().API().mThreadData(new TopicDataJson(pageIndex, pageSize));
+    public Observable<BaseEntity<MThreadDataBean>> mThreadData(int pageIndex, int pageSize, String userId) {
+        return RetrofitFactory.getInstance().API().mThreadData(new MThreadDataJson(pageIndex, pageSize, userId));
     }
+
     //删除动态
     @Override
     public Observable<BaseEntity<String>> delThread(String thread_id) {

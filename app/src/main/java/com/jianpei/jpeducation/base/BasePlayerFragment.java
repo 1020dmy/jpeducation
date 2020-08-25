@@ -101,6 +101,14 @@ public abstract class BasePlayerFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (aliyunPlayerView != null) {
+            aliyunPlayerView.onDestroy();
+        }
+    }
+
     public void updatePlayerViewMode() {
         if (aliyunPlayerView != null) {
             int orientation = getResources().getConfiguration().orientation;

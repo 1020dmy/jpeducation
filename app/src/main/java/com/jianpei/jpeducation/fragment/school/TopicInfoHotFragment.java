@@ -18,10 +18,12 @@ import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.school.SchoolAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.bean.school.AttentionResultBean;
 import com.jianpei.jpeducation.bean.school.GardenPraiseBean;
 import com.jianpei.jpeducation.bean.school.ThreadDataBean;
 import com.jianpei.jpeducation.bean.school.ThreadFromTopicDataBean;
 import com.jianpei.jpeducation.viewmodel.SchoolModel;
+import com.jianpei.jpeducation.viewmodel.TopicInfoModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -49,6 +51,8 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
     private String topic_id, is_hot = "1";
 
     private SchoolModel schoolModel;
+    private TopicInfoModel topicInfoModel;
+
     private SchoolAdapter schoolAdapter;
     private List<ThreadDataBean> mThreadDataBeans;
 
@@ -102,6 +106,9 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 ;
             }
         });
+
+        topicInfoModel = new ViewModelProvider(getActivity()).get(TopicInfoModel.class);
+
     }
 
     @Override
@@ -117,6 +124,7 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
+                topicInfoModel.getViewNamLiveData().setValue(threadFromTopicDataBean.getTopic_info().getView_num());
                 if (threadFromTopicDataBean != null) {
                     if ("0".equals(endId)) {
                         mThreadDataBeans.addAll(0, threadFromTopicDataBean.getData());
@@ -128,14 +136,21 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
             }
         });
         //关注/取消关注
-        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+        schoolModel.getAttentionLiveData().observe(this, new Observer<AttentionResultBean>() {
             @Override
-            public void onChanged(ThreadDataBean threadDataBean) {
+            public void onChanged(AttentionResultBean integer) {
                 dismissLoading();
                 schoolAdapter.notifyDataSetChanged();
-
             }
         });
+//        schoolModel.getThreadDataBeanLiveData().observe(this, new Observer<ThreadDataBean>() {
+//            @Override
+//            public void onChanged(ThreadDataBean threadDataBean) {
+//                dismissLoading();
+//                schoolAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
         //点赞/取消点赞
         schoolModel.getGardenPraiseBeanLiveData().observe(this, new Observer<GardenPraiseBean>() {
             @Override
@@ -161,7 +176,7 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
     @Override
     public void onResume() {
         super.onResume();
-        showLoading("");
+//        showLoading("");
         endId = "0";
         if (mThreadDataBeans.size() > 0) {
             startId = mThreadDataBeans.get(0).getId();
@@ -190,7 +205,10 @@ public class TopicInfoHotFragment extends BaseFragment implements MyItemOnClickL
                 break;
             case R.id.tv_message://评论
             case R.id.relativeLayout://详情
-                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+//                startActivity(new Intent(getActivity(), PostInfoActivity.class).putExtra("threadDataBean", mThreadDataBeans.get(position)));
+                startActivityForResult(new Intent(getActivity(), PostInfoActivity.class)
+                        .putExtra("thread_id", mThreadDataBeans.get(position).getId())
+                        .putExtra("userId", mThreadDataBeans.get(position).getUser_id()), 111);
                 break;
         }
     }

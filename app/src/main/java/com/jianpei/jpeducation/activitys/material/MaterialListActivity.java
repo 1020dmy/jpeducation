@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys.material;
 
 import android.content.Intent;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.material.MaterialAdapter;
@@ -322,6 +324,10 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
         switch (view.getId()) {
             case R.id.tv_down:
+                if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                    startActivity(new Intent(this, LoginActivity.class));
+                    return;
+                }
                 mMaterialInfoBean = (MaterialInfoBean) data;
                 if ("2".equals(mMaterialInfoBean.getStatus())) {//下载完成直接打开
                     startActivity(new Intent(MaterialListActivity.this, PdfReaderActivity.class).putExtra("materialInfoBean", mMaterialInfoBean));

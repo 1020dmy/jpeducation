@@ -107,7 +107,7 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
                 switchFragment(1);
                 break;
             case R.id.tv_bottom_xieyi:
-                startActivity(new Intent(this, GuiZeActivity.class).putExtra("title", "协议须知").putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)));
+                startActivity(new Intent(this, GuiZeActivity.class).putExtra("title",R.string.xieyi_name).putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)));
                 break;
         }
     }

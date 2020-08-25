@@ -1,7 +1,5 @@
 package com.jianpei.jpeducation.api.interceptor;
 
-import android.nfc.Tag;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.jianpei.jpeducation.api.config.HttpConfig;

@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.fragment.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseBinderAdapter;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.TryListenerListActivity;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
@@ -157,6 +159,11 @@ public class HomeFragment extends BaseFragment {
         materialInfoItemBinder.setMaterialInfoItemOnClickListener(new MaterialInfoItemOnClickListener() {
             @Override
             public void OnItemClick(MaterialInfoItemBinder.MyHolder myHolder, MaterialInfoBean materialInfoBean) {
+
+                if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
 
                 if (materialInfoBean.getStatus().equals("2")) {
                     startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));

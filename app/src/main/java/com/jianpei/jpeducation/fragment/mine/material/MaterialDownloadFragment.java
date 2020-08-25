@@ -217,7 +217,6 @@ public class MaterialDownloadFragment extends BaseFragment implements MyItemOnCl
             //进度
             if (downloadItems == null)
                 return;
-//            ProgressUtil.updateProgressToViewWithMark(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, false);
             ProgressUtil.updateProgressToView(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, totalLength, false);
         }
 

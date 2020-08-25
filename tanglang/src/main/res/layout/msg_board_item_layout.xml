@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_FFFFFF"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/mb_item_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_FF3434"
+        android:layout_marginEnd="3dp"
+        />
+
+    <TextView
+        android:id="@+id/mb_item_title_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_202034"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/mb_item_content_et"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
+        android:maxEms="10"
+        android:maxLines="1"
+        android:layout_marginStart="10dp"
+        android:singleLine="true"
+        android:textSize="15sp" />
+</LinearLayout>

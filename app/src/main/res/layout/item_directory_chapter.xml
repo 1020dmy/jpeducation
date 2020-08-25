@@ -4,7 +4,6 @@
     android:layout_height="50dp"
     android:paddingLeft="14dp"
     android:id="@+id/rl_chapter"
-    android:focusableInTouchMode="true"
     android:paddingRight="10dp">
 
     <TextView

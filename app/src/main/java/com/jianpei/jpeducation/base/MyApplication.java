@@ -3,10 +3,13 @@ package com.jianpei.jpeducation.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.TestImageLoader;
+import com.previewlibrary.ZoomMediaLoader;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -56,9 +59,9 @@ public class MyApplication extends Application {
         //螳螂
 //        MIMManager.getInstance().init(getApplicationContext(),7011 , "5ea91b77dc4cec0b99d0b7da","");
 
+        //查看大图
+        ZoomMediaLoader.getInstance().init(new TestImageLoader());
 
-
-//        PrivateService.initService(getApplicationContext(), "assets/encryptedApp.dat");
 
     }
 

@@ -14,21 +14,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.player.TryPlayerActivity;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.classinfo.DirectoryAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryChapterBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectoryProfessionBean;
 import com.jianpei.jpeducation.bean.classinfo.DirectorySectionBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
+import com.jianpei.jpeducation.bean.mclass.ViodBean;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.viewmodel.CIDirectoryModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoFModel;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -38,7 +46,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DirectoryFragment extends BaseFragment {
+public class DirectoryFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
 
     @BindView(R.id.recyclerView)
@@ -60,6 +68,8 @@ public class DirectoryFragment extends BaseFragment {
     private ClassInfoFModel classInfoFModel;
 
     private String groupId;
+
+
 
     public DirectoryFragment(String groupId) {
         this.groupId = groupId;
@@ -86,19 +96,18 @@ public class DirectoryFragment extends BaseFragment {
     @Override
     protected void initData(Context mContext) {
 
-        directoryAdapter = new DirectoryAdapter();
+        directoryAdapter = new DirectoryAdapter(this);
         recyclerView.setAdapter(directoryAdapter);
         ciDirectoryModel.getMutableLiveData().observe(getActivity(), new Observer<List<DirectoryProfessionBean>>() {
             @Override
             public void onChanged(List<DirectoryProfessionBean> directoryProfessionBeans) {
                 dismissLoading();
                 directoryAdapter.setList(directoryProfessionBeans);
-
             }
         });
-        ciDirectoryModel.getViodListBeansLiveData().observe(getActivity(), new Observer<List<DirectorySectionBean>>() {
+        ciDirectoryModel.getViodListBeansLiveData().observe(getActivity(), new Observer<List<ViodBean>>() {
             @Override
-            public void onChanged(List<DirectorySectionBean> viodListBeans) {
+            public void onChanged(List<ViodBean> viodListBeans) {
                 dismissLoading();
                 directoryAdapter.nodeAddData(directoryChapterBean, 0, viodListBeans);
 
@@ -165,47 +174,48 @@ public class DirectoryFragment extends BaseFragment {
                 }
             }
         });
-        directoryAdapter.addChildClickViewIds(R.id.tv_try);
-        directoryAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                switch (view.getId()) {
-                    case R.id.tv_try:
-                        DirectorySectionBean directorySectionBean = (DirectorySectionBean) directoryAdapter.getData().get(position);
-                        if ("1".equals(directorySectionBean.getIsfree())) {
-                            startActivity(new Intent(getActivity(), TryPlayerActivity.class).putExtra("directorySectionBean", directorySectionBean));
-                        } else {
-                            shortToast("当前未完成购买无法播放");
-                        }
-                        break;
-                }
-
-            }
-        });
-        directoryAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                switch (view.getId()) {
-                    case R.id.rl_chapter:
-                        directoryChapterBean = (DirectoryChapterBean) adapter.getData().get(position);
-                        if (!directoryChapterBean.isExpanded() && directoryChapterBean.getBaseNodes().size() == 0) {
-                            showLoading("");
-                            DirectoryProfessionBean DirectoryProfessionBean = (DirectoryProfessionBean) adapter.getData().get(directoryAdapter.findParentNode(position));
-                            ciDirectoryModel.viodList(DirectoryProfessionBean.getId(), directoryChapterBean.getId());
-                        }
-                        directoryAdapter.expandOrCollapse(position);
-                        break;
-                }
-            }
-        });
-
-        showLoading("");
-        ciDirectoryModel.classDirectory(groupId);
-
 
     }
 
+    /**
+     * 加载数据
+     */
+    @Override
+    protected void loadData() {
+        showLoading("");
+        ciDirectoryModel.classDirectory(groupId);
+    }
+
+
     @OnClick(R.id.tv_changeClass)
     public void onViewClicked() {
+    }
+
+    @Override
+    public void onItemClick(int position, View view) {
+
+    }
+
+
+    @Override
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
+        switch (view.getId()) {
+            case R.id.rl_chapter:
+                directoryChapterBean = (DirectoryChapterBean) data;
+                if (directoryChapterBean.isExpanded() && directoryChapterBean.getBaseNodes().size() == 0) {
+                    showLoading("");
+                    ciDirectoryModel.viodList(directoryChapterBean.getClass_id(), directoryChapterBean.getId());
+                }
+                break;
+            case R.id.tv_try:
+                ViodBean viodBean = (ViodBean) data;
+                if ("1".equals(viodBean.getIsfree())) {
+                    startActivity(new Intent(getActivity(), TryPlayerActivity.class).putExtra("viodBeanId", viodBean.getId()));
+                } else {
+                    shortToast("当前未完成购买无法播放");
+                }
+                break;
+        }
+
     }
 }

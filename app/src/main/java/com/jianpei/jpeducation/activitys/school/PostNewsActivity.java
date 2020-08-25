@@ -4,6 +4,8 @@ package com.jianpei.jpeducation.activitys.school;
 import android.content.Intent;
 
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,15 +24,22 @@ import com.jianpei.jpeducation.adapter.school.PostNewsPhotoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.school.AttentionBean;
 import com.jianpei.jpeducation.bean.school.TopicBean;
+import com.jianpei.jpeducation.utils.BitmapUtil;
 import com.jianpei.jpeducation.utils.FileUtils;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SelectphotoUtils;
 import com.jianpei.jpeducation.utils.dialog.PostNewsResultDialog;
 import com.jianpei.jpeducation.utils.keyboard.OnSoftKeyBoardChangeListener;
 import com.jianpei.jpeducation.utils.keyboard.SoftKeyBoardListener;
-import com.jianpei.jpeducation.view.contentedittext.ContentEditText;
+import com.jianpei.jpeducation.view.contentedittext.TEditText;
+import com.jianpei.jpeducation.view.contentedittext.TObject;
 import com.jianpei.jpeducation.viewmodel.PostNewsModel;
 import com.jianpei.jpeducation.viewmodel.UploadFileModel;
+import com.shuyu.textutillib.RichEditBuilder;
+import com.shuyu.textutillib.RichEditText;
+import com.shuyu.textutillib.listener.OnEditTextUtilJumpListener;
+import com.shuyu.textutillib.model.TopicModel;
+import com.shuyu.textutillib.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,8 +59,10 @@ public class PostNewsActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    //    @BindView(R.id.et_content)
+//    ContentEditText etContent;
     @BindView(R.id.et_content)
-    ContentEditText etContent;
+    RichEditText etContent;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.iv_icon)
@@ -73,10 +84,13 @@ public class PostNewsActivity extends BaseActivity {
 
     private List<File> files;
 
-    private ArrayList<TopicBean> selectTopicBean;//选择的话题
+//    private ArrayList<TopicBean> selectTopicBean;//选择的话题
 
     //选择的关注
-    private ArrayList<AttentionBean> selectAttentionBeans;
+//    private ArrayList<AttentionBean> selectAttentionBeans;
+
+    private ArrayList<TopicModel> topicModels = new ArrayList<>();
+    private ArrayList<UserModel> userModels = new ArrayList<>();
 
     private PostNewsModel postNewsModel;
 
@@ -84,9 +98,9 @@ public class PostNewsActivity extends BaseActivity {
 
     private UploadFileModel uploadFileModel;//上传图片
 
-    private StringBuilder stringBuilder;
+//    private StringBuilder stringBuilder;
 
-    private String topics;
+//    private String topics;
 
 
     @Override
@@ -117,6 +131,23 @@ public class PostNewsActivity extends BaseActivity {
         });
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
+        RichEditBuilder richEditBuilder = new RichEditBuilder();
+        richEditBuilder.setEditText(etContent)
+                .setTopicModels(topicModels)
+                .setUserModels(userModels)
+                .setEditTextAtUtilJumpListener(new OnEditTextUtilJumpListener() {
+                    @Override
+                    public void notifyAt() {
+//                        JumpUtil.goToUserList(MainActivity.this, MainActivity.REQUEST_USER_CODE_INPUT);
+                    }
+
+                    @Override
+                    public void notifyTopic() {
+//                        JumpUtil.goToTopicList(MainActivity.this, MainActivity.REQUEST_TOPIC_CODE_INPUT);
+                    }
+                })
+                .builder();
     }
 
     @Override
@@ -167,10 +198,7 @@ public class PostNewsActivity extends BaseActivity {
         uploadFileModel.getSuccessLiveData().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
-
-                postNewsModel.insertGarden(etContent.getText().toString(), strings, selectAttentionBeans, selectTopicBean);
-
-
+                postNewsModel.insertGarden(etContent.getText().toString(), strings, userModels, topicModels);
             }
         });
         uploadFileModel.getErrData().observe(this, new Observer<String>() {
@@ -192,11 +220,15 @@ public class PostNewsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_right:
+                L.e("=====size:" + topicModels.size() + "," + userModels.size());
+//                etContent.getRealTopicList();
+//                etContent.getRealUserList();
+//                L.e("=====cotent:"+etContent.getRealText());
                 showLoading("");
                 if (files.size() > 0) {
                     uploadFileModel.uploadFile("image", files);
                 } else {
-                    postNewsModel.insertGarden(etContent.getText().toString(), null, selectAttentionBeans, selectTopicBean);
+                    postNewsModel.insertGarden(etContent.getText().toString(), null, userModels, topicModels);
                 }
                 break;
             case R.id.iv_icon:
@@ -238,7 +270,8 @@ public class PostNewsActivity extends BaseActivity {
             case SelectphotoUtils.REQUEST_TAKE_PHOTO: // 拍照并进行裁剪
                 L.e("拍照返回");
 //                selectphotoUtils.cropPhoto(selectphotoUtils.imgUri, true);
-                files.add(selectphotoUtils.imgFile);
+                String aaa = BitmapUtil.compressImage2(selectphotoUtils.imgFile.getPath());//图片压缩
+                files.add(new File(aaa));
                 postNewsPhotoAdapter.notifyItemChanged(files.size() - 1);
                 break;
             case SelectphotoUtils.SCAN_OPEN_PHONE://相册返回
@@ -247,9 +280,9 @@ public class PostNewsActivity extends BaseActivity {
                     if (fileUtils == null) {
                         fileUtils = new FileUtils(this);
                     }
-                    files.add(new File(fileUtils.getFilePathByUri(data.getData())));
+                    String bbb = BitmapUtil.compressImage(fileUtils.getFilePathByUri(data.getData()), getExternalCacheDir() + "/image");//图片压缩
+                    files.add(new File(bbb));
                     postNewsPhotoAdapter.notifyItemChanged(files.size() - 1);
-
                 }
                 break;
             case SelectphotoUtils.REQUEST_CROP://裁剪返回
@@ -260,14 +293,14 @@ public class PostNewsActivity extends BaseActivity {
             case 101:
                 if (data == null)
                     return;
-                selectTopicBean = data.getParcelableArrayListExtra("selectTopicBean");
-                getResultData(selectTopicBean);
+                List<TopicBean> topicBeans = data.getParcelableArrayListExtra("selectTopicBean");
+                getResultData(topicBeans);
                 break;
             case 102:
                 if (data == null)
                     return;
-                selectAttentionBeans = data.getParcelableArrayListExtra("selectAttentionBeans");
-                getResultData2(selectAttentionBeans);
+                List<AttentionBean> attentionBeans = data.getParcelableArrayListExtra("selectAttentionBeans");
+                getResultData2(attentionBeans);
                 break;
 
         }
@@ -277,23 +310,42 @@ public class PostNewsActivity extends BaseActivity {
     private void getResultData(List<TopicBean> topicBeans) {
         if (topicBeans != null && topicBeans.size() > 0) {
             for (TopicBean topicBean : topicBeans) {
-                etContent.addAtSpan("#", topicBean.getTitle());
+                TopicModel topicModel = new TopicModel(topicBean.getTitle(), topicBean.getId());
+//                topicModels.add(topicModel);
+                etContent.resolveTopicResult(topicModel);
             }
         }
     }
 
-    private void getResultData2(ArrayList<AttentionBean> selectAttentionBeans) {
+    private void getResultData2(List<AttentionBean> selectAttentionBeans) {
         if (selectAttentionBeans != null && selectAttentionBeans.size() > 0) {
             for (AttentionBean attentionBean : selectAttentionBeans) {
-                etContent.addAtSpan("@", attentionBean.getUser_name());
+                UserModel userModel = new UserModel(attentionBean.getUser_name(), attentionBean.getId());
+//                userModels.add(userModel);
+                etContent.resolveAtResult(userModel);
+
             }
         }
-
-
     }
+
 
     @Override
     protected void onDestroy() {
+        if (postNewsResultDialog != null)
+            postNewsResultDialog.dismiss();
+        postNewsResultDialog = null;
         super.onDestroy();
+    }
+    public void showSoftInputFromWindow(EditText editText){
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    @Override
+    protected void onResume() {
+        showSoftInputFromWindow(etContent);
+        super.onResume();
     }
 }

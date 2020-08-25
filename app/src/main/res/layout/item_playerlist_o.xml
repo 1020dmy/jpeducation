@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_title"
     android:layout_width="match_parent"
     android:layout_height="54dp"
     android:background="@color/cF6F6F6"
@@ -7,10 +8,10 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/ProgressBar"-->
-<!--        android:layout_width="12dp"-->
-<!--        android:layout_height="12dp" />-->
+    <!--    <ProgressBar-->
+    <!--        android:id="@+id/ProgressBar"-->
+    <!--        android:layout_width="12dp"-->
+    <!--        android:layout_height="12dp" />-->
 
     <TextView
         android:id="@+id/tv_title"
