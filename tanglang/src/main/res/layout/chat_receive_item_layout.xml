@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_chat_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_chat_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/item_head_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/item_chat_time"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/item_chat_content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_head_img"
+        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@+id/item_head_img"
+        android:background="@drawable/chat_bg_receive_style">
+
+        <TextView
+            android:id="@+id/item_chat_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/color_3E464C"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/item_chat_img"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+        <WebView
+            android:id="@+id/item_chat_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="WebViewLayout"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+    <com.mantis.im_service.ui.views.FlowGroupView
+        android:id="@+id/item_chat_select_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_chat_content_group"
+        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@+id/item_head_img" />
+
+</RelativeLayout>

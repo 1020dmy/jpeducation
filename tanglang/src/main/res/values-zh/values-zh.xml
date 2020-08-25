@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/teambition/git/EmojiRelease/yykEmoji/src/main/res/values-zh/strings.xml -->
+    <eat-comment/>
+    <string name="face_Emoji">Emoji</string>
+    <string name="face_recently">最近</string>
+    <string name="face_set_one">默认</string>
+</resources>

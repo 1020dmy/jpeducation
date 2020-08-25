@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion externalCompileSdkVersion
+    buildToolsVersion externalBuildToolsVersion
+    defaultConfig {
+        minSdkVersion externalMinSdkVersion
+        targetSdkVersion externalTargetSdkVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'   // aar目录
+        }
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation externalAndroidAppAppcompat
+    implementation externalAndroidAppConstraintlayout
+    implementation externalAndroidAppMaterial
+    implementation externalAndroidAppAnnotation
+    implementation externalAndroidAppLifecycle
+    testImplementation externalAndroidAppJunit
+    androidTestImplementation externalAndroidAppExtJunit
+    androidTestImplementation externalAndroidAppEspresso
+    //RecyclerView：
+//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    //Glide4：
+    implementation externalAndroidAppGlide
+    annotationProcessor externalAndroidAppGlideCompiler
+    //图片选择器
+    implementation externalAndroidPictureSelector
+    implementation externalAndroidGifView
+    implementation externalAndroidImagePreview
+    api files('libs/mantis_im_sdk.aar')
+}
