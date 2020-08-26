@@ -26,21 +26,26 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//    configurations {
-//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    android.applicationVariants.all { variant ->
+//        def appName = "teachercenter-hd-dt"
+//
+//        //添加git commit Id 信息，可以对应上 打包那条提交记录 更新日期：2020/07/07
+//        def cmd = "git rev-parse --short HEAD"
+//
+//        def commitId = cmd.execute().text.trim()
+//
+//        def versionName = "${variant.versionName}"
+//        variant.outputs.all { output ->
+//            print(output)
+//            outputFileName = "${appName}_${versionName}_${variant.buildType.name}_${commitId}.apk"
+//        }
 //    }
+
     android.applicationVariants.all { variant ->
-        def appName = "teachercenter-hd-dt"
+        variant.outputs.all {
+            outputFileName = "jpeducation" +
+                    "${defaultConfig.versionName}_${variant.buildType.name}_${releaseTime()}.apk"
 
-        //添加git commit Id 信息，可以对应上 打包那条提交记录 更新日期：2020/07/07
-        def cmd = "git rev-parse --short HEAD"
-
-        def commitId = cmd.execute().text.trim()
-
-        def versionName = "${variant.versionName}"
-        variant.outputs.all { output ->
-            print(output)
-            outputFileName = "${appName}_${versionName}_${variant.buildType.name}_${commitId}.apk"
         }
     }
 
