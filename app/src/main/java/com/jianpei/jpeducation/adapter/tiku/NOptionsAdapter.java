@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,113 +29,69 @@ import java.util.List;
 /**
  * jpeducation
  * <p>
- * Created by sjl on 2020/7/21
+ * Created by sjl on 2020/8/26
  * Copyright © 2020年 weibo. All rights reserved.
  * <p>
  * Describe:
  */
-public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder> {
+public class NOptionsAdapter extends RecyclerView.Adapter<NOptionsAdapter.MyHolder> {
 
     private List<AnswerBean> answerBeans;
-
     private Context context;
+    private String type;//1.单选，2多选，5简答
 
-    private String single;//单选或者多选
+//    public List<AnswerBean> mineAnswers;
 
-    private int lastPosition = -1;
-    private String mineAnswer;//我的答案；
-
-    private String answerId;
-
-    private String source;
-
-
-    public OptionsAdapter(List<AnswerBean> answerBeans, Context context) {
+    public NOptionsAdapter(List<AnswerBean> answerBeans, Context context) {
         this.answerBeans = answerBeans;
         this.context = context;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setLastPosition(int lastPosition) {
-        this.lastPosition = lastPosition;
-    }
-
-    public void setSingle(String single) {
-
-        this.single = single;
-    }
-
-
-    public String getMineAnswer() {
-        if ("2".equals(single))
-            getMineAnswers();
-        return mineAnswer;
-    }
-
-    //获取选择的答案ID
-    public void getMineAnswerIds() {
-
+    public String getMineAnswerIds() {
+        String answerIds;
         StringBuilder stringBuilder = new StringBuilder();
         for (AnswerBean answerBean : answerBeans) {
-            if ("1".equals(answerBean.getIs_selected())) {
+            if (1 == answerBean.getIs_selected()) {
                 stringBuilder.append(answerBean.getId());
                 stringBuilder.append(",");
             }
         }
-        if (!TextUtils.isEmpty(stringBuilder.toString())) {
+        if (!TextUtils.isEmpty(stringBuilder.toString()))
             stringBuilder.replace(stringBuilder.length() - 1, stringBuilder.length(), "");
-            answerId = stringBuilder.toString();
-        } else {
-            answerId = "";
-        }
+        answerIds = stringBuilder.toString();
         stringBuilder.replace(0, stringBuilder.length(), "");
         stringBuilder.reverse();
+        stringBuilder = null;
+        return answerIds;
     }
 
-    //获取选择的答案
-    public void getMineAnswers() {
+    public String getMineAnswer() {
+        String answers;
         StringBuilder stringBuilder = new StringBuilder();
-
         for (AnswerBean answerBean : answerBeans) {
-            if ("1".equals(answerBean.getIs_selected())) {
+            if (1 == answerBean.getIs_selected()) {
                 stringBuilder.append(answerBean.getOptions_index());
                 stringBuilder.append("、");
             }
         }
-        if (!TextUtils.isEmpty(stringBuilder.toString())) {
+        if (!TextUtils.isEmpty(stringBuilder.toString()))
             stringBuilder.replace(stringBuilder.length() - 1, stringBuilder.length(), "");
-            mineAnswer = stringBuilder.toString();
-        } else {
-            mineAnswer = "";
-        }
+        answers = stringBuilder.toString();
         stringBuilder.replace(0, stringBuilder.length(), "");
         stringBuilder.reverse();
+        stringBuilder = null;
+        return answers;
     }
 
-
-    public void setMineAnswer(String mineAnswer) {
-        this.mineAnswer = mineAnswer;
-    }
-
-    public String getAnswerId() {
-        if ("2".equals(single)) {
-            getMineAnswerIds();
-        }
-
-        return answerId;
-    }
-
-    public void setAnswerId(String answerId) {
-        this.answerId = answerId;
-    }
 
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_options, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_options_new, parent, false);
         return new MyHolder(view);
     }
 
@@ -145,22 +99,15 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         AnswerBean answerBean = answerBeans.get(position);
         holder.tv_options.setText(answerBean.getOptions_index());
-//        Spanned spanned = Html.fromHtml(answerBean.getAnswers_info());
         holder.tv_description.setText(Html.fromHtml(answerBean.getAnswers_info(), getImageGetter(holder.tv_description), null));
 
-
-        if ("1".equals(answerBean.getIs_selected())) {//已经选中
-            holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.cF7F7F7));
-            holder.compatCheckBox.setChecked(true);
-            lastPosition = position;
-            mineAnswer = answerBean.getOptions_index();
-            answerId = answerBean.getId();
-
-        } else {//没有选中
+        if (0 == answerBean.getIs_selected()) {//没有选中
             holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.compatCheckBox.setChecked(false);
+        } else if (1 == answerBean.getIs_selected()) {//选中
+            holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.cF7F7F7));
+            holder.compatCheckBox.setChecked(true);
         }
-
 
     }
 
@@ -186,32 +133,23 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyHolder
 
         @Override
         public void onClick(View v) {
+            AnswerBean answerBean = answerBeans.get(getLayoutPosition());
+            if ("1".equals(type)) {//单选
+                if (answerBean.getIs_selected() == 1)
+                    return;
+                for (AnswerBean answerBean1 : answerBeans) {
+                    answerBean1.setIs_selected(0);
+                }
+                answerBean.setIs_selected(1);
+                notifyDataSetChanged();
 
-//            if ("5".equals(source) || "4".equals(source)) {
-//                return;
-//            }
-//
-//            AnswerBean answerBean = answerBeans.get(getLayoutPosition());
-//            if ("1".equals(single)) {//单选
-//                if (!answerBean.isSelect() == true) {//未选中
-//                    if (lastPosition != -1) {
-//                        answerBeans.get(lastPosition).setIs_selected("0");
-//                        notifyItemChanged(lastPosition);
-//                    }
-//                    answerBean.setIs_selected("1");
-//                    lastPosition = getLayoutPosition();
-//                    notifyItemChanged(lastPosition);
-//                }
-//            } else {//多选
-//                if ("0".equals(answerBean.getIs_selected())) {
-//                    answerBean.setIs_selected("1");
-//                } else {
-//                    answerBean.setIs_selected("0");
-//                }
-//                notifyItemChanged(getLayoutPosition());
-//            }
+            } else if ("2".equals(type)) {//多选
+                answerBean.setIs_selected(answerBean.getIs_selected() == 0 ? 1 : 0);
+                notifyItemChanged(getLayoutPosition());
+            }
         }
     }
+
 
     private Html.ImageGetter getImageGetter(TextView textView) {
         return new Html.ImageGetter() {

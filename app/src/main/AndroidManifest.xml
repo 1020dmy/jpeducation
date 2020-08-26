@@ -27,6 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activitys.tiku.daily.DailyWrongAndParsingActivity"></activity>
+        <activity android:name=".activitys.tiku.daily.DailyAnswerActivity" />
+        <activity android:name=".activitys.tiku.CheckWrongQuestionsActivity" />
+        <activity android:name=".activitys.tiku.result.SimulationExerciseResultActivity" />
         <activity
             android:name=".activitys.mine.InviteFriendsActivity"
             android:configChanges="screenSize|orientation"
@@ -82,22 +86,22 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.TestPaperInfoActivity"
+            android:name=".activitys.tiku.simulation.TestPaperInfoActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.SimulationExerciseActivity"
+            android:name=".activitys.tiku.simulation.SimulationExerciseActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.SimulationExerciseListActivity"
+            android:name=".activitys.tiku.simulation.SimulationExerciseListActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.AnswerResultActivity"
+            android:name=".activitys.tiku.result.AnswerResultActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -107,12 +111,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.TodayAnswerActivity"
+            android:name=".activitys.tiku.daily.TodayAnswerActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.TodayExerciseListActivity"
+            android:name=".activitys.tiku.daily.TodayExerciseListActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

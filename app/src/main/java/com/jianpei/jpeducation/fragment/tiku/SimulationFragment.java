@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.tiku.TestPaperInfoActivity;
+import com.jianpei.jpeducation.activitys.tiku.simulation.TestPaperInfoActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.TodayExerciseAdapter;
-import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.PaperDataBean;
@@ -24,6 +24,9 @@ import com.jianpei.jpeducation.bean.tiku.TestPaperBean;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.TodayExerciseListModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +45,7 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 
-    private CurriculumDataBean curriculumDataBean;
+//    private CurriculumDataBean curriculumDataBean;
 
     private TodayExerciseListModel todayExerciseListModel;
     //
@@ -52,9 +55,10 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
 
     private int page = 1, pageSize = 10;
     private String catId, paperType;
+    private String classId;
 
-    public SimulationFragment(CurriculumDataBean curriculumDataBean, String paperType) {
-        this.curriculumDataBean = curriculumDataBean;
+    public SimulationFragment(String classId, String paperType) {
+        this.classId = classId;
         this.paperType = paperType;
     }
 
@@ -68,13 +72,30 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
         todayExerciseListModel = new ViewModelProvider(this).get(TodayExerciseListModel.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                todayExerciseListModel.paperData(page, pageSize, catId, classId, "", paperType);
+            }
+        });
+
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                todayExerciseListModel.paperData(page, pageSize, catId, classId, "", paperType);
+
+
+            }
+        });
+
 
     }
 
     @Override
     protected void loadData() {
-        shortToast("");
-        todayExerciseListModel.paperData(page, pageSize, catId, curriculumDataBean.getId(), "", paperType);
+        todayExerciseListModel.paperData(page, pageSize, catId, classId, "", paperType);
 
     }
 
@@ -90,9 +111,8 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
         todayExerciseListModel.getTestPaperBeanLiveData().observe(this, new Observer<PaperDataBean>() {
             @Override
             public void onChanged(PaperDataBean paperDataBean) {
-//                refreshLayout.finishRefresh();
-//                refreshLayout.finishLoadMore();
-//                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 if (page == 1) {
                     mTestPaperBeans.clear();
                 }
@@ -103,9 +123,8 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
         todayExerciseListModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
-//                refreshLayout.finishRefresh();
-//                refreshLayout.finishLoadMore();
-//                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 shortToast(o);
             }
         });
@@ -115,7 +134,11 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
     @Override
     public void onItemClick(int position, View view) {
 
-        startActivity(new Intent(getActivity(), TestPaperInfoActivity.class).putExtra("testPaperBean", mTestPaperBeans.get(position)));
+        startActivity(new Intent(getActivity(), TestPaperInfoActivity.class)
+                .putExtra("paperId", mTestPaperBeans.get(position).getId())
+                .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id()));
+
+
     }
 
     @Override

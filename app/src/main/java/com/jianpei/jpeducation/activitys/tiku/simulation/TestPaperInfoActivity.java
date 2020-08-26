@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.simulation;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.simulation.SimulationExerciseActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
 import com.jianpei.jpeducation.bean.tiku.TestPaperBean;
@@ -54,8 +55,13 @@ public class TestPaperInfoActivity extends BaseActivity {
     Button button;
     private AnswerModel answerModel;
     //
-    private TestPaperBean testPaperBean;
-    private PaperInfoBean mPaperInfoBean;
+
+    private String paperId;//试卷Id
+    private String recordId;//答题记录
+
+    //
+    private int restartType;//0添加新试卷，2重做，1继续答题
+    private String paperName;
 
     @Override
     protected int setLayoutView() {
@@ -72,17 +78,19 @@ public class TestPaperInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        testPaperBean = getIntent().getParcelableExtra("testPaperBean");
+        paperId = getIntent().getStringExtra("paperId");
+        recordId = getIntent().getStringExtra("recordId");
+        //后去试卷详情结果
         answerModel.getPaperInfoBeanLiveData().observe(this, new Observer<PaperInfoBean>() {
             @Override
             public void onChanged(PaperInfoBean paperInfoBean) {
                 dismissLoading();
-                mPaperInfoBean = paperInfoBean;
-                setData();
+                setData(paperInfoBean);
 
 
             }
         });
+        //获取试卷详情失败
         answerModel.getErrData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String o) {
@@ -93,37 +101,38 @@ public class TestPaperInfoActivity extends BaseActivity {
         });
 
         showLoading("");
-        answerModel.paperInfo(testPaperBean.getId());
+        answerModel.paperInfo(paperId);
 
     }
 
-    private void setData() {
-        if (testPaperBean == null) {
-            shortToast("获取数据失败！");
+    private void setData(PaperInfoBean paperInfoBean) {
+        if (paperInfoBean == null) {
             return;
         }
-        tvName.setText(mPaperInfoBean.getPaper_name());
-        tvYears.setText(mPaperInfoBean.getTrue_topic_year());
-        tyType.setText(mPaperInfoBean.getPaper_type_str());
-        tvTotalScore.setText("");
-        tvTime.setText(mPaperInfoBean.getAnswer_time() + "分钟");
-        tvPeopleNum.setText(mPaperInfoBean.getAnswer_number());
+        restartType = paperInfoBean.getComplete_status();
+        paperName = paperInfoBean.getPaper_name();
+        //
+        tvName.setText(paperName);
+        tvYears.setText(paperInfoBean.getTrue_topic_year());
+        tyType.setText(paperInfoBean.getPaper_type_str());
+        tvTime.setText(paperInfoBean.getAnswer_time() + "分钟");
+        tvPeopleNum.setText(paperInfoBean.getAnswer_number());
 
-        tvSingleTitle.setText(mPaperInfoBean.getSingle_des());
-        tvSingleContent.setText(mPaperInfoBean.getSingle_son_des());
+        tvSingleTitle.setText(paperInfoBean.getSingle_des());
+        tvSingleContent.setText(paperInfoBean.getSingle_son_des());
 
-        tvMultipleTitle.setText(mPaperInfoBean.getMultiple_des());
-        tvMultipleContent.setText(mPaperInfoBean.getMultiple_son_des());
+        tvMultipleTitle.setText(paperInfoBean.getMultiple_des());
+        tvMultipleContent.setText(paperInfoBean.getMultiple_son_des());
 
-        tvReplyTitle.setText(mPaperInfoBean.getReply_des());
-        tvReplyContent.setText(mPaperInfoBean.getReply_son_des());
-        tvTotalScore.setText(mPaperInfoBean.getTotal_score() + "分");
+        tvReplyTitle.setText(paperInfoBean.getReply_des());
+        tvReplyContent.setText(paperInfoBean.getReply_son_des());
+        tvTotalScore.setText(paperInfoBean.getTotal_score() + "分");
 
-        if (mPaperInfoBean.getComplete_status() == 0) {
+        if (restartType == 0) {
             button.setText("开始考试");
-        } else if (mPaperInfoBean.getComplete_status() == 1) {
+        } else if (restartType == 1) {
             button.setText("继续考试");
-        } else if (mPaperInfoBean.getComplete_status() == 2) {
+        } else if (restartType == 2) {
             button.setText("重新考试");
         }
     }
@@ -136,7 +145,11 @@ public class TestPaperInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.button:
-                startActivity(new Intent(this, SimulationExerciseActivity.class).putExtra("paperInfoBean", mPaperInfoBean).putExtra("recordId", testPaperBean.getUser_record_id()));
+                startActivity(new Intent(this, SimulationExerciseActivity.class)
+                        .putExtra("recordId", recordId)
+                        .putExtra("paperId", paperId)
+                        .putExtra("paperName", paperName)
+                        .putExtra("restartType", restartType));
                 finish();
                 break;
         }

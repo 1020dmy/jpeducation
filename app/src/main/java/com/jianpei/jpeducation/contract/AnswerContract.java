@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.contract;
 
 import com.jianpei.jpeducation.api.base.BaseEntity;
+import com.jianpei.jpeducation.bean.tiku.AnswerBean;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
@@ -27,7 +28,7 @@ public interface AnswerContract {
         //获取问题（添加答题记录）
         Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer);
 
-        //获取问题（添加答题记录）
+        //获取问题（添加答题记录）第一次请求
         Observable<BaseEntity<InsertRecordBean>> insertRecord(String paper_id, String record_id, String restart_type);
 
         //试卷详情
@@ -54,7 +55,7 @@ public interface AnswerContract {
     }
 
     interface Model {
-        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer);
+        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time,String answers);
 
         void insertRecord(String paper_id, String record_id, String restart_type);
 

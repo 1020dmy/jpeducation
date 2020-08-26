@@ -55,6 +55,7 @@
                 <TextView
                     android:id="@+id/tv_two"
                     style="@style/tiku_txt"
+                    android:visibility="gone"
                     android:drawableTop="@drawable/tiku_two"
                     android:text="章节练习" />
 
@@ -98,6 +99,7 @@
                 <TextView
                     android:id="@+id/tv_eight"
                     style="@style/tiku_txt"
+                    android:visibility="gone"
                     android:drawableTop="@drawable/tiku_eight"
                     android:text="题库答疑" />
 

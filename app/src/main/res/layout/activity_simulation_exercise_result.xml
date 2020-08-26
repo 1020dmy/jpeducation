@@ -19,27 +19,79 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/c161820"
+                android:textSize="@dimen/s_dp_14" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:paddingLeft="10dp">
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="练习名称："
-                    android:textColor="@color/c161820"
-                    android:textSize="@dimen/s_dp_14" />
+                    android:text="时间："
+                    android:textColor="@color/c8A8A8A"
+                    android:textSize="@dimen/s_dp_13" />
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_use_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/c161820"
-                    android:textSize="@dimen/s_dp_14" />
+                    android:text="52分14秒"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_13" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总 分："
+                    android:textColor="@color/c8A8A8A"
+                    android:textSize="@dimen/s_dp_13" />
+
+                <TextView
+                    android:id="@+id/tv_total_fraction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="130分"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_13" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总时间："
+                    android:textColor="@color/c8A8A8A"
+                    android:textSize="@dimen/s_dp_13" />
+
+                <TextView
+                    android:id="@+id/tv_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150分钟"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_13" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -47,8 +99,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center_vertical"
-                android:paddingLeft="22dp"
-                android:paddingTop="20dp">
+                android:paddingLeft="22dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -65,7 +116,7 @@
                         android:textSize="@dimen/s_dp_13" />
 
                     <TextView
-                        android:id="@+id/tv_score"
+                        android:id="@+id/tv_fraction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="44"
@@ -178,7 +229,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="练习生成时间："
+                    android:text="考试生成时间："
                     android:textColor="@color/c888B96"
                     android:textSize="@dimen/s_dp_12" />
 
@@ -212,7 +263,7 @@
                         android:layout_weight="1"
                         android:background="@color/cFF0000"
                         android:gravity="center"
-                        android:text="练习分析"
+                        android:text="考试分析"
                         android:textColor="@color/white"
                         android:textSize="@dimen/s_dp_13" />
 
@@ -321,24 +372,24 @@
             android:textSize="@dimen/s_dp_16" />
 
         <TextView
-            android:id="@+id/tv_look_error"
+            android:id="@+id/tv_again"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/c80FF0000"
             android:gravity="center"
-            android:text="查看错题"
+            android:text="重新测试"
             android:textColor="@color/white"
             android:textSize="@dimen/s_dp_16" />
 
         <TextView
-            android:id="@+id/tv_parsing"
+            android:id="@+id/tv_answer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/cFF0000"
             android:gravity="center"
-            android:text="全部解析"
+            android:text="查看答案"
             android:textColor="@color/white"
             android:textSize="@dimen/s_dp_16" />
     </LinearLayout>

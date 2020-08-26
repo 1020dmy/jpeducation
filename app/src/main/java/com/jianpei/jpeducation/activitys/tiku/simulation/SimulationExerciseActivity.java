@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.simulation;
 
 
 import android.content.Intent;
@@ -23,6 +23,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.AnswerCardActivity;
+import com.jianpei.jpeducation.activitys.tiku.AnswerTheScoreActivity;
+import com.jianpei.jpeducation.activitys.tiku.result.AnswerResultActivity;
 import com.jianpei.jpeducation.adapter.tiku.OptionsAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
@@ -81,8 +84,10 @@ public class SimulationExerciseActivity extends BaseActivity {
 
     private AnswerModel answerModel;
     //
-    private String recordId;
-    private PaperInfoBean paperInfoBean;
+    private String recordId;//答题记录
+    private String paperId;//试卷id
+    private String paperName;//试卷名称
+    private int restartType;//0添加新试卷，2重做，1继续答题
     //
     private OptionsAdapter optionsAdapter;
     private List<AnswerBean> answerBeans;
@@ -109,11 +114,14 @@ public class SimulationExerciseActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        paperInfoBean = getIntent().getParcelableExtra("paperInfoBean");
         recordId = getIntent().getStringExtra("recordId");
-        tvPaperName.setText(paperInfoBean.getPaper_name());
-        answerModel = new ViewModelProvider(this).get(AnswerModel.class);
+        paperId = getIntent().getStringExtra("paperId");
+        paperName = getIntent().getStringExtra("paperName");
+        restartType = getIntent().getIntExtra("restartType", 0);
 
+        tvPaperName.setText(paperName);
+
+        answerModel = new ViewModelProvider(this).get(AnswerModel.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -192,14 +200,14 @@ public class SimulationExerciseActivity extends BaseActivity {
                     startActivity(new Intent(SimulationExerciseActivity.this, AnswerTheScoreActivity.class)
                             .putExtra("paperEvaluationBean", paperEvaluationBean)
                             .putExtra("recordId", recordId)
-                            .putExtra("paperId", paperInfoBean.getId())
+                            .putExtra("paperId", paperId)
                             .putExtra("paperName", tvPaperName.getText().toString()));
 
                 } else {
                     startActivity(new Intent(SimulationExerciseActivity.this, AnswerResultActivity.class)
                             .putExtra("paperEvaluationBean", paperEvaluationBean)
                             .putExtra("recordId", recordId)
-                            .putExtra("paperId", paperInfoBean.getId()));
+                            .putExtra("paperId", paperId));
 
                 }
                 finish();
@@ -216,7 +224,7 @@ public class SimulationExerciseActivity extends BaseActivity {
         });
 
         showLoading("");
-        answerModel.insertRecord(paperInfoBean.getId(), recordId, paperInfoBean.getComplete_status() + "");
+        answerModel.insertRecord(paperId, recordId, restartType + "");
 
 
     }
@@ -309,11 +317,11 @@ public class SimulationExerciseActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, AnswerCardActivity.class)
                         .putExtra("recordId", recordId)
                         .putExtra("type", 1)
-                        .putExtra("paperName", paperInfoBean.getPaper_name()), 111);
+                        .putExtra("paperName", paperName), 111);
                 break;
             case R.id.tv_favorites:
                 showLoading("");
-                answerModel.favorites(paperInfoBean.getId(), questionId);
+                answerModel.favorites(paperId, questionId);
                 break;
             case R.id.iv_next:
                 showLoading("");

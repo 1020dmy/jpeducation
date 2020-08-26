@@ -2,6 +2,7 @@ package com.jianpei.jpeducation.fragment.tiku;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,18 +17,18 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
-import com.jianpei.jpeducation.activitys.tiku.SimulationExerciseListActivity;
-import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
+import com.jianpei.jpeducation.activitys.login.LoginActivity;
+import com.jianpei.jpeducation.activitys.tiku.simulation.SimulationExerciseListActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.TodayExerciseListActivity;
 import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
-import com.jianpei.jpeducation.bean.homedata.GroupDataBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.tiku.PaperHomeBean;
-import com.jianpei.jpeducation.bean.tiku.RecommendClassBean;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.TikuModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -169,6 +170,10 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
 
     @OnClick({R.id.tv_one, R.id.tv_two, R.id.tv_three, R.id.tv_four, R.id.tv_five, R.id.tv_six, R.id.tv_seven, R.id.tv_eight})
     public void onViewClicked(View view) {
+        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))){
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_one:
                 startActivity(new Intent(getActivity(), TodayExerciseListActivity.class));

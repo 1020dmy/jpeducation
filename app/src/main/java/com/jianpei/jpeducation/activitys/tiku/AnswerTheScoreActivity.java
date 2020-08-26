@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.result.AnswerResultActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;

@@ -19,7 +19,7 @@ import com.jianpei.jpeducation.activitys.TryListenerListActivity;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
-import com.jianpei.jpeducation.activitys.tiku.TodayExerciseListActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.TodayExerciseListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.home.GroupInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.GroupTitleItemBinder;

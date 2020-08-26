@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
+import com.jianpei.jpeducation.bean.tiku.AnswerBean;
 import com.jianpei.jpeducation.bean.tiku.CurriculumDataBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
@@ -16,6 +17,7 @@ import com.jianpei.jpeducation.bean.tiku.PaperInfoBean;
 import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 import com.jianpei.jpeducation.contract.AnswerContract;
 import com.jianpei.jpeducation.repository.AnswerRepository;
+import com.jianpei.jpeducation.utils.L;
 
 import java.util.List;
 
@@ -54,12 +56,9 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     }
 
     @Override
-    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer) {
-//        if (TextUtils.isEmpty(question_id)) {
-//            errData.setValue("question_id不能为null");
-//            return;
-//        }
-        answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answer).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
+    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time,String answers) {
+        L.e("=========我的答案:" + answers);
+        answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answers).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
             @Override
             protected void onSuccees(BaseEntity<GetQuestionBean> t) throws Exception {
                 if (t.isSuccess()) {
@@ -381,8 +380,8 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     private MutableLiveData<QuestionDataBean> questionDataBeanLiveData;
 
     public MutableLiveData<QuestionDataBean> getQuestionDataBeanLiveData() {
-        if (questionDataBeanLiveData==null)
-            questionDataBeanLiveData=new MutableLiveData<>();
+        if (questionDataBeanLiveData == null)
+            questionDataBeanLiveData = new MutableLiveData<>();
         return questionDataBeanLiveData;
     }
 

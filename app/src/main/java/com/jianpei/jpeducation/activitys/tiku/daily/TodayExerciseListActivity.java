@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.daily;
 
 
 import android.content.Intent;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.daily.TodayAnswerActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.TodayExerciseAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -133,11 +134,18 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
     public void onItemClick(int position, View view) {
 //        startActivity(new Intent(this, TodayAnswerActivity.class).putExtra("testPaperBean",mTestPaperBeans.get(position)).putExtra("source","1"));
 
-        startActivity(new Intent(this, TodayAnswerActivity.class)
+//        startActivity(new Intent(this, TodayAnswerActivity.class)
+//                .putExtra("paperId", mTestPaperBeans.get(position).getId())
+//                .putExtra("source", "1")
+//                .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id())
+//                .putExtra("restartType", mTestPaperBeans.get(position).getUser_is_complete()));
+
+
+        startActivity(new Intent(this, DailyAnswerActivity.class)
                 .putExtra("paperId", mTestPaperBeans.get(position).getId())
-                .putExtra("source", "1")
                 .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id())
-                .putExtra("restartType", mTestPaperBeans.get(position).getUser_is_complete()));
+                .putExtra("restartType", mTestPaperBeans.get(position).getUser_is_complete())
+                .putExtra("paperName",mTestPaperBeans.get(position).getPaper_name()));
 
     }
 

@@ -223,7 +223,7 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initData() {
-
+        viewPager.setUserInputEnabled(false);
         viewPager.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments));
         viewPager.setOffscreenPageLimit(fragments.length);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {

@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.result;
 
 import android.content.Intent;
 import android.view.View;
@@ -12,6 +12,8 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.DailyWrongAndParsingActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.TodayAnswerActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -69,6 +71,8 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
     //
     private List<GroupInfoBean> groupDataBeans;
     private RecommendClassAdapter recommendClassAdapter;
+
+    private String source;
 
 
     @Override
@@ -134,18 +138,22 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
                 finish();
                 break;
             case R.id.tv_look_error:
-                startActivity(new Intent(this, TodayAnswerActivity.class)
-                        .putExtra("source", "4")
-                        .putExtra("recordId", recordId)
-                        .putExtra("paperId", paperId));
+                source = "4";
+                toActivity();
                 break;
             case R.id.tv_parsing:
-                startActivity(new Intent(this, TodayAnswerActivity.class)
-                        .putExtra("source", "5")
-                        .putExtra("recordId", recordId)
-                        .putExtra("paperId", paperId));
+                source = "5";
+                toActivity();
                 break;
         }
+    }
+
+    private void toActivity() {
+        startActivity(new Intent(this, DailyWrongAndParsingActivity.class)
+                .putExtra("source", source)
+                .putExtra("recordId", recordId)
+                .putExtra("paperId", paperId)
+                .putExtra("paperName", tvName.getText().toString()));
     }
 
     @Override

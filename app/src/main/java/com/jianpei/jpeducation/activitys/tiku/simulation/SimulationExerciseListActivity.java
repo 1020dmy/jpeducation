@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.simulation;
 
 
 import android.widget.ImageView;
@@ -65,6 +65,8 @@ public class SimulationExerciseListActivity extends BaseActivity {
         catId = SpUtils.getValue(SpUtils.catId);
         answerModel = new ViewModelProvider(this).get(AnswerModel.class);
 
+        viewPage.setUserInputEnabled(false);
+
 
     }
 
@@ -77,7 +79,7 @@ public class SimulationExerciseListActivity extends BaseActivity {
                 dismissLoading();
                 if (curriculumDataBeans != null && curriculumDataBeans.size() > 0) {
                     for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                        fragments.add(new SimulationFragment(curriculumDataBean, paper_type));
+                        fragments.add(new SimulationFragment(curriculumDataBean.getId(), paper_type));
                     }
                     viewPage.setOffscreenPageLimit(fragments.size());
                     viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments));
@@ -112,5 +114,11 @@ public class SimulationExerciseListActivity extends BaseActivity {
         finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        if (fragments != null)
+            fragments.clear();
+        fragments = null;
+        super.onDestroy();
+    }
 }

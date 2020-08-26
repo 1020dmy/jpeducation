@@ -1,7 +1,6 @@
 package com.jianpei.jpeducation.activitys.tiku;
 
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AnswerCardActivity extends BaseActivity implements MyItemOnClickListener {

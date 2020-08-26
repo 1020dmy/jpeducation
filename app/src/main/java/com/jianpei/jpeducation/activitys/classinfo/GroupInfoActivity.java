@@ -51,7 +51,7 @@ public class GroupInfoActivity extends BaseActivity {
 
 
     @BindView(R.id.viewPage)
-    ViewPager viewPage;
+    ViewPager2 viewPage;
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.iv_shopping)
@@ -230,21 +230,21 @@ public class GroupInfoActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        nTabFragmentAdapter = new NTabFragmentAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, tabTitle);
-
-        viewPage.setOffscreenPageLimit(3);
-        viewPage.setAdapter(nTabFragmentAdapter);
-        tabLayout.setupWithViewPager(viewPage);
+//        nTabFragmentAdapter = new NTabFragmentAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, tabTitle);
+//
+//        viewPage.setOffscreenPageLimit(3);
+//        viewPage.setAdapter(nTabFragmentAdapter);
+//        tabLayout.setupWithViewPager(viewPage);
         //        classInfoTabFragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), this.getLifecycle(), fragments);
-//        viewPage.setAdapter(classInfoTabFragmentAdapter);
-//
-//
-//        new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
-//            @Override
-//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-//                tab.setText(tabTitle[position]);
-//            }
-//        }).attach();
+        viewPage.setUserInputEnabled(false);
+        viewPage.setAdapter(new TabFragmentAdapter(getSupportFragmentManager(),this.getLifecycle(),fragments));
+        viewPage.setOffscreenPageLimit(fragments.length);
+        new TabLayoutMediator(tabLayout, viewPage, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(tabTitle[position]);
+            }
+        }).attach();
 
     }
 

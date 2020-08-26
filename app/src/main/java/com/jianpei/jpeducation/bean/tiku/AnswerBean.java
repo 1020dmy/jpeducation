@@ -28,25 +28,25 @@ public class AnswerBean implements Parcelable {
     private String answers_info;
     private String options_index;
 
-    private boolean isSelect;
+//    private boolean isSelect;
 
-    private String is_selected;
+    private int is_selected;//0未选择，1选择
 
-    public String getIs_selected() {
+    public int getIs_selected() {
         return is_selected;
     }
 
-    public void setIs_selected(String is_selected) {
+    public void setIs_selected(int is_selected) {
         this.is_selected = is_selected;
     }
 
-    public boolean isSelect() {
-        return isSelect;
-    }
+//    public boolean isSelect() {
+//        return isSelect;
+//    }
 
-    public void setSelect(boolean select) {
-        isSelect = select;
-    }
+//    public void setSelect(boolean select) {
+//        isSelect = select;
+//    }
 
     public String getId() {
         return id;
@@ -101,8 +101,7 @@ public class AnswerBean implements Parcelable {
         dest.writeString(this.is_succ);
         dest.writeString(this.answers_info);
         dest.writeString(this.options_index);
-        dest.writeByte(this.isSelect ? (byte) 1 : (byte) 0);
-        dest.writeString(this.is_selected);
+        dest.writeInt(this.is_selected);
     }
 
     public AnswerBean() {
@@ -114,11 +113,10 @@ public class AnswerBean implements Parcelable {
         this.is_succ = in.readString();
         this.answers_info = in.readString();
         this.options_index = in.readString();
-        this.isSelect = in.readByte() != 0;
-        this.is_selected = in.readString();
+        this.is_selected = in.readInt();
     }
 
-    public static final Parcelable.Creator<AnswerBean> CREATOR = new Parcelable.Creator<AnswerBean>() {
+    public static final Creator<AnswerBean> CREATOR = new Creator<AnswerBean>() {
         @Override
         public AnswerBean createFromParcel(Parcel source) {
             return new AnswerBean(source);

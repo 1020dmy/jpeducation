@@ -207,7 +207,7 @@
                     android:paddingBottom="20dp"
                     android:text="我的课程" />
 
-                <!--                                <include layout="@layout/line" />-->
+                <include layout="@layout/line" />
 
                 <TextView
                     android:id="@+id/tv_my_tiku"
@@ -215,8 +215,7 @@
                     android:drawableLeft="@drawable/mine_my_tiku"
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp"
-                    android:text="我的题库"
-                    android:visibility="gone" />
+                    android:text="我的题库" />
 
                 <include layout="@layout/line" />
 

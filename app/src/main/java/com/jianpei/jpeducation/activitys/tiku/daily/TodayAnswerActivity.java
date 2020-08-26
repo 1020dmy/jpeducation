@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.daily;
 
 
 import android.content.Intent;
@@ -22,6 +22,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.AnswerCardActivity;
+import com.jianpei.jpeducation.activitys.tiku.AnswerTheScoreActivity;
+import com.jianpei.jpeducation.activitys.tiku.result.AnswerResultActivity;
 import com.jianpei.jpeducation.adapter.tiku.OptionsAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
@@ -37,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TodayAnswerActivity extends BaseActivity {
@@ -118,7 +120,6 @@ public class TodayAnswerActivity extends BaseActivity {
     @Override
     protected void initView() {
         tvTitle.setText("每日一练");
-//        testPaperBean = getIntent().getParcelableExtra("testPaperBean");
         source = getIntent().getStringExtra("source");
         recordId = getIntent().getStringExtra("recordId");
         paperId = getIntent().getStringExtra("paperId");
@@ -206,13 +207,11 @@ public class TodayAnswerActivity extends BaseActivity {
             answerModel.insertRecord(paperId, recordId, restartType);
         } else if ("4".equals(source)) {//本卷错题
             answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
-//            llJiexi.setVisibility(View.VISIBLE);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
 
         } else if ("5".equals(source)) {//全部解析
             answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
-//            llJiexi.setVisibility(View.VISIBLE);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
         }
@@ -240,7 +239,7 @@ public class TodayAnswerActivity extends BaseActivity {
             answerBeans.addAll(mGetQuestionBean.getAnswer_list());
             optionsAdapter.notifyDataSetChanged();
             //解析
-            tvJiexi.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
+            tvJiexi.setText(Html.fromHtml(mGetQuestionBean.getExplain(), getImageGetter(), null));
             tvCorrect.setText(mGetQuestionBean.getSucc_answer());
             tvMineAnswer.setText(mGetQuestionBean.getMy_answer());
             if ("4".equals(source) || "5".equals(source)){
@@ -253,7 +252,7 @@ public class TodayAnswerActivity extends BaseActivity {
             recyclerView.setVisibility(View.GONE);
             etAnswer.setVisibility(View.VISIBLE);
             //解析
-            tvParsing.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
+            tvParsing.setText(Html.fromHtml(mGetQuestionBean.getExplain(), getImageGetter(), null));
             tvYouAnswer.setText(mGetQuestionBean.getMy_answer());
             if ("4".equals(source) || "5".equals(source)){
                 llJiexi.setVisibility(View.GONE);
@@ -408,7 +407,6 @@ public class TodayAnswerActivity extends BaseActivity {
         return new Html.ImageGetter() {
             @Override
             public Drawable getDrawable(String source) {
-                L.e("======Source:" + source);
                 URLDrawable urlDrawable = new URLDrawable();
                 try {
                     Glide.with(TodayAnswerActivity.this).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
