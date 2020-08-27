@@ -30,10 +30,10 @@ public class RecordListFragment extends BaseFragment {
     SmartRefreshLayout refreshLayout;
 
     private RecordListAdapter recordListAdapter;
-    private String type;
+    private int type;
     private String classId;
 
-    public RecordListFragment(String type, String classId) {
+    public RecordListFragment(int type, String classId) {
         this.type = type;
         this.classId = classId;
     }

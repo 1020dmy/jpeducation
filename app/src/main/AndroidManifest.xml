@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activitys.tiku.daily.DailyWrongAndParsingActivity"></activity>
+        <activity android:name=".activitys.tiku.simulation.SimulationParsingActivity"></activity>
+        <activity android:name=".activitys.tiku.daily.DailyWrongAndParsingActivity" />
         <activity android:name=".activitys.tiku.daily.DailyAnswerActivity" />
         <activity android:name=".activitys.tiku.CheckWrongQuestionsActivity" />
         <activity android:name=".activitys.tiku.result.SimulationExerciseResultActivity" />
@@ -76,12 +77,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.WrongQuestionListActivity"
+            android:name=".activitys.tiku.wrong.WrongQuestionListActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.tiku.AnswerTheScoreActivity"
+            android:name=".activitys.tiku.simulation.AnswerTheScoreActivity"
             android:configChanges="screenSize|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

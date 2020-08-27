@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.adapter.tiku.CollectListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.tiku.QuestionBean;
 import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
@@ -34,7 +35,7 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class CollectListFragment extends BaseFragment {
+public class CollectListFragment extends LazyLoadFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -44,8 +45,8 @@ public class CollectListFragment extends BaseFragment {
     private AnswerModel answerModel;
 
 
-    private String type;
-    private String classId;
+    private int type;//1收藏列表；2错题列表,4，做题记录
+    private String classId;//课程id
     private int page = 1, pageSize = 10;
 
     private List<QuestionBean> mQuestionBeans;
@@ -53,7 +54,7 @@ public class CollectListFragment extends BaseFragment {
     private CollectListAdapter collectListAdapter;
 
 
-    public CollectListFragment(String type, String classId) {
+    public CollectListFragment(int type, String classId) {
         this.type = type;
         this.classId = classId;
     }
@@ -71,9 +72,7 @@ public class CollectListFragment extends BaseFragment {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
                 page++;
-                showLoading("");
                 answerModel.questionData(type, classId, page, pageSize);
 
             }
@@ -82,7 +81,6 @@ public class CollectListFragment extends BaseFragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                showLoading("");
                 answerModel.questionData(type, classId, page, pageSize);
             }
         });
@@ -122,7 +120,10 @@ public class CollectListFragment extends BaseFragment {
             }
         });
 
-        answerModel.questionData(type, classId, page, pageSize);
+    }
 
+    @Override
+    protected void loadData() {
+        answerModel.questionData(type, classId, page, pageSize);
     }
 }

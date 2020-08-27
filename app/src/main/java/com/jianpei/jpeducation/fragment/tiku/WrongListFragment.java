@@ -10,9 +10,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.WrongListAdapter;
 import com.jianpei.jpeducation.base.BaseFragment;
+import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.tiku.QuestionBean;
 import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
@@ -20,6 +24,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +35,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WrongListFragment extends BaseFragment {
+public class WrongListFragment extends LazyLoadFragment implements MyItemOnClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -38,14 +44,14 @@ public class WrongListFragment extends BaseFragment {
 
     private AnswerModel answerModel;
 
-    private String type;
-    private String classId;
+    private int type;//1收藏列表；2错题列表,4，做题记录
+    private String classId;//课程id
     private int page = 1, pageSize = 10;
 
     private List<QuestionBean> mQuestionBeans;
     private WrongListAdapter wrongAndCollectListAdapter;
 
-    public WrongListFragment(String type, String classId) {
+    public WrongListFragment(int type, String classId) {
         this.type = type;
         this.classId = classId;
     }
@@ -63,9 +69,7 @@ public class WrongListFragment extends BaseFragment {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
                 page++;
-                showLoading("");
                 answerModel.questionData(type, classId, page, pageSize);
 
             }
@@ -74,7 +78,6 @@ public class WrongListFragment extends BaseFragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                showLoading("");
                 answerModel.questionData(type, classId, page, pageSize);
             }
         });
@@ -85,6 +88,7 @@ public class WrongListFragment extends BaseFragment {
     protected void initData(Context mContext) {
         mQuestionBeans = new ArrayList<>();
         wrongAndCollectListAdapter = new WrongListAdapter(mQuestionBeans);
+        wrongAndCollectListAdapter.setMyItemOnClickListener(this);
         recyclerView.setAdapter(wrongAndCollectListAdapter);
 
         answerModel.getQuestionDataBeanLiveData().observe(this, new Observer<QuestionDataBean>() {
@@ -113,7 +117,33 @@ public class WrongListFragment extends BaseFragment {
             }
         });
 
+
+    }
+
+    /**
+     * 加载数据
+     */
+    @Override
+    protected void loadData() {
         answerModel.questionData(type, classId, page, pageSize);
+
+    }
+
+    @Override
+    public void onItemClick(int position, View view) {
+        switch (view.getId()) {
+            case R.id.tv_enter://进入
+
+                break;
+            case R.id.tv_jiexi://解析
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
     }
 }

@@ -51,11 +51,15 @@ public interface AnswerContract {
 
 
         //收藏/错题列表
-        Observable<BaseEntity<QuestionDataBean>> questionData(String type, String class_id, int pageIndex, int pageSize);
+        Observable<BaseEntity<QuestionDataBean>> questionData(int type, String class_id, int pageIndex, int pageSize);
+
+        //结束答题
+        Observable<BaseEntity<String>> closePaper(String record_id, String paper_id, String type);
+
     }
 
     interface Model {
-        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time,String answers);
+        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers);
 
         void insertRecord(String paper_id, String record_id, String restart_type);
 
@@ -71,6 +75,10 @@ public interface AnswerContract {
 
         void answerScore(String score, String questino_id, String record_id, String index_type);
 
-        void questionData(String type, String class_id, int pageIndex, int pageSize);
+        void questionData(int type, String class_id, int pageIndex, int pageSize);
+
+        void closePaper(String record_id, String paper_id, String type);
     }
+
+
 }

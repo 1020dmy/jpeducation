@@ -49,6 +49,7 @@ import com.jianpei.jpeducation.bean.json.CheckPayStatusJson;
 import com.jianpei.jpeducation.bean.json.ClassDataJson;
 import com.jianpei.jpeducation.bean.json.ClassGenerateOrderJson;
 import com.jianpei.jpeducation.bean.json.ClassInfoJson;
+import com.jianpei.jpeducation.bean.json.ClosePaperJson;
 import com.jianpei.jpeducation.bean.json.CommentListJson;
 import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
 import com.jianpei.jpeducation.bean.json.DelThreadJson;
@@ -546,6 +547,12 @@ public interface APIFunction {
      */
     @POST(UrlConfig.paperInfo)
     Observable<BaseEntity<PaperInfoBean>> paperInfo(@Body PaperInfoJson paperInfoJson);
+
+    /**
+     * 1-结束答题
+     */
+    @POST(UrlConfig.closePaper)
+    Observable<BaseEntity<String>> closePaper(@Body ClosePaperJson closePaperJson);
 
     /**
      * 1-答题卡

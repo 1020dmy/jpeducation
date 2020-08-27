@@ -133,7 +133,7 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
 
     @Override
     public void onItemClick(int position, View view) {
-
+        isFirstLoad = true;//返回刷新
         startActivity(new Intent(getActivity(), TestPaperInfoActivity.class)
                 .putExtra("paperId", mTestPaperBeans.get(position).getId())
                 .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id()));

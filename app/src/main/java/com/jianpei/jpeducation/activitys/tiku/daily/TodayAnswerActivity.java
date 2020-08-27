@@ -23,7 +23,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.tiku.AnswerCardActivity;
-import com.jianpei.jpeducation.activitys.tiku.AnswerTheScoreActivity;
+import com.jianpei.jpeducation.activitys.tiku.simulation.AnswerTheScoreActivity;
 import com.jianpei.jpeducation.activitys.tiku.result.AnswerResultActivity;
 import com.jianpei.jpeducation.adapter.tiku.OptionsAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -32,7 +32,6 @@ import com.jianpei.jpeducation.bean.tiku.CardBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 

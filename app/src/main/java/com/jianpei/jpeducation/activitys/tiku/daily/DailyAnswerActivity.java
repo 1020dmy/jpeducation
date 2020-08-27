@@ -33,6 +33,8 @@ import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.RecordInfoBean;
+import com.jianpei.jpeducation.utils.dialog.OutAnswerDialog;
+import com.jianpei.jpeducation.utils.dialog.SubmitPaperDialog;
 import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
@@ -111,6 +113,8 @@ public class DailyAnswerActivity extends BaseActivity {
     private List<AnswerBean> answerBeans;
 
     private boolean isSubmit = false;//是否交卷
+
+    private SubmitPaperDialog submitPaperDialog;
 
 
     @Override
@@ -311,10 +315,19 @@ public class DailyAnswerActivity extends BaseActivity {
                 getQuestion();
                 break;
             case R.id.tv_submit://交卷
-                showLoading("");
-                index_type = "0";
-                isSubmit = true;
-                getQuestion();
+                if (submitPaperDialog == null) {
+                    submitPaperDialog = new SubmitPaperDialog(this, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            submitPaperDialog.dismiss();
+                            showLoading("");
+                            index_type = "0";
+                            isSubmit = true;
+                            getQuestion();
+                        }
+                    });
+                }
+                submitPaperDialog.show();
                 break;
         }
     }
@@ -398,14 +411,9 @@ public class DailyAnswerActivity extends BaseActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null && requestCode == 111) {
+        if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-//            if ("1".equals(type) || "2".equals(type)) {
-//                answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, nOptionsAdapter.getMineAnswerIds());
-//            } else if ("5".equals(type)) {
-//                answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, etAnswer.getText().toString());
-//            }
             answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "");
         }
         super.onActivityResult(requestCode, resultCode, data);

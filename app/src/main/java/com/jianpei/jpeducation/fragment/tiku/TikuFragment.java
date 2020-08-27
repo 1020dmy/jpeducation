@@ -20,7 +20,7 @@ import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.tiku.simulation.SimulationExerciseListActivity;
 import com.jianpei.jpeducation.activitys.tiku.daily.TodayExerciseListActivity;
-import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
+import com.jianpei.jpeducation.activitys.tiku.wrong.WrongQuestionListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;
@@ -170,7 +170,7 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
 
     @OnClick({R.id.tv_one, R.id.tv_two, R.id.tv_three, R.id.tv_four, R.id.tv_five, R.id.tv_six, R.id.tv_seven, R.id.tv_eight})
     public void onViewClicked(View view) {
-        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))){
+        if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
             return;
         }
@@ -187,13 +187,13 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
                 startActivity(new Intent(getActivity(), SimulationExerciseListActivity.class).putExtra("paper_type", "2"));
                 break;
             case R.id.tv_five:
-                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "2"));
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", 2));
                 break;
             case R.id.tv_six:
-                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "1"));
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", 1));
                 break;
             case R.id.tv_seven:
-                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", "3"));
+                startActivity(new Intent(getActivity(), WrongQuestionListActivity.class).putExtra("type", 4));
                 break;
             case R.id.tv_eight:
                 break;

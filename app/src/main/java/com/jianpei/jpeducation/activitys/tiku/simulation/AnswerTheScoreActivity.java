@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku;
+package com.jianpei.jpeducation.activitys.tiku.simulation;
 
 
 import android.content.Intent;
@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.tiku.result.AnswerResultActivity;
+import com.jianpei.jpeducation.activitys.tiku.result.SimulationExerciseResultActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
@@ -69,14 +69,13 @@ public class AnswerTheScoreActivity extends BaseActivity {
     private AnswerModel answerModel;
 
     //
+    private String recordId, paperId;//答题记录Id,试卷ID
     private PaperEvaluationBean paperEvaluationBean;
-    private String recordId, paperId;
 
-    private GetQuestionBean mGetQuestionBean;
-    private String questionId;
-    private String paperName;
-
-    private boolean isSubmit = false;
+    private String questionId;//问题ID
+    private String paperName;//试卷名称
+    private boolean isSubmit = false;//是否交卷
+    private String index_type;//2上一题；1下一题；0原样返回
 
 
     @Override
@@ -95,7 +94,6 @@ public class AnswerTheScoreActivity extends BaseActivity {
         paperId = getIntent().getStringExtra("paperId");
         paperName = getIntent().getStringExtra("paperName");
 
-        mGetQuestionBean = paperEvaluationBean.getQuestion_info();
         tvPaperName.setText(paperName);
         answerModel = new ViewModelProvider(this).get(AnswerModel.class);
 
@@ -104,18 +102,16 @@ public class AnswerTheScoreActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        //获取问题
         answerModel.getQuestionBeanLiveData().observe(this, new Observer<GetQuestionBean>() {
             @Override
             public void onChanged(GetQuestionBean getQuestionBean) {
-//                tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
                 if (isSubmit) {//去交卷
                     answerModel.paperEvaluation(recordId, "1");
                     return;
                 }
                 dismissLoading();
-                mGetQuestionBean = getQuestionBean;
-                setData();
+                setData(getQuestionBean);
 
             }
         });
@@ -133,10 +129,11 @@ public class AnswerTheScoreActivity extends BaseActivity {
             @Override
             public void onChanged(PaperEvaluationBean paperEvaluationBean) {
                 dismissLoading();
-                startActivity(new Intent(AnswerTheScoreActivity.this, AnswerResultActivity.class)
+                startActivity(new Intent(AnswerTheScoreActivity.this, SimulationExerciseResultActivity.class)
                         .putExtra("paperEvaluationBean", paperEvaluationBean)
                         .putExtra("recordId", recordId)
-                        .putExtra("paperId", paperId));
+                        .putExtra("paperId", paperId)
+                        .putExtra("paperName",paperName));
                 finish();
 
             }
@@ -148,31 +145,43 @@ public class AnswerTheScoreActivity extends BaseActivity {
                 shortToast(o);
             }
         });
-
-        setData();
+        setData(paperEvaluationBean.getQuestion_info());
 
     }
 
-    protected void setData() {
-        if (mGetQuestionBean == null)
+    /**
+     * 设置数据
+     *
+     * @param getQuestionBean
+     */
+    protected void setData(GetQuestionBean getQuestionBean) {
+        if (getQuestionBean == null)
             return;
-        questionId = mGetQuestionBean.getId();
-
+        questionId = getQuestionBean.getId();
+        //总题数
+        tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
         //当前第几题
-        tvCurrent.setText(mGetQuestionBean.getQuestion_index());
-        //
-        tvParsing.setText(Html.fromHtml(mGetQuestionBean.getExplain(), getImageGetter(), null));
-        tvMineAnswer.setText(mGetQuestionBean.getMy_answer());
-
+        tvCurrent.setText(getQuestionBean.getQuestion_index());
+        //问题
+        tvTopic.setText(Html.fromHtml(getQuestionBean.getQuestion_name(), getImageGetter(), null));
+        //答案解析
+        tvParsing.setText(Html.fromHtml(getQuestionBean.getSucc_answer(), getImageGetter(), null));
+        //我的答案
+        tvMineAnswer.setText(getQuestionBean.getMy_answer());
+        //分数
+        if (TextUtils.isEmpty(getQuestionBean.getQuestion_score()))
+            tvTotalScore.setText("0分");
+        else {
+            tvTotalScore.setText(getQuestionBean.getQuestion_score() + "分");
+        }
         //是否显示上一题
-        if (TextUtils.isEmpty(mGetQuestionBean.getBefore_answer_id())) {
+        if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
             ivPrevious.setVisibility(View.GONE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
-
         }
         //是否显示下一题
-        if (TextUtils.isEmpty(mGetQuestionBean.getNext_answer_id())) {
+        if (TextUtils.isEmpty(getQuestionBean.getNext_answer_id())) {
             ivNext.setVisibility(View.GONE);
             tvSubmit.setVisibility(View.VISIBLE);
 
@@ -180,24 +189,25 @@ public class AnswerTheScoreActivity extends BaseActivity {
             ivNext.setVisibility(View.VISIBLE);
             tvSubmit.setVisibility(View.GONE);
         }
+        //收藏
+        setFavorites(getQuestionBean.getIs_favorites());
 
-
-        tvTopic.setText(Html.fromHtml(mGetQuestionBean.getQuestion_name(), getImageGetter(), null));
-
-        //
-        setFavorites(mGetQuestionBean.getIs_favorites());
     }
 
-    //收藏
+    /**
+     * 收藏
+     *
+     * @param isFavorites
+     */
     protected void setFavorites(String isFavorites) {
-        if ("1".equals(isFavorites)) {
+        if ("1".equals(isFavorites)) {//已经收藏
             tvFavorites.setTextColor(getResources().getColor(R.color.cE73B30));
             Drawable drawable = getResources().getDrawable(
                     R.drawable.answer_favorites);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(),
                     drawable.getMinimumHeight());
             tvFavorites.setCompoundDrawables(null, drawable, null, null);
-        } else {
+        } else if ("0".equals(isFavorites)) {//没有收藏
             tvFavorites.setTextColor(getResources().getColor(R.color.c0A0C14));
             Drawable drawable = getResources().getDrawable(
                     R.drawable.answer_unfavorites);
@@ -214,26 +224,36 @@ public class AnswerTheScoreActivity extends BaseActivity {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_previous:
-                showLoading("");
-                answerModel.answerScore(etMineScore.getText().toString(), questionId, recordId, "2");
+            case R.id.iv_previous://上一题
+                index_type = "2";
+                answerScore();
                 break;
-            case R.id.tv_favorites:
+            case R.id.tv_favorites://收藏
                 showLoading("");
                 answerModel.favorites(paperId, questionId);
                 break;
-            case R.id.iv_next:
-                showLoading("");
-                answerModel.answerScore(etMineScore.getText().toString(), questionId, recordId, "1");
+            case R.id.iv_next://下一题
+                index_type = "1";
+                answerScore();
                 break;
-            case R.id.tv_submit:
+            case R.id.tv_submit://交卷
             case R.id.tv_right:
                 showLoading("");
                 isSubmit = true;
-                answerModel.answerScore(etMineScore.getText().toString(), questionId, recordId, "0");
+                index_type = "0";
+                answerScore();
                 break;
         }
     }
+
+
+    /**
+     * 获取题目（上一题/下一题）解答题平分
+     */
+    protected void answerScore() {
+        answerModel.answerScore(etMineScore.getText().toString(), questionId, recordId, index_type);
+    }
+
 
     private Html.ImageGetter getImageGetter() {
         return new Html.ImageGetter() {

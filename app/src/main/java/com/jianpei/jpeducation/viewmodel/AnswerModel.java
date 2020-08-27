@@ -56,7 +56,7 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     }
 
     @Override
-    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time,String answers) {
+    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers) {
         L.e("=========我的答案:" + answers);
         answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answers).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
             @Override
@@ -337,6 +337,8 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     }
 
     /**
+     * 解答题平分
+     *
      * @param score
      * @param questino_id
      * @param record_id
@@ -386,7 +388,7 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     }
 
     @Override
-    public void questionData(String type, String class_id, int pageIndex, int pageSize) {
+    public void questionData(int type, String class_id, int pageIndex, int pageSize) {
 
         answerRepository.questionData(type, class_id, pageIndex, pageSize).compose(setThread()).subscribe(new BaseObserver<QuestionDataBean>() {
 
@@ -409,6 +411,45 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
                 }
             }
         });
+    }
 
+    /**
+     * 结束答题
+     *
+     * @param record_id
+     * @param paper_id
+     * @param type
+     */
+
+    private MutableLiveData<String> closePaperLiveData;
+
+    public MutableLiveData<String> getClosePaperLiveData() {
+        if (closePaperLiveData == null)
+            closePaperLiveData = new MutableLiveData<>();
+        return closePaperLiveData;
+    }
+
+    @Override
+    public void closePaper(String record_id, String paper_id, String type) {
+
+        answerRepository.closePaper(record_id, paper_id, type).compose(setThread()).subscribe(new BaseObserver<String>() {
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+                if (t.isSuccess()) {
+                    closePaperLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
     }
 }

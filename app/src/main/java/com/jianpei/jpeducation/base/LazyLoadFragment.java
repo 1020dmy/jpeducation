@@ -12,7 +12,7 @@ import com.jianpei.jpeducation.utils.L;
  * Describe:
  */
 public abstract class LazyLoadFragment extends BaseFragment {
-    private boolean isFirstLoad = true;
+    public boolean isFirstLoad = true;
 
 
     protected abstract void loadData();
@@ -22,6 +22,7 @@ public abstract class LazyLoadFragment extends BaseFragment {
         super.onResume();
         L.e("=========:onResume");
         if (isFirstLoad) {
+            L.e("=========:loadData");
             isFirstLoad = false;
             loadData();
         }

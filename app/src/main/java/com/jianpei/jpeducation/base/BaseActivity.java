@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -347,5 +348,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         dismissLoading();
         super.onStop();
+    }
+
+    /**
+     * 虚拟返回按键
+     */
+    public void onBack() {
+        finish();
+    }
+
+    ;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

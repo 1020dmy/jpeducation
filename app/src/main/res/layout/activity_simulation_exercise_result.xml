@@ -119,7 +119,6 @@
                         android:id="@+id/tv_fraction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="44"
                         android:textColor="@color/cE73B30"
                         android:textSize="@dimen/s_dp_44" />
 
@@ -136,7 +135,6 @@
                         android:id="@+id/tv_correct"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6"
                         android:textColor="@color/c161820"
                         android:textSize="@dimen/s_dp_13" />
 
@@ -167,7 +165,6 @@
                         android:id="@+id/tv_error"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6"
                         android:textColor="@color/c161820"
                         android:textSize="@dimen/s_dp_13" />
 
@@ -198,7 +195,6 @@
                         android:id="@+id/tv_notDone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6"
                         android:textColor="@color/c161820"
                         android:textSize="@dimen/s_dp_13" />
 
@@ -237,7 +233,6 @@
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2020-05-08   13：23：32"
                     android:textColor="@color/c888B96"
                     android:textSize="@dimen/s_dp_12" />
             </LinearLayout>
@@ -285,7 +280,6 @@
                             android:id="@+id/tv_multipleChoice_score"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="05分"
                             android:textColor="@color/cE73B30"
                             android:textSize="@dimen/s_dp_14" />
                     </LinearLayout>
@@ -313,7 +307,6 @@
                             android:id="@+id/tv_answerQuestion_score"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="05分"
                             android:textColor="@color/cE73B30"
                             android:textSize="@dimen/s_dp_14" />
                     </LinearLayout>
@@ -328,7 +321,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:text="您目前练习正确率偏低，建议购买系统的学习知识"
                     android:textColor="@color/c161820"
                     android:textSize="@dimen/s_dp_13" />
 

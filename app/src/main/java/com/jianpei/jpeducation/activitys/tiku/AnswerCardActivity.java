@@ -122,7 +122,7 @@ public class AnswerCardActivity extends BaseActivity implements MyItemOnClickLis
     @Override
     public void onItemClick(int position, View view) {
 
-        setResult(111, getIntent().putExtra("cardBean", cardBeans.get(position)));
+        setResult(112, getIntent().putExtra("cardBean", cardBeans.get(position)));
         finish();
 
     }

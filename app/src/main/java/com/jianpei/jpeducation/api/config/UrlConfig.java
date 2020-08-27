@@ -178,6 +178,9 @@ public class UrlConfig {
     //1-试卷详情
     public static final String paperInfo = "paper/paperInfo";
 
+    //1-1-结束答题
+    public static final String closePaper = "paper/closePaper";
+
     //1-答题卡
     public static final String paperCard = "paper/paperCard";
 

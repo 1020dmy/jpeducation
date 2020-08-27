@@ -4,6 +4,7 @@ import com.jianpei.jpeducation.api.RetrofitFactory;
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.base.BaseRepository;
 import com.jianpei.jpeducation.bean.json.AnswerScoreJson;
+import com.jianpei.jpeducation.bean.json.ClosePaperJson;
 import com.jianpei.jpeducation.bean.json.CurriculumDataJson;
 import com.jianpei.jpeducation.bean.json.FavoritesJson;
 import com.jianpei.jpeducation.bean.json.GetQuestionJson;
@@ -120,6 +121,7 @@ public class AnswerRepository extends BaseRepository implements AnswerContract.R
 
     /**
      * 收藏/错题列表
+     *
      * @param type
      * @param class_id
      * @param pageIndex
@@ -127,7 +129,20 @@ public class AnswerRepository extends BaseRepository implements AnswerContract.R
      * @return
      */
     @Override
-    public Observable<BaseEntity<QuestionDataBean>> questionData(String type, String class_id, int pageIndex, int pageSize) {
+    public Observable<BaseEntity<QuestionDataBean>> questionData(int type, String class_id, int pageIndex, int pageSize) {
         return RetrofitFactory.getInstance().API().questionData(new QuestionDataJson(type, class_id, pageIndex, pageSize));
+    }
+
+    /**
+     * 结束答题
+     *
+     * @param record_id
+     * @param paper_id
+     * @param type
+     * @return
+     */
+    @Override
+    public Observable<BaseEntity<String>> closePaper(String record_id, String paper_id, String type) {
+        return RetrofitFactory.getInstance().API().closePaper(new ClosePaperJson(record_id, paper_id, type));
     }
 }

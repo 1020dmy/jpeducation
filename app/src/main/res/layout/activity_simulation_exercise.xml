@@ -93,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="建设工程项目管理"
             android:textColor="@color/c161820"
             android:textSize="@dimen/s_dp_16" />
 
@@ -101,7 +100,6 @@
             android:id="@+id/tv_current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
             android:textColor="@color/cE73B30"
             android:textSize="@dimen/s_dp_24" />
 
@@ -109,7 +107,6 @@
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/10"
             android:textColor="@color/cB7B7B7"
             android:textSize="@dimen/s_dp_13" />
 
@@ -130,8 +127,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
-                android:text="【单选题】    财务评价指标的高低是经营类项目取舍的主要条件，以下指标哪一个不属于财务评价指标（   ）" />
+                android:textColor="@color/c161920"
+                android:textSize="@dimen/s_dp_13"
+                android:padding="10dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

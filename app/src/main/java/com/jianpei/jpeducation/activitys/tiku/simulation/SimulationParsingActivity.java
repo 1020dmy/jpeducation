@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku.daily;
+package com.jianpei.jpeducation.activitys.tiku.simulation;
 
 
 import android.content.Intent;
@@ -23,12 +23,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.tiku.AnswerCardActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.DailyWrongAndParsingActivity;
 import com.jianpei.jpeducation.adapter.tiku.DailyWrongAndParsingAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
 import com.jianpei.jpeducation.bean.tiku.CardBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
@@ -38,8 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class DailyWrongAndParsingActivity extends BaseActivity {
-
+public class SimulationParsingActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -61,12 +60,20 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
     TextView tvCorrect;
     @BindView(R.id.tv_mine_answer)
     TextView tvMineAnswer;
+    @BindView(R.id.ll_judge)
+    LinearLayout llJudge;
+    @BindView(R.id.tv_line)
+    TextView tvLine;
     @BindView(R.id.tv_share)
     TextView tvShare;
-    @BindView(R.id.tv_select_jiexi)
-    TextView tvSelectJiexi;
+    @BindView(R.id.tv_parsing)
+    TextView tvParsing;
     @BindView(R.id.ll_jiexi)
     LinearLayout llJiexi;
+    @BindView(R.id.tv_jd_mine_answer)
+    TextView tvJdMineAnswer;
+    @BindView(R.id.ll_jd_answer)
+    LinearLayout llJdAnswer;
     @BindView(R.id.iv_previous)
     ImageView ivPrevious;
     @BindView(R.id.tv_card)
@@ -75,49 +82,46 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
     TextView tvFavorites;
     @BindView(R.id.iv_next)
     ImageView ivNext;
-
-    private String source;//1正常答题，2收藏，4本卷错题，3错题集,5全部解析，6本卷解答题
-    private String recordId;//答题记录id
-    private String paperId;//试卷id
-    private String paperName;//试卷名称
-
-    private String questionId;//当前问题id
-    private String answering_time;//剩余时间（秒）
-    private String index_type = "0";//2上一题；1下一题；0原样返回
-
-    private String type;////1.单选，2多选，5简答
-
-
     private AnswerModel answerModel;
+
     private DailyWrongAndParsingAdapter dailyWrongAndParsingAdapter;
     private List<AnswerBean> answerBeans;
+
+    //
+    private String paperId;//试卷ID
+    private String recordId;//记录ID
+    private String source;//1正常答题，2收藏，4本卷错题，3错题集,5全部解析，6本卷解答题
+    private String paperName;//试卷名称
+    //
+    private String index_type = "0";//2上一题；1下一题；0原样返回
+    private String questionId;//当前问题id
+    private String type;
 
 
     @Override
     protected int setLayoutView() {
-        return R.layout.activity_daily_wrong_and_parsing;
+        return R.layout.activity_simulation_parsing;
     }
 
     @Override
     protected void initView() {
+        tvTitle.setText("本卷解析");
+
         paperId = getIntent().getStringExtra("paperId");
         recordId = getIntent().getStringExtra("recordId");
         source = getIntent().getStringExtra("source");
         paperName = getIntent().getStringExtra("paperName");
+
         tvPaperName.setText(paperName);
-        if ("4".equals(source)) {
-            tvTitle.setText("本卷错题");
-        } else if ("5".equals(source)) {
-            tvTitle.setText("本卷解析");
-        }
-        //
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
         answerModel = new ViewModelProvider(this).get(AnswerModel.class);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
     protected void initData() {
-
         answerBeans = new ArrayList<>();
         dailyWrongAndParsingAdapter = new DailyWrongAndParsingAdapter(answerBeans, this);
         recyclerView.setAdapter(dailyWrongAndParsingAdapter);
@@ -146,21 +150,23 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
                 shortToast(o);
             }
         });
+        answerModel.getQuestion(source, index_type, questionId, recordId, "", "");
 
-        answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+
     }
-
 
     /**
      * 设置数据
+     *
+     * @param getQuestionBean
      */
-    private void setData(GetQuestionBean getQuestionBean) {
+    protected void setData(GetQuestionBean getQuestionBean) {
+
         if (getQuestionBean == null)
             return;
-        //
+        questionId = getQuestionBean.getId();
         answerBeans.clear();
         dailyWrongAndParsingAdapter.notifyDataSetChanged();
-        //
         questionId = getQuestionBean.getId();//问题ID
         type = getQuestionBean.getType();//1.单选，2多选，5简答
 
@@ -169,28 +175,36 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
         tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
         //问题
         tvTopic.setText(Html.fromHtml(getQuestionBean.getQuestion_name(), getImageGetter(), null));
-        //答题区
+
+        //答题区//答案和判断区
         if ("1".equals(type) || "2".equals(type)) {//单选
             recyclerView.setVisibility(View.VISIBLE);//显示选项
             answerBeans.addAll(getQuestionBean.getAnswer_list());
             dailyWrongAndParsingAdapter.notifyDataSetChanged();
-        } else if ("5".equals(type)) {//简答题
-
-        }
-        //答案区
-        if ("1".equals(type) || "2".equals(type)) {//单选
-            tvSelectJiexi.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
+            //答案和判断区
+            llJudge.setVisibility(View.VISIBLE);
+            tvLine.setVisibility(View.VISIBLE);
+            llJdAnswer.setVisibility(View.GONE);
+            //赋值
             tvCorrect.setText(getQuestionBean.getSucc_answer());
             tvMineAnswer.setText(getQuestionBean.getMy_answer());
-
+            if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
+                tvResult.setText("回答正确");
+            } else {
+                tvResult.setText("回答错误");
+            }
         } else if ("5".equals(type)) {//简答题
+            recyclerView.setVisibility(View.GONE);
+            //答案和判断区
+            llJudge.setVisibility(View.GONE);
+            tvLine.setVisibility(View.GONE);
+            llJdAnswer.setVisibility(View.VISIBLE);
+            tvJdMineAnswer.setText(getQuestionBean.getMy_answer());
 
         }
-        if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
-            tvResult.setText("回答正确");
-        } else {
-            tvResult.setText("回答错误");
-        }
+        //答案解析
+        tvParsing.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
+
 
         //底部按钮区
         //是否显示上一题按钮
@@ -208,7 +222,9 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
         //收藏状态
         setFavorites(getQuestionBean.getIs_favorites());
 
+
     }
+
 
     /**
      * 收藏状态
@@ -234,20 +250,15 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.tv_share, R.id.iv_previous, R.id.tv_card, R.id.tv_favorites, R.id.iv_next})
+    @OnClick({R.id.iv_back, R.id.iv_previous, R.id.tv_card, R.id.tv_favorites, R.id.iv_next, R.id.tv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_share:
-                if (mShareAction == null)
-                    initShare();
-                mShareAction.open();
-                break;
             case R.id.iv_previous:
                 index_type = "2";
-                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+                getQuestion();
                 break;
             case R.id.tv_card:
                 startActivityForResult(new Intent(this, AnswerCardActivity.class)
@@ -256,16 +267,26 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
                         .putExtra("paperName", paperName), 111);
                 break;
             case R.id.tv_favorites:
-                answerModel.favorites(paperId, questionId);
                 break;
             case R.id.iv_next:
                 index_type = "1";
-                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+                getQuestion();
+                break;
+
+            case R.id.tv_share:
+                if (mShareAction == null)
+                    initShare();
+                mShareAction.open();
                 break;
         }
     }
 
-
+    /**
+     * 获取题目（上一题/下一题）
+     */
+    protected void getQuestion() {
+        answerModel.getQuestion(source, index_type, questionId, recordId, "", "");
+    }
 
     /**
      * 答题卡返回
@@ -279,7 +300,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "");
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, "", "");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -291,7 +312,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
             public Drawable getDrawable(String source) {
                 URLDrawable urlDrawable = new URLDrawable();
                 try {
-                    Glide.with(DailyWrongAndParsingActivity.this).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
+                    Glide.with(SimulationParsingActivity.this).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             urlDrawable.bitmap = resource;

@@ -2,14 +2,13 @@ package com.jianpei.jpeducation.activitys.mine;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
+import com.jianpei.jpeducation.activitys.tiku.wrong.WrongQuestionListActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 
 import butterknife.BindView;

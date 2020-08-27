@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.activitys.tiku.result;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -116,9 +117,13 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
         tvNotDone.setText(evaluationBean.getUnsolved_num() + "");
         tvTime.setText(evaluationBean.getCreate_time_str());
         //
-        tvMultipleChoiceScore.setText(evaluationBean.getChoose_score() + "");
-        tvAnswerQuestionScore.setText(evaluationBean.getAnswer_score() + "");
-        tvTip.setText(evaluationBean.getScore_assessment());
+        tvMultipleChoiceScore.setText(evaluationBean.getChoose_score() + "分");
+        tvAnswerQuestionScore.setText(evaluationBean.getAnswer_score() + "分");
+        if (TextUtils.isEmpty(evaluationBean.getScore_assessment()))
+            tvTip.setVisibility(View.GONE);
+        else {
+            tvTip.setText(evaluationBean.getScore_assessment());
+        }
         //
         if (evaluationBean.getGroupData() != null && evaluationBean.getGroupData().size() > 0) {
             groupDataBeans = new ArrayList<>();
