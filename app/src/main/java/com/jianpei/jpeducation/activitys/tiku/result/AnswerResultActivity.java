@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
+import com.jianpei.jpeducation.activitys.tiku.daily.DailyAnswerActivity;
 import com.jianpei.jpeducation.activitys.tiku.daily.DailyWrongAndParsingActivity;
 import com.jianpei.jpeducation.activitys.tiku.daily.TodayAnswerActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
@@ -21,6 +24,7 @@ import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.tiku.EvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
+import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +70,7 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
     TextView tvParsing;
 
 
-    private PaperEvaluationBean paperEvaluationBean;
+    //    private PaperEvaluationBean mPaperEvaluationBean;
     private String recordId;
     private String paperId;
     //
@@ -74,6 +78,9 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
     private RecommendClassAdapter recommendClassAdapter;
 
     private String source;
+
+    //
+    private AnswerModel answerModel;
 
 
     @Override
@@ -85,22 +92,37 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
     protected void initView() {
         tvTitle.setText("练习结果");
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        answerModel = new ViewModelProvider(this).get(AnswerModel.class);
+
 
     }
 
     @Override
     protected void initData() {
-        paperEvaluationBean = getIntent().getParcelableExtra("paperEvaluationBean");
+        PaperEvaluationBean paperEvaluationBean = getIntent().getParcelableExtra("paperEvaluationBean");
         recordId = getIntent().getStringExtra("recordId");
         paperId = getIntent().getStringExtra("paperId");
 
 
-        setData();
+        //交卷结果
+        answerModel.getPaperEvaluationBeanLiveData().observe(this, new Observer<PaperEvaluationBean>() {
+            @Override
+            public void onChanged(PaperEvaluationBean paperEvaluationBean) {
+                setData(paperEvaluationBean);
+            }
+        });
+
+        if (paperEvaluationBean == null)
+            answerModel.paperEvaluation(recordId, "1");
+        else {
+            setData(paperEvaluationBean);
+        }
+
 
     }
 
 
-    protected void setData() {
+    protected void setData(PaperEvaluationBean paperEvaluationBean) {
         if (paperEvaluationBean == null) {
             shortToast("测试结果获取失败！");
             return;
@@ -173,5 +195,13 @@ public class AnswerResultActivity extends BaseActivity implements MyItemOnClickL
     @Override
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (groupDataBeans != null)
+            groupDataBeans.clear();
+        groupDataBeans = null;
+        super.onDestroy();
     }
 }

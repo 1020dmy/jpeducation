@@ -47,7 +47,18 @@ public class GetQuestionBean implements Parcelable {
     private String question_index;
     private String is_favorites;
 
+
     private int question_total_num;
+
+    private String paper_id;
+
+    public String getPaper_id() {
+        return paper_id;
+    }
+
+    public void setPaper_id(String paper_id) {
+        this.paper_id = paper_id;
+    }
 
     public int getQuestion_total_num() {
         return question_total_num;
@@ -202,7 +213,8 @@ public class GetQuestionBean implements Parcelable {
         dest.writeString(this.question_index);
         dest.writeString(this.is_favorites);
         dest.writeInt(this.question_total_num);
-        dest.writeList(this.answer_list);
+        dest.writeString(this.paper_id);
+        dest.writeTypedList(this.answer_list);
     }
 
     public GetQuestionBean() {
@@ -224,11 +236,11 @@ public class GetQuestionBean implements Parcelable {
         this.question_index = in.readString();
         this.is_favorites = in.readString();
         this.question_total_num = in.readInt();
-        this.answer_list = new ArrayList<AnswerBean>();
-        in.readList(this.answer_list, AnswerBean.class.getClassLoader());
+        this.paper_id = in.readString();
+        this.answer_list = in.createTypedArrayList(AnswerBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<GetQuestionBean> CREATOR = new Parcelable.Creator<GetQuestionBean>() {
+    public static final Creator<GetQuestionBean> CREATOR = new Creator<GetQuestionBean>() {
         @Override
         public GetQuestionBean createFromParcel(Parcel source) {
             return new GetQuestionBean(source);

@@ -145,12 +145,21 @@ public class TodayExerciseListActivity extends BaseActivity implements MyItemOnC
                 .putExtra("paperId", mTestPaperBeans.get(position).getId())
                 .putExtra("recordId", mTestPaperBeans.get(position).getUser_record_id())
                 .putExtra("restartType", mTestPaperBeans.get(position).getUser_is_complete())
-                .putExtra("paperName",mTestPaperBeans.get(position).getPaper_name()));
+                .putExtra("paperName", mTestPaperBeans.get(position).getPaper_name()));
 
     }
 
     @Override
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        if (mTestPaperBeans != null)
+            mTestPaperBeans.clear();
+        mTestPaperBeans = null;
+        super.onDestroy();
     }
 }

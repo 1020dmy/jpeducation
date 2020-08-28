@@ -20,7 +20,7 @@ import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.tiku.simulation.SimulationExerciseListActivity;
 import com.jianpei.jpeducation.activitys.tiku.daily.TodayExerciseListActivity;
-import com.jianpei.jpeducation.activitys.tiku.wrong.WrongQuestionListActivity;
+import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.RecommendClassAdapter;

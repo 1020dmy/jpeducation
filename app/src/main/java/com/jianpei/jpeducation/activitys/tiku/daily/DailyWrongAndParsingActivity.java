@@ -28,7 +28,6 @@ import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.tiku.AnswerBean;
 import com.jianpei.jpeducation.bean.tiku.CardBean;
 import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
-import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
@@ -80,6 +79,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
     private String recordId;//答题记录id
     private String paperId;//试卷id
     private String paperName;//试卷名称
+    private String class_id;
 
     private String questionId;//当前问题id
     private String answering_time;//剩余时间（秒）
@@ -147,7 +147,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
             }
         });
 
-        answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+        answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "",class_id);
     }
 
 
@@ -195,13 +195,13 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
         //底部按钮区
         //是否显示上一题按钮
         if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
-            ivPrevious.setVisibility(View.GONE);
+            ivPrevious.setVisibility(View.INVISIBLE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
         }
         //是否显示下一题按钮
         if (TextUtils.isEmpty(getQuestionBean.getNext_answer_id())) {
-            ivNext.setVisibility(View.GONE);
+            ivNext.setVisibility(View.INVISIBLE);
         } else {
             ivNext.setVisibility(View.VISIBLE);
         }
@@ -247,7 +247,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
                 break;
             case R.id.iv_previous:
                 index_type = "2";
-                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "",class_id);
                 break;
             case R.id.tv_card:
                 startActivityForResult(new Intent(this, AnswerCardActivity.class)
@@ -260,7 +260,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
                 break;
             case R.id.iv_next:
                 index_type = "1";
-                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "");
+                answerModel.getQuestion(source, index_type, questionId, recordId, answering_time, "",class_id);
                 break;
         }
     }
@@ -279,7 +279,7 @@ public class DailyWrongAndParsingActivity extends BaseActivity {
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "");
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "",class_id);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

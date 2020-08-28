@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
-import com.jianpei.jpeducation.activitys.tiku.wrong.WrongQuestionListActivity;
+import com.jianpei.jpeducation.activitys.tiku.WrongQuestionListActivity;
 import com.jianpei.jpeducation.base.BaseActivity;
 
 import butterknife.BindView;
@@ -54,13 +54,13 @@ public class MineTikuActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_cuoti:
-                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", "2"));
+                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 2));
                 break;
             case R.id.ll_jilu:
-                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", "3"));
+                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 1));
                 break;
             case R.id.ll_collect:
-                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", "1"));
+                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 4));
                 break;
             case R.id.ll_answer:
                 break;

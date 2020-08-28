@@ -33,7 +33,6 @@ import com.jianpei.jpeducation.bean.tiku.GetQuestionBean;
 import com.jianpei.jpeducation.bean.tiku.InsertRecordBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.RecordInfoBean;
-import com.jianpei.jpeducation.utils.dialog.OutAnswerDialog;
 import com.jianpei.jpeducation.utils.dialog.SubmitPaperDialog;
 import com.jianpei.jpeducation.view.URLDrawable;
 import com.jianpei.jpeducation.viewmodel.AnswerModel;
@@ -107,6 +106,7 @@ public class DailyAnswerActivity extends BaseActivity {
     private String recordId;//答题记录id
     private String restartType;//0添加新试卷，2重做，1继续答题
     private String paperName;//试卷名称
+    private String class_id;
 
     private AnswerModel answerModel;
     private NOptionsAdapter nOptionsAdapter;
@@ -176,6 +176,7 @@ public class DailyAnswerActivity extends BaseActivity {
                 setFavorites(getQuestionBean.getIs_favorites());
             }
         });
+        //交卷结果
         answerModel.getPaperEvaluationBeanLiveData().observe(this, new Observer<PaperEvaluationBean>() {
             @Override
             public void onChanged(PaperEvaluationBean paperEvaluationBean) {
@@ -247,7 +248,7 @@ public class DailyAnswerActivity extends BaseActivity {
         tvAnswer.setVisibility(View.VISIBLE);
         tvFavorites.setVisibility(View.GONE);
         if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
-            ivPrevious.setVisibility(View.GONE);
+            ivPrevious.setVisibility(View.INVISIBLE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
         }
@@ -337,9 +338,9 @@ public class DailyAnswerActivity extends BaseActivity {
      */
     protected void getQuestion() {
         if ("1".equals(type) || "2".equals(type)) {
-            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, nOptionsAdapter.getMineAnswerIds());
+            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, nOptionsAdapter.getMineAnswerIds(),class_id);
         } else if ("5".equals(type)) {
-            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, etAnswer.getText().toString());
+            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, etAnswer.getText().toString(),class_id);
 
         }
     }
@@ -414,7 +415,7 @@ public class DailyAnswerActivity extends BaseActivity {
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "");
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "",class_id);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

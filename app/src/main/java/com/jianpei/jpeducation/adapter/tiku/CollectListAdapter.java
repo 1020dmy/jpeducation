@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.bean.tiku.QuestionBean;
 
 import java.util.List;
@@ -26,6 +27,12 @@ public class CollectListAdapter extends RecyclerView.Adapter<CollectListAdapter.
 
     private List<QuestionBean> questionBeans;
 
+    private MyItemOnClickListener myItemOnClickListener;
+
+    public void setMyItemOnClickListener(MyItemOnClickListener myItemOnClickListener) {
+        this.myItemOnClickListener = myItemOnClickListener;
+    }
+
     public CollectListAdapter(List<QuestionBean> questionBeans) {
         this.questionBeans = questionBeans;
     }
@@ -39,6 +46,16 @@ public class CollectListAdapter extends RecyclerView.Adapter<CollectListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        QuestionBean questionBean = questionBeans.get(position);
+        holder.tvName.setText(questionBean.getQuestion_name());
+
+        if ("1".equals(questionBean.getIsFavorites())) {
+            holder.imageButton.setImageResource(R.drawable.answer_favorites);
+        } else {
+            holder.imageButton.setImageResource(R.drawable.answer_unfavorites);
+
+        }
+
 
     }
 
@@ -48,20 +65,26 @@ public class CollectListAdapter extends RecyclerView.Adapter<CollectListAdapter.
     }
 
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvName;
         private ImageButton imageButton;
-        private TextView tv_enter, tv_jiexi;
+        private TextView tv_enter;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             imageButton = itemView.findViewById(R.id.imageButton);
             tv_enter = itemView.findViewById(R.id.tv_enter);
-            tv_jiexi = itemView.findViewById(R.id.tv_jiexi);
 
-            tv_jiexi.setVisibility(View.GONE);
-            imageButton.setVisibility(View.VISIBLE);
+            imageButton.setOnClickListener(this);
+            tv_enter.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (myItemOnClickListener != null)
+                myItemOnClickListener.onItemClick(getLayoutPosition(), v);
 
         }
     }

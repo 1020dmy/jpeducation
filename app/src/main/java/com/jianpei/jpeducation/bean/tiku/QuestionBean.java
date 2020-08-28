@@ -30,6 +30,16 @@ public class QuestionBean implements Parcelable {
     private String class_id;
     private String fav_type;
 
+    private String isFavorites = "1";
+
+    public String getIsFavorites() {
+        return isFavorites;
+    }
+
+    public void setIsFavorites(String isFavorites) {
+        this.isFavorites = isFavorites;
+    }
+
     public String getId() {
         return id;
     }
@@ -92,6 +102,7 @@ public class QuestionBean implements Parcelable {
         dest.writeString(this.question_id);
         dest.writeString(this.class_id);
         dest.writeString(this.fav_type);
+        dest.writeString(this.isFavorites);
     }
 
     public QuestionBean() {
@@ -104,6 +115,8 @@ public class QuestionBean implements Parcelable {
         this.question_id = in.readString();
         this.class_id = in.readString();
         this.fav_type = in.readString();
+        this.isFavorites = in.readString();
+
     }
 
     public static final Parcelable.Creator<QuestionBean> CREATOR = new Parcelable.Creator<QuestionBean>() {

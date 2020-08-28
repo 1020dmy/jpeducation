@@ -1,64 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="一级建筑师工程管理练习"
-            android:textColor="@color/c161820"
-            android:textSize="@dimen/s_dp_14" />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:maxLength="15"
+        android:textColor="@color/c161820"
+        android:textSize="@dimen/s_dp_14" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@id/tv_enter"
+        android:background="@color/transparents"
+        android:src="@drawable/answer_favorites" />
 
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:background="@color/transparents"
-            android:src="@drawable/answer_favorites"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_enter"
-            android:layout_width="63dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/shape_selectzhuanye_itemt"
-            android:gravity="center"
-            android:text="进入"
-            android:textColor="@color/cE73B30"
-            android:textSize="@dimen/s_dp_14" />
-
-        <TextView
-            android:id="@+id/tv_jiexi"
-            android:layout_width="63dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="11dp"
-            android:background="@drawable/shape_selectzhuanye_itemt"
-            android:gravity="center"
-            android:text="解析"
-            android:textColor="@color/cE73B30"
-            android:textSize="@dimen/s_dp_14" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="63dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_selectzhuanye_itemt"
+        android:gravity="center"
+        android:text="进入"
+        android:textColor="@color/cE73B30"
+        android:textSize="@dimen/s_dp_14" />
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/ce9e9e9" />
 
-</LinearLayout>
+</RelativeLayout>

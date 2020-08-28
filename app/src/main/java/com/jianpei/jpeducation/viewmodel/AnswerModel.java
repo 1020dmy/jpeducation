@@ -56,9 +56,9 @@ public class AnswerModel extends BaseViewModel implements AnswerContract.Model {
     }
 
     @Override
-    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers) {
+    public void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers,String classID) {
         L.e("=========我的答案:" + answers);
-        answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answers).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
+        answerRepository.getQuestion(source, index_type, question_id, record_id, answering_time, answers,classID).compose(setThread()).subscribe(new BaseObserver<GetQuestionBean>() {
             @Override
             protected void onSuccees(BaseEntity<GetQuestionBean> t) throws Exception {
                 if (t.isSuccess()) {

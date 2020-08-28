@@ -37,8 +37,14 @@ import io.reactivex.Observable;
 public class AnswerRepository extends BaseRepository implements AnswerContract.Repository {
 
     @Override
-    public Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer) {
-        return RetrofitFactory.getInstance().API().getQuestion(new GetQuestionJson(source, index_type, question_id, record_id, answering_time, answer));
+    public Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer,String class_id) {
+        if ("2".equals(source) || "3".equals(source)) {//搜藏/错题集
+            return RetrofitFactory.getInstance().API().getQuestion(new GetQuestionJson(source, index_type, question_id, class_id, answer));
+        } else {
+            return RetrofitFactory.getInstance().API().getQuestion(new GetQuestionJson(source, index_type, question_id, record_id, answering_time, answer));
+
+        }
+
     }
 
     @Override

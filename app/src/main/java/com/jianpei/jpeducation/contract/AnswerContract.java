@@ -26,7 +26,7 @@ public interface AnswerContract {
 
     interface Repository {
         //获取问题（添加答题记录）
-        Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer);
+        Observable<BaseEntity<GetQuestionBean>> getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answer,String class_id);
 
         //获取问题（添加答题记录）第一次请求
         Observable<BaseEntity<InsertRecordBean>> insertRecord(String paper_id, String record_id, String restart_type);
@@ -59,7 +59,7 @@ public interface AnswerContract {
     }
 
     interface Model {
-        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers);
+        void getQuestion(String source, String index_type, String question_id, String record_id, String answering_time, String answers,String class_id);
 
         void insertRecord(String paper_id, String record_id, String restart_type);
 

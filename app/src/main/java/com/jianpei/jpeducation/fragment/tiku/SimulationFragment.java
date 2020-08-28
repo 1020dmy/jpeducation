@@ -145,4 +145,12 @@ public class SimulationFragment extends LazyLoadFragment implements MyItemOnClic
     public void onItemClick(@NotNull BaseViewHolder helper, @NotNull View view, BaseNode data, int position) {
 
     }
+
+    @Override
+    public void onDestroy() {
+        if (mTestPaperBeans != null)
+            mTestPaperBeans.clear();
+        mTestPaperBeans = null;
+        super.onDestroy();
+    }
 }

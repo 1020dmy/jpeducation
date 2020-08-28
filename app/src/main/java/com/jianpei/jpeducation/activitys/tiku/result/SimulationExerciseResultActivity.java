@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.bean.tiku.EvaluationBean;
 import com.jianpei.jpeducation.bean.tiku.PaperEvaluationBean;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.viewmodel.AnswerModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,8 +76,9 @@ public class SimulationExerciseResultActivity extends BaseActivity implements My
     TextView tvAgain;
     @BindView(R.id.tv_answer)
     TextView tvAnswer;
-
-    private PaperEvaluationBean paperEvaluationBean;
+    //
+    private AnswerModel answerModel;
+    //    private PaperEvaluationBean paperEvaluationBean;
     private String recordId;//答题记录
     private String paperId;//试卷ID
     private String paperName;//试卷名称
@@ -95,11 +99,11 @@ public class SimulationExerciseResultActivity extends BaseActivity implements My
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.drawable.info_black_share);
 
-        paperEvaluationBean = getIntent().getParcelableExtra("paperEvaluationBean");
         recordId = getIntent().getStringExtra("recordId");
         paperId = getIntent().getStringExtra("paperId");
         paperName = getIntent().getStringExtra("paperName");
 
+        answerModel = new ViewModelProvider(this).get(AnswerModel.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -107,14 +111,27 @@ public class SimulationExerciseResultActivity extends BaseActivity implements My
 
     @Override
     protected void initData() {
-        tvTitle.setText("考试结果");
 
-        setData();
+        PaperEvaluationBean paperEvaluationBean = getIntent().getParcelableExtra("paperEvaluationBean");
+
+        //交卷
+        answerModel.getPaperEvaluationBeanLiveData().observe(this, new Observer<PaperEvaluationBean>() {
+            @Override
+            public void onChanged(PaperEvaluationBean paperEvaluationBean) {
+                setData(paperEvaluationBean);
+            }
+        });
+
+        if (paperEvaluationBean == null) {
+            answerModel.paperEvaluation(recordId, "1");
+        } else {
+            setData(paperEvaluationBean);
+        }
 
 
     }
 
-    protected void setData() {
+    protected void setData(PaperEvaluationBean paperEvaluationBean) {
         if (paperEvaluationBean == null) {
             shortToast("测试结果获取失败！");
             return;

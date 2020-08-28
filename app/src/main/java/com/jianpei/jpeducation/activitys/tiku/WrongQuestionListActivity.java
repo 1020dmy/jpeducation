@@ -1,4 +1,4 @@
-package com.jianpei.jpeducation.activitys.tiku.wrong;
+package com.jianpei.jpeducation.activitys.tiku;
 
 
 import android.widget.ImageView;
@@ -108,15 +108,15 @@ public class WrongQuestionListActivity extends BaseActivity {
     private void addFragments(List<CurriculumDataBean> curriculumDataBeans) {
         if (type == 1) {//1收藏列表
             for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                fragments.add(new CollectListFragment(type, curriculumDataBean.getId()));
+                fragments.add(new CollectListFragment(type, curriculumDataBean.getId(), curriculumDataBean.getCur_name()));
             }
         } else if (type == 2) {//2错题列表
             for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                fragments.add(new WrongListFragment(type, curriculumDataBean.getId()));
+                fragments.add(new WrongListFragment(type, curriculumDataBean.getId(), curriculumDataBean.getCur_name()));
             }
         } else if (type == 4) {//4，做题记录
             for (CurriculumDataBean curriculumDataBean : curriculumDataBeans) {
-                fragments.add(new RecordListFragment(type, curriculumDataBean.getId()));
+                fragments.add(new RecordListFragment(curriculumDataBean.getId(), type + ""));
             }
         }
     }

@@ -110,6 +110,8 @@ public class TodayAnswerActivity extends BaseActivity {
     private String restartType;//0添加新试卷，2重做，1继续答题
     private String type;//题目类型1，单选，2多选，5简答
 
+    private String class_id;
+
 
     @Override
     protected int setLayoutView() {
@@ -205,12 +207,12 @@ public class TodayAnswerActivity extends BaseActivity {
         if ("1".equals(source)) {//正常答题
             answerModel.insertRecord(paperId, recordId, restartType);
         } else if ("4".equals(source)) {//本卷错题
-            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
+            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId(),class_id);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
 
         } else if ("5".equals(source)) {//全部解析
-            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
+            answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId(),class_id);
             tvAnswer.setVisibility(View.GONE);
             tvFavorites.setVisibility(View.VISIBLE);
         }
@@ -340,7 +342,7 @@ public class TodayAnswerActivity extends BaseActivity {
                     tvFavorites.setVisibility(View.GONE);
                     tvAnswer.setVisibility(View.VISIBLE);
                 }
-                answerModel.getQuestion(source, "2", questionId, recordId, "", optionsAdapter.getAnswerId());
+                answerModel.getQuestion(source, "2", questionId, recordId, "", optionsAdapter.getAnswerId(),class_id);
                 break;
             case R.id.tv_card://答题卡
                 startActivityForResult(new Intent(this, AnswerCardActivity.class)
@@ -371,7 +373,7 @@ public class TodayAnswerActivity extends BaseActivity {
                     tvFavorites.setVisibility(View.GONE);
                     tvAnswer.setVisibility(View.VISIBLE);
                 }
-                answerModel.getQuestion(source, "1", questionId, recordId, "", optionsAdapter.getAnswerId());
+                answerModel.getQuestion(source, "1", questionId, recordId, "", optionsAdapter.getAnswerId(),class_id);
                 break;
             case R.id.tv_share:
                 break;
@@ -382,7 +384,7 @@ public class TodayAnswerActivity extends BaseActivity {
             case R.id.tv_submit://交卷
                 showLoading("");
                 isSubmit = true;
-                answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId());
+                answerModel.getQuestion(source, "0", questionId, recordId, "", optionsAdapter.getAnswerId(),class_id);
                 break;
         }
     }
@@ -396,7 +398,7 @@ public class TodayAnswerActivity extends BaseActivity {
         switch (resultCode) {
             case 111:
                 CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
-                answerModel.getQuestion(source, "0", cardBean.getQuestion_id(), cardBean.getRecord_id() + "", "", "");
+                answerModel.getQuestion(source, "0", cardBean.getQuestion_id(), cardBean.getRecord_id() + "", "", "",class_id);
                 break;
         }
 

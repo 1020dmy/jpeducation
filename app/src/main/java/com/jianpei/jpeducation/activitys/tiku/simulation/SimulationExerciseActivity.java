@@ -98,6 +98,7 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
     private String questionId;//当前问题
     private String source = "1";//1正常答题，2收藏，4本卷错题，3错题集,5全部解析，6本卷解答题
     private long answering_time;//答题时间
+    private String class_id;
 
     private boolean isSubmit = false;//是否交卷
     private boolean isEndAnswer = false;//是否结束答题
@@ -238,7 +239,7 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
         //是否显示上一题按钮
 
         if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
-            ivPrevious.setVisibility(View.GONE);
+            ivPrevious.setVisibility(View.INVISIBLE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
         }
@@ -354,9 +355,9 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
      */
     protected void getQuestion() {
         if ("1".equals(type) || "2".equals(type)) {
-            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), nOptionsAdapter.getMineAnswerIds());
+            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), nOptionsAdapter.getMineAnswerIds(),class_id);
         } else if ("5".equals(type)) {
-            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), etAnswer.getText().toString());
+            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), etAnswer.getText().toString(),class_id);
 
         }
     }
@@ -384,7 +385,7 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, String.valueOf(answering_time), "");
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, String.valueOf(answering_time), "",class_id);
         }
         super.onActivityResult(requestCode, resultCode, data);
 

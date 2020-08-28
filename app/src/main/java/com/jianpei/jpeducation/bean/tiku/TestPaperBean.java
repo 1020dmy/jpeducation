@@ -32,6 +32,43 @@ public class TestPaperBean implements Parcelable {
     private String user_is_complete;
     private String user_record_id;
 
+    private String total_que_num;
+    private String success_num;
+    private String create_time_str;
+    private String paper_type;
+
+    public String getPaper_type() {
+        return paper_type;
+    }
+
+    public void setPaper_type(String paper_type) {
+        this.paper_type = paper_type;
+    }
+
+    public String getTotal_que_num() {
+        return total_que_num;
+    }
+
+    public void setTotal_que_num(String total_que_num) {
+        this.total_que_num = total_que_num;
+    }
+
+    public String getSuccess_num() {
+        return success_num;
+    }
+
+    public void setSuccess_num(String success_num) {
+        this.success_num = success_num;
+    }
+
+    public String getCreate_time_str() {
+        return create_time_str;
+    }
+
+    public void setCreate_time_str(String create_time_str) {
+        this.create_time_str = create_time_str;
+    }
+
     public String getId() {
         return id;
     }
@@ -103,6 +140,10 @@ public class TestPaperBean implements Parcelable {
         dest.writeString(this.chapter_id);
         dest.writeString(this.user_is_complete);
         dest.writeString(this.user_record_id);
+        dest.writeString(this.total_que_num);
+        dest.writeString(this.success_num);
+        dest.writeString(this.create_time_str);
+        dest.writeString(this.paper_type);
     }
 
     public TestPaperBean() {
@@ -116,9 +157,13 @@ public class TestPaperBean implements Parcelable {
         this.chapter_id = in.readString();
         this.user_is_complete = in.readString();
         this.user_record_id = in.readString();
+        this.total_que_num = in.readString();
+        this.success_num = in.readString();
+        this.create_time_str = in.readString();
+        this.paper_type = in.readString();
     }
 
-    public static final Parcelable.Creator<TestPaperBean> CREATOR = new Parcelable.Creator<TestPaperBean>() {
+    public static final Creator<TestPaperBean> CREATOR = new Creator<TestPaperBean>() {
         @Override
         public TestPaperBean createFromParcel(Parcel source) {
             return new TestPaperBean(source);

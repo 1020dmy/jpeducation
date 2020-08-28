@@ -176,7 +176,7 @@ public class AnswerTheScoreActivity extends BaseActivity {
         }
         //是否显示上一题
         if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
-            ivPrevious.setVisibility(View.GONE);
+            ivPrevious.setVisibility(View.INVISIBLE);
         } else {
             ivPrevious.setVisibility(View.VISIBLE);
         }

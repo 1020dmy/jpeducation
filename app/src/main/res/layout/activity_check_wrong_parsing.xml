@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cF7F7F7"
     android:orientation="vertical"
-    tools:context=".activitys.tiku.daily.TodayAnswerActivity">
+    tools:context=".activitys.tiku.simulation.SimulationExerciseActivity">
+
+
+
 
     <include layout="@layout/base_title" />
 
@@ -74,82 +76,7 @@
                 android:nestedScrollingEnabled="false"
                 android:paddingTop="30dp" />
 
-            <EditText
-                android:id="@+id/et_answer"
-                android:layout_width="match_parent"
-                android:layout_height="96dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/shape_answer_card_three"
-                android:gravity="top"
-                android:hint="在此处作答"
-                android:padding="10dp"
-                android:textSize="@dimen/s_dp_11" />
-
-            <LinearLayout
-                android:id="@+id/ll_jd_jiexi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/shape_coupon_bg"
-                android:orientation="vertical"
-                android:padding="10dp"
-               >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/answer_jiexi"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:text="答案解析"
-                    android:textColor="@color/cE73B30"
-                    android:textSize="@dimen/s_dp_14" />
-
-                <TextView
-                    android:id="@+id/tv_parsing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_jd_answer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/shape_coupon_bg"
-                android:orientation="vertical"
-                android:padding="10dp"
-               >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/mine_answer"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:text="你的答案"
-                    android:textColor="@color/cE73B30"
-                    android:textSize="@dimen/s_dp_14" />
-
-                <TextView
-                    android:id="@+id/tv_you_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp" />
-            </LinearLayout>
-
-
+            <!--选择题答案判断-->
             <LinearLayout
                 android:id="@+id/ll_jiexi"
                 android:layout_width="match_parent"
@@ -158,10 +85,10 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/shape_coupon_bg"
-                android:orientation="vertical"
-               >
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_judge"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:gravity="center_vertical">
@@ -199,7 +126,6 @@
                             android:id="@+id/tv_correct"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="C"
                             android:textColor="@color/c15C262"
                             android:textSize="@dimen/s_dp_16" />
 
@@ -228,7 +154,6 @@
                             android:id="@+id/tv_mine_answer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="C"
                             android:textColor="@color/cE73B30"
                             android:textSize="@dimen/s_dp_16" />
                     </LinearLayout>
@@ -236,6 +161,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/cDCDCDC" />
@@ -274,15 +200,45 @@
 
 
                 </LinearLayout>
-
+                <!--选择题答案解析-->
                 <TextView
-                    android:id="@+id/tv_jiexi"
+                    android:id="@+id/tv_parsing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:textColor="@color/c161820"
                     android:textSize="@dimen/s_dp_13" />
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_jd_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_coupon_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/mine_answer"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="你的答案"
+                    android:textColor="@color/cE73B30"
+                    android:textSize="@dimen/s_dp_14" />
+
+                <TextView
+                    android:id="@+id/tv_jd_mine_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp" />
             </LinearLayout>
 
 
@@ -304,32 +260,6 @@
             android:layout_weight="1"
             android:src="@drawable/answer_previous" />
 
-        <TextView
-            android:id="@+id/tv_card"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/answer_card"
-            android:drawablePadding="2dp"
-            android:gravity="center"
-            android:paddingTop="4dp"
-            android:text="答题卡"
-            android:visibility="gone"
-            android:textColor="@color/c0A0C14"
-            android:textSize="@dimen/s_dp_11" />
-
-        <TextView
-            android:id="@+id/tv_answer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/answer_solution"
-            android:drawablePadding="2dp"
-            android:gravity="center"
-            android:paddingTop="4dp"
-            android:text="查看答案"
-            android:textColor="@color/c0A0C14"
-            android:textSize="@dimen/s_dp_11" />
 
         <TextView
             android:id="@+id/tv_favorites"
@@ -341,8 +271,7 @@
             android:gravity="center"
             android:text="收藏"
             android:textColor="@color/c0A0C14"
-            android:textSize="@dimen/s_dp_11"
-            android:visibility="gone" />
+            android:textSize="@dimen/s_dp_11" />
 
         <ImageView
             android:id="@+id/iv_next"
@@ -351,6 +280,6 @@
             android:layout_weight="1"
             android:src="@drawable/answer_next" />
 
-    </LinearLayout>
 
+    </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.jianpei.jpeducation.fragment.tiku;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.tiku.wrongandcollect.CheckWrongEnterActivity;
+import com.jianpei.jpeducation.activitys.tiku.wrongandcollect.CheckWrongParsingActivity;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.tiku.WrongListAdapter;
-import com.jianpei.jpeducation.base.BaseFragment;
 import com.jianpei.jpeducation.base.LazyLoadFragment;
 import com.jianpei.jpeducation.bean.tiku.QuestionBean;
 import com.jianpei.jpeducation.bean.tiku.QuestionDataBean;
@@ -46,14 +48,17 @@ public class WrongListFragment extends LazyLoadFragment implements MyItemOnClick
 
     private int type;//1收藏列表；2错题列表,4，做题记录
     private String classId;//课程id
+    private String cur_name;//课程名称
     private int page = 1, pageSize = 10;
+    private String source = "3";//1正常答题，2收藏，4本卷错题，3错题集,5全部解析，6本卷解答题
 
     private List<QuestionBean> mQuestionBeans;
     private WrongListAdapter wrongAndCollectListAdapter;
 
-    public WrongListFragment(int type, String classId) {
+    public WrongListFragment(int type, String classId, String cur_name) {
         this.type = type;
         this.classId = classId;
+        this.cur_name = cur_name;
     }
 
     @Override
@@ -133,10 +138,16 @@ public class WrongListFragment extends LazyLoadFragment implements MyItemOnClick
     public void onItemClick(int position, View view) {
         switch (view.getId()) {
             case R.id.tv_enter://进入
-
+                startActivity(new Intent(getActivity(), CheckWrongEnterActivity.class)
+                        .putExtra("source", source)
+                        .putExtra("questionBean", mQuestionBeans.get(position))
+                        .putExtra("cur_name", cur_name));
                 break;
             case R.id.tv_jiexi://解析
-
+                startActivity(new Intent(getActivity(), CheckWrongParsingActivity.class)
+                        .putExtra("source", source)
+                        .putExtra("questionBean", mQuestionBeans.get(position))
+                        .putExtra("cur_name", cur_name));
                 break;
         }
 

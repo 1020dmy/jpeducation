@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_answer_card_two"
             android:padding="4dp"
-            android:text="模"
             android:textColor="@color/white"
             android:textSize="@dimen/s_dp_13" />
 
@@ -26,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="2020年一级建造师《建设工程项目管理》模拟试题及解析"
             android:textColor="@color/c161820"
             android:textSize="@dimen/s_dp_14" />
     </LinearLayout>
@@ -57,7 +55,6 @@
             android:id="@+id/tv_nums"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="100题"
             android:textColor="@color/c888B96"
             android:textSize="@dimen/s_dp_12" />
 
@@ -96,13 +93,14 @@
             android:id="@+id/tv_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_selectzhuanye_itemt"
+            android:background="@drawable/select_answer"
             android:paddingLeft="12dp"
             android:paddingTop="4dp"
             android:paddingRight="12dp"
             android:paddingBottom="4dp"
             android:text="重做"
-            android:textColor="@color/cE73B30"
+            android:enabled="true"
+            android:textColor="@color/select_answer_record"
             android:textSize="@dimen/s_dp_13" />
 
         <TextView
@@ -110,13 +108,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/shape_selectzhuanye_itemt"
+            android:background="@drawable/select_answer"
             android:paddingLeft="12dp"
             android:paddingTop="4dp"
             android:paddingRight="12dp"
             android:paddingBottom="4dp"
             android:text="考试报告"
-            android:textColor="@color/cE73B30"
+            android:textColor="@color/select_answer_record"
             android:textSize="@dimen/s_dp_13" />
 
         <TextView
@@ -124,13 +122,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/shape_selectzhuanye_itemt"
+            android:background="@drawable/select_answer"
             android:paddingLeft="12dp"
             android:paddingTop="4dp"
             android:paddingRight="12dp"
             android:paddingBottom="4dp"
             android:text="查看解析"
-            android:textColor="@color/cE73B30"
+            android:textColor="@color/select_answer_record"
             android:textSize="@dimen/s_dp_13" />
 
 
