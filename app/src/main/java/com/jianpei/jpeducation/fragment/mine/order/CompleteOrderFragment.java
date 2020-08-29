@@ -112,6 +112,7 @@ public class CompleteOrderFragment extends LazyLoadFragment implements MyItemOnC
                 dismissLoading();
                 if (page == 1) {
                     mOrderDataBeans.clear();
+                    nOrderListAdapter.notifyDataSetChanged();
                 }
                 if (orderListBean != null)
                     mOrderDataBeans.addAll(orderListBean.getData());

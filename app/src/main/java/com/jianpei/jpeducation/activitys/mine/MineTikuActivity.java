@@ -57,10 +57,10 @@ public class MineTikuActivity extends BaseActivity {
                 startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 2));
                 break;
             case R.id.ll_jilu:
-                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 1));
+                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 4));
                 break;
             case R.id.ll_collect:
-                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 4));
+                startActivity(new Intent(this, WrongQuestionListActivity.class).putExtra("type", 1));
                 break;
             case R.id.ll_answer:
                 break;

@@ -289,7 +289,7 @@ public class DailyAnswerActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.iv_previous, R.id.tv_card, R.id.tv_answer, R.id.tv_favorites, R.id.iv_next, R.id.tv_submit})
+    @OnClick({R.id.iv_back, R.id.iv_previous, R.id.tv_card, R.id.tv_answer, R.id.tv_favorites, R.id.iv_next, R.id.tv_submit, R.id.tv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back://返回
@@ -330,6 +330,11 @@ public class DailyAnswerActivity extends BaseActivity {
                 }
                 submitPaperDialog.show();
                 break;
+            case R.id.tv_share:
+                if (mShareAction==null)
+                    initShare();
+                mShareAction.open();
+                break;
         }
     }
 
@@ -338,9 +343,9 @@ public class DailyAnswerActivity extends BaseActivity {
      */
     protected void getQuestion() {
         if ("1".equals(type) || "2".equals(type)) {
-            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, nOptionsAdapter.getMineAnswerIds(),class_id);
+            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, nOptionsAdapter.getMineAnswerIds(), class_id);
         } else if ("5".equals(type)) {
-            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, etAnswer.getText().toString(),class_id);
+            answerModel.getQuestion(source, index_type, question_id, recordId, answering_time, etAnswer.getText().toString(), class_id);
 
         }
     }
@@ -415,7 +420,7 @@ public class DailyAnswerActivity extends BaseActivity {
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "",class_id);
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, answering_time, "", class_id);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

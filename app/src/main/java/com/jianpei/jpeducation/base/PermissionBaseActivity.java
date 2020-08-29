@@ -116,4 +116,7 @@ public abstract class PermissionBaseActivity extends BaseNoStatusActivity {
         void onAllow();
     }
 
+
+
+
 }

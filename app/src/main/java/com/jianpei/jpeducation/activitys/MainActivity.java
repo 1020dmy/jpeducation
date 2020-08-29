@@ -3,6 +3,7 @@ package com.jianpei.jpeducation.activitys;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -310,7 +311,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
 
     @Override
     protected void onNewIntent(Intent intent) {
-        L.e("=====onNewIntent=====");
         if (intent != null && "IntegralActivity".equals(intent.getStringExtra("from"))) {
             radioGroup.check(R.id.rb_tiku);
         }
@@ -322,10 +322,27 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     protected void onDestroy() {
         DownloadClassManager.getInstance().stopAllDownloads();
         DownloadClassManager.getInstance().release();
-
         super.onDestroy();
 
     }
 
+    private static final int TIME_EXIT = 2000;
+    private long mBackPressed;
 
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_EXIT > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            shortToast("再点击一次返回退出程序");
+            mBackPressed = System.currentTimeMillis();
+
+        }
+    }
+
+    @Override
+    public void onBack() {
+        onBackPressed();
+    }
 }

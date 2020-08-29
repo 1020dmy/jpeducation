@@ -119,6 +119,7 @@ public class WaitPayOrderFragment extends LazyLoadFragment implements MyItemOnCl
                 dismissLoading();
                 if (page == 1) {
                     mOrderDataBeans.clear();
+                    nOrderListAdapter.notifyDataSetChanged();
                 }
                 if (orderListBean != null)
                     mOrderDataBeans.addAll(orderListBean.getData());
