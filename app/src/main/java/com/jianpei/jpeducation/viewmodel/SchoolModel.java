@@ -99,7 +99,7 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
         schoolRepository.threadFromTopicData(start_id, end_id, follow, topic_id, is_hot).compose(setThread()).subscribe(new BaseObserver<ThreadFromTopicDataBean>() {
             @Override
             protected void onSuccees(BaseEntity<ThreadFromTopicDataBean> t) throws Exception {
-                if (t.isSuccess()) {
+                if (t.isSuccess() && t.getData() != null) {
                     threadFromTopicDataBeanLiveData.setValue(t.getData());
                 } else {
                     errData.setValue(t.getMsg());
@@ -250,6 +250,7 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
 
     /**
      * 动态详情
+     *
      * @param thread_id
      */
 
