@@ -355,9 +355,9 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
      */
     protected void getQuestion() {
         if ("1".equals(type) || "2".equals(type)) {
-            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), nOptionsAdapter.getMineAnswerIds(),class_id);
+            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), nOptionsAdapter.getMineAnswerIds(), class_id);
         } else if ("5".equals(type)) {
-            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), etAnswer.getText().toString(),class_id);
+            answerModel.getQuestion(source, index_type, questionId, recordId, String.valueOf(answering_time), etAnswer.getText().toString(), class_id);
 
         }
     }
@@ -385,7 +385,7 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
         if (data != null && resultCode == 112) {
             CardBean cardBean = (CardBean) data.getParcelableExtra("cardBean");
             index_type = "0";
-            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, String.valueOf(answering_time), "",class_id);
+            answerModel.getQuestion(source, index_type, cardBean.getQuestion_id(), recordId, String.valueOf(answering_time), "", class_id);
         }
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -435,10 +435,21 @@ public class SimulationExerciseActivity extends BaseActivity implements OutAnswe
                     long hour = (millisUntilFinished - day * (1000 * 24 * 60 * 60)) / (1000 * 60 * 60); //单位时
                     long minute = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60)) / (1000 * 60); //单位分
                     long second = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60) - minute * (1000 * 60)) / 1000;//单位秒
-
-                    tvHour.setText(hour + "");
-                    tvMinute.setText(minute + "");
-                    tvSecond.setText(second + "");
+                    if (hour < 10) {
+                        tvHour.setText("0" + hour);
+                    } else {
+                        tvHour.setText(hour + "");
+                    }
+                    if (minute < 10) {
+                        tvMinute.setText("0" + minute);
+                    } else {
+                        tvMinute.setText(minute + "");
+                    }
+                    if (second < 10) {
+                        tvSecond.setText("0" + second);
+                    } else {
+                        tvSecond.setText(second + "");
+                    }
                 }
 
                 @Override

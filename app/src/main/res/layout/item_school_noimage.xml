@@ -10,7 +10,7 @@
         android:id="@+id/civ_head"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/head_icon" />
 
 
     <TextView
@@ -94,8 +94,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_content"
-        android:layout_marginTop="15dp"
         android:layout_toLeftOf="@id/tv_dianzan"
+        android:paddingLeft="5dp"
+        android:paddingTop="15dp"
+        android:paddingRight="5dp"
         android:src="@drawable/school_dianzan_icon" />
 
     <TextView
@@ -104,8 +106,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_content"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="15dp"
+        android:text="0"
         android:textColor="@color/cA5A7B0"
         android:textSize="@dimen/s_dp_11" />
 

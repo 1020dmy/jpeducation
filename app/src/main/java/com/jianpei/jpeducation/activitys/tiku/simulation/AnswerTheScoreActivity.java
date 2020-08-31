@@ -77,6 +77,8 @@ public class AnswerTheScoreActivity extends BaseActivity {
     private boolean isSubmit = false;//是否交卷
     private String index_type;//2上一题；1下一题；0原样返回
 
+    private int totalScore = 0;
+
 
     @Override
     protected int setLayoutView() {
@@ -133,7 +135,7 @@ public class AnswerTheScoreActivity extends BaseActivity {
                         .putExtra("paperEvaluationBean", paperEvaluationBean)
                         .putExtra("recordId", recordId)
                         .putExtra("paperId", paperId)
-                        .putExtra("paperName",paperName));
+                        .putExtra("paperName", paperName));
                 finish();
 
             }
@@ -169,10 +171,12 @@ public class AnswerTheScoreActivity extends BaseActivity {
         //我的答案
         tvMineAnswer.setText(getQuestionBean.getMy_answer());
         //分数
-        if (TextUtils.isEmpty(getQuestionBean.getQuestion_score()))
-            tvTotalScore.setText("0分");
-        else {
-            tvTotalScore.setText(getQuestionBean.getQuestion_score() + "分");
+        if (TextUtils.isEmpty(getQuestionBean.getQuestion_score())) {
+            totalScore = 0;
+            tvTotalScore.setText(totalScore + "分");
+        } else {
+            totalScore = Integer.parseInt(getQuestionBean.getQuestion_score());
+            tvTotalScore.setText(totalScore + "分");
         }
         //是否显示上一题
         if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
@@ -251,7 +255,19 @@ public class AnswerTheScoreActivity extends BaseActivity {
      * 获取题目（上一题/下一题）解答题平分
      */
     protected void answerScore() {
-        answerModel.answerScore(etMineScore.getText().toString(), questionId, recordId, index_type);
+        int mineScore;
+        if (TextUtils.isEmpty(etMineScore.getText().toString())) {
+            mineScore = 0;
+        } else {
+            mineScore = Integer.parseInt(etMineScore.getText().toString());
+        }
+        if (mineScore <= totalScore) {
+            answerModel.answerScore(mineScore + "", questionId, recordId, index_type);
+        } else {
+            shortToast("凭判分数不能大于总分");
+        }
+
+
     }
 
 

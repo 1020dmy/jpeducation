@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStructure;
@@ -264,7 +265,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
             @Override
             public void onChanged(String s) {
 //                dismissLoading();
-//                shortToast(s);
+                shortToast(s);
                 endId = "0";
                 if (mEvaluationDataBeans.size() > 0) {
                     startId = mEvaluationDataBeans.get(0).getId();
@@ -272,6 +273,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                     startId = "0";
                 }
                 schoolModel.evaluationData(thread_id, startId, endId);
+
             }
         });
 
@@ -316,7 +318,11 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 dismissLoading();
-                shortToast(o);
+                if (TextUtils.isEmpty(o)){
+
+                }else{
+                    shortToast(o);
+                }
             }
         });
         showLoading("");

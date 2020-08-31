@@ -84,7 +84,7 @@ public class CouponUsedFragment extends BaseFragment {
     @Override
     protected void initData(Context mContext) {
         couponDatas = new ArrayList<>();
-        couponAdapter = new CouponAdapter(couponDatas);
+        couponAdapter = new CouponAdapter(couponDatas,getActivity());
         recyclerView.setAdapter(couponAdapter);
 
         userCouponModel = new ViewModelProvider(this).get(UserCouponModel.class);

@@ -125,10 +125,13 @@ public class SchoolAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             else {
                 myHolder.tv_message.setText("+" + threadDataBean.getPost_num());
             }
-            if ("0".equals(threadDataBean.getLike_num()))
-                myHolder.tv_dianzan.setText("");
-            else {
+            if ("0".equals(threadDataBean.getLike_num())) {
+                myHolder.tv_dianzan.setText("0");
+                myHolder.tv_dianzan.setVisibility(View.INVISIBLE);
+            } else {
                 myHolder.tv_dianzan.setText(threadDataBean.getLike_num());
+                myHolder.tv_dianzan.setVisibility(View.VISIBLE);
+
             }
             if ("1".equals(threadDataBean.getIs_praise())) {//是否点赞1是，0否
                 myHolder.iv_dianzan.setImageResource(R.drawable.school_undianzan_icon);

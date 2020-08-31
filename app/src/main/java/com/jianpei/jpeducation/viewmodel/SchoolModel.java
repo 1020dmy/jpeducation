@@ -312,7 +312,11 @@ public class SchoolModel extends BaseViewModel implements SchoolContract.Model {
                 if (t.isSuccess()) {
                     evaluationDataBeansLiveData.setValue(t.getData());
                 } else {
-                    errData.setValue(t.getMsg());
+                    if (!TextUtils.isEmpty(start_id))
+                        errData.setValue(t.getMsg());
+                    else
+                        errData.setValue("");
+
                 }
 
             }

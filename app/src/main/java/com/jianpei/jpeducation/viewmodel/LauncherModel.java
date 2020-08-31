@@ -39,7 +39,7 @@ public class LauncherModel extends BaseViewModel<LauncherBean> implements Launch
 
             @Override
             protected void onSuccees(BaseEntity<LauncherBean> t) throws Exception {
-                if (t.isSuccess()) {
+                if (t.isSuccess() && t.getData() != null) {
                     if (t.getData() != null && !TextUtils.isEmpty(t.getData().getUserProtocol()))
                         SpUtils.putString(SpUtils.UserProtocol, t.getData().getUserProtocol());
                     if (t.getData() != null && !TextUtils.isEmpty(t.getData().getTelephone()))

@@ -268,6 +268,7 @@ public class SimulationParsingActivity extends BaseActivity {
                         .putExtra("paperName", paperName), 111);
                 break;
             case R.id.tv_favorites:
+                answerModel.favorites(paperId, questionId);
                 break;
             case R.id.iv_next:
                 index_type = "1";

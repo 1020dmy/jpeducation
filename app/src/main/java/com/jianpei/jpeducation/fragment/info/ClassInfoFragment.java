@@ -203,6 +203,21 @@ public class ClassInfoFragment extends BasePlayerFragment {
             @Override
             public void onChanged(List<GroupCouponBean> groupCouponBeans) {
                 mGroupCouponBeans.addAll(groupCouponBeans);
+                if (couponPopup == null) {
+                    couponPopup = new CouponPopup(getActivity(), mGroupCouponBeans);
+                    couponPopup.setMyCouponReceiveListener(new CouponPopup.MyCouponReceiveListener() {
+                        @Override
+                        public void onClickCouponReceive(String couponId) {
+                            if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                return;
+                            }
+                            showLoading("");
+                            classInfoFModel.couponReceive(couponId, "");
+                        }
+                    });
+                }
+                couponPopup.showPop();
             }
         });
         //滚动监听
@@ -248,8 +263,8 @@ public class ClassInfoFragment extends BasePlayerFragment {
         //
         showLoading("");
         classInfoFModel.groupInfo(groupId, "");
-        //获取优惠券信息
-        classInfoFModel.groupCoupon(catId, groupId);
+//        获取优惠券信息
+//        classInfoFModel.groupCoupon(catId, groupId);
 
 
     }
@@ -309,7 +324,7 @@ public class ClassInfoFragment extends BasePlayerFragment {
 //            tvExplanation.setText(Html.fromHtml(spanned.toString()));
 //        }
         //是否有优惠券可领取1是，0否
-        if ("0".equals(classInfoBean.getIs_coupon())) {
+        if (classInfoBean.getIs_coupon() == 0) {
             tvCoupon.setVisibility(View.GONE);
         } else {
             tvCoupon.setVisibility(View.VISIBLE);
@@ -327,21 +342,27 @@ public class ClassInfoFragment extends BasePlayerFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_coupon:
-                if (couponPopup == null) {
-                    couponPopup = new CouponPopup(getActivity(), mGroupCouponBeans);
-                    couponPopup.setMyCouponReceiveListener(new CouponPopup.MyCouponReceiveListener() {
-                        @Override
-                        public void onClickCouponReceive(String couponId) {
-                            if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
-                                startActivity(new Intent(getActivity(), LoginActivity.class));
-                                return;
+                if (mGroupCouponBeans.size() != 0) {
+                    if (couponPopup == null) {
+                        couponPopup = new CouponPopup(getActivity(), mGroupCouponBeans);
+                        couponPopup.setMyCouponReceiveListener(new CouponPopup.MyCouponReceiveListener() {
+                            @Override
+                            public void onClickCouponReceive(String couponId) {
+                                if (TextUtils.isEmpty(SpUtils.getValue(SpUtils.ID))) {
+                                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                                    return;
+                                }
+                                showLoading("");
+                                classInfoFModel.couponReceive(couponId, "");
                             }
-                            showLoading("");
-                            classInfoFModel.couponReceive(couponId, "");
-                        }
-                    });
+                        });
+                    }
+                    couponPopup.showPop();
+                } else {
+                    //获取优惠券信息
+                    classInfoFModel.groupCoupon(catId, groupId);
                 }
-                couponPopup.showPop();
+
                 break;
             case R.id.tv_tryListener:
                 aliyunPlayerView.start();

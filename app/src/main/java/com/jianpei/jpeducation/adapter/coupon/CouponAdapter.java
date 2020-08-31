@@ -1,5 +1,7 @@
 package com.jianpei.jpeducation.adapter.coupon;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -7,6 +9,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +36,9 @@ public class CouponAdapter extends RecyclerView.Adapter {
 
     private MyCouponReceiveListener myCouponReceiveListener;
 
+    private Context context;
+
+
 //    private int type;//展示的位置1：课程详情2：我的优惠券
 
 
@@ -40,8 +46,13 @@ public class CouponAdapter extends RecyclerView.Adapter {
         this.myCouponReceiveListener = myCouponReceiveListener;
     }
 
-    public CouponAdapter(List<CouponDataBean.CouponData> couponDatas) {
+//    public CouponAdapter(List<CouponDataBean.CouponData> couponDatas) {
+//        this.couponDatas = couponDatas;
+//    }
+
+    public CouponAdapter(List<CouponDataBean.CouponData> couponDatas, Context context) {
         this.couponDatas = couponDatas;
+        this.context = context;
     }
 
     @Override
@@ -83,10 +94,12 @@ public class CouponAdapter extends RecyclerView.Adapter {
                 mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_used);
             } else if ("2".equals(couponData.getType())) {//已经使用
                 mjHolder.tvStatus.setText("已使用");
+                mjHolder.tvStatus.setBackgroundResource(R.drawable.shape_home_zhekou_guoqi);
                 mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
             } else {//过期
                 mjHolder.tvStatus.setText("已过期");
                 mjHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+                mjHolder.tvStatus.setBackgroundResource(R.drawable.shape_home_zhekou_guoqi);
 
             }
 
@@ -94,9 +107,9 @@ public class CouponAdapter extends RecyclerView.Adapter {
             ZKHolder zkHolder = (ZKHolder) holder;
 
             if (!TextUtils.isEmpty(couponData.getSon_describe())) {
-                String aaa=couponData.getDescribe()+"." + couponData.getSon_describe();
+                String aaa = couponData.getDescribe() + "." + couponData.getSon_describe();
                 SpannableString spanString = new SpannableString(aaa);
-                AbsoluteSizeSpan span = new AbsoluteSizeSpan(20,true);//这里设置要改变的字的大小
+                AbsoluteSizeSpan span = new AbsoluteSizeSpan(20, true);//这里设置要改变的字的大小
                 spanString.setSpan(span, couponData.getDescribe().length(), aaa.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                 zkHolder.tvNum.setText(spanString);
 
@@ -112,11 +125,18 @@ public class CouponAdapter extends RecyclerView.Adapter {
                 zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_used);
             } else if ("2".equals(couponData.getType())) {//已经使用
                 zkHolder.tvStatus.setText("已使用");
+                zkHolder.tvStatus.setBackgroundResource(R.drawable.shape_home_zhekou_guoqi);
+                zkHolder.tvNum.setTextColor(context.getResources().getColor(R.color.c989898));
                 zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
+                zkHolder.llStatus.setBackgroundResource(R.drawable.user_coupon_used_bg);
+                zkHolder.iv_zhe.setImageResource(R.drawable.icon_zhe_guoqi);
             } else {//过期
                 zkHolder.tvStatus.setText("已过期");
                 zkHolder.linearLayout.setBackgroundResource(R.drawable.user_coupon_unused);
-
+                zkHolder.tvStatus.setBackgroundResource(R.drawable.shape_home_zhekou_guoqi);
+                zkHolder.tvNum.setTextColor(context.getResources().getColor(R.color.c989898));
+                zkHolder.llStatus.setBackgroundResource(R.drawable.user_coupon_used_bg);
+                zkHolder.iv_zhe.setImageResource(R.drawable.icon_zhe_guoqi);
             }
         }
 
@@ -131,7 +151,7 @@ public class CouponAdapter extends RecyclerView.Adapter {
     class MJHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvPrice, tvTitle, tvTime, tvStatus;
         private LinearLayout llStatus;
-//        private TextView tvSubmit;
+        //        private TextView tvSubmit;
         private LinearLayout linearLayout;
 
         public MJHolder(@NonNull View itemView) {
@@ -163,9 +183,10 @@ public class CouponAdapter extends RecyclerView.Adapter {
     class ZKHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvNum, tvTitle, tvTime, tvStatus;
         private LinearLayout llStatus;
-//        private TextView tvSubmit;
+        //        private TextView tvSubmit;
         private LinearLayout linearLayout;
 //        private TextView tvNumt;
+        private ImageView iv_zhe;
 
 
         public ZKHolder(@NonNull View itemView) {
@@ -177,6 +198,8 @@ public class CouponAdapter extends RecyclerView.Adapter {
             llStatus = itemView.findViewById(R.id.ll_status);
 //            tvSubmit = itemView.findViewById(R.id.tv_submit);
             linearLayout = itemView.findViewById(R.id.linearLayout);
+
+            iv_zhe=itemView.findViewById(R.id.iv_zhe);
             linearLayout.setOnClickListener(this);
 
 //            tvNumt = itemView.findViewById(R.id.tv_numt);

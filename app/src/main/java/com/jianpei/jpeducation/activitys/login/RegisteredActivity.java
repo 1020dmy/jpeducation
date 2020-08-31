@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
+import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.CountDownTimerUtils;
@@ -25,7 +26,7 @@ import com.jianpei.jpeducation.viewmodel.SendCodeModel;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RegisteredActivity extends BaseNoStatusActivity {
+public class RegisteredActivity extends BaseActivity {
 
 
     @BindView(R.id.iv_back)
@@ -74,7 +75,7 @@ public class RegisteredActivity extends BaseNoStatusActivity {
 
     @Override
     protected void initView() {
-        setTitleViewPadding(tvStatus);
+//        setTitleViewPadding(tvStatus);
         tvTitle.setText(getResources().getString(R.string.reg_title));
         //
         sendCodeModel = new ViewModelProvider(this).get(SendCodeModel.class);

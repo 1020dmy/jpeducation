@@ -98,7 +98,7 @@ public class CouponAvailableFragment extends BaseFragment {
     protected void initData(Context mContext) {
 
         couponDatas = new ArrayList<>();
-        couponAdapter = new CouponAdapter(couponDatas);
+        couponAdapter = new CouponAdapter(couponDatas,getActivity());
         if (formActivity == 0) {//如果是购物车或者订单确认跳转过来的才设置
             couponAdapter.setMyCouponReceiveListener(new CouponAdapter.MyCouponReceiveListener() {
                 @Override

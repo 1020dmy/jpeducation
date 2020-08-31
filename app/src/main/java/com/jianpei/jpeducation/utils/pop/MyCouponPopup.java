@@ -78,7 +78,7 @@ public class MyCouponPopup extends PopupWindow {
 //        MyAdapter myAdapter = new MyAdapter();/\
 //        recyclerView.setAdapter(myAdapter);
 
-        CouponAdapter couponAdapter = new CouponAdapter(mCouponDatas);
+        CouponAdapter couponAdapter = new CouponAdapter(mCouponDatas,mContext);
         couponAdapter.setMyCouponReceiveListener(myCouponReceiveListener);
         recyclerView.setAdapter(couponAdapter);
 

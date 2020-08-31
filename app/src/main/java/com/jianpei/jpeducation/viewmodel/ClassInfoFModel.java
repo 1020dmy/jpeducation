@@ -130,10 +130,10 @@ public class ClassInfoFModel extends BaseViewModel implements ClassInfoFContract
 
             @Override
             protected void onSuccees(BaseEntity<List<GroupCouponBean>> t) throws Exception {
-                if (t.isSuccess()) {
+                if (t.isSuccess() && t.getData() != null) {
                     groupCouponBeansLiveData.setValue(t.getData());
                 } else {
-                    errData.setValue(t.getData());
+                    errData.setValue(t.getMsg());
                 }
 
             }
