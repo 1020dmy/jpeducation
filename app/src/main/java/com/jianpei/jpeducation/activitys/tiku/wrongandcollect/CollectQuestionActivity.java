@@ -51,20 +51,20 @@ public class CollectQuestionActivity extends BaseActivity {
     TextView tvTopic;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.tv_you_answer)
-    TextView tvYouAnswer;
-    @BindView(R.id.ll_jd_answer)
-    LinearLayout llJdAnswer;
-    @BindView(R.id.tv_result)
-    TextView tvResult;
-    @BindView(R.id.tv_correct)
-    TextView tvCorrect;
-    @BindView(R.id.tv_mine_answer)
-    TextView tvMineAnswer;
-    @BindView(R.id.ll_select_answer)
-    LinearLayout llSelectAnswer;
-    @BindView(R.id.line)
-    TextView line;
+//    @BindView(R.id.tv_you_answer)
+//    TextView tvYouAnswer;
+//    @BindView(R.id.ll_jd_answer)
+//    LinearLayout llJdAnswer;
+//    @BindView(R.id.tv_result)
+//    TextView tvResult;
+//    @BindView(R.id.tv_correct)
+//    TextView tvCorrect;
+//    @BindView(R.id.tv_mine_answer)
+//    TextView tvMineAnswer;
+//    @BindView(R.id.ll_select_answer)
+//    LinearLayout llSelectAnswer;
+//    @BindView(R.id.line)
+//    TextView line;
     @BindView(R.id.tv_share)
     TextView tvShare;
     @BindView(R.id.tv_jiexi)
@@ -77,6 +77,8 @@ public class CollectQuestionActivity extends BaseActivity {
     TextView tvFavorites;
     @BindView(R.id.iv_next)
     ImageView ivNext;
+    @BindView(R.id.tv_answer)
+    TextView tvAnswer;
     private String source;//1正常答题，2收藏，4本卷错题，3错题集,5全部解析，6本卷解答题
     private String questionId;//当前问题id
     private String class_id;//课程id
@@ -161,8 +163,8 @@ public class CollectQuestionActivity extends BaseActivity {
         typeAnswer = getQuestionBean.getType();//1.单选，2多选，5简答
 
         //显示当前第几道题
-        tvCurrent.setText(getQuestionBean.getQuestion_index());
-        tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
+//        tvCurrent.setText(getQuestionBean.getQuestion_index());
+//        tvTotal.setText("/" + getQuestionBean.getQuestion_total_num());
 
         //问题
         tvTopic.setText(Html.fromHtml(getQuestionBean.getQuestion_name(), getImageGetter(), null));
@@ -172,38 +174,42 @@ public class CollectQuestionActivity extends BaseActivity {
             answerBeans.addAll(getQuestionBean.getAnswer_list());
             adapter.notifyDataSetChanged();
             //答案区
-            llSelectAnswer.setVisibility(View.VISIBLE);
-            line.setVisibility(View.VISIBLE);
-            llJdAnswer.setVisibility(View.GONE);
-            tvCorrect.setText(getQuestionBean.getSucc_answer());
-            tvMineAnswer.setText(getQuestionBean.getMy_answer());
-            if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
-                tvResult.setText("回答正确");
-            } else {
-                tvResult.setText("回答错误");
-            }
+            tvAnswer.setVisibility(View.VISIBLE);
+            tvAnswer.setText("");
+            tvAnswer.setText("答案:"+getQuestionBean.getSucc_answer());
+//            llSelectAnswer.setVisibility(View.VISIBLE);
+//            line.setVisibility(View.VISIBLE);
+//            llJdAnswer.setVisibility(View.GONE);
+//            tvCorrect.setText(getQuestionBean.getSucc_answer());
+//            tvMineAnswer.setText(getQuestionBean.getMy_answer());
+//            if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
+//                tvResult.setText("回答正确");
+//            } else {
+//                tvResult.setText("回答错误");
+//            }
         } else if ("5".equals(typeAnswer)) {//简答题
             recyclerView.setVisibility(View.GONE);
-            llJdAnswer.setVisibility(View.VISIBLE);
-            llSelectAnswer.setVisibility(View.GONE);
-            line.setVisibility(View.GONE);
-            tvYouAnswer.setText(getQuestionBean.getMy_answer());
+//            llJdAnswer.setVisibility(View.VISIBLE);
+//            llSelectAnswer.setVisibility(View.GONE);
+//            line.setVisibility(View.GONE);
+//            tvYouAnswer.setText(getQuestionBean.getMy_answer());
+            tvAnswer.setVisibility(View.GONE);
         }
         tvJiexi.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
 
         //底部按钮
         //是否显示上一题按钮
-        if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
-            ivPrevious.setVisibility(View.INVISIBLE);
-        } else {
-            ivPrevious.setVisibility(View.VISIBLE);
-        }
-        //是否显示下一题或者交卷按钮
-        if (TextUtils.isEmpty(getQuestionBean.getNext_answer_id())) {
-            ivNext.setVisibility(View.INVISIBLE);
-        } else {
-            ivNext.setVisibility(View.VISIBLE);
-        }
+//        if (TextUtils.isEmpty(getQuestionBean.getBefore_answer_id())) {
+//            ivPrevious.setVisibility(View.INVISIBLE);
+//        } else {
+//            ivPrevious.setVisibility(View.VISIBLE);
+//        }
+//        //是否显示下一题或者交卷按钮
+//        if (TextUtils.isEmpty(getQuestionBean.getNext_answer_id())) {
+//            ivNext.setVisibility(View.INVISIBLE);
+//        } else {
+//            ivNext.setVisibility(View.VISIBLE);
+//        }
         //收藏状态
         setFavorites(getQuestionBean.getIs_favorites());
     }

@@ -70,12 +70,12 @@ public class DailyAnswerActivity extends BaseActivity {
     TextView tvYouAnswer;
     @BindView(R.id.ll_jd_answer)
     LinearLayout llJdAnswer;
-    @BindView(R.id.tv_result)
-    TextView tvResult;
-    @BindView(R.id.tv_correct)
-    TextView tvCorrect;
-    @BindView(R.id.tv_mine_answer)
-    TextView tvMineAnswer;
+//    @BindView(R.id.tv_result)
+//    TextView tvResult;
+//    @BindView(R.id.tv_correct)
+//    TextView tvCorrect;
+//    @BindView(R.id.tv_mine_answer)
+//    TextView tvMineAnswer;
     @BindView(R.id.tv_share)
     TextView tvShare;
     @BindView(R.id.tv_select_jiexi)
@@ -235,8 +235,8 @@ public class DailyAnswerActivity extends BaseActivity {
         llJiexi.setVisibility(View.GONE);
         if ("1".equals(type) || "2".equals(type)) {
             tvSelectJiexi.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
-            tvCorrect.setText(getQuestionBean.getSucc_answer());
-            tvMineAnswer.setText(getQuestionBean.getMy_answer());
+//            tvCorrect.setText(getQuestionBean.getSucc_answer());
+//            tvMineAnswer.setText(getQuestionBean.getMy_answer());
         } else if ("5".equals(type)) {
             tvParsing.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
             tvYouAnswer.setText(getQuestionBean.getMy_answer());
@@ -359,14 +359,14 @@ public class DailyAnswerActivity extends BaseActivity {
         tvFavorites.setVisibility(View.VISIBLE);
         if ("1".equals(type) || "2".equals(type)) {//单选多选
             //答案判断
-            tvMineAnswer.setText(nOptionsAdapter.getMineAnswer());
-            if (TextUtils.isEmpty(nOptionsAdapter.getMineAnswer()))
-                tvResult.setText("未作答");
-            else if (nOptionsAdapter.getMineAnswer().equals(tvCorrect.getText().toString())) {
-                tvResult.setText("回答正确");
-            } else {
-                tvResult.setText("回答错误");
-            }
+//            tvMineAnswer.setText(nOptionsAdapter.getMineAnswer());
+//            if (TextUtils.isEmpty(nOptionsAdapter.getMineAnswer()))
+//                tvResult.setText("未作答");
+//            else if (nOptionsAdapter.getMineAnswer().equals(tvCorrect.getText().toString())) {
+//                tvResult.setText("回答正确");
+//            } else {
+//                tvResult.setText("回答错误");
+//            }
 
 
             llJiexi.setVisibility(View.VISIBLE);

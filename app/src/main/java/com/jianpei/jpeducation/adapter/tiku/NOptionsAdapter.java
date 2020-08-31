@@ -142,7 +142,6 @@ public class NOptionsAdapter extends RecyclerView.Adapter<NOptionsAdapter.MyHold
                 }
                 answerBean.setIs_selected(1);
                 notifyDataSetChanged();
-
             } else if ("2".equals(type)) {//多选
                 answerBean.setIs_selected(answerBean.getIs_selected() == 0 ? 1 : 0);
                 notifyItemChanged(getLayoutPosition());

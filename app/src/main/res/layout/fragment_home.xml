@@ -59,7 +59,6 @@
                 <TextView
                     android:id="@+id/tv_exercise"
                     style="@style/home_btn_text"
-                    android:visibility="gone"
                     android:drawableTop="@drawable/home_btn_three"
                     android:text="@string/home_btn_three" />
 

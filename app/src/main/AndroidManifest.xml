@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.jianpei.jpeducation">
+    package="com.jianpei.jpeducation"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,6 +18,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
+        tools:ignore="LockedOrientationActivity"
         android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -27,17 +29,46 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activitys.tiku.wrongandcollect.CheckWrongParsingActivity"></activity>
-        <activity android:name=".activitys.tiku.wrongandcollect.CollectQuestionActivity" />
-        <activity android:name=".activitys.tiku.simulation.SimulationParsingActivity" />
-        <activity android:name=".activitys.tiku.daily.DailyWrongAndParsingActivity" />
-        <activity android:name=".activitys.tiku.daily.DailyAnswerActivity" />
-        <activity android:name=".activitys.tiku.wrongandcollect.CheckWrongEnterActivity" />
-        <activity android:name=".activitys.tiku.result.SimulationExerciseResultActivity" />
+        <activity
+            android:name=".activitys.tiku.wrongandcollect.CheckWrongParsingActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.wrongandcollect.CollectQuestionActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.simulation.SimulationParsingActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.daily.DailyWrongAndParsingActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.daily.DailyAnswerActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.wrongandcollect.CheckWrongEnterActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activitys.tiku.result.SimulationExerciseResultActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activitys.mine.InviteFriendsActivity"
             android:configChanges="screenSize|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activitys.mine.FeedbackActivity"
             android:configChanges="screenSize|orientation"

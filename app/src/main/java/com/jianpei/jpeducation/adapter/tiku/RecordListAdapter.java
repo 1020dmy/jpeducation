@@ -54,14 +54,20 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.My
             holder.tv_again.setText("进入");
             holder.tv_result.setEnabled(false);
             holder.tv_jiexi.setEnabled(false);
+            holder.tv_correct.setVisibility(View.GONE);
+            holder.tv_correct_nums.setVisibility(View.GONE);
         } else if ("1".equals(testPaperBean.getUser_is_complete())) {
             holder.tv_again.setText("继续");
             holder.tv_result.setEnabled(false);
             holder.tv_jiexi.setEnabled(false);
+            holder.tv_correct.setVisibility(View.GONE);
+            holder.tv_correct_nums.setVisibility(View.GONE);
         } else {
             holder.tv_again.setText("重做");
             holder.tv_result.setEnabled(true);
             holder.tv_jiexi.setEnabled(true);
+            holder.tv_correct.setVisibility(View.VISIBLE);
+            holder.tv_correct_nums.setVisibility(View.VISIBLE);
         }
         holder.tv_time.setText(testPaperBean.getCreate_time_str());
         holder.tv_nums.setText(testPaperBean.getTotal_que_num() + "题");
@@ -91,6 +97,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.My
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvType, tv_title, tv_time, tv_nums, tv_correct_nums, tv_again, tv_result, tv_jiexi;
+        private TextView tv_correct;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +109,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.My
             tv_again = itemView.findViewById(R.id.tv_again);
             tv_result = itemView.findViewById(R.id.tv_result);
             tv_jiexi = itemView.findViewById(R.id.tv_jiexi);
+
+            tv_correct=itemView.findViewById(R.id.tv_correct);
 
             tv_again.setOnClickListener(this);
             tv_result.setOnClickListener(this);

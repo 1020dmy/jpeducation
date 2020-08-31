@@ -52,32 +52,34 @@ public class CheckWrongParsingActivity extends BaseActivity {
     TextView tvTopic;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.tv_result)
-    TextView tvResult;
-    @BindView(R.id.tv_correct)
-    TextView tvCorrect;
-    @BindView(R.id.tv_mine_answer)
-    TextView tvMineAnswer;
-    @BindView(R.id.ll_judge)
-    LinearLayout llJudge;
-    @BindView(R.id.tv_line)
-    TextView tvLine;
+    //    @BindView(R.id.tv_result)
+//    TextView tvResult;
+//    @BindView(R.id.tv_correct)
+//    TextView tvCorrect;
+//    @BindView(R.id.tv_mine_answer)
+//    TextView tvMineAnswer;
+//    @BindView(R.id.ll_judge)
+//    LinearLayout llJudge;
+//    @BindView(R.id.tv_line)
+//    TextView tvLine;
     @BindView(R.id.tv_share)
     TextView tvShare;
     @BindView(R.id.tv_parsing)
     TextView tvParsing;
     @BindView(R.id.ll_jiexi)
     LinearLayout llJiexi;
-    @BindView(R.id.tv_jd_mine_answer)
-    TextView tvJdMineAnswer;
-    @BindView(R.id.ll_jd_answer)
-    LinearLayout llJdAnswer;
+    //    @BindView(R.id.tv_jd_mine_answer)
+//    TextView tvJdMineAnswer;
+//    @BindView(R.id.ll_jd_answer)
+//    LinearLayout llJdAnswer;
     @BindView(R.id.iv_previous)
     ImageView ivPrevious;
     @BindView(R.id.tv_favorites)
     TextView tvFavorites;
     @BindView(R.id.iv_next)
     ImageView ivNext;
+    @BindView(R.id.tv_answer)
+    TextView tvAnswer;
 
     private AnswerModel answerModel;
     private DailyWrongAndParsingAdapter dailyWrongAndParsingAdapter;
@@ -161,7 +163,7 @@ public class CheckWrongParsingActivity extends BaseActivity {
         if (getQuestionBean == null)
             return;
         questionId = getQuestionBean.getId();
-        paperId=getQuestionBean.getPaper_id();
+        paperId = getQuestionBean.getPaper_id();
         answerBeans.clear();
         dailyWrongAndParsingAdapter.notifyDataSetChanged();
         questionId = getQuestionBean.getId();//问题ID
@@ -179,24 +181,27 @@ public class CheckWrongParsingActivity extends BaseActivity {
             answerBeans.addAll(getQuestionBean.getAnswer_list());
             dailyWrongAndParsingAdapter.notifyDataSetChanged();
             //答案和判断区
-            llJudge.setVisibility(View.VISIBLE);
-            tvLine.setVisibility(View.VISIBLE);
-            llJdAnswer.setVisibility(View.GONE);
+            tvAnswer.setVisibility(View.VISIBLE);
+            tvAnswer.setText("答案:"+getQuestionBean.getSucc_answer());
+//            llJudge.setVisibility(View.VISIBLE);
+//            tvLine.setVisibility(View.VISIBLE);
+//            llJdAnswer.setVisibility(View.GONE);
             //赋值
-            tvCorrect.setText(getQuestionBean.getSucc_answer());
-            tvMineAnswer.setText(getQuestionBean.getMy_answer());
-            if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
-                tvResult.setText("回答正确");
-            } else {
-                tvResult.setText("回答错误");
-            }
+//            tvCorrect.setText(getQuestionBean.getSucc_answer());
+//            tvMineAnswer.setText(getQuestionBean.getMy_answer());
+//            if (getQuestionBean.getSucc_answer().equals(getQuestionBean.getMy_answer())) {
+//                tvResult.setText("回答正确");
+//            } else {
+//                tvResult.setText("回答错误");
+//            }
         } else if ("5".equals(type)) {//简答题
             recyclerView.setVisibility(View.GONE);
+            tvAnswer.setVisibility(View.GONE);
             //答案和判断区
-            llJudge.setVisibility(View.GONE);
-            tvLine.setVisibility(View.GONE);
-            llJdAnswer.setVisibility(View.VISIBLE);
-            tvJdMineAnswer.setText(getQuestionBean.getMy_answer());
+//            llJudge.setVisibility(View.GONE);
+//            tvLine.setVisibility(View.GONE);
+//            llJdAnswer.setVisibility(View.VISIBLE);
+//            tvJdMineAnswer.setText(getQuestionBean.getMy_answer());
 
         }
         //答案解析
