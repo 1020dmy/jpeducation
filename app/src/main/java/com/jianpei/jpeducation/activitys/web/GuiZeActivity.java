@@ -45,15 +45,20 @@ public class GuiZeActivity extends BaseActivity {
 
 
         url = getIntent().getStringExtra("webUrl");
-        title=getIntent().getStringExtra("title");
-        L.e("========url:"+url);
+        title = getIntent().getStringExtra("title");
+        L.e("========url:" + url);
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings()
                     .setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        String ua = webView.getSettings().getUserAgentString();
+        webView.getSettings().setUserAgentString(ua + ";jianpei/app");
+        L.e("========setUserAgentString=" + webView.getSettings().getUserAgentString());
         webView.setWebViewClient(new WebViewClient());
         tvTitle.setText(title);
+
+
     }
 
     @Override

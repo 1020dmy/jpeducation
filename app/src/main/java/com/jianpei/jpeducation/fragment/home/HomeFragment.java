@@ -199,7 +199,7 @@ public class HomeFragment extends BaseFragment {
                 if (mNoticeDataBeans != null) {
                     startActivity(new Intent(getActivity(), GuiZeActivity.class)
                             .putExtra("title", "要闻推荐")
-                            .putExtra("webUrl", "http://m.jianpei.com.cn/Wap/News/info/" + mNoticeDataBeans.get(position).getId() + ".html"));
+                            .putExtra("webUrl", mNoticeDataBeans.get(position).getUrl()));
                 }
             }
         });
