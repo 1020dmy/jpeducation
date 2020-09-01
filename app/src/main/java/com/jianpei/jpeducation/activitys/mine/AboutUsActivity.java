@@ -43,7 +43,7 @@ public class AboutUsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        tvTip.setText("建培移动课堂V" + AppUtils.getPackageName(MyApplication.getInstance()));
+        tvTip.setText("建培移动课堂V" + AppUtils.getVersionName(MyApplication.getInstance()));
 
     }
 

@@ -167,7 +167,7 @@ public class AnswerTheScoreActivity extends BaseActivity {
         //问题
         tvTopic.setText(Html.fromHtml(getQuestionBean.getQuestion_name(), getImageGetter(), null));
         //答案解析
-        tvParsing.setText(Html.fromHtml(getQuestionBean.getSucc_answer(), getImageGetter(), null));
+        tvParsing.setText(Html.fromHtml(getQuestionBean.getExplain(), getImageGetter(), null));
         //我的答案
         tvMineAnswer.setText(getQuestionBean.getMy_answer());
         //分数

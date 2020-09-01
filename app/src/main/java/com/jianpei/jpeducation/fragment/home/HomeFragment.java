@@ -20,6 +20,7 @@ import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
 import com.jianpei.jpeducation.activitys.tiku.daily.TodayExerciseListActivity;
+import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.home.GroupInfoItemBinder;
 import com.jianpei.jpeducation.adapter.home.GroupTitleItemBinder;
@@ -111,6 +112,8 @@ public class HomeFragment extends BaseFragment {
 
     private String downloadUrl;
 
+    private ArrayList<NoticeDataBean> mNoticeDataBeans;
+
 
     @Override
     protected int initLayout() {
@@ -190,6 +193,17 @@ public class HomeFragment extends BaseFragment {
         recyclerView.setAdapter(baseBinderAdapter);
         baseBinderAdapter.setList(datas);
 
+        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, TextView textView) {
+                if (mNoticeDataBeans != null) {
+                    startActivity(new Intent(getActivity(), GuiZeActivity.class)
+                            .putExtra("title", "要闻推荐")
+                            .putExtra("webUrl", "http://m.jianpei.com.cn/Wap/News/info/" + mNoticeDataBeans.get(position).getId() + ".html"));
+                }
+            }
+        });
+
 
     }
 
@@ -199,6 +213,11 @@ public class HomeFragment extends BaseFragment {
         homePageModel.getNoticeDatas().observe(this, new Observer<ArrayList<NoticeDataBean>>() {
             @Override
             public void onChanged(ArrayList<NoticeDataBean> noticeDataBeans) {
+                if (noticeDataBeans == null || noticeDataBeans.size() == 0) {
+                    marqueeView.setVisibility(View.GONE);
+                    return;
+                }
+                mNoticeDataBeans = noticeDataBeans;
                 marqueeView.startWithList(noticeDataBeans);
             }
         });

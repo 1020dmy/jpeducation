@@ -137,15 +137,13 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="30dp" />
+                android:paddingTop="10dp" />
 
             <EditText
                 android:id="@+id/et_answer"
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="10dp"
+               android:layout_margin="10dp"
                 android:background="@drawable/shape_answer_card_three"
                 android:gravity="top"
                 android:hint="在此处作答"

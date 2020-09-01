@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
+import com.jianpei.jpeducation.utils.L;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class GuiZeActivity extends BaseActivity {
 
         url = getIntent().getStringExtra("webUrl");
         title=getIntent().getStringExtra("title");
+        L.e("========url:"+url);
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings()
