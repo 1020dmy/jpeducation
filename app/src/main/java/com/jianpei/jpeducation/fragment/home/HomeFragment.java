@@ -169,7 +169,7 @@ public class HomeFragment extends BaseFragment {
                             .putExtra("webUrl", data.getUrl()));
                 }else if ("group".equals(data.getApp_jump_type())){
                     startActivity(new Intent(getActivity(), ClassInfoActivity.class)
-                            .putExtra("groupId", data.getId())
+                            .putExtra("groupId", data.getApp_point_id())
                             .putExtra("catId", data.getCat_id()));
                 }
             }

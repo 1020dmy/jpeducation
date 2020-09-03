@@ -90,7 +90,6 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
     //banner
     private ArrayList<BannerDataBean> bannerDataBeans;
 
-
     @Override
     protected int initLayout() {
         return R.layout.fragment_tiku;
@@ -139,7 +138,7 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
                             .putExtra("webUrl", data.getUrl()));
                 }else if ("group".equals(data.getApp_jump_type())){
                     startActivity(new Intent(getActivity(), ClassInfoActivity.class)
-                            .putExtra("groupId", data.getId())
+                            .putExtra("groupId", data.getApp_point_id())
                             .putExtra("catId", data.getCat_id()));
                 }
             }
