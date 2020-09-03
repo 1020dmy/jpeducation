@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseBinderAdapter;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.TryListenerListActivity;
+import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.material.MaterialListActivity;
 import com.jianpei.jpeducation.activitys.pdf.PdfReaderActivity;
@@ -58,6 +59,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 
@@ -156,6 +158,22 @@ public class HomeFragment extends BaseFragment {
                 .setBannerRound(30)
                 .setAdapter(new BannerMainAdapter(bannerDataBeans, getActivity()))
                 .setIndicator(new RectangleIndicator(getActivity()));
+        banner.setOnBannerListener(new OnBannerListener<BannerDataBean>() {
+            @Override
+            public void OnBannerClick(BannerDataBean data, int position) {
+                if (data==null)
+                    return;
+                if ("url".equals(data.getApp_jump_type())){
+                    startActivity(new Intent(getActivity(), GuiZeActivity.class)
+                            .putExtra("title", data.getTitle())
+                            .putExtra("webUrl", data.getUrl()));
+                }else if ("group".equals(data.getApp_jump_type())){
+                    startActivity(new Intent(getActivity(), ClassInfoActivity.class)
+                            .putExtra("groupId", data.getId())
+                            .putExtra("catId", data.getCat_id()));
+                }
+            }
+        });
 
         datas = new ArrayList<>();
         materialInfoItemBinder = new MaterialInfoItemBinder();
@@ -196,7 +214,7 @@ public class HomeFragment extends BaseFragment {
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
-                if (mNoticeDataBeans != null) {
+                if (mNoticeDataBeans != null && TextUtils.isEmpty(mNoticeDataBeans.get(position).getUrl())) {
                     startActivity(new Intent(getActivity(), GuiZeActivity.class)
                             .putExtra("title", "要闻推荐")
                             .putExtra("webUrl", mNoticeDataBeans.get(position).getUrl()));
