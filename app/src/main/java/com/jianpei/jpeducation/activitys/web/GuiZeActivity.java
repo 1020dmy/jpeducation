@@ -2,7 +2,6 @@ package com.jianpei.jpeducation.activitys.web;
 
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -13,11 +12,9 @@ import android.widget.TextView;
 
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.base.BaseActivity;
-import com.jianpei.jpeducation.base.BaseNoStatusActivity;
 import com.jianpei.jpeducation.utils.L;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class GuiZeActivity extends BaseActivity {
