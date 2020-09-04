@@ -41,6 +41,7 @@ public class BannerMainAdapter extends BannerAdapter<BannerDataBean, BannerMainA
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setAdjustViewBounds(true);
         return new MyHolder(imageView);
     }
 

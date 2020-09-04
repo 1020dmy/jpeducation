@@ -214,7 +214,7 @@ public class HomeFragment extends BaseFragment {
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
-                if (mNoticeDataBeans != null && TextUtils.isEmpty(mNoticeDataBeans.get(position).getUrl())) {
+                if (mNoticeDataBeans != null && !TextUtils.isEmpty(mNoticeDataBeans.get(position).getUrl())) {
                     startActivity(new Intent(getActivity(), GuiZeActivity.class)
                             .putExtra("title", "要闻推荐")
                             .putExtra("webUrl", mNoticeDataBeans.get(position).getUrl()));
