@@ -133,10 +133,6 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
             public void onChanged(Integer integer) {
                 if (integer == 2) {
                     radioGroup.check(R.id.rb_xuanke);
-//                    if (lastfragment != 2) {
-//                        switchFragment(lastfragment, 2);
-//                        lastfragment = 2;
-//                    }
                 }
             }
         });
@@ -163,6 +159,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
         versionDetectModel.getVersionDetectLiveData().observe(this, new Observer<VersionDetectBean>() {
             @Override
             public void onChanged(VersionDetectBean versionDetectBean) {
+                if (versionDetectBean==null)
+                    return;
                 if (upVersionDialog == null)
                     upVersionDialog = new UpVersionDialog(MainActivity.this);
                 upVersionDialog.setData(versionDetectBean);

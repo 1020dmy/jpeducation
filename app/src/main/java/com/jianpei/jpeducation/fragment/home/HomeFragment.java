@@ -43,6 +43,7 @@ import com.jianpei.jpeducation.bean.homedata.MaterialTitleBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.homedata.RegimentTitleBean;
 import com.jianpei.jpeducation.bean.material.MaterialInfoBean;
+import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.dialog.IntegralBuyDialog;
 import com.jianpei.jpeducation.utils.down.QueueListener;
@@ -116,6 +117,8 @@ public class HomeFragment extends BaseFragment {
 
     private ArrayList<NoticeDataBean> mNoticeDataBeans;
 
+    private BannerMainAdapter bannerMainAdapter;
+
 
     @Override
     protected int initLayout() {
@@ -153,27 +156,14 @@ public class HomeFragment extends BaseFragment {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
         bannerDataBeans = new ArrayList<>();
+        bannerMainAdapter=new BannerMainAdapter(bannerDataBeans, getActivity());
+        bannerMainAdapter.setMainModel(mainModel);
         banner.addBannerLifecycleObserver(this)
-                .setBannerRound(30)
-                .setAdapter(new BannerMainAdapter(bannerDataBeans, getActivity()))
+                .setBannerRound(DisplayUtil.px2dp(20))
+                .setAdapter(bannerMainAdapter)
                 .setIndicator(new RectangleIndicator(getActivity()));
-        banner.setOnBannerListener(new OnBannerListener<BannerDataBean>() {
-            @Override
-            public void OnBannerClick(BannerDataBean data, int position) {
-                if (data==null)
-                    return;
-                if ("url".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), GuiZeActivity.class)
-                            .putExtra("title", data.getTitle())
-                            .putExtra("webUrl", data.getUrl()));
-                }else if ("group".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), ClassInfoActivity.class)
-                            .putExtra("groupId", data.getApp_point_id())
-                            .putExtra("catId", data.getCat_id()));
-                }
-            }
-        });
 
         datas = new ArrayList<>();
         materialInfoItemBinder = new MaterialInfoItemBinder();

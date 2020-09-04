@@ -83,22 +83,6 @@ public class ElectiveFragment extends BaseFragment implements MyItemOnClickListe
                 .setBannerRound(30)
                 .setAdapter(new BannerMainAdapter(bannerDataBeans, getActivity()))
                 .setIndicator(new RectangleIndicator(getActivity()));
-        banner.setOnBannerListener(new OnBannerListener<BannerDataBean>() {
-            @Override
-            public void OnBannerClick(BannerDataBean data, int position) {
-                if (data==null)
-                    return;
-                if ("url".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), GuiZeActivity.class)
-                            .putExtra("title", data.getTitle())
-                            .putExtra("webUrl", data.getUrl()));
-                }else if ("group".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), ClassInfoActivity.class)
-                            .putExtra("groupId", data.getApp_point_id())
-                            .putExtra("catId", data.getCat_id()));
-                }
-            }
-        });
 
         groupDataBeans = new ArrayList<>();
         electiveAdapter = new ElectiveAdapter(groupDataBeans, getActivity());

@@ -89,6 +89,8 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
     private String catId;
     //banner
     private ArrayList<BannerDataBean> bannerDataBeans;
+    private BannerMainAdapter bannerMainAdapter;
+
 
     @Override
     protected int initLayout() {
@@ -123,26 +125,13 @@ public class TikuFragment extends BaseFragment implements MyItemOnClickListener 
         recyclerView.setAdapter(recommendClassAdapter);
         //
         bannerDataBeans = new ArrayList<>();
+        bannerMainAdapter=new BannerMainAdapter(bannerDataBeans, getActivity());
+        bannerMainAdapter.setMainModel(mainModel);
         banner.addBannerLifecycleObserver(this)
                 .setBannerRound(30)
-                .setAdapter(new BannerMainAdapter(bannerDataBeans, getActivity()))
+                .setAdapter(bannerMainAdapter)
                 .setIndicator(new RectangleIndicator(getActivity()));
-        banner.setOnBannerListener(new OnBannerListener<BannerDataBean>() {
-            @Override
-            public void OnBannerClick(BannerDataBean data, int position) {
-                if (data==null)
-                    return;
-                if ("url".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), GuiZeActivity.class)
-                            .putExtra("title", data.getTitle())
-                            .putExtra("webUrl", data.getUrl()));
-                }else if ("group".equals(data.getApp_jump_type())){
-                    startActivity(new Intent(getActivity(), ClassInfoActivity.class)
-                            .putExtra("groupId", data.getApp_point_id())
-                            .putExtra("catId", data.getCat_id()));
-                }
-            }
-        });
+
         //专业切换
         mainModel.getCatId().observe(this, new Observer<String>() {
             @Override
