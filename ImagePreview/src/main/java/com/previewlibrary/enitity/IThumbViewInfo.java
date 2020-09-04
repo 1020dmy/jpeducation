@@ -29,8 +29,8 @@ public interface IThumbViewInfo extends Parcelable {
     /**
      * 获取视频链接
      * ***/
-//    @Nullable
-//     String getVideoUrl();
+    @Nullable
+     String getVideoUrl();
 
 
 }

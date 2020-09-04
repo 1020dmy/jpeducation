@@ -159,7 +159,7 @@ dependencies {
 //    implementation externalAndroidAppLuban
     implementation project(path: ':ImagePreview')
     implementation project(path: ':textUtilsLib')
-//    implementation project(path: ':tanglang')
+    implementation project(path: ':tanglang')
 
 //    implementation 'org.jetbrains:annotations:16.0.2'
 

@@ -8,10 +8,9 @@
         android:id="@+id/item_chat_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="4dp"
-        android:visibility="gone"
-        />
+        android:gravity="center"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/item_head_img"
@@ -51,11 +50,12 @@
             android:background="@drawable/chat_bg_send_style"
             android:gravity="center">
 
-            <TextView
+            <com.mantis.imview.ui.htmltextview.HtmlTextView
                 android:id="@+id/item_chat_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="16sp"
                 android:visibility="gone" />

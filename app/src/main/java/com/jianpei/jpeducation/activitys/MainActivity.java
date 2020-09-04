@@ -35,6 +35,7 @@ import com.jianpei.jpeducation.utils.dialog.UpVersionDialog;
 import com.jianpei.jpeducation.utils.myclassdown.DownloadClassManager;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.VersionDetectModel;
+import com.mantis.imview.ui.activity.ChatActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -280,7 +281,8 @@ public class MainActivity extends PermissionBaseActivity implements RadioGroup.O
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageButton:
-                startActivity(new Intent(this, KeFuActivity.class));
+//                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.btn_title:
                 startActivity(new Intent(this, SelectDisciplineActivity.class));

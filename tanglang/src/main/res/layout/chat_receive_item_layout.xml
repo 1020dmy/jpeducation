@@ -32,7 +32,7 @@
         android:layout_toRightOf="@+id/item_head_img"
         android:background="@drawable/chat_bg_receive_style">
 
-        <TextView
+        <com.mantis.imview.ui.htmltextview.HtmlTextView
             android:id="@+id/item_chat_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             />
     </RelativeLayout>
 
-    <com.mantis.im_service.ui.views.FlowGroupView
+    <com.mantis.imview.ui.views.FlowGroupView
         android:id="@+id/item_chat_select_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

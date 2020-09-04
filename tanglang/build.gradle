@@ -12,17 +12,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
     buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+//        debug {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'proguard-rules.pro'
         }
     }
 
@@ -49,14 +50,13 @@ dependencies {
     testImplementation externalAndroidAppJunit
     androidTestImplementation externalAndroidAppExtJunit
     androidTestImplementation externalAndroidAppEspresso
-    //RecyclerView：
-//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     //Glide4：
     implementation externalAndroidAppGlide
     annotationProcessor externalAndroidAppGlideCompiler
     //图片选择器
     implementation externalAndroidPictureSelector
     implementation externalAndroidGifView
-    implementation externalAndroidImagePreview
+    implementation project(path: ':ImagePreview')
+
     api files('libs/mantis_im_sdk.aar')
 }

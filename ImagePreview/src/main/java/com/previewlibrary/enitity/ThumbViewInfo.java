@@ -3,6 +3,8 @@ package com.previewlibrary.enitity;
 import android.graphics.Rect;
 import android.os.Parcel;
 
+import androidx.annotation.Nullable;
+
 /**
  * jpeducation
  * <p>
@@ -82,4 +84,10 @@ public class ThumbViewInfo implements IThumbViewInfo {
             return new ThumbViewInfo[size];
         }
     };
+
+    @Nullable
+    @Override
+    public String getVideoUrl() {
+        return null;
+    }
 }

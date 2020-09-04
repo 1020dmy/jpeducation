@@ -120,7 +120,7 @@ ext {
     //---------------------------螳螂------------------------------
     externalAndroidPictureSelector= 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.3'
     externalAndroidGifView = 'com.github.Cutta:GifView:1.4'
-    externalAndroidImagePreview = 'com.ycjiang:ImagePreview:2.3.5'
+//    externalAndroidImagePreview = 'com.ycjiang:ImagePreview:2.3.5'
 
 
     //Android SDK/Tools Version
