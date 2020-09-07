@@ -117,6 +117,7 @@ public class InterceptorUtil {
 //                        .header("os_version", "")
 //                        .header("vendor", "");
                 AppInfoBean.appInfoBean.setUid(SpUtils.getValue(SpUtils.ID));
+                AppInfoBean.appInfoBean.setPush_token(SpUtils.getValue(SpUtils.push_token));
                 String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
 //                String headValue = JSON.toJSONString(AppInfoBean.appInfoBean);
 

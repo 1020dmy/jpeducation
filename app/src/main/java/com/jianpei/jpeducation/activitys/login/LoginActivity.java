@@ -14,10 +14,14 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.MainActivity;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
 import com.jianpei.jpeducation.base.BaseModelActivity;
+import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.fragment.login.CodeLoginFragment;
 import com.jianpei.jpeducation.fragment.login.PassLoginFragment;
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.WxLoginModel;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -78,6 +82,7 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
 
     @Override
     protected void onSuccess(String data) {
+        initPush();
         if (TextUtils.isEmpty(data)) {
             startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
         } else {
@@ -85,6 +90,28 @@ public class LoginActivity extends BaseModelActivity<WxLoginModel, String> {
 
         }
         finish();
+    }
+
+    protected void initPush(){
+        //获取消息推送代理示例
+        PushAgent mPushAgent = PushAgent.getInstance(MyApplication.getInstance());
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                L.i("LoginActivity","注册成功：deviceToken：-------->  " + deviceToken);
+//                bindAlias(mPushAgent);
+                SpUtils.putString(SpUtils.push_token,deviceToken);
+
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                L.e("LoginActivity","注册失败：-------->  " + "s:" + s + ",s1:" + s1);
+            }
+        });
     }
 
 

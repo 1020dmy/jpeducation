@@ -2,12 +2,13 @@ package com.jianpei.jpeducation.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
-import com.aliyun.private_service.PrivateService;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
+import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.TestImageLoader;
 import com.previewlibrary.ZoomMediaLoader;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -21,9 +22,13 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 
 public class MyApplication extends Application {
+
+    private final String TAG="MyApplication";
 
     static {
         //设置全局的Header构建器
@@ -62,7 +67,6 @@ public class MyApplication extends Application {
         //查看大图
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
 
-
     }
 
     public static MyApplication getInstance() {
@@ -71,16 +75,56 @@ public class MyApplication extends Application {
 
 
     protected void initUmeng() {
-        UMConfigure.init(this, "59892f08310c9307b60023d0", "Umeng", UMConfigure.DEVICE_TYPE_PHONE,
-                "669c30a9584623e70e8cd01b0381dcb4");
-//        UMConfigure.init(this, "5eb4bf4d978eea078b7e9364"
-//                , "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
+//        UMConfigure.init(this, "59892f08310c9307b60023d0", "Umeng", UMConfigure.DEVICE_TYPE_PHONE,
+//                "669c30a9584623e70e8cd01b0381dcb4");
+        UMConfigure.init(this, "5eb4bf4d978eea078b7e9364", "Umeng", UMConfigure.DEVICE_TYPE_PHONE,
+                "456cbe6da94f6b9c6be2c6bb5d517b3b");
 
         PlatformConfig.setWeixin(Constants.WX_ID, "f48c09b4fd43c74e6df9c1e1aec76fc9");
         PlatformConfig.setQQZone("101875487", "79bbca3fb14f19baa9b6b8f182534870");
         PlatformConfig.setQQFileProvider("com.jianpei.jpeducation.fileprovider");
+        //
+        if (TextUtils.isEmpty(SpUtils.ID))
+            return;
+            //获取消息推送代理示例
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+            //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                L.i(TAG,"注册成功：deviceToken：-------->  " + deviceToken);
+//                bindAlias(mPushAgent);
+                SpUtils.putString(SpUtils.push_token,deviceToken);
+
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                L.e(TAG,"注册失败：-------->  " + "s:" + s + ",s1:" + s1);
+            }
+        });
+
 
     }
+
+
+//    protected void bindAlias(PushAgent mPushAgent){
+//        String userId= SpUtils.getValue(SpUtils.ID);
+//        if (!TextUtils.isEmpty(userId)){
+//            L.e("userId:"+userId);
+//            //别名绑定，将某一类型的别名ID绑定至某设备，老的绑定设备信息被覆盖，别名ID和deviceToken是一对一的映射关系
+//            mPushAgent.setAlias(userId,"userId" , new UTrack.ICallBack() {
+//                @Override
+//                public void onMessage(boolean isSuccess, String message) {
+//                    L.e("别名绑定:"+isSuccess+","+message);
+//
+//                }
+//            });
+//        }
+//    }
+
 
 
     protected void initWx() {

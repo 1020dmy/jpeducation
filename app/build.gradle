@@ -142,7 +142,7 @@ dependencies {
 
     implementation project(path: ':umeng')
     //支付宝支付
-    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+    api(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
     //螳螂
 //    implementation(name: 'mantis_im_sdk', ext: 'aar')
 //    configurations {

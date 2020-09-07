@@ -46,6 +46,9 @@ public class SpUtils {
     public static final String share_content = "share_content";
     public static final String share_url = "share_url";
 
+    public static final String push_token = "push_token";
+
+
 
     /**
      * Put string value to SharedPreferences
