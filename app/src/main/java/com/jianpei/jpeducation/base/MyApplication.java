@@ -2,10 +2,16 @@ package com.jianpei.jpeducation.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
+
 
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
+import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
+import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
+import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
+import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
@@ -24,7 +30,11 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
+
+import java.util.Map;
 
 public class MyApplication extends Application {
 
@@ -88,6 +98,7 @@ public class MyApplication extends Application {
             return;
             //获取消息推送代理示例
         PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.setDisplayNotificationNumber(5);
             //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 
@@ -97,6 +108,7 @@ public class MyApplication extends Application {
                 L.i(TAG,"注册成功：deviceToken：-------->  " + deviceToken);
 //                bindAlias(mPushAgent);
                 SpUtils.putString(SpUtils.push_token,deviceToken);
+//                judgeMethod(mPushAgent);
 
             }
 
@@ -106,6 +118,90 @@ public class MyApplication extends Application {
             }
         });
 
+        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+
+            @Override
+            public void dealWithCustomAction(Context context, UMessage msg) {
+                judgeType(msg);
+            }
+        };
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+    }
+
+    public void judgeType(UMessage msg){
+        if (msg==null || !UMessage.NOTIFICATION_GO_CUSTOM.equals(msg.after_open))
+            return;
+       switch (msg.extra.get("type")){
+           case "group":
+//               startActivity(new Intent(this, ClassInfoActivity.class)
+//                       .putExtra("groupId", msg.extra.get("type_cont"))
+//                       .putExtra("catId", data.getCat_id()));
+               break;
+           case "xueyuan":
+               startActivity(new Intent(this, PostInfoActivity.class)
+                       .putExtra("thread_id", msg.extra.get("type_cont"))
+                       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+               break;
+           case "sign":
+               startActivity(new Intent(this, IntegralActivity.class)
+                       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+               break;
+           case "order":
+               startActivity(new Intent(this, OrderInfoActivity.class)
+                       .putExtra("orderId", msg.extra.get("type_cont"))
+                       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+               break;
+           case "message":
+               startActivity(new Intent(this, MineMessageActivity.class)
+                       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+               break;
+           case "web":
+               break;
+
+       }
+
+    }
+
+
+    protected void judgeMethod(PushAgent mPushAgent){
+        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+
+            @Override
+            public void dealWithCustomAction(Context context, UMessage msg) {
+                for (Map.Entry entry : msg.extra.entrySet()) {
+                    Object key = entry.getKey();
+                    Object value = entry.getValue();
+                    L.e("=======key:"+key+",value:"+value);
+                }
+            }
+        };
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+//        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+//
+//            @Override
+//            public void launchApp(Context context, UMessage msg) {
+//            }
+//
+//            @Override
+//            public void openUrl(Context context, UMessage msg) {
+//            }
+//
+//            @Override
+//            public void openActivity(Context context, UMessage msg) {
+//
+//            }
+//
+//            @Override
+//            public void dealWithCustomAction(Context context, UMessage msg) {
+//                for (Map.Entry entry : msg.extra.entrySet()) {
+//                    Object key = entry.getKey();
+//                    Object value = entry.getValue();
+//                    L.e("=======key:"+key+",value:"+value);
+//                }
+//
+//            }
+//        };
+//        mPushAgent.setMessageHandler(notificationClickHandler);
 
     }
 

@@ -337,6 +337,7 @@ public class PostInfoActivity extends BaseActivity implements MyItemOnClickListe
         if (threadInfoBean == null)
             return;
         mThreadDataBean = threadInfoBean;
+        tuserId=mThreadDataBean.getUser_id();
         Glide.with(this).load(threadInfoBean.getUser_img()).placeholder(R.drawable.head_icon).into(civHead);
         tvName.setText(threadInfoBean.getUser_name());
         tvTime.setText(threadInfoBean.getCreated_at_str());
