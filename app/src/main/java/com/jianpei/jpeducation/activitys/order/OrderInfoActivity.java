@@ -19,7 +19,6 @@ import com.alipay.sdk.app.PayTask;
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.GroupInfoAdapter;
 import com.jianpei.jpeducation.adapter.order.OrderInfoAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
@@ -30,6 +29,7 @@ import com.jianpei.jpeducation.bean.order.WxInfo;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.viewmodel.OrderConfirmModel;
 import com.jianpei.jpeducation.viewmodel.OrderListModel;
+import com.mantis.imview.ui.activity.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -282,7 +282,8 @@ public class OrderInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivity(new Intent(this, KeFuActivity.class));
+//                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.button://分享
                 if (mShareAction == null) {

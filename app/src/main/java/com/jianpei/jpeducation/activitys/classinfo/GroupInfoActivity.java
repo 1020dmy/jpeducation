@@ -13,10 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,14 +22,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.NTabFragmentAdapter;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.bean.classinfo.ClassInfoBean;
 import com.jianpei.jpeducation.bean.classinfo.GroupClassBean;
 import com.jianpei.jpeducation.bean.classinfo.ImputedPriceBean;
-import com.jianpei.jpeducation.bean.homedata.RegimentInfoBean;
 import com.jianpei.jpeducation.bean.order.MIneOrderInfoBean;
 import com.jianpei.jpeducation.fragment.group.GclassInfoFragment;
 import com.jianpei.jpeducation.fragment.info.CommentFragment;
@@ -40,6 +36,7 @@ import com.jianpei.jpeducation.utils.DisplayUtil;
 import com.jianpei.jpeducation.utils.pop.GroupingPopup;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+import com.mantis.imview.ui.activity.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -275,7 +272,8 @@ public class GroupInfoActivity extends BaseActivity {
                 mShareAction.open();
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, KeFuActivity.class));
+//                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.submit:
                 groupId = "";

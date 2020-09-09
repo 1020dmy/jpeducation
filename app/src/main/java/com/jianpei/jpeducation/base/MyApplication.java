@@ -1,15 +1,22 @@
 package com.jianpei.jpeducation.base;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.widget.RemoteViews;
 
+
+import androidx.core.app.NotificationCompat;
 
 import com.jianpei.jpeducation.Constants;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
 import com.jianpei.jpeducation.activitys.mine.MineMessageActivity;
+import com.jianpei.jpeducation.activitys.mine.mclass.MyClassActivity;
 import com.jianpei.jpeducation.activitys.order.OrderInfoActivity;
 import com.jianpei.jpeducation.activitys.school.PostInfoActivity;
 import com.jianpei.jpeducation.utils.DisplayUtil;
@@ -30,6 +37,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
@@ -101,15 +109,11 @@ public class MyApplication extends Application {
         mPushAgent.setDisplayNotificationNumber(5);
             //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
-
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 L.i(TAG,"注册成功：deviceToken：-------->  " + deviceToken);
-//                bindAlias(mPushAgent);
                 SpUtils.putString(SpUtils.push_token,deviceToken);
-//                judgeMethod(mPushAgent);
-
             }
 
             @Override
@@ -119,16 +123,40 @@ public class MyApplication extends Application {
         });
 
         UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
-
+            @Override
+            public void launchApp(Context context, UMessage uMessage) {
+                L.e(TAG,"======launchApp");
+            }
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
                 judgeType(msg);
             }
         };
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
+            @Override
+            public Notification getNotification(Context context, UMessage msg) {
+                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.my_push_notification);
+                myNotificationView.setTextViewText(R.id.tv_title, msg.title);
+                myNotificationView.setTextViewText(R.id.tv_content, msg.text);
+                myNotificationView.setImageViewResource(R.id.iv_icon, getSmallIconId(context, msg));
+                NotificationCompat.Builder mb=new NotificationCompat.Builder(context,"1");
+                mb.setCustomBigContentView(myNotificationView)
+                        .setTicker(msg.ticker)
+                        .setAutoCancel(true)
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(getSmallIconId(context, msg));
+                return mb.build();
+            }
+        };
+        mPushAgent.setMessageHandler(messageHandler);
+
+
     }
 
     public void judgeType(UMessage msg){
+
         if (msg==null || !UMessage.NOTIFICATION_GO_CUSTOM.equals(msg.after_open))
             return;
        switch (msg.extra.get("type")){
@@ -157,51 +185,12 @@ public class MyApplication extends Application {
                break;
            case "web":
                break;
+           case "buyclass":
+               startActivity(new Intent(this, MyClassActivity.class)
+                       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+               break;
 
        }
-
-    }
-
-
-    protected void judgeMethod(PushAgent mPushAgent){
-        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
-
-            @Override
-            public void dealWithCustomAction(Context context, UMessage msg) {
-                for (Map.Entry entry : msg.extra.entrySet()) {
-                    Object key = entry.getKey();
-                    Object value = entry.getValue();
-                    L.e("=======key:"+key+",value:"+value);
-                }
-            }
-        };
-        mPushAgent.setNotificationClickHandler(notificationClickHandler);
-//        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
-//
-//            @Override
-//            public void launchApp(Context context, UMessage msg) {
-//            }
-//
-//            @Override
-//            public void openUrl(Context context, UMessage msg) {
-//            }
-//
-//            @Override
-//            public void openActivity(Context context, UMessage msg) {
-//
-//            }
-//
-//            @Override
-//            public void dealWithCustomAction(Context context, UMessage msg) {
-//                for (Map.Entry entry : msg.extra.entrySet()) {
-//                    Object key = entry.getKey();
-//                    Object value = entry.getValue();
-//                    L.e("=======key:"+key+",value:"+value);
-//                }
-//
-//            }
-//        };
-//        mPushAgent.setMessageHandler(notificationClickHandler);
 
     }
 

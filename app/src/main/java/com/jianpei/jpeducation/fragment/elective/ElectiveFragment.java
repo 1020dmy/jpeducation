@@ -14,8 +14,6 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.classinfo.ClassInfoActivity;
-import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.BannerMainAdapter;
 import com.jianpei.jpeducation.adapter.MyItemOnClickListener;
 import com.jianpei.jpeducation.adapter.elective.ElectiveAdapter;
@@ -25,6 +23,7 @@ import com.jianpei.jpeducation.bean.homedata.BannerDataBean;
 import com.jianpei.jpeducation.bean.homedata.GroupInfoBean;
 import com.jianpei.jpeducation.viewmodel.ElectiveModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
+import com.mantis.imview.ui.activity.ChatActivity;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -125,7 +124,8 @@ public class ElectiveFragment extends BaseFragment implements MyItemOnClickListe
 
     @OnClick(R.id.ib_kefu)
     public void onViewClicked() {
-        startActivity(new Intent(getActivity(), KeFuActivity.class));
+//        startActivity(new Intent(getActivity(), KeFuActivity.class));
+        startActivity(new Intent(getActivity(), ChatActivity.class));
     }
 
 

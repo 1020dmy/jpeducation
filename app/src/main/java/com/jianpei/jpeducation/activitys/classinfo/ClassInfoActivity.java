@@ -23,7 +23,6 @@ import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.order.OrderConfirmActivity;
-import com.jianpei.jpeducation.activitys.web.KeFuActivity;
 import com.jianpei.jpeducation.adapter.NTabFragmentAdapter;
 import com.jianpei.jpeducation.adapter.TabFragmentAdapter;
 import com.jianpei.jpeducation.base.BaseNoStatusActivity;
@@ -39,6 +38,7 @@ import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.jpeducation.utils.pop.SubjectPopup;
 import com.jianpei.jpeducation.viewmodel.ClassInfoModel;
+import com.mantis.imview.ui.activity.ChatActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
@@ -270,7 +270,8 @@ public class ClassInfoActivity extends BaseNoStatusActivity {
                 }
                 break;
             case R.id.tv_kefu:
-                startActivity(new Intent(this, KeFuActivity.class));
+//                startActivity(new Intent(this, KeFuActivity.class));
+                startActivity(new Intent(this, ChatActivity.class));
                 break;
             case R.id.tv_shopping:
                 isShop = true;
