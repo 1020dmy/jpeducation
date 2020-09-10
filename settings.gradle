@@ -1,3 +1,4 @@
 rootProject.name='jpeducation'
 include ':app', ':zxing', ':AliyunVideoCommon', ':Aliyunplayer:player_demo', ':Aliyunplayer:AlivcPlayer', ':tanglang', ':ImagePreview', ':textUtilsLib'
 include ':umeng'
+include ':wps'

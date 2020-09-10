@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jianpei.wps">
+
+    <application>
+        <activity android:name=".WpsReadActivity"></activity>
+
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
+    </application>
+
+</manifest>

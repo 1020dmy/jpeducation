@@ -141,7 +141,7 @@ public class ChatActivity extends BaseActivity<ChatPresenter> implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        MIMManager.getInstance().init(getApplicationContext(), 7011, "5f1ac5f6dc4cec24259a3f50", "", true);
+        MIMManager.getInstance().init(getApplicationContext(), 6203, "5f59970a942e5d39e886c57f", "", false);
         examinePermission();
         initView();
         init();

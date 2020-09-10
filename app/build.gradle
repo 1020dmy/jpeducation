@@ -143,11 +143,7 @@ dependencies {
     implementation project(path: ':umeng')
     //支付宝支付
     api(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
-    //螳螂
-//    implementation(name: 'mantis_im_sdk', ext: 'aar')
-//    configurations {
-//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-//    }
+
 
     //刷新/加载
     implementation externalAndroidAppRefreshLayoutKernel    //核心必须依赖
@@ -163,19 +159,7 @@ dependencies {
 
 //    implementation 'org.jetbrains:annotations:16.0.2'
 
-//    api project(path: ':tanglang')
-//    configurations {
-//        all*.exclude group: 'com.squareup.okhttp3', module: 'logging-interceptor'
-//    }
-//    configurations {
-//        all*.exclude group: 'com.google.code.gson', module: 'gson'
-//    }
-//    configurations {
-//        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-//    }
-//    configurations {
-//        all*.exclude group: 'com.squareup.okio', module: 'okio'
-//    }
+
 
 
     //查看大图
