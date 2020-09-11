@@ -17,12 +17,14 @@ import io.reactivex.Observable;
 public interface LoginContract {
     interface Repository {
         Observable<BaseEntity<UserInfoBean>> login(String mobile, String password);
+        Observable<BaseEntity<String>> loginOut();
+
     }
 
 
     interface Model {
         void login(String mobile, String password);
-
+        void loginOut();
     }
 
 }

@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.jianpei.jpeducation.utils.L;
 import com.jianpei.jpeducation.utils.LoadingDialog;
 import com.jianpei.jpeducation.utils.SpUtils;
 import com.jianpei.umeng.ShareActivity;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -241,6 +244,9 @@ public abstract class BaseFragment extends Fragment {
 
         }
     }
+
+
+
 
     @Override
     public void onStop() {

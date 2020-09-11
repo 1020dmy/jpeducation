@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.jianpei.jpeducation.R;
 import com.jianpei.jpeducation.activitys.login.LoginActivity;
 import com.jianpei.jpeducation.activitys.web.GuiZeActivity;
@@ -16,6 +19,7 @@ import com.jianpei.jpeducation.base.BaseActivity;
 import com.jianpei.jpeducation.base.MyApplication;
 import com.jianpei.jpeducation.utils.AppUtils;
 import com.jianpei.jpeducation.utils.SpUtils;
+import com.jianpei.jpeducation.viewmodel.LoginModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,6 +42,8 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.btn_signout)
     Button btnSignout;
 
+    private LoginModel loginModel;
+
     @Override
     protected int setLayoutView() {
         return R.layout.activity_setting;
@@ -52,12 +58,30 @@ public class SettingActivity extends BaseActivity {
             btnSignout.setVisibility(View.VISIBLE);
         }
 
+        loginModel=new ViewModelProvider(this).get(LoginModel.class);
     }
 
     @Override
     protected void initData() {
 
         tvVersion.setText("V" + AppUtils.getVersionName(MyApplication.getInstance()));
+
+        loginModel.getLoginOutLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                shortToast(s);
+                SpUtils.remove(SpUtils.ID);
+                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+        loginModel.getErrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String o) {
+                shortToast(o);
+                btnSignout.setEnabled(true);
+            }
+        });
 
     }
 
@@ -78,9 +102,8 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(this, GuiZeActivity.class).putExtra("webUrl", SpUtils.getValue(SpUtils.UserProtocol)).putExtra("title", R.string.xieyi_name));
                 break;
             case R.id.btn_signout:
-                SpUtils.remove(SpUtils.ID);
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                 btnSignout.setEnabled(false);
+                 loginModel.loginOut();
                 break;
         }
     }

@@ -39,7 +39,6 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
         try {
             if (tBaseEntity.isLogin()) {
                 SpUtils.remove(SpUtils.ID);
-                SpUtils.remove(SpUtils.push_token);
                 MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), LoginActivity.class).setFlags(FLAG_ACTIVITY_NEW_TASK));
                 onComplete();
                 return;

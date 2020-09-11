@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
@@ -36,6 +37,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
@@ -43,10 +45,13 @@ import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
 
 import java.util.Map;
+import java.util.Random;
 
 public class MyApplication extends Application {
 
     private final String TAG="MyApplication";
+    public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
+
 
     static {
         //设置全局的Header构建器
@@ -102,30 +107,15 @@ public class MyApplication extends Application {
         PlatformConfig.setQQZone("101875487", "79bbca3fb14f19baa9b6b8f182534870");
         PlatformConfig.setQQFileProvider("com.jianpei.jpeducation.fileprovider");
         //
-        if (TextUtils.isEmpty(SpUtils.ID))
-            return;
+
             //获取消息推送代理示例
         PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
         mPushAgent.setDisplayNotificationNumber(5);
-            //注册推送服务，每次调用register方法都会回调该接口
-        mPushAgent.register(new IUmengRegisterCallback() {
-            @Override
-            public void onSuccess(String deviceToken) {
-                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
-                L.i(TAG,"注册成功：deviceToken：-------->  " + deviceToken);
-                SpUtils.putString(SpUtils.push_token,deviceToken);
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-                L.e(TAG,"注册失败：-------->  " + "s:" + s + ",s1:" + s1);
-            }
-        });
 
         UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
             @Override
             public void launchApp(Context context, UMessage uMessage) {
-                L.e(TAG,"======launchApp");
             }
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
@@ -137,28 +127,62 @@ public class MyApplication extends Application {
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
             @Override
             public Notification getNotification(Context context, UMessage msg) {
-                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.my_push_notification);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel("default", "Default_Channel", NotificationManager.IMPORTANCE_HIGH);
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (notificationManager != null) {
+                        notificationManager.createNotificationChannel(channel);
+                    }
+                }
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
+                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
+                        R.layout.my_push_notification);
                 myNotificationView.setTextViewText(R.id.tv_title, msg.title);
                 myNotificationView.setTextViewText(R.id.tv_content, msg.text);
-                myNotificationView.setImageViewResource(R.id.iv_icon, getSmallIconId(context, msg));
-                NotificationCompat.Builder mb=new NotificationCompat.Builder(context,"1");
-                mb.setCustomBigContentView(myNotificationView)
+
+                myNotificationView.setImageViewResource(R.id.iv_icon,
+                        getSmallIconId(context, msg));
+                builder.setCustomBigContentView(myNotificationView)
+                        .setSmallIcon(getSmallIconId(context, msg))
                         .setTicker(msg.ticker)
-                        .setAutoCancel(true)
                         .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(getSmallIconId(context, msg));
-                return mb.build();
+                        .setAutoCancel(true);
+                return builder.build();
+
+
+
             }
         };
         mPushAgent.setMessageHandler(messageHandler);
+
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                L.i(TAG,"注册成功：deviceToken：-------->  " + deviceToken);
+                sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+
+                SpUtils.putString(SpUtils.push_token,deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+                L.e(TAG,"注册失败：-------->  " + "s:" + s + ",s1:" + s1);
+            }
+        });
+
+
 
 
     }
 
     public void judgeType(UMessage msg){
-
         if (msg==null || !UMessage.NOTIFICATION_GO_CUSTOM.equals(msg.after_open))
             return;
+
        switch (msg.extra.get("type")){
            case "group":
 //               startActivity(new Intent(this, ClassInfoActivity.class)

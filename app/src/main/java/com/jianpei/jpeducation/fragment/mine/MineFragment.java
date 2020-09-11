@@ -180,6 +180,9 @@ public class MineFragment extends BaseFragment {
             tvJifenNum.setText("0");
             tvSignin.setText("未签到");
             iv_sex.setVisibility(View.GONE);
+            tvWaitPayNum.setVisibility(View.GONE);
+            civHead.setImageResource(R.drawable.head_icon);
+
         }
     }
 

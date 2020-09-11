@@ -3,6 +3,8 @@ package com.jianpei.jpeducation.viewmodel;
 import android.text.TextUtils;
 
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.jianpei.jpeducation.api.base.BaseEntity;
 import com.jianpei.jpeducation.api.base.BaseObserver;
 import com.jianpei.jpeducation.base.BaseViewModel;
@@ -68,5 +70,41 @@ public class LoginModel extends BaseViewModel implements LoginContract.Model {
                 }
             }
         });
+    }
+
+
+    protected MutableLiveData<String> loginOutLiveData;
+
+    public MutableLiveData<String> getLoginOutLiveData() {
+        if (loginOutLiveData==null)
+            loginOutLiveData=new MutableLiveData<>();
+        return loginOutLiveData;
+    }
+
+    @Override
+    public void loginOut() {
+
+        loginRepository.loginOut().compose(setThread()).subscribe(new BaseObserver<String>(){
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+                if (t.isSuccess()){
+                    loginOutLiveData.setValue(t.getMsg());
+                }else{
+                    errData.setValue(t.getMsg());
+
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                if (isNetWorkError) {
+                    errData.setValue("网络问题！");
+                } else {
+                    errData.setValue(e.getMessage());
+                }
+            }
+        });
+
     }
 }

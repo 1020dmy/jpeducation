@@ -24,4 +24,9 @@ public class LoginRepository implements LoginContract.Repository {
     public Observable<BaseEntity<UserInfoBean>> login(String mobile, String password) {
         return RetrofitFactory.getInstance().API().codeLogin(new LoginJson(mobile, password, "", 1, 0,""));
     }
+
+    @Override
+    public Observable<BaseEntity<String>> loginOut() {
+        return RetrofitFactory.getInstance().API().loginOut();
+    }
 }
