@@ -21,7 +21,6 @@ public class LoadingView extends ProgressDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
-
         init(getContext());
     }
 

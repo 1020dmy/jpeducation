@@ -74,7 +74,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        L.isDebug = true;//日志开关
+        L.isDebug = false;//日志开关
         initUmeng();
         initWx();
 
