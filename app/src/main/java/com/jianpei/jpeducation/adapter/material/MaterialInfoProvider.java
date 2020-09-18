@@ -43,7 +43,7 @@ public class MaterialInfoProvider extends BaseNodeProvider {
     public void convert(@NotNull BaseViewHolder baseViewHolder, BaseNode baseNode) {
         MaterialInfoBean materialInfoBean = (MaterialInfoBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, materialInfoBean.getTitle());
-        baseViewHolder.setText(R.id.tv_nums, materialInfoBean.getTotal() + "人报名");
+        baseViewHolder.setText(R.id.tv_nums, materialInfoBean.getTotal() + "人兑换");
 //        if ("2".equals(materialInfoBean.getStatus()))
 //            baseViewHolder.setText(R.id.tv_down, "查看");
 //        else if ("3".equals(materialInfoBean.getStatus())) {

@@ -35,7 +35,7 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
 
         holder.tvTitle.setText(materialInfoBean.getTitle());
 
-        holder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
+        holder.tvNums.setText(materialInfoBean.getDownload() + "人兑换");
 
 //        if (materialInfoBean.getStatus().equals("2")) {
 //            holder.tvDown.setText("下载完成");
