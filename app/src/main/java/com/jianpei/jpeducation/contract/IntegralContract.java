@@ -32,7 +32,8 @@ public interface IntegralContract {
         //1-积分购买（签到）
         Observable<BaseEntity<String>> integrlPay(int type, String integrl, String repair_time);
 
-
+        //1-积分购买（签到）
+        Observable<BaseEntity<String>> integrlPayZl(int type, String integrl, String repair_time,String related_id);
     }
 
 
@@ -44,5 +45,7 @@ public interface IntegralContract {
         void integralData(int type, int pageIndex, int pageSize);
 
         void integrlPay(int type, String integrl, String repair_time);
+
+        void integrlPayZl(int type, String integrl, String repair_time,String related_id);
     }
 }

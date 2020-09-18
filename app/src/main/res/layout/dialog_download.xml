@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本资料下载需"
+                android:text="本资料兑换需"
                 android:textColor="#F6E420"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="31dp"
             android:background="@drawable/shape_dialog_btn_bg"
-            android:text="下载"
+            android:text="确定兑换"
             android:textColor="@color/white"
             android:textSize="15dp" />
 

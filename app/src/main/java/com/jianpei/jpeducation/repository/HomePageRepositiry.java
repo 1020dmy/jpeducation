@@ -27,29 +27,27 @@ public class HomePageRepositiry implements HomePageContract.Repository {
 
     @Override
     public Observable<BaseEntity<HomeDataBean>> getHomeData(String catId) {
-        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId)).map(new Function<BaseEntity<HomeDataBean>, BaseEntity<HomeDataBean>>() {
-
-            @Override
-            public BaseEntity<HomeDataBean> apply(BaseEntity<HomeDataBean> homeDataBeanBaseEntity) throws Exception {
-                ///查询资料数据库，更改数据状态
-                for (MaterialInfoBean materialInfoBean : homeDataBeanBaseEntity.getData().getMaterialData().getData()) {
-                    //根据资料ID判断当前资料是和否已经下载完成
-
-                    MaterialInfoBean materialInfoBean1 = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId());
-                    if (materialInfoBean1 != null) {
-                        materialInfoBean.setStatus(materialInfoBean1.getStatus());
-                        materialInfoBean.setProgress(materialInfoBean1.getProgress());
-                        materialInfoBean.setPath(materialInfoBean1.getPath());
-                    }
-
-                }
-
-                return homeDataBeanBaseEntity;
-            }
-        });
-
-//        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId));
-
+//        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId)).map(new Function<BaseEntity<HomeDataBean>, BaseEntity<HomeDataBean>>() {
+//
+//            @Override
+//            public BaseEntity<HomeDataBean> apply(BaseEntity<HomeDataBean> homeDataBeanBaseEntity) throws Exception {
+//                ///查询资料数据库，更改数据状态
+//                for (MaterialInfoBean materialInfoBean : homeDataBeanBaseEntity.getData().getMaterialData().getData()) {
+//                    //根据资料ID判断当前资料是和否已经下载完成
+//
+//                    MaterialInfoBean materialInfoBean1 = MyRoomDatabase.getInstance().materialInfoDao().getMaterialInfoBean(materialInfoBean.getId());
+//                    if (materialInfoBean1 != null) {
+//                        materialInfoBean.setStatus(materialInfoBean1.getStatus());
+//                        materialInfoBean.setProgress(materialInfoBean1.getProgress());
+//                        materialInfoBean.setPath(materialInfoBean1.getPath());
+//                    }
+//
+//                }
+//
+//                return homeDataBeanBaseEntity;
+//            }
+//        });
+        return RetrofitFactory.getInstance().API().getHomeInfo(new HomeInfoJson(catId));
     }
 
     @Override

@@ -63,7 +63,7 @@ public class QueueListener extends DownloadListener1 {
             ((MaterialInfoAdapter.MyHolder) viewHolder).progressBar.setVisibility(View.VISIBLE);
         } else if (viewHolder instanceof MaterialInfoItemBinder.MyHolder) {
             ((MaterialInfoItemBinder.MyHolder) viewHolder).tvDown.setText("正在下载");
-            ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.setVisibility(View.VISIBLE);
+//            ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.setVisibility(View.VISIBLE);
 
         }
 
@@ -97,12 +97,12 @@ public class QueueListener extends DownloadListener1 {
                     false
             );
         } else if (viewHolder instanceof MaterialInfoItemBinder.MyHolder) {
-            ProgressUtil.calcProgressToViewAndMark(
-                    ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar,
-                    currentOffset,
-                    totalLength,
-                    false
-            );
+//            ProgressUtil.calcProgressToViewAndMark(
+//                    ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar,
+//                    currentOffset,
+//                    totalLength,
+//                    false
+//            );
         }
 
     }
@@ -124,7 +124,7 @@ public class QueueListener extends DownloadListener1 {
 
         } else if (viewHolder instanceof MaterialInfoItemBinder.MyHolder) {
 
-            ProgressUtil.updateProgressToViewWithMark(((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar, currentOffset, false);
+//            ProgressUtil.updateProgressToViewWithMark(((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar, currentOffset, false);
 
         }
 
@@ -165,7 +165,7 @@ public class QueueListener extends DownloadListener1 {
                 }).start();
 
             } else if (viewHolder instanceof MaterialInfoItemBinder.MyHolder) {
-                ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.setProgress(((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.getMax());
+//                ((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.setProgress(((MaterialInfoItemBinder.MyHolder) viewHolder).progressBar.getMax());
                 ((MaterialInfoItemBinder.MyHolder) viewHolder).tvDown.setText("下载完成");
                 //存入数据库
                 MaterialInfoBean materialInfoBean = ((MaterialInfoItemBinder.MyHolder) viewHolder).getData();

@@ -8,8 +8,8 @@ android {
         applicationId "com.jianpei.jpeducation"
         minSdkVersion externalMinSdkVersion
         targetSdkVersion externalTargetSdkVersion
-        versionCode 6
-        versionName "1.2.2"
+        versionCode 7
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -156,10 +156,9 @@ dependencies {
     implementation project(path: ':ImagePreview')
     implementation project(path: ':textUtilsLib')
     implementation project(path: ':tanglang')
+    implementation project(path: ':wps')
 
 //    implementation 'org.jetbrains:annotations:16.0.2'
-
-
 
 
     //查看大图

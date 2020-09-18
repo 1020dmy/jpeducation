@@ -52,6 +52,7 @@ import com.jianpei.jpeducation.viewmodel.HomePageModel;
 import com.jianpei.jpeducation.viewmodel.IntegralModel;
 import com.jianpei.jpeducation.viewmodel.MainModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
+import com.jianpei.wps.FileDisplayActivity;
 import com.liulishuo.okdownload.DownloadTask;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -109,7 +110,7 @@ public class HomeFragment extends BaseFragment {
 
     QueueListener queueListener;
     private MaterialInfoItemBinder.MyHolder mMyHolder;
-    private String name, nums;
+    private String name, nums,materialInfoBeanId;
 
     private IntegralBuyDialog integralBuyDialog;
 
@@ -175,16 +176,16 @@ public class HomeFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-
-                if (materialInfoBean.getStatus().equals("2")) {
-                    startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));
-                } else {
+//                if (materialInfoBean.getStatus().equals("2")) {
+//                    startActivity(new Intent(getActivity(), PdfReaderActivity.class).putExtra("materialInfoBean", materialInfoBean));
+//                } else {
                     showLoading("");
                     mMyHolder = myHolder;
                     name = materialInfoBean.getTitle();
                     nums = materialInfoBean.getTotal();
+                    materialInfoBeanId=materialInfoBean.getId();
                     materialModel.getDownloadUrl(materialInfoBean.getId());
-                }
+//                }
 
 
             }
@@ -279,7 +280,9 @@ public class HomeFragment extends BaseFragment {
                 dismissLoading();
                 downloadUrl = downloadBean.getDownloadUrl();
                 if ("0".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
-                    downloadMaterial(downloadBean.getDownloadUrl());
+//                    downloadMaterial(downloadBean.getDownloadUrl());
+                    FileDisplayActivity.actionStart(getActivity(),downloadBean.getDownloadUrl(),name);
+
                 } else {
                     //要积分，弹窗
                     if (integralBuyDialog == null) {
@@ -288,7 +291,7 @@ public class HomeFragment extends BaseFragment {
                             public void onClick(View v) {
                                 integralBuyDialog.dismiss();
                                 showLoading("");
-                                integralModel.integrlPay(3, downloadBean.getIntergral_price(), "");
+                                integralModel.integrlPayZl(3, downloadBean.getIntergral_price(), "",materialInfoBeanId);
 
                             }
                         }, name, nums, downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
@@ -310,7 +313,9 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onChanged(String s) {
                 dismissLoading();
-                downloadMaterial(downloadUrl);
+//                downloadMaterial(downloadUrl);
+                FileDisplayActivity.actionStart(getActivity(),downloadUrl,name);
+
 
             }
         });
@@ -325,19 +330,19 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    public void downloadMaterial(String url) {
-        if (queueListener == null) {
-            queueListener = new QueueListener();
-        }
-
-        DownloadTask task = new DownloadTask.Builder(url, getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
-                .setFilename(name)
-                .setMinIntervalMillisCallbackProcess(30)
-                .setPassIfAlreadyCompleted(false)
-                .build();
-        queueListener.bind(task, mMyHolder);
-        task.enqueue(queueListener);
-    }
+//    public void downloadMaterial(String url) {
+//        if (queueListener == null) {
+//            queueListener = new QueueListener();
+//        }
+//
+//        DownloadTask task = new DownloadTask.Builder(url, getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
+//                .setFilename(name)
+//                .setMinIntervalMillisCallbackProcess(30)
+//                .setPassIfAlreadyCompleted(false)
+//                .build();
+//        queueListener.bind(task, mMyHolder);
+//        task.enqueue(queueListener);
+//    }
 
 
     @Override

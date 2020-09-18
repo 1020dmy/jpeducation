@@ -124,7 +124,7 @@ public class DownloadApkUtils {
 
 
     public static void installApk(Context context) {
-        if (!saveFile.exists()) {
+        if (saveFile==null || !saveFile.exists()) {
             return;
         }
         //判读版本是否在7.0以上 todo 这里是7.0安装是会出现解析包的错误

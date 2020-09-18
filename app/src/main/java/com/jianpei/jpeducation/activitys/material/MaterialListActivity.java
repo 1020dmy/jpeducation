@@ -35,6 +35,7 @@ import com.jianpei.jpeducation.utils.down.MaterialDownloadManager;
 import com.jianpei.jpeducation.utils.down.ProgressUtil;
 import com.jianpei.jpeducation.viewmodel.IntegralModel;
 import com.jianpei.jpeducation.viewmodel.MaterialModel;
+import com.jianpei.wps.FileDisplayActivity;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -90,7 +91,7 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
     //积分付款的
     private IntegralBuyDialog integralBuyDialog;
 
-    private LinkedHashMap<MaterialInfoBean, BaseViewHolder> downloadItems = new LinkedHashMap<>();
+//    private LinkedHashMap<MaterialInfoBean, BaseViewHolder> downloadItems = new LinkedHashMap<>();
 
 
     @Override
@@ -104,7 +105,7 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
         //
         initShare();//初始化分享
         //
-        tvTitle.setText("资料下载");
+        tvTitle.setText("资料大全");
         cat_id = SpUtils.getValue(SpUtils.catId);
         catName = SpUtils.getValue(SpUtils.catName);
         tvClass.setText(catName);
@@ -174,10 +175,12 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
             public void onChanged(DownloadBean downloadBean) {
                 dismissLoading();
                 mMaterialInfoBean.setDownloadUrl(downloadBean.getDownloadUrl());
-                if ("1".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
-                    MaterialDownloadManager.getInstance().setDownloadDir(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
-                    MaterialDownloadManager.getInstance().setMaterialDownloadListener(downloadListener);
-                    MaterialDownloadManager.getInstance().startDownload(mMaterialInfoBean);
+                if ("0".equals(downloadBean.getIs_pay())) {//0不需要积分，直接下载
+//                    MaterialDownloadManager.getInstance().setDownloadDir(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
+//                    MaterialDownloadManager.getInstance().setMaterialDownloadListener(downloadListener);
+//                    MaterialDownloadManager.getInstance().startDownload(mMaterialInfoBean);
+                    FileDisplayActivity.actionStart(MaterialListActivity.this,downloadBean.getDownloadUrl(),mMaterialInfoBean.getTitle());
+
 
                 } else {
                     //要积分，弹窗
@@ -187,7 +190,7 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
                             public void onClick(View v) {
                                 integralBuyDialog.dismiss();
                                 showLoading("");
-                                integralModel.integrlPay(3, downloadBean.getIntergral_price(), "");
+                                integralModel.integrlPayZl(3, downloadBean.getIntergral_price(), "",mMaterialInfoBean.getId());
                             }
                         }, mMaterialInfoBean.getTitle(), mMaterialInfoBean.getDownload(), downloadBean.getIntergral_price(), downloadBean.getUser_intergral());
                     }
@@ -212,8 +215,10 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
             @Override
             public void onChanged(String s) {
                 dismissLoading();
-                MaterialDownloadManager.getInstance().setMaterialDownloadListener(downloadListener);
-                MaterialDownloadManager.getInstance().startDownload(mMaterialInfoBean);
+//                MaterialDownloadManager.getInstance().setMaterialDownloadListener(downloadListener);
+//                MaterialDownloadManager.getInstance().startDownload(mMaterialInfoBean);
+                FileDisplayActivity.actionStart(MaterialListActivity.this,mMaterialInfoBean.getDownloadUrl(),mMaterialInfoBean.getTitle());
+
 
             }
         });
@@ -245,72 +250,72 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
     }
 
     //下载监听
-    private MaterialDownloadListener downloadListener = new MaterialDownloadListener() {
-
-        @Override
-        public void repeat(MaterialInfoBean materialInfoBean) {//重复下载
-            if (downloadItems != null)
-                downloadItems.remove(materialInfoBean);
-
-        }
-
-        @Override
-        public void taskStart(MaterialInfoBean materialInfoBean) {
-            if (downloadItems == null)
-                return;
-            TextView tvDown = downloadItems.get(materialInfoBean).getView(R.id.tv_down);
-            ProgressBar progressBar = downloadItems.get(materialInfoBean).getView(R.id.progressBar);
-            tvDown.setText("正在下载");
-            progressBar.setVisibility(View.VISIBLE);
-
-
-        }
-
-        @Override
-        public void retry(MaterialInfoBean materialInfoBean) {
-
-        }
-
-        @Override
-        public void connected(MaterialInfoBean materialInfoBean) {
-
-        }
-
-        @Override
-        public void progress(MaterialInfoBean materialInfoBean, long currentOffset, long totalLength) {
-            //进度
-            if (downloadItems == null)
-                return;
-
-//            ProgressUtil.updateProgressToViewWithMark(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, false);
-            ProgressUtil.updateProgressToView(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, totalLength, false);
-
-
-        }
-
-        @Override
-        public void onError(String errMsg) {
-            shortToast(errMsg);
-
-
-        }
-
-        @Override
-        public void onSuccess(MaterialInfoBean materialInfoBean) {
-            if (downloadItems == null)
-                return;
-            TextView tvDown = downloadItems.get(materialInfoBean).getView(R.id.tv_down);
-            tvDown.setText("查看");
-        }
-    };
+//    private MaterialDownloadListener downloadListener = new MaterialDownloadListener() {
+//
+//        @Override
+//        public void repeat(MaterialInfoBean materialInfoBean) {//重复下载
+//            if (downloadItems != null)
+//                downloadItems.remove(materialInfoBean);
+//
+//        }
+//
+//        @Override
+//        public void taskStart(MaterialInfoBean materialInfoBean) {
+//            if (downloadItems == null)
+//                return;
+//            TextView tvDown = downloadItems.get(materialInfoBean).getView(R.id.tv_down);
+//            ProgressBar progressBar = downloadItems.get(materialInfoBean).getView(R.id.progressBar);
+//            tvDown.setText("正在下载");
+//            progressBar.setVisibility(View.VISIBLE);
+//
+//
+//        }
+//
+//        @Override
+//        public void retry(MaterialInfoBean materialInfoBean) {
+//
+//        }
+//
+//        @Override
+//        public void connected(MaterialInfoBean materialInfoBean) {
+//
+//        }
+//
+//        @Override
+//        public void progress(MaterialInfoBean materialInfoBean, long currentOffset, long totalLength) {
+//            //进度
+//            if (downloadItems == null)
+//                return;
+//
+////            ProgressUtil.updateProgressToViewWithMark(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, false);
+//            ProgressUtil.updateProgressToView(downloadItems.get(materialInfoBean).getView(R.id.progressBar), currentOffset, totalLength, false);
+//
+//
+//        }
+//
+//        @Override
+//        public void onError(String errMsg) {
+//            shortToast(errMsg);
+//
+//
+//        }
+//
+//        @Override
+//        public void onSuccess(MaterialInfoBean materialInfoBean) {
+//            if (downloadItems == null)
+//                return;
+//            TextView tvDown = downloadItems.get(materialInfoBean).getView(R.id.tv_down);
+//            tvDown.setText("查看");
+//        }
+//    };
 
 
     @Override
     protected void onDestroy() {
-        MaterialDownloadManager.getInstance().freed();
-        downloadListener = null;
-        downloadItems.clear();
-        downloadItems = null;
+//        MaterialDownloadManager.getInstance().freed();
+//        downloadListener = null;
+//        downloadItems.clear();
+//        downloadItems = null;
         super.onDestroy();
     }
 
@@ -329,13 +334,13 @@ public class MaterialListActivity extends BaseNoStatusActivity implements MyItem
                     return;
                 }
                 mMaterialInfoBean = (MaterialInfoBean) data;
-                if ("2".equals(mMaterialInfoBean.getStatus())) {//下载完成直接打开
-                    startActivity(new Intent(MaterialListActivity.this, PdfReaderActivity.class).putExtra("materialInfoBean", mMaterialInfoBean));
-                } else {//去下载
+//                if ("2".equals(mMaterialInfoBean.getStatus())) {//下载完成直接打开
+//                    startActivity(new Intent(MaterialListActivity.this, PdfReaderActivity.class).putExtra("materialInfoBean", mMaterialInfoBean));
+//                } else {//去下载
                     showLoading("");
-                    downloadItems.put(mMaterialInfoBean, helper);
+//                    downloadItems.put(mMaterialInfoBean, helper);
                     materialModel.getDownloadUrl(mMaterialInfoBean.getId());
-                }
+//                }
                 break;
             case R.id.linearLayout:
                 mMaterialTitle = (MaterialTitle) data;

@@ -37,11 +37,11 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
 
         holder.tvNums.setText(materialInfoBean.getDownload() + "次下载");
 
-        if (materialInfoBean.getStatus().equals("2")) {
-            holder.tvDown.setText("下载完成");
-            holder.progressBar.setVisibility(View.VISIBLE);
-            holder.progressBar.setProgress(100);
-        }
+//        if (materialInfoBean.getStatus().equals("2")) {
+//            holder.tvDown.setText("下载完成");
+//            holder.progressBar.setVisibility(View.VISIBLE);
+//            holder.progressBar.setProgress(100);
+//        }
     }
 
     @NotNull
@@ -63,7 +63,7 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
 
     public class MyHolder extends BaseViewHolder {
         public TextView tvTitle, tvNums, tvDown;
-        public ProgressBar progressBar;
+//        public ProgressBar progressBar;
 
         public MyHolder(@NotNull View view) {
             super(view);
@@ -71,7 +71,7 @@ public class MaterialInfoItemBinder extends BaseItemBinder<MaterialInfoBean, Mat
             tvNums = view.findViewById(R.id.tv_nums);
             tvDown = view.findViewById(R.id.tv_down);
 
-            progressBar = view.findViewById(R.id.progressBar);
+//            progressBar = view.findViewById(R.id.progressBar);
 //
             addChildClickViewIds(R.id.tv_down);
 

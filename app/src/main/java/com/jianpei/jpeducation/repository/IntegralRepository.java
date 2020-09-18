@@ -45,4 +45,9 @@ public class IntegralRepository extends BaseRepository implements IntegralContra
     public Observable<BaseEntity<String>> integrlPay(int type, String integrl, String repair_time) {
         return RetrofitFactory.getInstance().API().integrlPay(new IntegrlPayJson(type, integrl, repair_time));
     }
+
+    @Override
+    public Observable<BaseEntity<String>> integrlPayZl(int type, String integrl, String repair_time, String related_id) {
+        return RetrofitFactory.getInstance().API().integrlPay(new IntegrlPayJson(type, integrl, repair_time,related_id));
+    }
 }

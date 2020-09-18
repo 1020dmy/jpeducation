@@ -21,6 +21,7 @@ import com.jianpei.jpeducation.activitys.mine.IntegralActivity;
 import com.jianpei.jpeducation.activitys.mine.MaterialActivity;
 import com.jianpei.jpeducation.activitys.mine.MineDynamicActivity;
 import com.jianpei.jpeducation.activitys.mine.MineTikuActivity;
+import com.jianpei.jpeducation.activitys.mine.NMaterialActivity;
 import com.jianpei.jpeducation.activitys.mine.ShoppingCartActivity;
 import com.jianpei.jpeducation.activitys.mine.UserCouponActivity;
 import com.jianpei.jpeducation.activitys.mine.UserOrderListActivity;
@@ -222,7 +223,9 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MineTikuActivity.class));
                 break;
             case R.id.tv_my_data://我的资料
-                startActivity(new Intent(getActivity(), MaterialActivity.class));
+//                startActivity(new Intent(getActivity(), MaterialActivity.class));
+                startActivity(new Intent(getActivity(), NMaterialActivity.class));
+
                 break;
             case R.id.tv_my_moving://我的动态
                 startActivity(new Intent(getActivity(), MineDynamicActivity.class).putExtra("userId", mUserInfoBean.getId()));

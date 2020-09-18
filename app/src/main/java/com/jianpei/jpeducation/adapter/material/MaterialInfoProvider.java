@@ -44,11 +44,11 @@ public class MaterialInfoProvider extends BaseNodeProvider {
         MaterialInfoBean materialInfoBean = (MaterialInfoBean) baseNode;
         baseViewHolder.setText(R.id.tv_title, materialInfoBean.getTitle());
         baseViewHolder.setText(R.id.tv_nums, materialInfoBean.getTotal() + "人报名");
-        if ("2".equals(materialInfoBean.getStatus()))
-            baseViewHolder.setText(R.id.tv_down, "查看");
-        else if ("3".equals(materialInfoBean.getStatus())) {
-            baseViewHolder.setText(R.id.tv_down, "重新下载");
-        }
+//        if ("2".equals(materialInfoBean.getStatus()))
+//            baseViewHolder.setText(R.id.tv_down, "查看");
+//        else if ("3".equals(materialInfoBean.getStatus())) {
+//            baseViewHolder.setText(R.id.tv_down, "重新下载");
+//        }
 
     }
 

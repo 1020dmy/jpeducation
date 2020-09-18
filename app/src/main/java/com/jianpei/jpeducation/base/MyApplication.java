@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 
@@ -35,6 +36,7 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
@@ -89,6 +91,18 @@ public class MyApplication extends Application {
 
         //查看大图
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
+        //
+        QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+                Log.e("snow", "========onCoreInitFinished===");
+            }
+
+            @Override
+            public void onViewInitFinished(boolean b) {
+                Log.e("snow", "x5初始化结果====" + b);
+            }
+        });
 
     }
 

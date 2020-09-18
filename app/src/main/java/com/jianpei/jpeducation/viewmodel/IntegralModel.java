@@ -193,6 +193,32 @@ public class IntegralModel extends BaseViewModel implements IntegralContract.Mod
                 }
             }
         });
+    }
 
+    @Override
+    public void integrlPayZl(int type, String integrl, String repair_time, String related_id) {
+        integralRepository.integrlPayZl(type, integrl, repair_time,related_id).compose(setThread()).subscribe(new BaseObserver<String>() {
+
+            @Override
+            protected void onSuccees(BaseEntity<String> t) throws Exception {
+                if (t.isSuccess()) {
+                    integrlPayLiveData.setValue(t.getData());
+                } else {
+                    errData.setValue(t.getMsg());
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                if (isNetWorkError) {
+                    errData.setValue("网络错误！");
+                } else {
+                    errData.setValue(e.getMessage());
+
+                }
+            }
+        });
     }
 }
